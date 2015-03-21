@@ -7,7 +7,7 @@ var DepartmentSchema = new Schema({
   name: String,
   info: String,
   subDepartments: {},
-  members: {}  
+  members: {}
 });
 
 module.exports = mongoose.model('Department', DepartmentSchema);

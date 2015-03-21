@@ -10,6 +10,7 @@ var PostSchema = new Schema({
   subDepartment: {},
   comments: {},
   createdBy: {},
+  seenBy: {},
   createdOn: {
   	type: Date,
   	default: Date.now
