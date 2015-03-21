@@ -10,8 +10,11 @@ var UserSchema = new Schema({
   email: { type: String, lowercase: true },
   role: {
     type: String,
-    default: 'user'
+    default: 'coord'
   },
+  isActive: {},
+  department: {},
+  subDepartment: {},
   hashedPassword: String,
   provider: String,
   salt: String,
