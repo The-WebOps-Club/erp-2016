@@ -6,8 +6,22 @@ var mongoose = require('mongoose'),
 var DepartmentSchema = new Schema({
   name: String,
   info: String,
+  calendar: String,
+  folder: String,
   subDepartments: {},
-  members: {}
+  cores: {},
+  superCoords: {},
+  coords: {},
+  qms: {},
+  canPost: {},
+  createdOn: {
+  	type: Date,
+  	default: Date.now
+  },
+  updatedOn: {
+  	type: Date,
+  	default: Date.now
+  }
 });
 
 module.exports = mongoose.model('Department', DepartmentSchema);

@@ -30,7 +30,7 @@ var all = {
   },
 
   // List of user roles
-  userRoles: ['coord', 'core', 'admin'],
+  userRoles: ['user', 'coord', 'superCoord', 'core', 'admin'],
 
   // MongoDB connection options
   mongo: {
