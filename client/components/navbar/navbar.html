@@ -1,32 +1,56 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
-  <div class="container">
-    <div class="navbar-header">
-      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a href="/" class="navbar-brand">erp2015</a>
-    </div>
-    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
-            <a ng-href="{{item.link}}">{{item.title}}</a>
-        </li>
-        <li ng-show="isAdmin()" ng-class="{active: isActive('/admin')}"><a href="/admin">Admin</a></li>
-      </ul>
+<html>
+<head>
+    <title>Fest 2016</title>
+    <meta charset="ut-f8">
+    <meta name="viewport" content="width=device-width ,initial-scale=1">
+    <link href="bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="navbar.css">
 
-      <ul class="nav navbar-nav navbar-right">
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/profile')}"><a href="/profile">Profile</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/wall')}"><a href="/wall">Wall</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/tasks')}"><a href="/tasks">Tasks</a></li>
-        <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><a href="/settings"><span class="glyphicon glyphicon-cog"></span></a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Logout</a></li>
-      </ul>
+</head>
+<script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+<body style="background-color:white">
+
+<div class="navbar navbar-default navbar-static-top ">
+    <div class="container">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Fest</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#"> <span class="glyphicon glyphicon-globe"></span></a></li>
+                 </ul>
+
+                  <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+
+           <ul class="nav navbar-nav navbar-right">
+
+                <li><a href="#Profile"> <span class="glyphicon glyphicon-user"></span></a></li>
+                <li><a href="#Profile">Name</a></li>
+                <li><a href="#Home">Home</a></li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Settings</a></li>
+                        <li><a href="#">Logout</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Use ERP in stable mode</a></li>
+                    </ul>
+                </li>
+
+
+            </ul>
+
+
+
+
+
+
+
+        </div>
+
     </div>
-  </div>
 </div>
