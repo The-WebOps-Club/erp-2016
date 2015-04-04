@@ -16,7 +16,9 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('post:save', doc);
+  Post.populate(doc, {path: 'title', select: 'info'}, function(err, post) {
+    socket.emit('post:save', doc);
+  });
 }
 
 function onRemove(socket, doc, cb) {

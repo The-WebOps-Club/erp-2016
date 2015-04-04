@@ -22,10 +22,30 @@ exports.show = function(req, res) {
 
 // Creates a new post in the DB.
 exports.create = function(req, res) {
-  Post.create(req.body, function(err, post) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, post);
-  });
+  var newPost = new Post();
+  var title = req.body.title;
+  var info = req.body.info;
+  var stateParams = req.body.stateParams;
+
+  if(stateParams.type === 'profile') {
+    if(!stateParams.id) { console.log('no id'); return res.send(404); }
+    newPost.title = title;
+    newPost.info = info;
+    newPost.profile = req.user._id;
+    newPost.createdBy = req.user._id;
+    newPost.createdOn = Date.now();
+    newPost.updatedOn = Date.now();
+
+    newPost.save(function(err, post) {
+      if(err) { console.log(err); return handleError(res, err); }
+      else res.send({type: 'success', msg: 'Created successfully'});
+    });
+  }
+
+  // Post.create(req.body, function(err, post) {
+  //   if(err) { return handleError(res, err); }
+  //   return res.json(201, post);
+  // });
 };
 
 // Updates an existing post in the DB.

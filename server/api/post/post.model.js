@@ -8,8 +8,10 @@ var PostSchema = new Schema({
   info: String,
   department: {},
   subDepartment: {},
+  profile: Schema.Types.ObjectId,
+  taggedTo: {},
   comments: {},
-  createdBy: {},
+  createdBy: Schema.Types.ObjectId,
   seenBy: {},
   createdOn: {
   	type: Date,
