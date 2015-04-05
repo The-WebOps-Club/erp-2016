@@ -16,8 +16,8 @@
 		<div ng-repeat="comment in post.comments">
 			{{comment}}
 		</div>
-		<form  ng-submit="addComment()" name="commentPost">
-			<textarea class="form-control" ng-model="newComment[$index]" rows="3" placeholder="Enter a new comment..."></textarea>
+		<form  ng-submit="addComment(post)" name="commentPost">
+			<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..."></textarea>
 			<input class="btn btn-primary" type="submit" ng-diasbled="commentPost.$invalid" value="Comment">
 		</form>
 	</div>

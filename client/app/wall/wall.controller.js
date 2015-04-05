@@ -2,24 +2,18 @@
 
 angular.module('erp2015App')
   .controller('WallCtrl', function ($scope, $http, $stateParams, socket) {
-    $scope.message = 'Hello';
     $scope.newPost = '';
     $scope.newPostTitle = '';
-    $scope.newComment = [];
     $scope.posts = {};
 
     $http.get('/api/posts?type=' + $stateParams.type + '&dept=' + $stateParams.dept + '&subDept=' + $stateParams.subDept)
     	.success(function(posts) {
     		$scope.posts = posts;
-            socket.syncUpdates('post', $scope.posts, function(event, post, posts) {
-                /*
-                What is this doing ???
-                 */
-                posts.sort(function(a, b) {
-                    a = new Date(a.date);
-                    b = new Date(b.date);
-                    return a<b ? -1 : a>b ? 1 : 0;
-                });
+            socket.syncUpdates('post', $scope.posts);
+            $scope.posts.sort(function(a, b) {
+                a = new Date(a.updatedOn);
+                b = new Date(b.updatedOn);
+                return a>b ? -1 : a<b ? 1 : 0;
             });
     	})
     	.error(function(err) {
@@ -30,7 +24,7 @@ angular.module('erp2015App')
     	});
 
     $scope.createPost = function() {
-    	$http.post('/api/posts', { title: $scope.newPostTitle, info: $scope.newPost, stateParams: $stateParams })
+    	$http.post('/api/posts/createPost', { title: $scope.newPostTitle, info: $scope.newPost, stateParams: $stateParams })
     		.success(function(data) {
     			$scope.newPost = '';
     			$scope.newPostTitle = '';
@@ -41,5 +35,24 @@ angular.module('erp2015App')
     			 */
     			console.log(err);
     		});
-    }	
+    }
+
+    $scope.addComment = function(post) {
+        $http.post('/api/posts/addComment', { postId: post._id, comment: post.newComment })
+            .success(function(data) {
+                post.newComment = '';
+                socket.syncUpdates('post', $scope.posts);
+                $scope.posts.sort(function(a, b) {
+                    a = new Date(a.updatedOn);
+                    b = new Date(b.updatedOn);
+                    return a>b ? -1 : a<b ? 1 : 0;
+                });
+            })
+            .error(function(err) {
+                /*
+                Do some error handling here
+                 */
+                console.log(err);
+            });
+    }
   });

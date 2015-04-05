@@ -21,23 +21,25 @@ exports.show = function(req, res) {
 };
 
 // Creates a new post in the DB.
-exports.create = function(req, res) {
+exports.createPost = function(req, res) {
   var newPost = new Post();
-  var title = req.body.title;
-  var info = req.body.info;
   var stateParams = req.body.stateParams;
 
   if(stateParams.type === 'profile') {
     if(!stateParams.id) { console.log('no id'); return res.send(404); }
-    newPost.title = title;
-    newPost.info = info;
+    newPost.title = req.body.title;
+    newPost.info = req.body.info;
     newPost.profile = req.user._id;
-    newPost.createdBy = req.user._id;
+
+    newPost.createdBy.name = req.user.name;
+    newPost.createdBy.id = req.user._id;
+    newPost.createdBy.email = req.user.email;
+
     newPost.createdOn = Date.now();
     newPost.updatedOn = Date.now();
 
-    newPost.save(function(err, post) {
-      if(err) { console.log(err); return handleError(res, err); }
+    newPost.save(function (err, post) {
+      if (err) { return handleError(res, err); }
       else res.send({type: 'success', msg: 'Created successfully'});
     });
   }
@@ -46,6 +48,30 @@ exports.create = function(req, res) {
   //   if(err) { return handleError(res, err); }
   //   return res.json(201, post);
   // });
+};
+
+// Appends a new comment to the existing post
+exports.addComment = function(req, res) {
+  Post.findById(req.body.postId, function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    
+    var comment = {};
+    comment.name = req.user.name;
+    comment.id = req.user._id;
+    comment.email = req.user.email;
+    comment.info = req.body.comment;
+    comment.createdOn = Date(Date.now());
+    comment.updatedOn = Date(Date.now());
+
+    post.updatedOn = Date.now();
+
+    post.comments.push(comment);
+    post.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.send({type: 'success', msg: 'Created successfully'});
+    });
+  });
 };
 
 // Updates an existing post in the DB.

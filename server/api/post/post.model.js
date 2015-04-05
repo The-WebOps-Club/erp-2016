@@ -9,10 +9,10 @@ var PostSchema = new Schema({
   department: {},
   subDepartment: {},
   profile: Schema.Types.ObjectId,
-  taggedTo: {},
-  comments: {},
-  createdBy: Schema.Types.ObjectId,
-  seenBy: {},
+  taggedTo: [],
+  comments: [],
+  createdBy: {},
+  seenBy: [],
   createdOn: {
   	type: Date,
   	default: Date.now
