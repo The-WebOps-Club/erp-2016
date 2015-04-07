@@ -4,6 +4,7 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var Department = require('../department/department.model');
 
 var validationError = function(res, err) {
   return res.json(422, err);
@@ -17,16 +18,19 @@ exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) return res.send(500, err);
     res.json(200, users);
-  });
+  })
+  .populate('department', 'name');
 };
 
 /**
  * Creates a new user
  */
 exports.create = function (req, res, next) {
+  // console.log(req.body);
   var newUser = new User(req.body);
   newUser.provider = 'local';
-  newUser.role = 'user';
+  var role = newUser.role;
+  console.log(req.body.department);
   newUser.save(function(err, user) {
     if (err) return validationError(res, err);
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
@@ -94,6 +98,36 @@ exports.me = function(req, res, next) {
 };
 
 /**
+ * Add any user to any department as a coord
+ * @param {req.department} : Department ID
+ * @param {req.user} : User ID
+ * @param {Function}
+ */
+exports.addDepartment = function(req, res, next) {
+  User.findById(req.body.user, function (err, user) {
+    Department.findById(req.body.department, function (err, department) {
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!department) {
+        return res.send(404);
+      }
+      department[req.body.role].push(user._id);
+      department.save(function (err) {
+        if (err) { 
+          return handleError(res, err);
+        }
+        user.department.push(req.body.department);
+        user.save(function(err) {
+          if (err) return validationError(res, err);
+          res.send(200); 
+        });
+      });
+    });
+  });
+};
+/**
+ * 
  * Authentication callback
  */
 exports.authCallback = function(req, res, next) {

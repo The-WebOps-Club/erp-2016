@@ -8,11 +8,12 @@ var DepartmentSchema = new Schema({
   info: String,
   calendar: String,
   folder: String,
+
   subDepartments: {},
-  cores: {},
-  superCoords: {},
-  coords: {},
-  qms: {},
+  cores: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  superCoords: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  coords: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  qms: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   canPost: {},
   createdOn: {
   	type: Date,
