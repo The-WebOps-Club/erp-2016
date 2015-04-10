@@ -17,6 +17,7 @@ var UserSchema = new Schema({
     type: Date
   },
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
+  subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
   hashedPassword: String,
   provider: String,
   salt: String,

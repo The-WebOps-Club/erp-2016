@@ -99,9 +99,12 @@ exports.me = function(req, res, next) {
 
 /**
  * Add any user to any department as a coord
- * @param {req.department} : Department ID
- * @param {req.user} : User ID
- * @param {Function}
+ * @param {req.body.department} : Department ID
+ * @param {req.body.user} : User ID
+ * @param {Function} : User and Department IDs are sent 
+ *                     in the body of the request.
+ *                     Using that we see if user already exists in department
+ *                     or if Department already exists in the user
  */
 exports.addDepartment = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
@@ -112,17 +115,60 @@ exports.addDepartment = function(req, res, next) {
       if(!department) {
         return res.send(404);
       }
-      department[req.body.role].push(user._id);
-      department.save(function (err) {
-        if (err) { 
-          return handleError(res, err);
-        }
-        user.department.push(req.body.department);
-        user.save(function(err) {
-          if (err) return validationError(res, err);
-          res.send(200); 
+      if (department[req.body.role].indexOf(user._id) == -1){
+        department[req.body.role].push(user._id);
+        department.save(function (err) {
+          if (err) { 
+            return handleError(res, err);
+          }
+          if (user.department(department._id) == -1){
+            user.department.push(req.body.department);
+            user.save(function(err) {
+              if (err) return validationError(res, err);
+              res.send(200); 
+            });
+          }
         });
-      });
+      }
+      else res.send(200);
+    });
+  });
+};
+
+/**
+ * Add any user to a SubDepartment
+ * @param {req.body.subDepartment}   req  SubDepartment ID
+ * @param {req.body.user}   req  User ID
+ * @param {Function} User and SubDepartment IDs are sent 
+ *                   in the body of the request.
+ *                   Using that we see if user already exists in subDepartment
+ *                   or if SubDepartment already exists in the user
+ */
+exports.addSubDepartment = function(req, res, next) {
+  User.findById(req.body.user, function (err, user) {
+    SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!subDepartment) {
+        return res.send(404);
+      }
+      if (subDepartment[req.body.role].indexOf(user._id) == -1){
+        subDepartment[req.body.role].push(user._id);
+        subDepartment.save(function (err) {
+          if (err) { 
+            return handleError(res, err);
+          }
+          if (user.subDepartment(subDepartment._id) == -1){
+            user.subDepartment.push(req.body.subDepartment);
+            user.save(function(err) {
+              if (err) return validationError(res, err);
+              res.send(200); 
+            });
+          }
+        });
+      }
+      else res.send(200);
     });
   });
 };
