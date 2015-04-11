@@ -35,7 +35,7 @@ exports.create = function(req, res) {
       }
       if (department.subDepartments.indexOf(subDepartment._id) == -1){
         department.subDepartments.push(subDepartment._id);
-        department.save(function (err) {
+        department.save(function (err){
           if (err) { 
             return handleError(res, err);
           }
