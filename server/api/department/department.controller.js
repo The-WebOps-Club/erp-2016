@@ -5,10 +5,11 @@ var Department = require('./department.model');
 
 // Get list of departments
 exports.index = function(req, res) {
-  Department.find(function (err, departments) {
+  Department.find(function (err, departments){
     if(err) { return handleError(res, err); }
     return res.json(200, departments);
-  });
+  })
+  .populate('cores coords superCoords qms');
 };
 
 // Get a single department
