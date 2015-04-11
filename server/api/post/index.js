@@ -6,8 +6,8 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
+router.get('/:type/:id', controller.index);
+router.get('/show/:id', controller.show);
 
 router.post('/createPost', auth.isAuthenticated(), controller.createPost);
 router.post('/addComment', auth.isAuthenticated(), controller.addComment);

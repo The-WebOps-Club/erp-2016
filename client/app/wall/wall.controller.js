@@ -6,7 +6,8 @@ angular.module('erp2015App')
     $scope.newPostTitle = '';
     $scope.posts = {};
 
-    $http.get('/api/posts?type=' + $stateParams.type + '&dept=' + $stateParams.dept + '&subDept=' + $stateParams.subDept)
+    $http.get('/api/posts?type=' + $stateParams.type + '&dept=' + $stateParams.dept + '&subDept=' + $stateParams.subDept
+        + '&id=' + $stateParams.id)
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
@@ -42,11 +43,6 @@ angular.module('erp2015App')
             .success(function(data) {
                 post.newComment = '';
                 socket.syncUpdates('post', $scope.posts);
-                $scope.posts.sort(function(a, b) {
-                    a = new Date(a.updatedOn);
-                    b = new Date(b.updatedOn);
-                    return a>b ? -1 : a<b ? 1 : 0;
-                });
             })
             .error(function(err) {
                 /*
