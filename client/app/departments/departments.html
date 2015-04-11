@@ -1,0 +1,13 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <ul class="list-group">
+  	<li>
+	  	<select ng-model="subDept.department">
+	  		<option ng-repeat="user in departments" value="{{user._id}}">{{user.name}}</option>
+	  	</select>
+	    <input ng-model="subDept.name">
+	    <a ng-click="addSub()" class="trash"><span class="glyphicon glyphicon-plus"></span></a>
+    </li>
+  </ul>
+</div>
