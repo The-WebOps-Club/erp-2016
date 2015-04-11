@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var SubDepartment = require('./subDepartment.model');
+var Department = require('../department/department.model');
+
 
 // Get list of subDepartments
 exports.index = function(req, res) {
@@ -24,7 +26,23 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   SubDepartment.create(req.body, function(err, subDepartment) {
     if(err) { return handleError(res, err); }
-    return res.json(201, subDepartment);
+    Department.findById(req.body.department, function (err, department) {
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!department) {
+        return res.send(404);
+      }
+      if (department.subDepartments.indexOf(subDepartment._id) == -1){
+        department.subDepartments.push(subDepartment._id);
+        department.save(function (err) {
+          if (err) { 
+            return handleError(res, err);
+          }
+          return res.json(201, subDepartment);
+        });
+      }
+    });
   });
 };
 
