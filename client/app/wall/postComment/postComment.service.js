@@ -17,8 +17,8 @@ angular.module('erp2015App')
 	    			return err;
 	    		});
 	    },
-	    addComment: function (type, postId, comment) {
-	        return $http.post('/api/posts/addComment', { type: type, postId: postId, comment: comment })
+	    addComment: function (postId, comment) {
+	        return $http.post('/api/posts/addComment', { postId: postId, comment: comment })
 	            .success(function(data) {
 	                return data;
 	            })

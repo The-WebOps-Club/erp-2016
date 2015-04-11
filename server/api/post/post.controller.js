@@ -8,43 +8,35 @@ exports.index = function(req, res) {
   if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
     return res.send(404);
   if(req.params.type === 'profile') {
-    if(!req.query.userId) { return res.send(404); }
-    if(req.query.userId) {
-      /*
-      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-       */
-      Post.find({ profile: req.query.userId }, function (err, posts) {
-        if(err) { return handleError(res, err); }
-        return res.json(200, posts);
-      });
-    }
+    if(!req.params.id) { return res.send(404); }
+    /*
+    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+     */
+    Post.find({ profile: req.params.id }, function (err, posts) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, posts);
+    });
   }
   if(req.params.type === 'department') {
-    if(!req.query.deptId) { return res.send(404); }
-    if(req.query.deptId) {
-      /*
-      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-      ===========Need to complete this================
-       */
-
-    }
+    if(!req.params.id) { return res.send(404); }
+    /*
+    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+     */
+    Post.find({ department: req.params.id }, function(err, posts) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, posts);
+    });
   }
   if(req.params.type === 'subDepartment') {
-    if(!req.query.deptId || !req.query.subDeptId) { return res.send(404); }
-    if(req.query.deptId && req.query.subDeptId) {
-      /*
-      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-      ===========Need to complete this================
-       */
-
-    }
+    if(!req.params.id) { return res.send(404); }
+    /*
+    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+     */
+    Post.find({ subDepartment: req.params.id }, function(err, posts) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, posts);
+    });
   }
-  
-
-  // Post.find(function (err, posts) {
-  //   if(err) { return handleError(res, err); }
-  //   return res.json(200, posts);
-  // });
 };
 
 // Get a single post

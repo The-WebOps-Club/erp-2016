@@ -6,8 +6,7 @@ angular.module('erp2015App')
     $scope.newPostTitle = '';
     $scope.posts = {};
 
-    $http.get('/api/posts/profile?' + 'deptId=' + $stateParams.deptId + '&subDeptId=' + $stateParams.subDeptId
-        + '&userId=' + $stateParams.userId)
+    $http.get('/api/posts/profile/' + $stateParams.userId)
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
@@ -46,7 +45,7 @@ angular.module('erp2015App')
     }
 
     $scope.addComment = function(post) {
-        postComment.addComment('profile', post._id, post.newComment)
+        postComment.addComment(post._id, post.newComment)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 $scope.newPost = '';
