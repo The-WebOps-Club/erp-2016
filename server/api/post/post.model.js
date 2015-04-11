@@ -11,7 +11,7 @@ var PostSchema = new Schema({
   profile: Schema.Types.ObjectId,
   taggedTo: [],
   comments: [],
-  createdBy: {},
+  createdBy: Schema.Types.ObjectId,
   seenBy: [],
   createdOn: {
   	type: Date,

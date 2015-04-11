@@ -5,10 +5,46 @@ var Post = require('./post.model');
 
 // Get list of posts
 exports.index = function(req, res) {
-  Post.find(function (err, posts) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, posts);
-  });
+  if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
+    return res.send(404);
+  if(req.params.type === 'profile') {
+    if(!req.query.userId) { return res.send(404); }
+    if(req.query.userId) {
+      /*
+      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+       */
+      Post.find({ profile: req.query.userId }, function (err, posts) {
+        if(err) { return handleError(res, err); }
+        return res.json(200, posts);
+      });
+    }
+  }
+  if(req.params.type === 'department') {
+    if(!req.query.deptId) { return res.send(404); }
+    if(req.query.deptId) {
+      /*
+      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+      ===========Need to complete this================
+       */
+
+    }
+  }
+  if(req.params.type === 'subDepartment') {
+    if(!req.query.deptId || !req.query.subDeptId) { return res.send(404); }
+    if(req.query.deptId && req.query.subDeptId) {
+      /*
+      Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
+      ===========Need to complete this================
+       */
+
+    }
+  }
+  
+
+  // Post.find(function (err, posts) {
+  //   if(err) { return handleError(res, err); }
+  //   return res.json(200, posts);
+  // });
 };
 
 // Get a single post
@@ -24,19 +60,21 @@ exports.show = function(req, res) {
 exports.createPost = function(req, res) {
   var newPost = new Post();
   var stateParams = req.body.stateParams;
+  console.log(newPost);
 
-  if(stateParams.type === 'profile') {
-    if(!stateParams.id) { console.log('no id'); return res.send(404); }
+  if(req.body.type === 'profile') {
+    if(!stateParams.userId) { return res.send(404); }
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.profile = req.user._id;
 
-    newPost.createdBy.name = req.user.name;
-    newPost.createdBy.id = req.user._id;
-    newPost.createdBy.email = req.user.email;
+    newPost.createdBy = req.user._id;
 
     newPost.createdOn = Date.now();
     newPost.updatedOn = Date.now();
+
+  console.log(newPost);
+
 
     newPost.save(function (err, post) {
       if (err) { return handleError(res, err); }
