@@ -9,33 +9,39 @@ exports.index = function(req, res) {
     return res.send(404);
   if(req.params.type === 'profile') {
     if(!req.params.id) { return res.send(404); }
+    
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
     Post.find({ profile: req.params.id }, function (err, posts) {
       if(err) { return handleError(res, err); }
       return res.json(200, posts);
-    });
+    })
+    .populate('profile department subDepartment createdBy');
   }
   if(req.params.type === 'department') {
     if(!req.params.id) { return res.send(404); }
+    
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
     Post.find({ department: req.params.id }, function(err, posts) {
       if(err) { return handleError(res, err); }
       return res.json(200, posts);
-    });
+    })
+    .populate('profile department subDepartment createdBy');
   }
   if(req.params.type === 'subDepartment') {
     if(!req.params.id) { return res.send(404); }
+    
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
     Post.find({ subDepartment: req.params.id }, function(err, posts) {
       if(err) { return handleError(res, err); }
       return res.json(200, posts);
-    });
+    })
+    .populate('profile department subDepartment createdBy');
   }
 };
 

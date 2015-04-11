@@ -24,7 +24,7 @@ angular.module('erp2015App')
 		});
 
     $scope.createPost = function() {
-        postComment.createPost($scope.newPostTitle, $scope.newPost, $stateParams)
+        postComment.createPost('subDepartment', $scope.newPostTitle, $scope.newPost, $stateParams)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
@@ -45,7 +45,7 @@ angular.module('erp2015App')
     }
 
     $scope.addComment = function(post) {
-        postComment.addComment('subDepartment', post._id, post.newComment)
+        postComment.addComment(post._id, post.newComment)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 $scope.newPost = '';

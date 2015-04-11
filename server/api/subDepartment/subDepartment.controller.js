@@ -27,18 +27,12 @@ exports.create = function(req, res) {
   SubDepartment.create(req.body, function(err, subDepartment) {
     if(err) { return handleError(res, err); }
     Department.findById(req.body.department, function (err, department) {
-      if(err) { 
-        return handleError(res, err);
-      }
-      if(!department) {
-        return res.send(404);
-      }
-      if (department.subDepartments.indexOf(subDepartment._id) == -1){
+      if(err) { return handleError(res, err); }
+      if(!department) { return res.send(404); }
+      if(department.subDepartments.indexOf(subDepartment._id) == -1) {
         department.subDepartments.push(subDepartment._id);
         department.save(function (err) {
-          if (err) { 
-            return handleError(res, err);
-          }
+          if(err) { return handleError(res, err); }
           return res.json(201, subDepartment);
         });
       }

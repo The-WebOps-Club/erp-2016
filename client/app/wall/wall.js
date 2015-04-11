@@ -16,7 +16,7 @@ angular.module('erp2015App')
         authenticate: true
       })
       .state('subDepartment', {
-        url: '/subDepartment/:deptId/:subDeptId',
+        url: '/subDepartment/:subDeptId',
         templateUrl: 'app/wall/subDepartment/subDepartment.html',
         controller: 'SubDepartmentCtrl',
         authenticate: true
