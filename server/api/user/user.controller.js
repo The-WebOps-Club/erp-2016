@@ -121,13 +121,13 @@ exports.addDepartment = function(req, res, next) {
           if (err) { 
             return handleError(res, err);
           }
-          if (user.department(department._id) == -1){
-            user.department.push(req.body.department);
-            user.save(function(err) {
-              if (err) return validationError(res, err);
-              res.send(200); 
-            });
-          }
+        });
+      }
+      if (user.department.indexOf(department._id) == -1){
+        user.department.push(req.body.department);
+        user.save(function(err) {
+          if (err) return validationError(res, err);
+          res.send(200); 
         });
       }
       else res.send(200);
