@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('DepartmentCtrl', function ($scope, $http, $stateParams, socket, Auth, postComment) {
+  .controller('DepartmentCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment) {
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
@@ -15,12 +15,13 @@ angular.module('erp2015App')
                 b = new Date(b.updatedOn);
                 return a>b ? -1 : a<b ? 1 : 0;
             });			
-		})
-		.error(function(err) {
-			/*
-			Do some error handling here
-			 */
-			console.log(err);
+        })
+        .error(function(err) {
+            /*
+            Do some error handling here
+             */
+            console.log(err);
+            $state.go('404');
 		});
 
     $scope.createPost = function() {
