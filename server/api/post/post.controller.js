@@ -5,6 +5,7 @@ var Post = require('./post.model');
 
 // Get list of posts
 exports.index = function(req, res) {
+  console.log(req.params.type);
   if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
     return res.send(404);
   if(req.params.type === 'profile') {
@@ -17,7 +18,7 @@ exports.index = function(req, res) {
       if(err) { return handleError(res, err); }
       return res.json(200, posts);
     })
-    .populate('profile department subDepartment createdBy');
+    .populate('profile createdBy');
   }
   if(req.params.type === 'department') {
     if(!req.params.id) { return res.send(404); }
