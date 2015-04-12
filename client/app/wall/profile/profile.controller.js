@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('ProfileCtrl', function ($scope, $http, $stateParams, socket, Auth, postComment) {
+  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment) {
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
@@ -21,6 +21,7 @@ angular.module('erp2015App')
     		Do some error handling here
     		 */
     		console.log(err);
+            $state.go('404');
     	});
 
     $scope.createPost = function() {

@@ -24,4 +24,31 @@ var SubDepartmentSchema = new Schema({
   }
 });
 
+/**
+ * Validations
+ */
+
+// Validate empty sub-department name
+SubDepartmentSchema
+  .path('name')
+  .validate(function(name) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return name.length;
+  }, 'Sub-Department name cannot be blank');
+
+// Validate same name is not taken
+SubDepartmentSchema
+  .path('name')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({name: value}, function(err, subDept) {
+      if(err) throw err;
+      if(subDept) {
+        if(self.id === subDept.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+}, 'The specified sub-department name is already taken.');
+
 module.exports = mongoose.model('SubDepartment', SubDepartmentSchema);
