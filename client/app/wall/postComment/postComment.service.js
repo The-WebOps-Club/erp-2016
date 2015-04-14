@@ -4,8 +4,8 @@ angular.module('erp2015App')
   .service('postComment', function ($http, $stateParams) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
-	    createPost: function (type, title, info, stateParams) {
-	    	return $http.post('/api/posts/createPost', { type: type, title: title, info: info, stateParams: stateParams })
+	    createPost: function (type, title, info, destination) {
+	    	return $http.post('/api/posts/createPost', { type: type, title: title, info: info, destId: destination })
 	    		.success(function(data) {
 	    			return data;
 	    		})

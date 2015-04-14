@@ -5,12 +5,13 @@ var Post = require('./post.model');
 var User = require('../user/user.model');
 var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
+var auth = require('../../auth/auth.service');
 
 // Get list of posts
 exports.index = function(req, res) {
-  console.log(req.params.type);
   if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
     return res.send(404);
+
   if(req.params.type === 'profile') {
     if(!req.params.id) { return res.send(404); }
 
@@ -22,15 +23,22 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.find({ profile: req.params.id }, function (err, posts) {
+    Post.find({ profile: req.params.id })
+    .populate('profile department subDepartment createdBy')
+    .sort('updatedOn')
+    .exec(
+      function (err, posts) {
       if(err) { return handleError(res, err); }
       if(!posts) { return res.send(404); }
       return res.json(200, posts);
-    })
-    .populate('profile createdBy');
+    });
   }
   if(req.params.type === 'department') {
     if(!req.params.id) { return res.send(404); }
+    if (req.user.department.indexOf(req.params.id) == -1){
+      console.log("not allowed");
+      return res.send(403);
+    }
 
     Department.findById(req.params.id, function (err, dept) {
       if(err) { return handleError(res, err); }
@@ -45,11 +53,15 @@ exports.index = function(req, res) {
       if(!posts) { return res.send(404); }
       return res.json(200, posts);
     })
-    .populate('profile department subDepartment createdBy');
+    .populate('profile department subDepartment createdBy')
+    .sort('updatedOn');
   }
   if(req.params.type === 'subDepartment') {
     if(!req.params.id) { return res.send(404); }
-
+    if (req.user.subDepartment.indexOf(req.params.id) == -1){
+      console.log("not allowed");
+      return res.send(403);
+    }
     subDepartment.findById(req.params.id, function (err, subDept) {
       if(err) { return handleError(res, err); }
       if(!subDept) { return res.send(404); }
@@ -63,10 +75,28 @@ exports.index = function(req, res) {
       if(!posts) { return res.send(404); }
       return res.json(200, posts);
     })
-    .populate('profile department subDepartment createdBy');
+    .populate('profile department subDepartment createdBy')
+    .sort('updatedOn');
   }
 };
 
+// Get comiled list of all posts related to one user
+exports.newsfeed = function(req, res) {
+  Post.find({
+    $or: [
+      {department: {$in: req.user.department}},
+      {subDepartment: {$in: req.user.subDepartment}},
+      {profile: req.user._id}
+    ]}
+  )
+  .sort('-updatedOn')
+  .exec(
+    function (err, post) {
+      if(err) { return handleError(res, err); }
+      if(!post) { return res.send(404); }
+      return res.json(post);
+  });
+};
 // Get a single post
 exports.show = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
@@ -79,77 +109,55 @@ exports.show = function(req, res) {
 // Creates a new post in the DB.
 exports.createPost = function(req, res) {
   var newPost = new Post();
-  var stateParams = req.body.stateParams;
-  console.log(newPost);
+  console.log(req.body.destId);
+  if(!req.body.destId) { return res.send(404); }
+  if(req.body.type != 'profile' && req.body.type != 'department' && req.body.type != 'subDepartment')
+    return res.send(404);
 
   if(req.body.type === 'profile') {
-    if(!stateParams.userId) { return res.send(404); }
-
-    User.findById(stateParams.userId, function (err, user) {
+    User.findById(req.body.destId, function (err, user) {
       if(err) { return handleError(res, err); }
       if(!user) { return res.send(404); }
     });
 
-    newPost.title = req.body.title;
-    newPost.info = req.body.info;
-    newPost.stateParams.deptId;
-
-    newPost.createdBy = req.user._id;
-
-    newPost.createdOn = Date.now();
-    newPost.updatedOn = Date.now();
-
-    newPost.save(function (err, post) {
-      if (err) { return handleError(res, err); }
-      else res.json(201, post);
-    });
   }
 
   if(req.body.type === 'department') {
-    if(!stateParams.deptId) { return res.send(404); }
+    if (req.user.department.indexOf(req.body.destId) == -1){
+      console.log("not allowed");
+      return res.send(403);
+    }
 
-    Department.findById(stateParams.deptId, function (err, dept) {
+    Department.findById(req.body.destId, function (err, dept) {
       if(err) { return handleError(res, err); }
       if(!dept) { return res.send(404); }
-    });
-
-    newPost.title = req.body.title;
-    newPost.info = req.body.info;
-    newPost.department = stateParams.deptId;
-
-    newPost.createdBy = req.user._id;
-
-    newPost.createdOn = Date.now();
-    newPost.updatedOn = Date.now();
-
-    newPost.save(function (err, post) {
-      if (err) { return handleError(res, err); }
-      else res.json(201, post);
     });
   }
 
   if(req.body.type === 'subDepartment') {
-    if(!stateParams.deptId) { return res.send(404); }
+    if (req.user.subDepartment.indexOf(req.body.destId) == -1){
+      console.log("not allowed");
+      return res.send(403);
+    }
 
-    subDepartment.findById(stateParams.subDeptId, function (err, subDept) {
+    subDepartment.findById(req.body.destId, function (err, subDept) {
       if(err) { return handleError(res, err); }
       if(!subDept) { return res.send(404); }
     });
-
-    newPost.title = req.body.title;
-    newPost.info = req.body.info;
-    newPost.department = stateParams.subDeptId;
-
-    newPost.createdBy = req.user._id;
-
-    newPost.createdOn = Date.now();
-    newPost.updatedOn = Date.now();
-
-    newPost.save(function (err, post) {
-      if (err) { return handleError(res, err); }
-      else res.json(201, post);
-    });
   }
+  newPost.title = req.body.title;
+  newPost.info = req.body.info;
+  newPost[req.body.type] = req.body.destId;
+  
+  newPost.createdBy = req.user._id;
+
+  newPost.createdOn = Date.now();
+  newPost.updatedOn = Date.now();
+
+  newPost.save(function (err, post) {
+    if (err) { return handleError(res, err); }
+    else res.json(201, post);
+  });
 
   // Post.create(req.body, function(err, post) {
   //   if(err) { return handleError(res, err); }

@@ -25,7 +25,7 @@ angular.module('erp2015App')
 		});
 
     $scope.createPost = function() {
-        postComment.createPost('subDepartment', $scope.newPostTitle, $scope.newPost, $stateParams)
+        postComment.createPost('subDepartment', $scope.newPostTitle, $scope.newPost, $stateParams.subDeptId)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*

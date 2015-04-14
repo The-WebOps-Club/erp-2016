@@ -25,18 +25,12 @@ angular.module('erp2015App')
     	});
 
     $scope.createPost = function() {
-        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $stateParams)
+        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $stateParams.userId)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
                 Check this shit...sorting is fucked up
                  */
-            $scope.posts.sort(function(a, b) {
-                a = new Date(a.updatedOn);
-                b = new Date(b.updatedOn);
-                return a<b ? -1 : a>b ? 1 : 0;
-            });
-
                 $scope.newPost = '';
                 $scope.newPostTitle = '';
             })
