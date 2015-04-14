@@ -158,7 +158,7 @@ angular.module('erp2015App')
         } else {
             angular.copy($scope.form, $scope.createForm);
             // need to do some stuff here
-            $http.post('/api/forms', { formValues: $scope.form })
+            $http.post('/api/coordForms', { formValues: $scope.form })
                 .success(function(message) {
                     $scope.message = message;
                 })

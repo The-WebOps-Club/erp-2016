@@ -10,7 +10,7 @@ angular.module('erp2015App')
                 $scope.form.form_fields_submitted = $scope.form.form_fields;
                 $scope.form.form_id_submitted = $scope.form._id;
 
-                $http.post('/api/forms/submitForm', { 
+                $http.post('/api/coordForms/submitForm', { 
                     formValues: $scope.form.form_fields_submitted,  
                     formId: $scope.form.form_id_submitted
                 })

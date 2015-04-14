@@ -60,6 +60,42 @@ angular.module('erp2015App')
   				value : 'web_and_mob',
           subDepts : [ { name : '', value: ''} ]          
   			}
-  		]
+  		],
+      formById: function (id) {
+          // $http returns a promise, which has a then function, which also returns a promise
+          // if id === 0, this service returns list of all the forms
+          return $http.get('/api/coordForms/' + id).then(function (response) {
+              var requestedForm = {};
+              requestedForm = response.data;
+              return requestedForm;
+          });
+      },
+      formByCategory: function (category) {
+          // $http returns a promise, which has a then function, which also returns a promise
+          return $http.get('/api/coordForms/dashFormFields/' + category).then(function (response) {
+              // console.log(response.data._id);    
+              var requestedForm = {};
+              requestedForm = response.data;
+              return requestedForm;
+          });
+      },
+      formValues: function (category) {
+          // $http returns a promise, which has a then function, which also returns a promise
+          return $http.get('/api/coordForms/dashFormValues/' + category).then(function (response) {
+              // console.log(response.data);    
+              var requestedValues = {};
+              requestedValues = response.data;
+              return requestedValues;
+          });            
+      },
+      formValuesAll: function (category) {
+          // $http returns a promise, which has a then function, which also returns a promise
+          return $http.get('/api/coordForms/menuFormValues/' + category).then(function (response) {
+              // console.log(response.data);    
+              var requestedValues = {};
+              requestedValues = response.data;
+              return requestedValues;
+          });            
+      }      
   	};
 });

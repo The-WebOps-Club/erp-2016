@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('erp2015App')
-  // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, FormService, Auth, FileUploader) {
-  .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, FormService, Auth) {
+  // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth, FileUploader) {
+  .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth) {
 
     // $scope.uploader = new FileUploader({
     //   url: '/api/forms/upload'
@@ -27,7 +27,7 @@ angular.module('erp2015App')
 
     // loading the corresponding form details
     if($scope.updated) {
-      FormService.formByCategory($scope.applying.value).then(function(form) {
+      CoordPortalService.formByCategory($scope.applying.value).then(function(form) {
         
         $scope.form = form;
 
@@ -45,7 +45,7 @@ angular.module('erp2015App')
 
     // loading the submitted values
     if($scope.updated) {
-      FormService.formValues($scope.applying.value).then(function(responses) {
+      CoordPortalService.formValues($scope.applying.value).then(function(responses) {
         $scope.formResponses = responses;
       });
     } else {
