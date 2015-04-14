@@ -7,47 +7,58 @@ angular.module('erp2015App')
   		options:[
   			{
   				name : 'Concept and Design',
-  				value : 'concept_and_design'
+  				value : 'concept_and_design',
+          subDepts : [ { name : 'da', value: 'sss'}, { name : 'fs', value: 'aaa'} ]
   			},
   			{
   				name : 'Events',
-  				value : 'events'
+  				value : 'events',
+          subDepts : [ { name : '', value: ''} ]
   			},
   			{
   				name : 'Evolve',
-  				value : 'evolve'
-  			},
+  				value : 'evolve',
+          subDepts : [ { name : '', value: ''} ]  			
+        },
   			{
   				name : 'Envisage',
-  				value : 'envisage'
-  			},
+  				value : 'envisage',
+          subDepts : [ { name : '', value: ''} ]  			
+        },
   			{
   				name : 'Finance',
-  				value : 'finance'
-  			},
+  				value : 'finance',
+          subDepts : [ { name : '', value: ''} ]  			
+        },
   			{
   				name : 'Facilities',
-  				value : 'facilities'
+  				value : 'facilities',
+          subDepts : [ { name : '', value: ''} ]          
   			},
   			{
   				name : 'Sponsorship and PR',
-  				value : 'sponsorship_and_pr'
+  				value : 'sponsorship_and_pr',
+          subDepts : [ { name : '', value: ''} ]          
   			},
   			{
   				name : 'Shows(Proshows)',
-  				value : 'shows'
+  				value : 'shows',
+          subDepts : [ { name : '', value: ''} ]          
   			},
   			{
   				name : 'Student Relations (SR)',
-  				value : 'student_relations'
+  				value : 'student_relations',
+          subDepts : [ { name : '', value: ''} ]          
   			},
   			{
   				name : 'QMS',
-  				value : 'qms'
+  				value : 'qms',
+          subDepts : [ { name : '', value: ''} ]          
   			},
   			{
   				name : 'WebOps and MobOps',
-  				value : 'web_and_mob'
+  				value : 'web_and_mob',
+          subDepts : [ { name : '', value: ''} ]          
   			}
   		]
   	};

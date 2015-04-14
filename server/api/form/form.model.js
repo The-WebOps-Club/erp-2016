@@ -5,7 +5,10 @@ var Schema = mongoose.Schema;
 
 var FormSchema = new Schema({
 	form_id: String,
-	form_name: String,
+	form_name: {
+		type: String,
+		required: true
+	},
 	created_on: {
 		type: Date,
 		default: Date.now()
@@ -14,7 +17,9 @@ var FormSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
-	form_category: [],
+	form_department: [],
+	form_subDepartment: [],
+	form_position: [],
 	form_fields: [],
 	form_responses: []
 });
