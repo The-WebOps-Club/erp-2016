@@ -23,7 +23,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-offset-4 col-sm-2">
+        <div class="col-sm-offset-2 col-sm-2">
             <div ng-hide="previewMode">
                 <h4>Form Name:</h4>
                 <input class="form-control" type="text" name="form-name" ng-disabled="previewMode" ng-model="form.form_name">
@@ -32,7 +32,19 @@
         <div class="col-sm-2">
             <div ng-hide="previewMode">
                 <h4>Department:</h4>
-                <select class="form-control" ng-model="form.form_category" ng-options="role.name for role in departments track by role.value"></select>
+                <select class="form-control" ng-change="change()" ng-model="form.form_department" ng-options="role.name for role in options track by role.value"></select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div ng-hide="previewMode">
+                <h4>Sub-Department:</h4>
+                <select class="form-control" ng-model="form.form_subDepartment" ng-options="role.name for role in subs track by role.value"></select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div ng-hide="previewMode">
+                <h4>Position:</h4>
+                <select class="form-control" ng-model="form.form_position" ng-options="role.name for role in positions track by role.value"></select>
             </div>
         </div>
     </div>    

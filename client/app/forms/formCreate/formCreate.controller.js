@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, $http) {
+  .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, Auth, $http) {
 
     // messages for alerting purpose
     $scope.message = '';
@@ -10,13 +10,26 @@ angular.module('erp2015App')
     $scope.previewMode = false;
 
     $scope.options = CoordPortalService.options;
+    $scope.subs = [];
+    $scope.positions = [{name: 'Coordinator', value: 'coord'},
+                        {name: 'Super Coordinator', value: 'superCoord'},
+                       ];
     
     // new form
     $scope.form = {};
     $scope.form.form_id = 1;
-    $scope.form.form_name = '';
-    $scope.form.form_category = $scope.options[0].name;
+    $scope.form.form_name = 'Coord App';
+    $scope.form.form_department = '';
+    $scope.form.form_position = '';
     $scope.form.form_fields = [];
+
+    // is executed if $scope.form.form_department is changed to get the values for the subDepartments
+    $scope.change = function() {
+        for(var i=0; i<$scope.options.length; i++)
+            if($scope.form.form_department.value === $scope.options[i].value)
+                $scope.subs = $scope.options[i].subDepts;
+    }
+    $scope.form.form_subDepartment = $scope.subs[0];
 
     // previewForm - for preview purposes, form will be copied into this
     // otherwise, actual form might get manipulated in preview mode
@@ -140,8 +153,8 @@ angular.module('erp2015App')
     $scope.saveForm = function() {
         if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
             window.alert('Please choose some fields to save!');
-        } else if($scope.form.form_role === '' || $scope.form.form_category === '') {
-            window.alert('Please select the "role" and "category"');
+        } else if($scope.form.form_role === '' || $scope.form.form_department === '') {
+            window.alert('Please select the "role", "department" and "sub-department"');
         } else {
             angular.copy($scope.form, $scope.createForm);
             // need to do some stuff here
@@ -154,7 +167,7 @@ angular.module('erp2015App')
                 });
                 
             $scope.form = {};            
-            console.log('Saved form');
+            console.log('Form Saved');
         }
     };
 

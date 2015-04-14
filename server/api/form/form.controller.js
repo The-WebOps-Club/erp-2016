@@ -92,13 +92,15 @@ exports.showValuesAll = function(req, res) {
 
 // Create a new form in the db
 exports.create = function(req, res) {
-	var newForm = new Form(req.body); 
+	var newForm = new Form(); 
 	var formDetails = req.body;
 	
 	// need to make alerts here after authenticating the details
 	newForm.form_id = formDetails.formValues.form_id;
 	newForm.form_name = formDetails.formValues.form_name;
-	newForm.form_category = formDetails.formValues.form_category;
+	newForm.form_department = formDetails.formValues.form_department;
+	newForm.form_subDepartment = formDetails.formValues.form_subDepartment;
+	newForm.form_position = formDetails.formValues.form_position;
 	newForm.form_fields = formDetails.formValues.form_fields;
 
 	// console.log(formDetails.formValues.form_fields);
