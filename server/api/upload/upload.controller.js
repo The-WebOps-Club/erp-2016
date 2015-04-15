@@ -9,18 +9,31 @@ var mime = require('mime');
 //Serves the given filepath from /server/api/uploads/storage
 
 exports.serve = function(req, res) {
-  var mypath = req.params[0] ? req.params[0] : 'index.html';
-  console.log(__dirname);
- 
-  var file = __dirname + '/static/' + mypath;
+  // var options = {
+  //   root: __dirname + '/static/',
+  //   dotfiles: 'deny',
+  //   headers: {
+  //       'x-timestamp': Date.now(),
+  //       'x-sent': true
+  //   }
+  // };
 
-  res.download(file, function(err){
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("success");
-    }
-  });
+  var fileName = __dirname + '/static/' + req.params.name;
+  console.log(fileName);
+  res.sendFile(fileName);
+
+  // var mypath = req.params[0] ? req.params[0] : 'index.html';
+  // console.log(__dirname);
+ 
+  // var file = __dirname + '/static/' + mypath;
+
+  // res.download(file, function(err){
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     console.log("success");
+  //   }
+  // });
   
   // console.log(file);
   // var filename = path.basename(file);
