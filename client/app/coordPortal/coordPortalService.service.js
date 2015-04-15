@@ -13,7 +13,7 @@ angular.module('erp2015App')
   			{
   				name : 'Events',
   				value : 'events',
-          subDepts : [ { name : '', value: ''} ]
+          subDepts : [ { name : 'ss', value: 'asas'}, { name : 'fsf', value: 'xxx'} ]
   			},
   			{
   				name : 'Evolve',

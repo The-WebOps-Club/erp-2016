@@ -29,7 +29,7 @@ angular.module('erp2015App')
                     formSubDept: $scope.form.form_subDepartment,
                     formPosition: $scope.form.form_position
                 })
-                .then(function(message) {
+                .then(function (message) {
                     $scope.form.submitted = true;
                     
                     // Below command is required else hacker can see all the responses submitted through $scope
@@ -39,6 +39,31 @@ angular.module('erp2015App')
                     // why is this not working ???
                     // window.location.reload();
                     $state.go('coordPortalDashboard');                   
+                });           
+            };
+            $scope.save = function() {
+                $scope.form.form_fields_submitted = [];
+
+                $scope.form.form_fields_submitted = $scope.form.form_fields;
+                $scope.form.form_id_submitted = $scope.form._id;
+
+                $http.post('/api/coordForms/saveForm', { 
+                    formValues: $scope.form.form_fields_submitted,  
+                    formId: $scope.form.form_id_submitted,
+                    formDept: $scope.form.form_department,
+                    formSubDept: $scope.form.form_subDepartment,
+                    formPosition: $scope.form.form_position
+                })
+                .then(function (message) {
+                    $scope.form.saved = true;
+                    
+                    // Below command is required else hacker can see all the responses submitted through $scope
+                    $scope.form = {};        
+                    
+                    window.alert(message.data.msg);
+                    // why is this not working ???
+                    window.location.reload();
+                    // $state.go('coordPortalDashboard');                   
                 });           
             };
         },

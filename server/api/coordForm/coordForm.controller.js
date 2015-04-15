@@ -235,6 +235,107 @@ exports.submitForm = function(req, res) {
 	});
 };
 
+// Saves the form into the database
+exports.saveForm = function(req, res) {
+	// should not send this formId using req.body :(
+	CoordForm.findById(req.body.formId, function (err, form) {
+		if(err) { return handleError(res, err); }
+		if(!form) { 
+			return res.send(404); 
+		} else {
+			var validated = false;
+
+			validated = validateForm(res, form, req.body.formValues);
+			// console.log(validated);
+
+				var len1 = form.form_responses.length;
+				var old_user = false;
+				var userFound = -1;
+				var len2 = req.body.formValues.length;
+				var values = req.body.formValues;
+			
+			// if(validated)
+			// 	values['validated'] = true; 
+				console.log(values);
+				/**
+				 * sanitizing the form data 
+				 */
+				for(var i=0; i<len2; i++) {
+					values[i].field_value = values[i].field_value.replace('/', '');
+					values[i].field_value = values[i].field_value.replace('<', '');
+					values[i].field_value = values[i].field_value.replace('>', '');
+					values[i].field_value = values[i].field_value.replace('*', '');
+				}
+
+				for(var i=0; i<len1; i++) {
+					if(form.form_responses[i].userId.equals(req.user._id)) {					 
+						userFound = i;
+					}
+				}
+
+				if(userFound >= 0) {
+					form.form_responses[userFound].values = values;
+					form.form_responses[userFound].responseUpdatedOn = Date.now();
+
+					form.updated_on = Date.now();
+
+					if(!validated)
+						form.form_responses[userFound].validation = false;
+					else
+						form.form_responses[userFound].validation = true;
+
+					form.markModified('updated_on');
+					form.markModified('form_responses');
+
+					form.save(function(err) {
+						if(err) return validationError(res, err);
+						else res.send({type: 'success', msg: 'Updated successfully'});
+					});
+				
+					old_user = true;
+				}
+				
+				if(old_user !== true) {
+					var fVal = {}
+					fVal.values = values;
+					fVal.userId = req.user._id;
+					fVal.userName = req.user.name;
+					fVal.userEmail = req.user.email;
+					fVal.responseCreatedOn = Date.now();
+					fVal.responseUpdatedOn = Date.now();
+
+					if(!validated)
+						fVal.validation = false;
+					else
+						fval.validation = true;
+
+					form.form_responses.push(fVal);
+
+					// updating the user kind of jugad but easy and better option
+					User.findById(req.user._id, function (err, user) {
+						if(err) { validationError(res, err); }
+						if(!user) { res.send(404); }
+
+						// var tmp = {};
+						// tmp['formId'] = req.body.formId;
+						// tmp['department'] = req.body.formDept[0];
+						// tmp['subDepartment'] = req.body.formSubDept[0];
+						// tmp['position'] = req.body.formPosition[0];
+						// user.formApplied.push(tmp);
+						user.formApplied.push(req.body.formId);
+						user.save(function (err) {
+							if(err) { return validationError(res, err); }
+						});
+					});
+
+					form.save(function (err) {
+						if(err) return validationError(res, err);
+						else res.send({type: 'success', msg: 'Updated successfully'});
+					});
+				}
+		}
+	});
+};
 // Deletes a form from the db
 exports.destroy = function(req, res) {
 	CoordForm.findByIdAndRemove(req.body.del_id, function (err, form) {

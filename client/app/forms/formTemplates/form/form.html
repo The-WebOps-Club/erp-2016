@@ -21,9 +21,8 @@
     <br>
     <div>
         <p class="text-center">
-            <button class="btn btn-success" type="button" ng-disabled="!myForm.$valid" ng-click="submit()"><span class="glyphicon glyphicon-edit"></span> Submit Form</button>
-<!--             <button class="btn btn-danger" type="button" ng-click="cancel()"><span class="glyphicon glyphicon-trash"></span> Cancel</button>
- -->
+            <button class="btn btn-success" type="button" ng-hide="!myForm.$valid" ng-click="submit()"><span class="glyphicon glyphicon-edit"></span> Submit Form</button>
+            <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
         </p>
     </div>
 </div>
