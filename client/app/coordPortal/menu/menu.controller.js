@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('CoordPortalMenuCtrl', function ($scope, $http, Auth, User, FormService, CoordPortalService, socket) {
+  .controller('CoordPortalMenuCtrl', function ($scope, $http, Auth, User, CoordPortalService, socket) {
 
     // // Use the User $resource to fetch all users
     // $scope.users = User.query();
@@ -20,7 +20,7 @@ angular.module('erp2015App')
     $scope.applying = '';
     $scope.message = '';
 
-    FormService.formById(0).then(function(responses) {
+    CoordPortalService.formById(0).then(function(responses) {
       if(responses.length !== 0) {
         $scope.allForms = responses;
         // socket.syncUpdates('form', $scope.allForms);
@@ -28,7 +28,6 @@ angular.module('erp2015App')
         $scope.allForms = '';
       }
     });
-
 
     // getting all the categories
     $scope.options = CoordPortalService.options;
@@ -41,7 +40,7 @@ angular.module('erp2015App')
 // NEED TO OPTIMIZE THIS THING BUT HOW ???
 
 // getting all the responses of a particular category
-      FormService.formValuesAll($scope.applying).then(function(responses) {
+      CoordPortalService.formValuesAll($scope.applying).then(function(responses) {
         // using responses.length because responses has one element if there are no responses for that form
         if(responses.length !== 0) {
           $scope.formResponses = responses;

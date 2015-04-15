@@ -41,44 +41,8 @@ angular.module('erp2015App')
                 name : 'Hidden',
                 value : 'hidden'
             }
-        ],
-        formById: function (id) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            // if id === 0, this service returns list of all the forms
-            return $http.get('/api/forms/' + id).then(function (response) {
-                var requestedForm = {};
-                requestedForm = response.data;
-                return requestedForm;
-            });
-        },
-        formByCategory: function (category) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            return $http.get('/api/forms/dashFormFields/' + category).then(function (response) {
-                // console.log(response.data._id);    
-                var requestedForm = {};
-                requestedForm = response.data;
-                return requestedForm;
-            });
-        },
-        formValues: function(category) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            return $http.get('/api/forms/dashFormValues/' + category).then(function (response) {
-                // console.log(response.data);    
-                var requestedValues = {};
-                requestedValues = response.data;
-                return requestedValues;
-            });            
-        },
-        formValuesAll: function(category) {
-            // $http returns a promise, which has a then function, which also returns a promise
-            return $http.get('/api/forms/adminFormValues/' + category).then(function (response) {
-                // console.log(response.data);    
-                var requestedValues = {};
-                requestedValues = response.data;
-                return requestedValues;
-            });            
-        },
-        // forms: function() {
+        ]
+        //  forms: function() {
         //     return $http.get(formsJsonPath).then(function (response) {
         //         return response.data;
         //     });

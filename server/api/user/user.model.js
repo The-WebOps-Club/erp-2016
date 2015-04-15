@@ -21,6 +21,7 @@ var UserSchema = new Schema({
   lastSeen: {
     type: Date
   },
+  formApplied: [],
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
   hashedPassword: String,
