@@ -7,9 +7,10 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.index);
+router.get('/dashForms', auth.isAuthenticated(), controller.showByIdArray);
 router.get('/:id', auth.isAuthenticated(), controller.showById);
 router.get('/dashFormFields/:category', auth.isAuthenticated(), controller.showByCategory);
-router.get('/dashFormValues/:category', auth.isAuthenticated(), controller.showValues);
+router.get('/dashFormValues/:id', auth.isAuthenticated(), controller.showValues);
 router.get('/menuFormValues/:category', auth.isAuthenticated(), controller.showValuesAll);
 
 router.post('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.create);

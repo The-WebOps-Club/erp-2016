@@ -227,7 +227,7 @@ function validateForm(res, form, formValues, chosenDept) {
 					else
 						i *= 0;
 				}
-				j++
+				j++;
 			}
 
 			if(i === 1)

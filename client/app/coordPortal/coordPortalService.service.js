@@ -72,16 +72,16 @@ angular.module('erp2015App')
       },
       formByCategory: function (category) {
           // $http returns a promise, which has a then function, which also returns a promise
-          return $http.get('/api/coordForms/dashFormFields/' + category).then(function (response) {
+          return $http.get('/api/coordForms/' + category).then(function (response) {
               // console.log(response.data._id);    
               var requestedForm = {};
               requestedForm = response.data;
               return requestedForm;
           });
       },
-      formValues: function (category) {
+      formValues: function (id) {
           // $http returns a promise, which has a then function, which also returns a promise
-          return $http.get('/api/coordForms/dashFormValues/' + category).then(function (response) {
+          return $http.get('/api/coordForms/dashFormValues/' + id).then(function (response) {
               // console.log(response.data);    
               var requestedValues = {};
               requestedValues = response.data;
@@ -96,6 +96,15 @@ angular.module('erp2015App')
               requestedValues = response.data;
               return requestedValues;
           });            
-      }      
+      },
+      formsApplied: function () {
+          // $http returns a promise, which has a then function, which also returns a promise
+          return $http.get('/api/coordForms/dashForms').then(function (response) {
+              // console.log(response.data);    
+              var requestedValues = {};
+              requestedValues = response.data;
+              return requestedValues;
+          });            
+      }
   	};
 });

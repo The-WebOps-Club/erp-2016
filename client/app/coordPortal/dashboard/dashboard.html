@@ -8,16 +8,20 @@
     </div>    
     <div class="row" ng-show="updated">
         <div class="col-sm-12 text-center">
-            <h4>You have applied for "{{applying.name}}"</h4> 
+            <h4>You have applied for {{applying}}</h4> 
         </div>
     </div>    
-    <div class="row" ng-hide="updated">
+    <div class="row">
         <div class="col-sm-offset-4 col-sm-3">
-            <select class="form-control" ng-model="applying" ng-options="type.name for type in options track by type.value"></select>
+        	{{preference}}
+            <select class="form-control" ng-model="preference" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.form_department[0].name}}"> -->
+            	<option ng-repeat="form in allForms" value="/forms/formView/{{form._id}}">
+            		{{form.form_department[0].name}} | {{form.form_subDepartment[0].name}} | {{form.form_position[0].name}}
+            	</option>
+            	<!-- </optgroup> -->
+        	</select>
         </div>    
-        <div class="col-sm-3">
-        	<button type="button" class="btn btn-success" ng-click="updateUser()">Save</button>	
-        </div>
     </div>    
 
 <!-- to show gen alerts -->
