@@ -37,6 +37,14 @@ exports.showById = function(req, res) {
 		CoordForm.findById(req.params.id, function (err, form) {
 			if(err) { return handleError(res, err); }
 			if(!form) { return res.send(404); }
+
+			var i = 0;
+			var len = form.form_responses.length;
+			for(i=0; i<len; i++) {
+				// refer http://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
+				if(form.form_responses[i].userId.equals(req.user._id))
+					form.form_responses = form.form_responses[i];
+			}					
 			return res.json(form);
 		});
 	}
@@ -142,7 +150,8 @@ exports.create = function(req, res) {
 	});
 };
 
-exports.submitForm = function(req, res) {
+// Saves the form into the database
+exports.saveForm = function(req, res) {
 	// should not send this formId using req.body :(
 	CoordForm.findById(req.body.formId, function (err, form) {
 		if(err) { return handleError(res, err); }
@@ -154,21 +163,24 @@ exports.submitForm = function(req, res) {
 			validated = validateForm(res, form, req.body.formValues);
 			// console.log(validated);
 
-			if(validated) {
 				var len1 = form.form_responses.length;
 				var old_user = false;
 				var userFound = -1;
 				var len2 = req.body.formValues.length;
 				var values = req.body.formValues;
-
-				/**
+			
+					/**
 				 * sanitizing the form data 
 				 */
 				for(var i=0; i<len2; i++) {
-					values[i].field_value = values[i].field_value.replace('/', '');
-					values[i].field_value = values[i].field_value.replace('<', '');
-					values[i].field_value = values[i].field_value.replace('>', '');
-					values[i].field_value = values[i].field_value.replace('*', '');
+					console.log(values[i].field_value);
+					if(values[i].field_value) {
+						values[i].field_value = values[i].field_value.replace('/', '');
+						values[i].field_value = values[i].field_value.replace('<', '');
+						values[i].field_value = values[i].field_value.replace('>', '');
+						values[i].field_value = values[i].field_value.replace('*', '');
+					} else
+						values[i].field_value = '';
 				}
 
 				for(var i=0; i<len1; i++) {
@@ -182,6 +194,11 @@ exports.submitForm = function(req, res) {
 					form.form_responses[userFound].responseUpdatedOn = Date.now();
 
 					form.updated_on = Date.now();
+
+					if(!validated)
+						form.form_responses[userFound].validation = false;
+					else
+						form.form_responses[userFound].validation = true;
 
 					form.markModified('updated_on');
 					form.markModified('form_responses');
@@ -202,6 +219,11 @@ exports.submitForm = function(req, res) {
 					fVal.userEmail = req.user.email;
 					fVal.responseCreatedOn = Date.now();
 					fVal.responseUpdatedOn = Date.now();
+
+					if(!validated)
+						fVal.validation = false;
+					else
+						fval.validation = true;
 
 					form.form_responses.push(fVal);
 
@@ -226,15 +248,10 @@ exports.submitForm = function(req, res) {
 						if(err) return validationError(res, err);
 						else res.send({type: 'success', msg: 'Updated successfully'});
 					});
-
 				}
-			} else {
-				res.send({type: 'danger', msg: 'Please fill all the required details!'});
-			}
 		}
 	});
 };
-
 // Deletes a form from the db
 exports.destroy = function(req, res) {
 	CoordForm.findByIdAndRemove(req.body.del_id, function (err, form) {
