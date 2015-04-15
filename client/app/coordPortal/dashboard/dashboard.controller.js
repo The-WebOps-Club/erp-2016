@@ -50,7 +50,7 @@ angular.module('erp2015App')
     CoordPortalService.formById(0).then(function(responses) {
       if(responses.length !== 0) {
         $scope.allForms = responses;
-        console.log(responses);
+        // console.log(responses);
         // there is some cup here see !!!!
         // socket.syncUpdates('form', $scope.allForms);
       } else {
@@ -61,11 +61,11 @@ angular.module('erp2015App')
     // loading all the forms applied by user
     CoordPortalService.formsApplied().then(function(responses) {
       if(responses.length !== 0) {
-        $scope.x = responses;
-        console.log(responses);
+        $scope.formsApplied = responses;
+        // console.log(responses);
         // socket.syncUpdates('form', $scope.allForms);
       } else {
-        $scope.x = '';
+        $scope.formsApplied = '';
       }
     });
 

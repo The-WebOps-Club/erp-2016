@@ -42,8 +42,12 @@ exports.showById = function(req, res) {
 			var len = form.form_responses.length;
 			for(i=0; i<len; i++) {
 				// refer http://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
-				if(form.form_responses[i].userId.equals(req.user._id))
+				if(form.form_responses[i].userId.equals(req.user._id)) {
 					form.form_responses = form.form_responses[i];
+				} else {
+					console.log('adas');
+					form.form_responses[i].values = form.form_fields;
+				}
 			}					
 			return res.json(form);
 		});
@@ -89,6 +93,8 @@ exports.showByIdArray = function(req, res) {
 	var send = [];
 	var numForms = 0;
 	var i, j = 0;
+	if(req.user.formApplied.length === 0)
+		return res.send(404);
 	// refer http://stackoverflow.com/questions/8303900/mongodb-mongoose-findmany-find-all-documents-with-ids-listed-in-array
 	CoordForm.find({
 		'_id': { $in: req.user.formApplied }
@@ -100,8 +106,10 @@ exports.showByIdArray = function(req, res) {
 			numForms = forms.length;
 			for(j=0; j<numForms; j++) {
 				actualForm = forms[j];
+				console.log(req.user.formApplied);
 				var len = actualForm.form_responses.length;
 				for(i=0; i<len; i++) {
+					console.log(actualForm.form_responses[i]);
 					// refer http://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
 					if(actualForm.form_responses[i].userId.equals(req.user._id)) {
 						actualForm.form_responses = actualForm.form_responses[i];
@@ -173,7 +181,6 @@ exports.saveForm = function(req, res) {
 				 * sanitizing the form data 
 				 */
 				for(var i=0; i<len2; i++) {
-					console.log(values[i].field_value);
 					if(values[i].field_value) {
 						values[i].field_value = values[i].field_value.replace('/', '');
 						values[i].field_value = values[i].field_value.replace('<', '');
@@ -223,7 +230,7 @@ exports.saveForm = function(req, res) {
 					if(!validated)
 						fVal.validation = false;
 					else
-						fval.validation = true;
+						fVal.validation = true;
 
 					form.form_responses.push(fVal);
 
