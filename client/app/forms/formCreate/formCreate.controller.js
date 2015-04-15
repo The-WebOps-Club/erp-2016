@@ -43,7 +43,7 @@ angular.module('erp2015App')
     $scope.addField.lastAddedID = 0;
 
     // create new field button click
-    $scope.addNewField = function(){
+    $scope.addNewField = function() {
 
         // incr field_id counter
         $scope.addField.lastAddedID++;
@@ -62,9 +62,9 @@ angular.module('erp2015App')
     };
 
     // deletes particular field on button click
-    $scope.deleteField = function (field_id){
-        for(var i = 0; i < $scope.form.form_fields.length; i++){
-            if($scope.form.form_fields[i].field_id === field_id){
+    $scope.deleteField = function (field_id) {
+        for(var i = 0; i < $scope.form.form_fields.length; i++) {
+            if($scope.form.form_fields[i].field_id === field_id) {
                 $scope.form.form_fields.splice(i, 1);
                 break;
             }
@@ -72,7 +72,7 @@ angular.module('erp2015App')
     };
 
     // add new option to the field
-    $scope.addOption = function (field){
+    $scope.addOption = function (field) {
         if(field.field_type === 'radio' || field.field_type === 'dropdown' || field.field_type === 'checkbox') {
             if(!field.field_options) {
                 field.field_options = [];
@@ -80,7 +80,7 @@ angular.module('erp2015App')
                 
             var lastOptionID = 0;
 
-            if(field.field_options[field.field_options.length-1]){
+            if(field.field_options[field.field_options.length-1]) {
                 lastOptionID = field.field_options[field.field_options.length-1].option_id;
             }
 
@@ -111,7 +111,7 @@ angular.module('erp2015App')
     };
 
     // preview form
-    $scope.previewOn = function(){
+    $scope.previewOn = function() {
         if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
             var title = 'Error';
             var msg = 'No fields added yet, please add fields to the form before preview.';
@@ -128,7 +128,7 @@ angular.module('erp2015App')
     };
 
     // hide preview form, go back to create mode
-    $scope.previewOff = function(){
+    $scope.previewOff = function() {
         $scope.previewMode = !$scope.previewMode;
         $scope.form.submitted = false;
     };
@@ -149,8 +149,8 @@ angular.module('erp2015App')
         $scope.addField.lastAddedID = 0;
     };
 
-    // saves the form
-    $scope.saveForm = function() {
+    // creates the form
+    $scope.createForm = function() {
         if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
             window.alert('Please choose some fields to save!');
         } else if($scope.form.form_role === '' || $scope.form.form_department === '') {
@@ -159,11 +159,11 @@ angular.module('erp2015App')
             angular.copy($scope.form, $scope.createForm);
             // need to do some stuff here
             $http.post('/api/coordForms', { formValues: $scope.form })
-                .success(function(message) {
+                .success(function (message) {
                     $scope.message = message;
                 })
-                .error(function(message) {
-                    $scope.message = '';
+                .error(function (message) {
+                    $scope.message = 'error';
                 });
                 
             $scope.form = {};            

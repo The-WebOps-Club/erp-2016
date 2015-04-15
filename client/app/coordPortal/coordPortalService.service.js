@@ -18,7 +18,7 @@ angular.module('erp2015App')
   			{
   				name : 'Evolve',
   				value : 'evolve',
-          subDepts : [ { name : '', value: ''} ]  			
+          subDepts : [ { name : 'saas', value: 'asasss'}, { name : 'fsasf', value: 'xuuxx'} ]  			
         },
   			{
   				name : 'Envisage',
