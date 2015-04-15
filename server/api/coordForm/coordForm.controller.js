@@ -1,12 +1,3 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /things              ->  index
- * POST    /things              ->  create
- * GET     /things/:id          ->  show
- * PUT     /things/:id          ->  update
- * DELETE  /things/:id          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
@@ -27,31 +18,23 @@ exports.index = function(req, res) {
 
 // Get a single form or all forms by id
 exports.showById = function(req, res) {
-	if(req.params.id === '0') {
-		CoordForm.find({}, function(err, allForms) {
-			if(err) return handleError(res, err);
-			// NEED TO OPTIMIZE THIS SHIT
-			return res.json(200, allForms);
-		});
-	} else {
-		CoordForm.findById(req.params.id, function (err, form) {
-			if(err) { return handleError(res, err); }
-			if(!form) { return res.send(404); }
+	CoordForm.findById(req.params.id, function (err, form) {
+		if(err) { return handleError(res, err); }
+		if(!form) { return res.send(404); }
 
-			var i = 0;
-			var len = form.form_responses.length;
-			for(i=0; i<len; i++) {
-				// refer http://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
-				if(form.form_responses[i].userId.equals(req.user._id)) {
-					form.form_responses = form.form_responses[i];
-				} else {
-					console.log('adas');
-					form.form_responses[i].values = form.form_fields;
-				}
-			}					
-			return res.json(form);
-		});
-	}
+		var i = 0;
+		var len = form.form_responses.length;
+		for(i=0; i<len; i++) {
+			// refer http://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
+			if(form.form_responses[i].userId.equals(req.user._id)) {
+				form.form_responses = form.form_responses[i];
+			} else {
+				console.log('adas');
+				form.form_responses[i].values = form.form_fields;
+			}
+		}					
+		return res.json(form);
+	});
 };
 
 // Get a form by category
@@ -74,7 +57,8 @@ exports.showValues = function(req, res) {
 		if(err) { return handleError(res, err); }
 		if(!form) { 
 			return res.send(404); 
-		} else {
+		} 
+		else {
 			actualForm = form;
 			var len = actualForm.form_responses.length;
 			for(i=0; i<len; i++) {
