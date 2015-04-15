@@ -10,7 +10,7 @@
     </div>
  -->
      <form name="myForm" id="myForm">
-        <div class="row" ng-repeat="field in form.form_fields">
+        <div class="row" ng-repeat="field in form.form_responses[0].values">
             <div class="container">
                 <field-directive field="field">
 
@@ -21,7 +21,6 @@
     <br>
     <div>
         <p class="text-center">
-            <button class="btn btn-success" type="button" ng-hide="!myForm.$valid" ng-click="submit()"><span class="glyphicon glyphicon-edit"></span> Submit Form</button>
             <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
         </p>
     </div>
