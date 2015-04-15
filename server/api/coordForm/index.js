@@ -14,7 +14,6 @@ router.get('/dashFormValues/:id', auth.isAuthenticated(), controller.showValues)
 router.get('/menuFormValues/:category', auth.isAuthenticated(), controller.showValuesAll);
 
 router.post('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.create);
-router.post('/submitForm', auth.isAuthenticated(), controller.submitForm);
 router.post('/saveForm', auth.isAuthenticated(), controller.saveForm);
 router.post('/delete', auth.isAuthenticated(), controller.destroy);
 
