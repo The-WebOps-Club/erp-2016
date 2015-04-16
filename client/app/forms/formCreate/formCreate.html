@@ -32,13 +32,13 @@
         <div class="col-sm-2">
             <div ng-hide="previewMode">
                 <h4>Department:</h4>
-                <select class="form-control" ng-change="change()" ng-model="form.form_department" ng-options="role.name for role in options track by role.value"></select>
+                <select class="form-control" ng-change="change()" ng-model="form.form_department" ng-options="department._id as department.name for department in departments"></select>
             </div>
         </div>
         <div class="col-sm-2">
             <div ng-hide="previewMode">
                 <h4>Sub-Department:</h4>
-                <select class="form-control" ng-model="form.form_subDepartment" ng-options="role.name for role in subs track by role.value"></select>
+                <select class="form-control" ng-model="form.form_subDepartment" ng-options="sub._id as sub.name for sub in subs"></select>
             </div>
         </div>
         <div class="col-sm-2">

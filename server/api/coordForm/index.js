@@ -11,10 +11,11 @@ router.get('/dashForms', auth.isAuthenticated(), controller.showByIdArray);
 router.get('/:id', auth.isAuthenticated(), controller.showById);
 router.get('/dashFormFields/:category', auth.isAuthenticated(), controller.showByCategory);
 router.get('/dashFormValues/:id', auth.isAuthenticated(), controller.showValues);
-router.get('/menuFormValues/:category', auth.isAuthenticated(), controller.showValuesAll);
+router.get('/menuFormValues/:id', auth.isAuthenticated(), controller.showValuesAll);
 
 router.post('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.create);
 router.post('/saveForm', auth.isAuthenticated(), controller.saveForm);
+
 router.post('/delete', auth.isAuthenticated(), controller.destroy);
 
 router.delete('/:id', auth.isAuthenticated(), auth.hasRole('admin'), controller.destroy);

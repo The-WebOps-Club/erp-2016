@@ -9,7 +9,7 @@ exports.index = function(req, res) {
     if(err) { return handleError(res, err); }
     return res.json(200, departments);
   })
-  .populate('cores coords superCoords qms');
+  .populate('cores coords superCoords qms subDepartments');
 };
 
 // Get a single department
@@ -18,7 +18,8 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!department) { return res.send(404); }
     return res.json(department);
-  });
+  })
+  .populate('cores coords superCoords qms subDepartments');
 };
 
 // Creates a new department in the DB.
