@@ -38,8 +38,9 @@ User.find({}).remove(function() {
     password: 'test',
     city: 'testCity',
     summerLocation: 'testSummer',
-    rollNumber: 'test123',
-    cgpa: '5'
+    cgpa: '5',
+    phoneNumber: '5555555555',
+    rollNumber: 'tttttttt'
   }, {
     provider: 'local',
     role: 'admin',
@@ -48,8 +49,9 @@ User.find({}).remove(function() {
     password: 'admin',
     city: 'adminCity',
     summerLocation: 'adminSummer',
-    rollNumber: 'admin123',
-    cgpa: '10'
+    cgpa: '10',
+    phoneNumber: '9999999999',
+    rollNumber: 'aaaaaaaa'
   }, function() {
       console.log('finished populating users');
     }
