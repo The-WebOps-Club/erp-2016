@@ -3,13 +3,11 @@
 angular.module('erp2015App')
   .directive('formDirective', function ($http, $state, CoordPortalService) {
     return {
-        controller: function($scope) {
+        controller: function ($scope) {
             $scope.save = function() {
                 $scope.form.form_fields_submitted = [];
 
-                console.log($scope.form.form_responses[0].values);
-
-                $scope.form.form_fields_submitted = $scope.form.form_responses[0].values;
+                $scope.form.form_fields_submitted = $scope.form.form_fields;
                 $scope.form.form_id_submitted = $scope.form._id;
 
                 $http.post('/api/coordForms/saveForm', { 

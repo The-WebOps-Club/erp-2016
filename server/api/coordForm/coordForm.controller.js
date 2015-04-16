@@ -74,7 +74,7 @@ exports.create = function(req, res) {
 };
 
 // Saves the form into the database
-exports.saveForm = function(req, res) {
+exports.saveForm = function (req, res) {
 	// should not send this formId using req.body :(
 	CoordForm.findById(req.body.formId, function (err, form) {
 		if(err) { return handleError(res, err); }
@@ -95,15 +95,13 @@ exports.saveForm = function(req, res) {
 				values[i].field_value = '';
 		}
 		console.log(form._id, req.user._id);
-		Response.findOne({$and: [{form: form.id}, {user: req.user._id}]}, function (err, response) {
-			if(err) {
-				return handleError(res, err);
-			}
+		Response.findOne({$and: [{form: form._id}, {user: req.user._id}]}, function (err, response) {
+			if(err) { return handleError(res, err); }
 			if(!response) {
 				response = new Response();
 				response.form  = form._id;
 				response.user = req.user._id;
-				response.valid = validateForm(res, form, req.body.formValues);
+				response.valid = validateForm(res, form, values);
 				response.values = values;
 
 				response.save(function (err) {
@@ -116,7 +114,7 @@ exports.saveForm = function(req, res) {
 				response.updatedOn = Date.now();
 				response.valid = validateForm(res, form, req.body.formValues);
 
-				response.save(function(err) {
+				response.save(function (err) {
 					if(err) return validationError(res, err);
 					else res.send({type: 'success', msg: 'Updated successfully'});
 				});
@@ -125,7 +123,7 @@ exports.saveForm = function(req, res) {
 	});
 };
 // Deletes a form from the db
-exports.destroy = function(req, res) {
+exports.destroy = function (req, res) {
 	CoordForm.findByIdAndRemove(req.params.id, function (err, form) {
 		if(err) { return handleError(res, err); }
 		if(!form) { return res.send(404); }
