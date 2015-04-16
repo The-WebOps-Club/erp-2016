@@ -12,7 +12,7 @@
 <!-- to show gen alerts -->
 	
      <div class="row">
-		<div class="col-sm-offset-1 col-sm-4">
+		<div class="col-sm-offset-1 col-sm-5">
 			<div class="container-fluid">
 				<h4><b>Welcome {{ getCurrentUser().name }}</b></h4>
 				<br>
@@ -30,6 +30,7 @@
 						<th>Sub-Department</th>
 						<th>Position</th>
 						<th>Fill your App</th>
+						<th>Delete Application</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -38,12 +39,13 @@
 						<td>{{form.form_subDepartment[0].name}}</td>
 						<td>{{form.form_position[0].name}}</td>
 						<td><a ng-href="/forms/formView/{{form._id}}">View<a/></td>
+						<td><a ng-href="#">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
  <!-- onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" -->
-        <div class="col-sm-offset-2 col-sm-4">
+        <div class="col-sm-offset-1 col-sm-4">
         	Select:
 			<div class="container-fluid">
 				<div class="col-sm-8">
@@ -67,10 +69,20 @@
 	        	<h5><b>General</b></h5>
 	        	<ul>
 	        		<li><a href="#">Contact Details</a> of previous year's Coordinators.</li>
+	        		<br>
+
 	        		<li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
+	        		<br>
+	        		
 	        		<li>Deadline is <b>11:59pm, Tuesday, 12th August, 2015</b>.</li>
+	        		<br>
+	        		
 	        		<li><b>Please fill this <a href="#">form</a> if you are interested in applying</b>.</li>
+	        		<br>
+	        		
 	        		<li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
+	        		<br>
+	        		
 	        		<li>Contact ... (WebOps Core) in case of any problems with the portal.</li>
 	        	</ul>
 	        </div>

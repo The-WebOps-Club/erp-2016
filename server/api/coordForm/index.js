@@ -6,7 +6,7 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
-router.get('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.index);
+router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/dashForms', auth.isAuthenticated(), controller.showByIdArray);
 router.get('/:id', auth.isAuthenticated(), controller.showById);
 router.get('/dashFormFields/:category', auth.isAuthenticated(), controller.showByCategory);

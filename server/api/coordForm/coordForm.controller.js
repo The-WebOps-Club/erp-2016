@@ -28,7 +28,7 @@ exports.showById = function(req, res) {
 
 // Get a form by category
 exports.showByCategory = function(req, res) {
-	CoordForm.find( {form_department : req.params.category}, function (err, form) {
+	CoordForm.find({form_department : req.params.category}, function (err, form) {
 		if(err) { return handleError(res, err); }
 		if(!form[0]) return res.send(404); 
 		return res.json(form[0]);
@@ -38,39 +38,27 @@ exports.showByCategory = function(req, res) {
 // Get filled form values of the user
 exports.showValues = function(req, res) {
 	Response.findOne({$and: [{form: form.id}, {user: req.user._id}]}, function (err, response) {
-		if(err) {
-			return handleError(res, err);
-		}
-		if(!response){
-			res.send(404);
-		}
-		else {
-			res.json(response);
-		}
+		if(err) { return handleError(res, err); }
+		if(!response) { res.send(404); }
+		return res.json(response);
 	});
 };
 
 // sends forms applied by the user
 exports.showByIdArray = function(req, res) {
-	Response.find({user: req.user._id}, function (err, response){
+	Response.find({user: req.user._id}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!response) { 
-			return res.send(404); 
-		} else {
-			return res.json(response);
-		}
+		if(!response) { return res.send(404); }
+		return res.json(response);
 	});
 };
 
 // gets all the responses for a given category for admin
 exports.showValuesAll = function(req, res) {
-	Response.find({form: req.params.id}, function (err, response){
+	Response.find({form: req.params.id}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!form[0]) { 
-			return res.send(404); 
-		} else {
-			return res.json(response);
-		}
+		if(!form[0]) { return res.send(404); }
+		return res.json(response);
 	});
 };
 
@@ -79,7 +67,7 @@ exports.create = function(req, res) {
 	var newForm = new CoordForm(req.body); 
 
 	// console.log(formDetails.formValues.form_fields);
-	newForm.save(function(err, form) {
+	newForm.save(function (err, form) {
 		if(err) return validationError(res, err);
 		else res.send({type: 'success', msg: 'Created successfully'});
 	});
@@ -90,54 +78,50 @@ exports.saveForm = function(req, res) {
 	// should not send this formId using req.body :(
 	CoordForm.findById(req.body.formId, function (err, form) {
 		if(err) { return handleError(res, err); }
-		if(!form) { 
-			return res.send(404); 
-		} 
-		else {
-			var len2 = req.body.formValues.length;
-			var values = req.body.formValues;
-			/**
-			 * sanitizing the form data 
-			 */
-			for(var i=0; i<len2; i++) {
-				if(values[i].field_value) {
-					values[i].field_value = values[i].field_value.replace('/', '');
-					values[i].field_value = values[i].field_value.replace('<', '');
-					values[i].field_value = values[i].field_value.replace('>', '');
-					values[i].field_value = values[i].field_value.replace('*', '');
-				} else
-					values[i].field_value = '';
-			}
-			console.log(form._id, req.user._id);
-			Response.findOne({$and: [{form: form.id}, {user: req.user._id}]}, function (err, response) {
-				if(err) {
-					return handleError(res, err);
-				}
-				if(!response){
-					response = new Response();
-					response.form  = form._id;
-					response.user = req.user._id;
-					response.valid = validateForm(res, form, req.body.formValues);
-					response.values = values;
+		if(!form) { return res.send(404); } 
 
-					response.save(function (err) {
-						if(err) return validationError(res, err);
-						else res.send({type: 'success', msg: 'Updated successfully'});
-					});
-				}
-				else {
-					console.log(response);
-					response.values = values;
-					response.updatedOn = Date.now();
-					response.valid = validateForm(res, form, req.body.formValues);
-
-					response.save(function(err) {
-						if(err) return validationError(res, err);
-						else res.send({type: 'success', msg: 'Updated successfully'});
-					});
-				}
-			});
+		var len2 = req.body.formValues.length;
+		var values = req.body.formValues;
+		/**
+		 * sanitizing the form data 
+		 */
+		for(var i=0; i<len2; i++) {
+			if(values[i].field_value) {
+				values[i].field_value = values[i].field_value.replace('/', '');
+				values[i].field_value = values[i].field_value.replace('<', '');
+				values[i].field_value = values[i].field_value.replace('>', '');
+				values[i].field_value = values[i].field_value.replace('*', '');
+			} else
+				values[i].field_value = '';
 		}
+		console.log(form._id, req.user._id);
+		Response.findOne({$and: [{form: form.id}, {user: req.user._id}]}, function (err, response) {
+			if(err) {
+				return handleError(res, err);
+			}
+			if(!response) {
+				response = new Response();
+				response.form  = form._id;
+				response.user = req.user._id;
+				response.valid = validateForm(res, form, req.body.formValues);
+				response.values = values;
+
+				response.save(function (err) {
+					if(err) return validationError(res, err);
+					else res.send({type: 'success', msg: 'Updated successfully'});
+				});
+			} else {
+				console.log(response);
+				response.values = values;
+				response.updatedOn = Date.now();
+				response.valid = validateForm(res, form, req.body.formValues);
+
+				response.save(function(err) {
+					if(err) return validationError(res, err);
+					else res.send({type: 'success', msg: 'Updated successfully'});
+				});
+			}
+		});
 	});
 };
 // Deletes a form from the db

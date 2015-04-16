@@ -16,6 +16,7 @@ var ResponseSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
+	comments: String
 });
 
 module.exports = mongoose.model('Response', ResponseSchema);

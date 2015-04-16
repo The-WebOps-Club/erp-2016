@@ -6,16 +6,12 @@ angular.module('erp2015App')
 
     $scope.getCurrentUser = Auth.getCurrentUser;
     
-    // $scope.uploader = new FileUploader({
-    //   url: '/api/forms/upload'
-    // });
-
     $scope.allForms = '';
     $scope.preference = '';
     $scope.form = {};
     $scope.message = {};
 
-    CoordPortalService.options().then(function(responses) {
+    CoordPortalService.options().then(function (responses) {
       if(responses.length !== 0) {
         $scope.allForms = responses;
       } else {
@@ -24,7 +20,7 @@ angular.module('erp2015App')
     });
 
     // loading all the forms applied by user
-    CoordPortalService.formsApplied().then(function(responses) {
+    CoordPortalService.formsApplied().then(function (responses) {
       if(responses.length !== 0) {
         $scope.formsApplied = responses;
         // console.log(responses);
