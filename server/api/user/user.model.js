@@ -6,22 +6,22 @@ var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
-  name: { type: String, required: true },
+  name: { type: String, default: '' },
   nick: String,
-  rollNumber: { type: String, required: true },
-  email: { type: String, lowercase: true, required: true },
+  rollNumber: { type: String, default: ' ' },
+  email: { type: String, lowercase: true, default: '' },
   role: {
     type: String,
     default: 'user'
   },
   isActive: {},
-  city: { type: String, required: true },
-  summerLocation: { type: String, required: true },
-  cgpa: { type: Number, min: 0, max: 10, required: true },
+  city: { type: String, default: '' },
+  summerLocation: { type: String, default: '' },
+  cgpa: { type: Number, default: '' },
   lastSeen: {
     type: Date
   },
-  phoneNumber: { type: Number, required: true},
+  phoneNumber: { type: String, default: '' },
   formApplied: [],
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
@@ -79,13 +79,47 @@ UserSchema
     return name.length;
   }, 'Name cannot be blank');
 
-// Validate empty rollNumber
+// Validate empty city
+UserSchema
+  .path('city')
+  .validate(function(city) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return city.length;
+  }, 'City cannot be blank');
+
+// Validate empty summerLocation
+UserSchema
+  .path('summerLocation')
+  .validate(function(summerLocation) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return summerLocation.length;
+  }, 'Summer Location cannot be blank');
+
+// Validate cgpa
+UserSchema
+  .path('cgpa')
+  .validate(function(cgpa) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    var regExpCgpa = /^(10|\d)(\.\d{1,2})?$/;
+    return (regExpCgpa.test(cgpa));
+  }, 'CGPA cannot be blank');
+
+// Validate phoneNumber
+UserSchema
+  .path('phoneNumber')
+  .validate(function(phoneNumber) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    var regExpPhone = /^\d{10}$/; 
+    return (regExpPhone.test(phoneNumber));
+  }, 'Phone Number must have 10 dis');
+
+// Validate rollNumber
 UserSchema
   .path('rollNumber')
   .validate(function(rollNumber) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
-    return rollNumber.length;
-  }, 'Roll Number cannot be blank');
+    return (rollNumber.length == 8);
+  }, 'Roll Number must be of 8 characters');
 
 // Validate empty email
 UserSchema
@@ -100,7 +134,6 @@ UserSchema
   .path('hashedPassword')
   .validate(function(hashedPassword) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
-    return hashedPassword.length;
   }, 'Password cannot be blank');
 
 // Validate email is not taken
@@ -115,6 +148,7 @@ UserSchema
         return respond(false);
       }
       respond(true);
+      console.log(value);
     });
 }, 'The specified email address is already in use.');
 

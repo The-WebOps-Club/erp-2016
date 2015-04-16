@@ -12,11 +12,16 @@ angular.module('erp2015App')
         Auth.createUser({
           name: $scope.user.name,
           email: $scope.user.email,
-          password: $scope.user.password
+          password: $scope.user.password,
+          city: $scope.user.city,
+          rollNumber: $scope.user.rollNumber,
+          phoneNumber: $scope.user.phoneNumber,
+          summerLocation: $scope.user.summerLocation,
+          cgpa: $scope.user.cgpa
         })
         .then( function() {
-          // Account created, redirect to home
-          $location.path('/');
+          // Account created, redirect to dashboard
+          $location.url('/coordPortal/dashboard');
         })
         .catch( function(err) {
           err = err.data;
