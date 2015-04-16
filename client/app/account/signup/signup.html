@@ -1,9 +1,9 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container">
+<div class="jumbotron col-sm-offset-1 col-sm-4">
   <div class="row">
     <div class="col-sm-12">
-      <h1>Sign up</h1>
+      <h2 class="text-center">Sign up</h2>
     </div>
     <div class="col-sm-12">
       <form class="form" name="form" ng-submit="register(form)" novalidate>
@@ -55,25 +55,34 @@
         </div>
 
         <div>
-          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+          <button class="btn btn-primary btn-lg btn-login" type="submit">
             Sign up
           </button>
-          <a class="btn btn-default btn-lg btn-register" href="/login">
-            Login
+          <a href="/login">
+            Already have an account ?
           </a>
         </div>
 
-        <hr>
-        <div>
-          <a class="btn btn-facebook" href="" ng-click="loginOauth('facebook')">
-            <i class="fa fa-facebook"></i> Connect with Facebook
-          </a>
-          <a class="btn btn-google-plus" href="" ng-click="loginOauth('google')">
-            <i class="fa fa-google-plus"></i> Connect with Google+
-          </a>
-        </div>
       </form>
     </div>
   </div>
+  <hr>
+</div>
+
+<div class="jumbotron col-sm-offset-2 col-sm-4">
+  <div class="row">
+    <div class="col-sm-12">
+      <h2 class="text-center">General Instructions</h2>
+    </div>
+  </div>
+  <h5><b>General</b></h5>
+  <ul>
+    <li><a href="#">Contact Details</a> of previous year's Coordinators.</li>
+    <li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
+    <li>Deadline is <b>11:59pm, Tuesday, 12th August, 2015</b>.</li>
+    <li><b>Please fill this <a href="#">form</a> if you are interested in applying</b>.</li>
+    <li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
+    <li>Contact ... (WebOps Core) in case of any problems with the portal.</li>
+  </ul>  
   <hr>
 </div>

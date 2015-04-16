@@ -1,18 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
-    <div class="row" ng-hide="updated">
-        <div class="col-sm-12 text-center">
-            <h4><u>Choose your preference and click 'save' button</u></h4> <br>
-        </div>
-    </div>    
-<!--     <div class="row" ng-show="updated">
-        <div class="col-sm-12 text-center">
-            <h4>You have applied for {{applying}}</h4> 
-        </div>
-    </div>    
- -->
-
 <!-- to show gen alerts -->
     <div class="row">
     	<div class="col-sm-offset-4 col-sm-4 text-center">
@@ -24,11 +12,18 @@
 <!-- to show gen alerts -->
 	
      <div class="row">
-		<div class="col-sm-6">
-			<div class="jumbotron">
-				put instructions here
+		<div class="col-sm-offset-1 col-sm-4">
+			<div class="container-fluid">
+				<h4><b>Welcome {{ getCurrentUser().name }}</b></h4>
+				<br>
+				<p>Please choose the department of your choice and <b>save</b>.</p>
+				<p>Please complete the questionnaire before the deadline.</p>
+				<p>You are allowed to apply to any number of departments</p>
+				<br>
+				<h5><b>Good Luck!!</b></h5>
 			</div>
-			<table st-table="formsApplied" class="table table-striped">
+			<br><br>
+			<table ng-show="1" st-table="formsApplied" class="table table-striped">
 				<thead>
 					<tr>
 						<th>Department</th>
@@ -47,23 +42,38 @@
 				</tbody>
 			</table>
 		</div>
-
-        <div class="col-sm-3">
-			<div class="jumbotron">
-				<h5><b>Select the category and fill the application if you want to apply</b></h5>
-	            <select class="form-control" ng-model="preference" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-	               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.form_department[0].name}}"> -->
-	            	<option ng-repeat="form in allForms | orderBy:'form_department[0].name'" value="/forms/formView/{{form._id}}">
-	            		{{form.form_department[0].name}} | {{form.form_subDepartment[0].name}} | {{form.form_position[0].name}}
-	            	</option>
-	            	<!-- </optgroup> -->
-	        	</select>
+ <!-- onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" -->
+        <div class="col-sm-offset-2 col-sm-4">
+        	Select:
+			<div class="container-fluid">
+				<div class="col-sm-8">
+		            <select class="form-control" ng-model="preference">
+		               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.form_department[0].name}}"> -->
+		            	<option ng-repeat="form in allForms | orderBy:'form_department[0].name'" value="/forms/formView/{{form._id}}">
+		            		{{form.form_department[0].name}} | {{form.form_subDepartment[0].name}} | {{form.form_position[0].name}}
+		            	</option>
+		            	<!-- </optgroup> -->
+		        	</select>
+	        	</div>
+	        	<div class="col-sm-3">
+		        	<a class="btn btn-primary" ng-href="{{preview}}">View Questions</a>
+				</div>
 	        </div>    
-		</div>
-        <div class="col-sm-3">
 			<div class="jumbotron">
 				put fb thingy here
-	        </div>    
+	        </div>
+	        <div class="container-fluid">
+	        	<h4 class="text-center"><b>Instructions and Regulations</b></h4>
+	        	<h5><b>General</b></h5>
+	        	<ul>
+	        		<li><a href="#">Contact Details</a> of previous year's Coordinators.</li>
+	        		<li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
+	        		<li>Deadline is <b>11:59pm, Tuesday, 12th August, 2015</b>.</li>
+	        		<li><b>Please fill this <a href="#">form</a> if you are interested in applying</b>.</li>
+	        		<li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
+	        		<li>Contact ... (WebOps Core) in case of any problems with the portal.</li>
+	        	</ul>
+	        </div>
 		</div>
     </div>    
 </div>
