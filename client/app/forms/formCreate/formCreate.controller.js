@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, Auth, $http) {
+  .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, Auth, $http, $filter) {
 
     // messages for alerting purpose
     $scope.message = '';
@@ -15,19 +15,20 @@ angular.module('erp2015App')
                         {name: 'Super Coordinator', value: 'superCoord'},
                        ];
     
+    $http.get('/api/departments/').then(function (response) {
+        $scope.departments = response.data;
+    })
     // new form
     $scope.form = {};
-    $scope.form.form_id = 1;
-    $scope.form.form_name = 'Coord App';
+    $scope.form.form_name = '';
     $scope.form.form_department = '';
     $scope.form.form_position = '';
     $scope.form.form_fields = [];
 
     // is executed if $scope.form.form_department is changed to get the values for the subDepartments
     $scope.change = function() {
-        for(var i=0; i<$scope.options.length; i++)
-            if($scope.form.form_department.value === $scope.options[i].value)
-                $scope.subs = $scope.options[i].subDepts;
+        $scope.subs = $filter('filter')($scope.departments, function (d) {return d._id === $scope.form.form_department;})[0];
+        $scope.subs = $scope.subs.subDepartments;
     }
     $scope.form.form_subDepartment = $scope.subs[0];
 
@@ -151,6 +152,8 @@ angular.module('erp2015App')
 
     // creates the form
     $scope.createForm = function() {
+        console.log($scope.form);
+        alert($scope.form);
         if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
             window.alert('Please choose some fields to save!');
         } else if($scope.form.form_role === '' || $scope.form.form_department === '') {
@@ -158,8 +161,8 @@ angular.module('erp2015App')
         } else {
             angular.copy($scope.form, $scope.createForm);
             // need to do some stuff here
-            $http.post('/api/coordForms', { formValues: $scope.form })
-                .success(function (message) {
+
+            $http.post('/api/coordForms', $scope.form).success(function (message) {
                     $scope.message = message;
                 })
                 .error(function (message) {
