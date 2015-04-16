@@ -76,18 +76,7 @@ exports.showValuesAll = function(req, res) {
 
 // Create a new form in the db
 exports.create = function(req, res) {
-	// Do we even need this? Can't we do newForm = new CoordForm(req.body);
-	console.log(req.body);
-	var newForm = new CoordForm(); 
-	var formDetails = req.body;
-	
-	// need to make alerts here after authenticating the details
-	newForm.form_id = formDetails.formValues.form_id;
-	newForm.form_name = formDetails.formValues.form_name;
-	newForm.form_department = formDetails.formValues.form_department;
-	newForm.form_subDepartment = formDetails.formValues.form_subDepartment;
-	newForm.form_position = formDetails.formValues.form_position;
-	newForm.form_fields = formDetails.formValues.form_fields;
+	var newForm = new CoordForm(req.body); 
 
 	// console.log(formDetails.formValues.form_fields);
 	newForm.save(function(err, form) {
@@ -153,7 +142,7 @@ exports.saveForm = function(req, res) {
 };
 // Deletes a form from the db
 exports.destroy = function(req, res) {
-	CoordForm.findByIdAndRemove(req.body.del_id, function (err, form) {
+	CoordForm.findByIdAndRemove(req.params.id, function (err, form) {
 		if(err) { return handleError(res, err); }
 		if(!form) { return res.send(404); }
 		return res.send({type: 'success', msg: 'Successfully removed'});
