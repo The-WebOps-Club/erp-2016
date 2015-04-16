@@ -6,21 +6,22 @@ var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var UserSchema = new Schema({
-  name: { type:String, required: true },
+  name: { type: String, required: true },
   nick: String,
-  rollNumber: { type:String, required: true },
+  rollNumber: { type: String, required: true },
   email: { type: String, lowercase: true, required: true },
   role: {
     type: String,
     default: 'user'
   },
   isActive: {},
-  city: { type:String, required: true },
-  summerLocation: { type:String, required: true },
-  cgpa: { type:Number, required: true },
+  city: { type: String, required: true },
+  summerLocation: { type: String, required: true },
+  cgpa: { type: Number, min: 0, max: 10, required: true },
   lastSeen: {
     type: Date
   },
+  phoneNumber: { type: Number, required: true},
   formApplied: [],
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
@@ -69,6 +70,22 @@ UserSchema
 /**
  * Validations
  */
+
+// Validate empty name
+UserSchema
+  .path('name')
+  .validate(function(name) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return name.length;
+  }, 'Name cannot be blank');
+
+// Validate empty rollNumber
+UserSchema
+  .path('rollNumber')
+  .validate(function(rollNumber) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return rollNumber.length;
+  }, 'Roll Number cannot be blank');
 
 // Validate empty email
 UserSchema
