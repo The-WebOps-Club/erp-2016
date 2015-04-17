@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CoordFormSchema = new Schema({
-	form_name: {
+	name: {
 		type: String,
 		required: true
 	},
@@ -16,10 +16,10 @@ var CoordFormSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
-	form_department: { type: Schema.Types.ObjectId, ref: 'Department' },
-	form_subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
-	form_position: {},
-	form_fields: []
+	department: { type: Schema.Types.ObjectId, ref: 'Department' },
+	subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
+	position: {},
+	fields: []
 });
 
 module.exports = mongoose.model('CoordForm', CoordFormSchema);

@@ -28,7 +28,7 @@ exports.showById = function(req, res) {
 
 // Get a form by category
 exports.showByCategory = function(req, res) {
-	CoordForm.find({form_department : req.params.category}, function (err, form) {
+	CoordForm.find({department : req.params.category}, function (err, form) {
 		if(err) { return handleError(res, err); }
 		if(!form[0]) return res.send(404); 
 		return res.json(form[0]);
@@ -55,10 +55,16 @@ exports.showByIdArray = function(req, res) {
 
 // gets all the responses for a given category for admin
 exports.showValuesAll = function(req, res) {
-	Response.find({form: req.params.id}, function (err, response) {
+	CoordForm.find( {department: req.params.id}, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
-		if(!form[0]) { return res.send(404); }
-		return res.json(response);
+		if(!coordForm) { return res.send(404); }
+		Response.find({form: {$in: coordForm}}, function (err, response) {
+			if(err) { return handleError(res, err); }
+			if(!response) { return res.send(404); }
+			return res.json(response);
+		})
+		.populate('user', 'name ')
+		.populate('form', 'name department subDepartment position');
 	});
 };
 
@@ -66,7 +72,7 @@ exports.showValuesAll = function(req, res) {
 exports.create = function(req, res) {
 	var newForm = new CoordForm(req.body); 
 
-	// console.log(formDetails.formValues.form_fields);
+	// console.log(formDetails.formValues.fields);
 	newForm.save(function (err, form) {
 		if(err) return validationError(res, err);
 		else res.send({type: 'success', msg: 'Created successfully'});
@@ -138,7 +144,7 @@ function handleError(res, err) {
 
 function validateForm(res, form, formValues) {
 	var validated = false;
-	var len1 = form.form_fields.length;
+	var len1 = form.fields.length;
 	var len2 = formValues.length;
 	var j = 0;
 	var i = 1;
@@ -146,7 +152,7 @@ function validateForm(res, form, formValues) {
 		res.send({type: 'danger', msg: 'Bloody Hell'});
 	} else {
 		while(j<len1) {
-			if(form.form_fields[j].field_required) {
+			if(form.fields[j].field_required) {
 				if(formValues[j].field_value)
 					i *= 1;
 				else

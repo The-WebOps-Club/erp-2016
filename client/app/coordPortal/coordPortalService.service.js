@@ -34,7 +34,7 @@ angular.module('erp2015App')
           });            
       },
       formValuesAll: function (category) {
-          return $http.get('/api/coordForms/menuFormValues/' + category).then(function (response) {
+          return $http.get('/api/coordForms/showDepartmentResponses/' + category).then(function (response) {
               // console.log(response.data);    
               var requestedValues = {};
               requestedValues = response.data;

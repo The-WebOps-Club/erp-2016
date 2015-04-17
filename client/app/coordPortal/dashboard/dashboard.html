@@ -35,9 +35,9 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="form in formsApplied">
-						<td>{{form.form_department[0].name}}</td>
-						<td>{{form.form_subDepartment[0].name}}</td>
-						<td>{{form.form_position[0].name}}</td>
+						<td>{{form.department.name}}</td>
+						<td>{{form.subDepartment.name}}</td>
+						<td>{{form.position.name}}</td>
 						<td><a ng-href="/forms/formView/{{form._id}}">View<a/></td>
 						<td><a ng-href="#">Delete</a></td>
 					</tr>
@@ -50,15 +50,15 @@
 			<div class="container-fluid">
 				<div class="col-sm-8">
 		            <select class="form-control" ng-model="preference">
-		               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.form_department[0].name}}"> -->
-		            	<option ng-repeat="form in allForms | orderBy:'form_department[0].name'" value="/forms/formView/{{form._id}}">
-		            		{{form.form_department[0].name}} | {{form.form_subDepartment[0].name}} | {{form.form_position[0].name}}
+		               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.department[0].name}}"> -->
+		            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
+		            		{{form.name}}
 		            	</option>
 		            	<!-- </optgroup> -->
 		        	</select>
 	        	</div>
 	        	<div class="col-sm-3">
-		        	<a class="btn btn-primary" ng-href="{{preview}}">View Questions</a>
+		        	<a class="btn btn-primary" ng-href="{{preference}}">View Questions</a>
 				</div>
 	        </div>    
 			<div class="jumbotron">

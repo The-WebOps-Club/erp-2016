@@ -20,17 +20,17 @@ angular.module('erp2015App')
     })
     // new form
     $scope.form = {};
-    $scope.form.form_name = '';
-    $scope.form.form_department = '';
-    $scope.form.form_position = '';
-    $scope.form.form_fields = [];
+    $scope.form.name = '';
+    $scope.form.department = '';
+    $scope.form.position = '';
+    $scope.form.fields = [];
 
-    // is executed if $scope.form.form_department is changed to get the values for the subDepartments
+    // is executed if $scope.form.department is changed to get the values for the subDepartments
     $scope.change = function() {
-        $scope.subs = $filter('filter')($scope.departments, function (d) {return d._id === $scope.form.form_department;})[0];
+        $scope.subs = $filter('filter')($scope.departments, function (d) {return d._id === $scope.form.department;})[0];
         $scope.subs = $scope.subs.subDepartments;
     }
-    $scope.form.form_subDepartment = $scope.subs[0];
+    $scope.form.subDepartment = $scope.subs[0];
 
     // previewForm - for preview purposes, form will be copied into this
     // otherwise, actual form might get manipulated in preview mode
@@ -59,14 +59,14 @@ angular.module('erp2015App')
         };
 
         // put newField into fields array
-        $scope.form.form_fields.push(newField);
+        $scope.form.fields.push(newField);
     };
 
     // deletes particular field on button click
     $scope.deleteField = function (field_id) {
-        for(var i = 0; i < $scope.form.form_fields.length; i++) {
-            if($scope.form.form_fields[i].field_id === field_id) {
-                $scope.form.form_fields.splice(i, 1);
+        for(var i = 0; i < $scope.form.fields.length; i++) {
+            if($scope.form.fields[i].field_id === field_id) {
+                $scope.form.fields.splice(i, 1);
                 break;
             }
         }
@@ -113,7 +113,7 @@ angular.module('erp2015App')
 
     // preview form
     $scope.previewOn = function() {
-        if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
+        if($scope.form.fields === null || $scope.form.fields.length === 0) {
             var title = 'Error';
             var msg = 'No fields added yet, please add fields to the form before preview.';
             // var btns = [{result:'ok', label: 'OK', cssClass: 'btn-primary'}];
@@ -146,7 +146,7 @@ angular.module('erp2015App')
 
     // deletes all the fields
     $scope.reset = function (){
-        $scope.form.form_fields.splice(0, $scope.form.form_fields.length);
+        $scope.form.fields.splice(0, $scope.form.fields.length);
         $scope.addField.lastAddedID = 0;
     };
 
@@ -154,9 +154,9 @@ angular.module('erp2015App')
     $scope.createForm = function() {
         console.log($scope.form);
         alert($scope.form);
-        if($scope.form.form_fields === null || $scope.form.form_fields.length === 0) {
+        if($scope.form.fields === null || $scope.form.fields.length === 0) {
             window.alert('Please choose some fields to save!');
-        } else if($scope.form.form_role === '' || $scope.form.form_department === '') {
+        } else if($scope.form.role === '' || $scope.form.department === '') {
             window.alert('Please select the "role", "department" and "sub-department"');
         } else {
             angular.copy($scope.form, $scope.createForm);

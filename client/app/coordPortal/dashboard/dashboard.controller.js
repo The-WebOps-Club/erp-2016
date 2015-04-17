@@ -5,7 +5,7 @@ angular.module('erp2015App')
   .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth) {
 
     $scope.getCurrentUser = Auth.getCurrentUser;
-    
+
     $scope.allForms = '';
     $scope.preference = '';
     $scope.form = {};

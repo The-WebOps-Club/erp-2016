@@ -11,7 +11,7 @@ router.get('/dashForms', auth.isAuthenticated(), controller.showByIdArray);
 router.get('/:id', auth.isAuthenticated(), controller.showById);
 router.get('/dashFormFields/:category', auth.isAuthenticated(), controller.showByCategory);
 router.get('/dashFormValues/:id', auth.isAuthenticated(), controller.showValues);
-router.get('/menuFormValues/:id', auth.isAuthenticated(), controller.showValuesAll);
+router.get('/showDepartmentResponses/:id', auth.isAuthenticated(), controller.showValuesAll);
 
 router.post('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.create);
 router.post('/saveForm', auth.isAuthenticated(), controller.saveForm);

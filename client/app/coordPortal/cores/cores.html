@@ -1,0 +1,37 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-5">
+			<div class="container-fluid">
+				<h4><b>Welcome {{ user.name }}</b></h4>
+				<br>
+				<p>Text Here</p>
+				<br>
+				<h5><b>Hope you find it easy!</b></h5>
+			</div>
+			<br><br>
+			<table ng-show="1" st-table="responses" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Applying for</th>
+						<th>Position</th>
+						<th>Department</th>
+						<th>Sub-Department</th>
+						<th>Response</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="response in responses">
+						<td>{{response.user.name}}</td>
+						<td>{{response.form.name}}</td>
+						<td>{{response.form.position}}</td>
+						<td>{{response.form.department}}</td>
+						<td>{{response.form.subDepartment}}</td>
+						<td><button class="btn btn-primary" ng-click="showResponse(response)">View<a/></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+</div>
