@@ -9,9 +9,9 @@ var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', funct
 		// Replacing the $scope.form.form with formId because reponses has formId stored in $scope.form.form
 		$scope.form.form = getForm._id;
 		console.log(getForm);
-	});
-	CoordPortalService.getResponse($stateParams.id).then(function (getResponse) {
-		if(getResponse.form) { $scope.form = getResponse; }
-		console.log(getResponse);
+		CoordPortalService.getResponse($stateParams.id).then(function (getResponse) {
+			if(getResponse.form) { $scope.form = getResponse; }
+			console.log(getResponse);
+		});
 	});
 });
