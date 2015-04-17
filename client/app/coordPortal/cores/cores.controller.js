@@ -20,7 +20,7 @@ angular.module('erp2015App')
 
     $scope.showResponse = function (response) {
       console.log(response);
-      $scope.responseValues = response.values;
+      $scope.response = response;
       $scope.responseDetails = 1;
     }
     $scope.emptyAlerts = function() {
