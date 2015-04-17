@@ -115,17 +115,17 @@ exports.saveForm = function (req, res) {
 
 				response.save(function (err) {
 					if(err) return validationError(res, err);
-					else res.send({type: 'success', msg: 'Updated successfully'});
+					else res.send({type: 'success', msg: 'Applied and saved successfully'});
 				});
 			} else {
-				// console.log(response);
+				// console.log(values);
 				response.values = values;
 				response.updatedOn = Date.now();
 				response.valid = validateForm(res, form, req.body.formValues);
 
 				response.save(function (err) {
 					if(err) return validationError(res, err);
-					else res.send({type: 'success', msg: 'Updated successfully'});
+					else res.send({type: 'success', msg: 'Saved successfully'});
 				});
 			}
 		});

@@ -1,8 +1,17 @@
 <br>
-<div class="row">
-    <div class="col-sm-2"><h4>{{field.field_title}} :</h4></div>
-    <span class="required-error" ng-show="field.field_required && !field.field_value">* required</span>
-    <div class="col-sm-3">
-        <textarea class="form-control" type="text" ng-model="field.field_value" value="{{field.field_value}}" ng-required="field.field_required" ng-disabled="field.field_disabled"></textarea>
-    </div>
+<div class="form-group" ng-class="{ 'has-success': field.field_required && field.field_value,
+                                    'has-error': field.field_required && !field.field_value }">
+  <label>{{field.field_title}}</label>
+
+    <textarea class="form-control" type="text"
+         rows="6"
+         ng-model="field.field_value" 
+         value="{{field.field_value}}" 
+         ng-required="field.field_required" 
+         ng-disabled="field.field_disabled">
+            {{field.field_value}}
+    </textarea>
+  <span class="help-block" ng-show="field.field_required && !field.field_value">
+    {{field.field_title}} is required - Make sure you fill it before deadline
+  </span>
 </div>

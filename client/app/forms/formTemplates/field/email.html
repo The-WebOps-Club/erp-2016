@@ -1,8 +1,14 @@
 <br>
-<div class="row">
-    <div class="col-sm-2"><h4>{{field.field_title}} :</h4></div>
-    <span class="required-error" ng-show="field.field_required && !field.field_value">* required</span>
-    <div class="col-sm-3">
-        <input class="form-control" type="email" placeholder="Email" value="{{field.field_value}}" ng-model="field.field_value" ng-required="field.field_required" ng-disabled="field.field_disabled"/>
-    </div>
+<div class="form-group" ng-class="{ 'has-success': field.field_required && field.field_value,
+                                    'has-error': field.field_required && !field.field_value }">
+  <label>{{field.field_title}}</label>
+
+  <input type="email" class="form-control" 
+  		   ng-model="field.field_value"
+         value="{{field.field_value}}"
+         ng-required="field.field_required"
+         ng-disabled="field.field_disabled"/>
+  <span class="help-block" ng-show="field.field_required && !field.field_value">
+    {{field.field_title}} is required - Make sure you fill it before deadline
+  </span>
 </div>

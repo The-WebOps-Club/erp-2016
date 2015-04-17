@@ -164,13 +164,14 @@ angular.module('erp2015App')
             console.log($scope.form);
             $http.post('/api/coordForms', $scope.form).success(function (message) {
                     $scope.message = message;
+                    console.log('Form Saved');
                 })
                 .error(function (message) {
                     $scope.message = 'error';
+                    console.log('Error');
                 });
                 
             $scope.form = {};            
-            console.log('Form Saved');
         }
     };
 

@@ -43,6 +43,7 @@
         </div>
         <div class="col-sm-2">
             <div ng-hide="previewMode">
+                {{form.position}}
                 <h4>Position:</h4>
                 <select class="form-control" ng-model="form.position" ng-options="role.name for role in positions track by role.value"></select>
             </div>

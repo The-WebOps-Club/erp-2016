@@ -1,21 +1,30 @@
-<div class="text-center">
-    <h2><u>{{ form.form.name }}</u></h2>
-</div>
+<div class="jumbotron col-sm-offset-3 col-sm-6">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="text-center">{{ form.form.name }}</h2>
+        </div>
 
-<div ng-show="!form.submitted">
-     <form name="myForm" id="myForm">
-        <div class="row" ng-repeat="field in form.values">
-            <div class="container">
-                <field-directive field="field">
+        <div class="col-sm-12">
+             <form name="myForm" id="myForm" novalidate>
+                
+                <div class="row" ng-repeat="field in form.values">
+                    <div class="container">
+                        <field-directive field="field">
 
-                </field-directive>
+                        </field-directive>
+                    </div>
+                </div>
+            
+            </form>
+            <br>
+            <div>
+                <p class="text-center">
+                    <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
+                </p>
+                <div class="text-center">
+                    <a ng-href="/coordPortal/dashboard">Return to dashboard</a>
+                </div>
             </div>
         </div>
-    </form>
-    <br>
-    <div>
-        <p class="text-center">
-            <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
-        </p>
     </div>
 </div>
