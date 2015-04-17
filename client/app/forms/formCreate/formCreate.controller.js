@@ -159,7 +159,7 @@ angular.module('erp2015App')
         } else if($scope.form.role === '' || $scope.form.department === '') {
             window.alert('Please select the "role", "department" and "sub-department"');
         } else {
-            angular.copy($scope.form, $scope.createForm);
+            // angular.copy($scope.form, $scope.createForm);
             // need to do some stuff here
             console.log($scope.form);
             $http.post('/api/coordForms', $scope.form).success(function (message) {

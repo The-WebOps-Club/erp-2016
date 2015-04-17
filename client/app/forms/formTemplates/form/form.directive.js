@@ -20,11 +20,11 @@ angular.module('erp2015App')
                     $scope.form.saved = true;
                     
                     // Below command is required else hacker can see all the responses submitted through $scope
-                    $scope.form = {};        
+                    // $scope.form = {};        
                     
                     window.alert(message.data.msg);
                     // why is this not working ???
-                    window.location.reload();
+                    // window.location.reload();
                     // $state.go('coordPortalDashboard');                   
                 });           
             };
