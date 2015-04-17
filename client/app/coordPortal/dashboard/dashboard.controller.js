@@ -29,6 +29,18 @@ angular.module('erp2015App')
       }
     });
 
+    // delete the application to a form
+    $scope.deleteApp = function(id) {
+      console.log(id);
+      $http.post('/api/coordForms/deleteApp', { formId: id })
+        .success(function (response) {
+          console.log(response);
+        })
+        .error(function (err) {
+          console.log(err);
+        });
+    };
+
     $scope.emptyAlerts = function() {
       $scope.message = {};
     };

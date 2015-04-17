@@ -17,6 +17,7 @@ router.post('/', auth.isAuthenticated(), auth.hasRole('admin'), controller.creat
 router.post('/saveForm', auth.isAuthenticated(), controller.saveForm);
 
 router.post('/delete', auth.isAuthenticated(), controller.destroy);
+router.post('/deleteApp', auth.isAuthenticated(), controller.deleteApp);
 
 router.delete('/:id', auth.isAuthenticated(), auth.hasRole('admin'), controller.destroy);
 

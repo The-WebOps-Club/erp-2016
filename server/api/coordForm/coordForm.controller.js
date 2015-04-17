@@ -39,8 +39,17 @@ exports.showByCategory = function(req, res) {
 exports.showValues = function(req, res) {
 	Response.findOne({$and: [{form: req.params.id}, {user: req.user._id}]}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!response) { res.send(404); }
-		return res.json(response);
+		if(!response) { 
+			CoordForm.findById(req.params.id, function (err, resp) {
+				if(err) { return handleError(res, err); }
+				if(!resp) { return res.end(404); }
+				return res.send(resp);
+			})
+			.populate('department')
+			.populate('subDepartment');
+		}
+				console.log(response);
+		// return res.json(response);
 	})
 	.populate('form', 'name');
 };
@@ -57,7 +66,7 @@ exports.showByIdArray = function(req, res) {
 
 // gets all the responses for a given category for core
 exports.showValuesAll = function(req, res) {
-	CoordForm.find( {department: req.params.id}, function (err, coordForm) {
+	CoordForm.find({department: req.params.id}, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
 		if(!coordForm) { return res.send(404); }
 		Response.find({form: {$in: coordForm}}, function (err, response) {
@@ -131,6 +140,18 @@ exports.saveForm = function (req, res) {
 		});
 	});
 };
+
+// Deletes a response from the db
+exports.deleteApp = function(req, res) {
+	console.log(req.body.formId);
+	console.log(req.user._id);
+	Response.remove({$and: [{form: req.body.formId}, {user: req.user._id}]}, function (err, response) {
+		if(err) { return handleError(res, err); }
+		if(!response) { return res.send(404); }
+		return res.send(200, response);
+	});
+};
+
 // Deletes a form from the db
 exports.destroy = function (req, res) {
 	CoordForm.findByIdAndRemove(req.params.id, function (err, form) {
