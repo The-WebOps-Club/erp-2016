@@ -6,48 +6,36 @@ angular.module('erp2015App')
   	return {
       options: function () {
         return $http.get('/api/coordForms/').then(function (response) {
-          var requestedForm = {};
-          requestedForm = response.data;
-          return requestedForm;
+          return response.data;
         });
       },
       formById: function (id) {
-          return $http.get('/api/coordForms/' + id).then(function (response) {
-            var requestedForm = {};
-            requestedForm = response.data;
-            return requestedForm;
-          });
+        return $http.get('/api/coordForms/' + id).then(function (response) {
+          return response.data;
+        });
       },
       formByCategory: function (category) {
-          return $http.get('/api/coordForms/dashFormFields' + category).then(function (response) {
-            var requestedForm = {};
-            requestedForm = response.data;
-            return requestedForm;
-          });
+        return $http.get('/api/coordForms/dashFormFields' + category).then(function (response) {
+          return response.data;
+        });
       },
       formValues: function (id) {
-          return $http.get('/api/coordForms/dashFormValues/' + id).then(function (response) {
-              // console.log(response.data);    
-              var requestedValues = {};
-              requestedValues = response.data;
-              return requestedValues;
-          });            
+        return $http.get('/api/coordForms/dashFormValues/' + id).then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
       },
       formValuesAll: function (category) {
-          return $http.get('/api/coordForms/showDepartmentResponses/' + category).then(function (response) {
-              // console.log(response.data);    
-              var requestedValues = {};
-              requestedValues = response.data;
-              return requestedValues;
-          });            
+        return $http.get('/api/coordForms/showDepartmentResponses/' + category).then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
       },
       formsApplied: function () {
-          return $http.get('/api/coordForms/dashForms').then(function (response) {
-              // console.log(response.data);    
-              var requestedValues = {};
-              requestedValues = response.data;
-              return requestedValues;
-          });            
+        return $http.get('/api/coordForms/dashForms').then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
       }
   	};
 });

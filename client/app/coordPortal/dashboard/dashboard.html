@@ -2,14 +2,14 @@
 
 <div class="container-fluid">
 <!-- to show gen alerts -->
-    <div class="row">
+<!--     <div class="row">
     	<div class="col-sm-offset-4 col-sm-4 text-center">
    			<alert ng-click="emptyAlerts()" ng-show="message.type && message.msg" type="{{message.type}}">
    				{{ message.msg }}
    			</alert>
    		</div>
    	</div>
-<!-- to show gen alerts -->
+ --><!-- to show gen alerts -->
 	
      <div class="row">
 		<div class="col-sm-offset-1 col-sm-5">
@@ -26,25 +26,23 @@
 			<table ng-show="1" st-table="formsApplied" class="table table-striped">
 				<thead>
 					<tr>
-						<th>Department</th>
-						<th>Sub-Department</th>
+						<th>Applied for</th>
 						<th>Position</th>
 						<th>Fill your App</th>
 						<th>Delete Application</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="form in formsApplied">
-						<td>{{form.department.name}}</td>
-						<td>{{form.subDepartment.name}}</td>
-						<td>{{form.position.name}}</td>
-						<td><a ng-href="/forms/formView/{{form._id}}">View<a/></td>
+					<tr ng-repeat="Form in formsApplied">
+						<td>{{Form.form.department}}</td>
+						<td>{{Form.form.position.name}}</td>
+						<td><a ng-href="/forms/formView/{{Form.form._id}}">View<a/></td>
 						<td><a ng-href="#">Delete</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
- <!-- onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" -->
+<!-- onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" -->
         <div class="col-sm-offset-1 col-sm-4">
         	Select:
 			<div class="container-fluid">

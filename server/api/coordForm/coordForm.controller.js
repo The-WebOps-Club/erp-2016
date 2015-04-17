@@ -37,11 +37,12 @@ exports.showByCategory = function(req, res) {
 
 // Get filled form values of the user
 exports.showValues = function(req, res) {
-	Response.findOne({$and: [{form: form.id}, {user: req.user._id}]}, function (err, response) {
+	Response.findOne({$and: [{form: req.params.id}, {user: req.user._id}]}, function (err, response) {
 		if(err) { return handleError(res, err); }
 		if(!response) { res.send(404); }
 		return res.json(response);
-	});
+	})
+	.populate('form', 'name');
 };
 
 // sends forms applied by the user
@@ -50,10 +51,11 @@ exports.showByIdArray = function(req, res) {
 		if(err) { return handleError(res, err); }
 		if(!response) { return res.send(404); }
 		return res.json(response);
-	});
+	})
+	.populate('form', 'name department position');
 };
 
-// gets all the responses for a given category for admin
+// gets all the responses for a given category for core
 exports.showValuesAll = function(req, res) {
 	CoordForm.find( {department: req.params.id}, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
@@ -61,9 +63,10 @@ exports.showValuesAll = function(req, res) {
 		Response.find({form: {$in: coordForm}}, function (err, response) {
 			if(err) { return handleError(res, err); }
 			if(!response) { return res.send(404); }
+			console.log(response);
 			return res.json(response);
 		})
-		.populate('user', 'name ')
+		.populate('user', 'name')
 		.populate('form', 'name department subDepartment position');
 	});
 };
@@ -100,7 +103,7 @@ exports.saveForm = function (req, res) {
 			} else
 				values[i].field_value = '';
 		}
-		console.log(form._id, req.user._id);
+		// console.log(form._id, req.user._id);
 		Response.findOne({$and: [{form: form._id}, {user: req.user._id}]}, function (err, response) {
 			if(err) { return handleError(res, err); }
 			if(!response) {
@@ -115,7 +118,7 @@ exports.saveForm = function (req, res) {
 					else res.send({type: 'success', msg: 'Updated successfully'});
 				});
 			} else {
-				console.log(response);
+				// console.log(response);
 				response.values = values;
 				response.updatedOn = Date.now();
 				response.valid = validateForm(res, form, req.body.formValues);

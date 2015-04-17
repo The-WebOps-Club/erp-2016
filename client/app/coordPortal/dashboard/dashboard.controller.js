@@ -23,8 +23,7 @@ angular.module('erp2015App')
     CoordPortalService.formsApplied().then(function (responses) {
       if(responses.length !== 0) {
         $scope.formsApplied = responses;
-        // console.log(responses);
-        // socket.syncUpdates('form', $scope.allForms);
+        console.log(responses);
       } else {
         $scope.formsApplied = '';
       }
