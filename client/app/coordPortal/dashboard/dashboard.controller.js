@@ -35,6 +35,7 @@ angular.module('erp2015App')
       $http.post('/api/coordForms/deleteApp', { formId: id })
         .success(function (response) {
           console.log(response);
+          $location.url('/coordPortal/dashboard');
         })
         .error(function (err) {
           console.log(err);
