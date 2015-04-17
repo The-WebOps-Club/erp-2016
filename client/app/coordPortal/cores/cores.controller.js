@@ -22,8 +22,12 @@ angular.module('erp2015App')
       console.log(response);
       $scope.response = response;
       $scope.responseDetails = 1;
-    }
+    };
     $scope.emptyAlerts = function() {
       $scope.message = {};
+    };
+
+    $scope.updateResponse = function () {
+      // body...
     };
   });

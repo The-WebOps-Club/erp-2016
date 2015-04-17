@@ -16,7 +16,11 @@ var ResponseSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
-	comments: String
+	comments: String,
+	status: { 
+		type: String,
+		default: "Pending"
+	}
 });
 
 module.exports = mongoose.model('Response', ResponseSchema);
