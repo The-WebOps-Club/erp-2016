@@ -2,21 +2,32 @@
 
 angular.module('erp2015App')
   // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth, FileUploader) {
-  .controller('CoordPortalCoresCtrl', function ($scope, $location, $http, CoordPortalService, Auth) {
+  .controller('CoordPortalCoresCtrl', function ($scope, $location, $http, CoordPortalService, Auth, User) {
 
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();
+    $scope.user.$promise.then(function () {
+      $http.get('/api/departments/' + $scope.user.department[0] + '/')
+        .success(function (response) {
+          console.log(response);
+          $scope.department = response;
+        })
+        .error(function (err) {
+          console.log(err);
+        });
+        CoordPortalService.formValuesAll($scope.user.department[0]).then(function (responses) {
+          if(responses.length !== 0) {
+            $scope.responses = responses;
+            // console.log(responses);
+            // socket.syncUpdates('form', $scope.allForms);
+          } else {
+            $scope.responses = '';
+          }
+        });
+    })
+    // console.log($scope.user.$promise);
 
     // loading all the forms applied in department
-    CoordPortalService.formValuesAll(Auth.getCurrentUser().department[0]).then(function (responses) {
-      if(responses.length !== 0) {
-        $scope.responses = responses;
-        // console.log(responses);
-        // socket.syncUpdates('form', $scope.allForms);
-      } else {
-        $scope.responses = '';
-      }
-    });
 
     $scope.showResponse = function (response) {
       console.log(response);
@@ -28,6 +39,17 @@ angular.module('erp2015App')
     };
 
     $scope.updateResponse = function () {
-      // body...
+      if (!response.status) response.status = "Pending";
+      console.log(response);
     };
+
+    $scope.addSubDepartment = function () {
+      $http.post('/api/subDeparments/', {name: $scope.newSubDepartment, department: $scope.department._id})
+        .success(function (response) {
+          console.log(response);
+        })
+        .error(function (err) {
+          console.log(err);
+        });
+    }
   });
