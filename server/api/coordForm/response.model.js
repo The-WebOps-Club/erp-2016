@@ -7,7 +7,7 @@ var ResponseSchema = new Schema({
 	form: { type: Schema.Types.ObjectId, ref: 'CoordForm' },
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
 	valid: Boolean,
-	values: [],
+	fields: [],
 	createdOn: {
 		type: Date,
 		default: Date.now()

@@ -19,8 +19,14 @@ angular.module('erp2015App')
           return response.data;
         });
       },
-      formValues: function (id) {
-        return $http.get('/api/coordForms/dashFormValues/' + id).then(function (response) {
+      getForm: function (formId) {
+        return $http.get('/api/coordForms/getForm/' + formId).then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
+      },
+      getResponse: function (formId) {
+        return $http.get('/api/coordForms/getResponse/' + formId).then(function (response) {
           // console.log(response.data);    
           return response.data;
         });            

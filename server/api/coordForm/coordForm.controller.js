@@ -13,7 +13,7 @@ var validationError = function(res, err) {
 exports.index = function(req, res) {
 	CoordForm.find(function (err, forms) {
 		if(err) { return handleError(res, err); }
-		return res.json(200, forms);
+		return res.status(200).json(forms);
 	});
 };	
 
@@ -21,7 +21,7 @@ exports.index = function(req, res) {
 exports.showById = function(req, res) {
 	CoordForm.findById(req.params.id, function (err, form) {
 		if(err) { return handleError(res, err); }
-		if(!form) { return res.send(404); }
+		if(!form) { return res.sendStatus(404); }
 		return res.json(form);
 	});
 };
@@ -30,35 +30,36 @@ exports.showById = function(req, res) {
 exports.showByCategory = function(req, res) {
 	CoordForm.find({department : req.params.category}, function (err, form) {
 		if(err) { return handleError(res, err); }
-		if(!form[0]) return res.send(404); 
+		if(!form[0]) return res.sendStatus(404); 
 		return res.json(form[0]);
 	});
 };
 
-// Get filled form values of the user
-exports.showValues = function(req, res) {
+// Get form for the given formId
+exports.getForm = function(req, res) {
+	CoordForm.findById(req.params.id, function (err, form) {
+		if(err) { return handleError(res, err); }
+		if(!form) { return res.sendStatus(404); }
+		return res.json(form);
+	})
+	.populate('department')
+	.populate('subDepartment');
+};
+
+// Get response for the given formId and user
+exports.getResponse = function(req, res) {
 	Response.findOne({$and: [{form: req.params.id}, {user: req.user._id}]}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!response) { 
-			CoordForm.findById(req.params.id, function (err, resp) {
-				if(err) { return handleError(res, err); }
-				if(!resp) { return res.end(404); }
-				return res.send(resp);
-			})
-			.populate('department')
-			.populate('subDepartment');
-		}
-				console.log(response);
-		// return res.json(response);
-	})
-	.populate('form', 'name');
+		if(!response) { return res.sendStatus(404); }
+		return res.json(response);
+	});
 };
 
 // sends forms applied by the user
 exports.showByIdArray = function(req, res) {
 	Response.find({user: req.user._id}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!response) { return res.send(404); }
+		if(!response) { return res.sendStatus(404); }
 		return res.json(response);
 	})
 	.populate('form', 'name department position');
@@ -68,10 +69,10 @@ exports.showByIdArray = function(req, res) {
 exports.showValuesAll = function(req, res) {
 	CoordForm.find({department: req.params.id}, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
-		if(!coordForm) { return res.send(404); }
+		if(!coordForm) { return res.sendS(404); }
 		Response.find({form: {$in: coordForm}}, function (err, response) {
 			if(err) { return handleError(res, err); }
-			if(!response) { return res.send(404); }
+			if(!response) { return res.sendStatus(404); }
 			console.log(response);
 			return res.json(response);
 		})
@@ -95,8 +96,9 @@ exports.create = function(req, res) {
 exports.saveForm = function (req, res) {
 	// should not send this formId using req.body :(
 	CoordForm.findById(req.body.formId, function (err, form) {
+		console.log(req.body.formId);
 		if(err) { return handleError(res, err); }
-		if(!form) { return res.send(404); } 
+		if(!form) { return res.sendStatus(404); } 
 
 		var len2 = req.body.formValues.length;
 		var values = req.body.formValues;
@@ -120,7 +122,7 @@ exports.saveForm = function (req, res) {
 				response.form  = form._id;
 				response.user = req.user._id;
 				response.valid = validateForm(res, form, values);
-				response.values = values;
+				response.fields = values;
 
 				response.save(function (err) {
 					if(err) return validationError(res, err);
@@ -128,7 +130,7 @@ exports.saveForm = function (req, res) {
 				});
 			} else {
 				// console.log(values);
-				response.values = values;
+				response.fields = values;
 				response.updatedOn = Date.now();
 				response.valid = validateForm(res, form, req.body.formValues);
 
@@ -147,8 +149,8 @@ exports.deleteApp = function(req, res) {
 	console.log(req.user._id);
 	Response.remove({$and: [{form: req.body.formId}, {user: req.user._id}]}, function (err, response) {
 		if(err) { return handleError(res, err); }
-		if(!response) { return res.send(404); }
-		return res.send(200, response);
+		if(!response) { return res.sendStatus(404); }
+		return res.status(200).json(response);
 	});
 };
 
@@ -156,13 +158,13 @@ exports.deleteApp = function(req, res) {
 exports.destroy = function (req, res) {
 	CoordForm.findByIdAndRemove(req.params.id, function (err, form) {
 		if(err) { return handleError(res, err); }
-		if(!form) { return res.send(404); }
+		if(!form) { return res.sendStatus(404); }
 		return res.send({type: 'success', msg: 'Successfully removed'});
 	});
 };
 
 function handleError(res, err) {
-	return res.send(500, err);
+	return res.status(500).json(err);
 }
 
 
