@@ -18,7 +18,7 @@ var CoordFormSchema = new Schema({
 	},
 	department: { type: Schema.Types.ObjectId, ref: 'Department' },
 	subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
-	position: String,
+	position: {},
 	fields: []
 });
 

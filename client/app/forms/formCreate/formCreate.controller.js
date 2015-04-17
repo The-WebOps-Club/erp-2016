@@ -54,6 +54,7 @@ angular.module('erp2015App')
             'field_title' : 'New field - ' + ($scope.addField.lastAddedID),
             'field_type' : $scope.addField.new,
             'field_value' : '',
+            'field_comment' : '',
             'field_required' : true,
 			'field_disabled' : false
         };
