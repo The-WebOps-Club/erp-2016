@@ -3,6 +3,9 @@
 angular.module('erp2015App')
   .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, Auth, $http, $filter) {
 
+    // for backing up the form
+    $scope.backupForm = {};
+
     // messages for alerting purpose
     $scope.message = '';
 
@@ -112,29 +115,6 @@ angular.module('erp2015App')
         }
     };
 
-    // preview form
-    $scope.previewOn = function() {
-        if($scope.form.fields === null || $scope.form.fields.length === 0) {
-            var title = 'Error';
-            var msg = 'No fields added yet, please add fields to the form before preview.';
-            // var btns = [{result:'ok', label: 'OK', cssClass: 'btn-primary'}];
-
-            window.alert(title + ' : ' + msg);
-            // $dialog.messageBox(title, msg, btns).open();
-        }
-        else {
-            $scope.previewMode = !$scope.previewMode;
-            $scope.form.submitted = false;
-            angular.copy($scope.form, $scope.previewForm);
-        }
-    };
-
-    // hide preview form, go back to create mode
-    $scope.previewOff = function() {
-        $scope.previewMode = !$scope.previewMode;
-        $scope.form.submitted = false;
-    };
-
     // decides whether field options block will be shown (true for dropdown and radio fields)
     $scope.showAddOptions = function (field){
         if(field.field_type === 'radio' || field.field_type === 'dropdown' || field.field_type === 'checkbox'){
@@ -145,25 +125,20 @@ angular.module('erp2015App')
         }
     };
 
-    // deletes all the fields
-    $scope.reset = function (){
-        $scope.form.fields.splice(0, $scope.form.fields.length);
-        $scope.addField.lastAddedID = 0;
-    };
-
     // creates the form
     $scope.createForm = function() {
-        console.log($scope.form);
-        alert($scope.form);
+        
         if($scope.form.fields === null || $scope.form.fields.length === 0) {
             window.alert('Please choose some fields to save!');
         } else if($scope.form.role === '' || $scope.form.department === '') {
             window.alert('Please select the "role", "department" and "sub-department"');
         } else {
-            // angular.copy($scope.form, $scope.createForm);
+            angular.copy($scope.form, $scope.backupForm);
+            $scope.form = {};            
+            
             // need to do some stuff here
             console.log($scope.form);
-            $http.post('/api/coordForms', $scope.form).success(function (message) {
+            $http.post('/api/coordForms', $scope.backupForm).success(function (message) {
                     $scope.message = message;
                     console.log('Form Saved');
                 })
@@ -172,7 +147,6 @@ angular.module('erp2015App')
                     console.log('Error');
                 });
                 
-            $scope.form = {};            
         }
     };
 

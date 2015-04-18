@@ -1,6 +1,14 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="container-fluid">
+<!-- for alerting gen messages -->
+<div class="col-sm-12">
+    <alert ng-click="closeAlert()" ng-show="message.type && message.msg" type="{{message.type}}">
+        {{message.msg}} (<span class="small">Click to delete</span>)
+    </alert>
+    <br>
+</div>
+
+<div class="container-fluid col-sm-6">
     <div class="row">
         <div class="col-sm-12">
             <h1>Create a new form</h1> <br>
@@ -9,110 +17,78 @@
             </blockquote>
         </div>
     </div>    
-
-    <!-- for alerting gen messages -->
-    <alert ng-click="closeAlert()" ng-show="message.type && message.msg" type="{{message.type}}">
-        {{message.msg}}
-    </alert>
-    <br>
+</div>
+<div class="container-fluid col-sm-6">
     
-    <div class="row" style="text-align: center;">
-        <div ng-hide="previewMode">
-            <h2><u>Form Properties</u></h2>
-        </div>    
-    </div>
-
     <div class="row">
-        <div class="col-sm-offset-2 col-sm-2">
-            <div ng-hide="previewMode">
-                <h4>Form Name:</h4>
-                <input class="form-control" type="text" name="form-name" ng-disabled="previewMode" ng-model="form.name">
-            </div>
+        <h2 class="text-center">Form Properties</h2>
+    </div>
+    <br>
+    <form>
+        <div class="form-group col-sm-6">
+            <label for="form-name">Form Name</label>
+            <input class="form-control" id="form-name" type="text" ng-disabled="previewMode" ng-model="form.name">
         </div>
-        <div class="col-sm-2">
-            <div ng-hide="previewMode">
-                <h4>Department:</h4>
-                <select class="form-control" ng-change="change()" ng-model="form.department" ng-options="department._id as department.name for department in departments"></select>
-            </div>
+        <div class="form-group col-sm-6">
+            <label for="form-department">Department</label>
+            <select class="form-control" id="form-department" ng-change="change()" ng-model="form.department" ng-options="department._id as department.name for department in departments"></select>
         </div>
-        <div class="col-sm-2">
-            <div ng-hide="previewMode">
-                <h4>Sub-Department:</h4>
-                <select class="form-control" ng-model="form.subDepartment" ng-options="sub._id as sub.name for sub in subs"></select>
-            </div>
+        <div class="form-group col-sm-6">
+            <label for="form-subDepartment">Sub-Department</label>
+            <select class="form-control" id="form-subDepartment" ng-model="form.subDepartment" ng-options="sub._id as sub.name for sub in subs"></select>
         </div>
-        <div class="col-sm-2">
-            <div ng-hide="previewMode">
-                {{form.position}}
-                <h4>Position:</h4>
-                <select class="form-control" ng-model="form.position" ng-options="role.name for role in positions track by role.value"></select>
-            </div>
+        <div class="form-group col-sm-6">
+            <label for="form-position">Position</label>
+            <select class="form-control" id="form-position" ng-model="form.position" ng-options="role.name for role in positions track by role.value"></select>
         </div>
-    </div>    
+    </form>
+
+    <hr>
+    <br>
 
     <hr>
 
-    <div class="row" style="text-align: center;">
-        <h2><u>Fields</u></h2>
-    </div>
+    <br>
     <div class="row">
-        <div class="col-sm-offset-4 col-sm-3">
-            <select class="form-control" ng-model="addField.new" ng-options="type.value as type.name for type in addField.types"></select>
-        </div>    
-        <!-- {{form.roles[0].name}} -->
-        <div class="col-sm-3">        
-            <button type="submit" class="btn btn-primary" ng-click="addNewField()"><span class="glyphicon glyphicon-plus"></span> Add Field</button>
-        </div>
+        <h4 class="text-muted text-center" ng-show="form.fields.length == 0">No fields added yet.</h4>
     </div>
-
-    <hr>
-
-    <div class="row" style="text-align: center;">
-        <h4 class="text-muted" ng-show="form.fields.length == 0">No fields added yet.</h4>
-    </div>
-
     <div style="width:100%; height:2px; background-color:black;"></div>
     <br>
-
-    <accordion close-others="true">
+<!--     <accordion close-others="true">
         <accordion-group heading="{{field.field_title}}" ng-repeat="field in form.fields">
-            <div>
+ -->            
+            <div class="jumbotron" ng-repeat="field in form.fields">
                 <div class="row">
-                    <div class="col-sm-offset-3 col-sm-2">
-                        <h4>Field ID: <span class="text-muted">{{field.field_id}}</span></h4>
+                    <div class="col-sm-5">
+                        <h4><label>Field Title</label>: <span class="text-muted">{{field.field_title}}</span></h4>                        
                     </div>
-                    <div class="col-sm-2">
-                        <h4>Field Type: <span class="text-muted">{{field.field_type}}</span></h4>
+                    <div class="col-sm-4">
+                        <h4><label>Field Type</label>: <span class="text-muted">{{field.field_type}}</span></h4>
                     </div>
                     <div class="col-sm-3">
                         <button class="btn btn-danger" type="button" ng-click="deleteField(field.field_id)"><span class="glyphicon glyphicon-trash"></span> Delete Field</button>
                     </div>
                  </div>
 
-                <div class="clear"></div> 
 
                 <hr>
 
-                <div class="row" style="text-align: right;">
-                    <div class="col-sm-offset-3 col-sm-2">
-                        <h4>Field Title:</h4>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <label for="field-title">Field Title</label>
+                            <input class="form-control" id="field-title" type="text" ng-model="field.field_title" value="{{field.field_title}}">
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <input class="form-control" type="text" ng-model="field.field_title" value="{{field.field_title}}">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <label for"field-default">Default value</label>
+                            <input class="form-control" id="field-default" type="text" ng-model="field.field_value" value="{{field.field_value}}">
+                        </div>
                     </div>
-                </div>
-                <br>
-                <div class="row" style="text-align: right;">
-                    <div class="col-sm-offset-3 col-sm-2">
-                        <h4>Field Default Value:</h4>
-                    </div>
-                    <div class="col-sm-3">
-                        <input class="form-control" type="text" ng-model="field.field_value" value="{{field.field_value}}">
-                    </div>
-                </div>
-                <br>
+                </form>
                 <div class="row" ng-show="showAddOptions(field)">
-                    <div style="text-align: right;" class="col-sm-offset-3 col-sm-2">
+                    <div class="col-sm-12">
                         <h4>Field Options:</h4>
                     </div>
                     <div class="col-sm-4">
@@ -125,76 +101,51 @@
                     </div>
                 </div>
 
-    			<div class="clear"></div> 
-
                 <hr>
 
-                <div class="row">
-                    <div style="text-align: right;" class="col-sm-offset-3 col-sm-2">
-                        <h4>Required:</h4>
+                <form>
+
+                    <div class="from-group">
+                        <div class="col-sm-6">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" ng-value="true" ng-selected ng-model="field.field_required"/> This field is required
+                                </label>
+                                &nbsp;&nbsp;
+                                <label>
+                                    <input type="radio" ng-value="false" ng-model="field.field_required"/>This field is not required
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-4">
-                        <label>
-                            <input type="radio" ng-value="true" ng-selected ng-model="field.field_required"/>
-                            &nbsp; Yes
-                        </label>
-                        &nbsp;&nbsp;
-                        <label>
-                            <input type="radio" ng-value="false" ng-model="field.field_required"/>
-                            &nbsp; No
-                        </label>
-                    </div>
-                </div>
-					
-				<div class="clear"></div> <hr>
-				<div class="row">
-					<div style="text-align: right;" class="col-sm-offset-3 col-sm-2">
-                        <h4>Disabled:</h4>
-                    </div>
-                    <div class="col-sm-4">
-                        <label>
-                            <input type="radio" ng-value="true" ng-selected ng-model="field.field_disabled"/>
-                            &nbsp; Yes
-                        </label>
-                        &nbsp;&nbsp;
-                        <label>
-                            <input type="radio" ng-value="false" ng-model="field.field_disabled"/>
-                            &nbsp; No
-                        </label>
-                    </div>
-                </div>
+
+                </form>
+                <br>
+                <br>    
             </div>
-            <div style="width:100%; height:2px; background-color:black;"></div>
-            <br>
-        </accordion-group>
+<!--         </accordion-group>
     </accordion>
+ -->    
+    <div style="width:100%; height:2px; background-color:black;"></div>
+
+    <div class="row">
+        <h2 class="text-center">Fields</h2>
+    </div>
     <br>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="form-field" class="col-sm-2 control-label">Fields</label>
+            <div class="col-sm-6">
+                <select class="form-control" id="form-field" ng-model="addField.new" ng-options="type.value as type.name for type in addField.types"></select>
+            </div>
+            <div class="col-sm-3">        
+                <button type="submit" class="btn btn-primary" ng-click="addNewField()"><span class="glyphicon glyphicon-plus"></span> Add Field</button>
+            </div>
+        </div>    
+    </form>
 
     <p class="text-center">
-        <button class="btn btn-primary right" type="button" ng-click="previewOn()"><span class="glyphicon glyphicon-eye-open"></span> Preview Form</button>
         <button class="btn btn-success right" type="button" ng-click="createForm()"><span class="glyphicon glyphicon-floppy-disk"></span> Create Form</button>        
-        <button class="btn btn-danger right" type="button" ng-click="reset()"><span class="glyphicon glyphicon-refresh"></span> Reset</button>
     </p>
-
     <br>
-    <hr>
-
-	<div class="text-center">
-		<a class="btn btn-primary" ng-show="!showJson" ng-click="showJson = true">Show form json object</a>
-		<a class="btn btn-primary" ng-show="showJson" ng-click="showJson = false">Hide form json object</a>
-        <br><br>
-	</div>
-
-    <div ng-show="showJson">
-        <h4>Form object content:</h4>
-        <pre>{{ form | json }}</pre>
-    </div>
-
-    <div class="form-fields-preview" ng-show="previewMode">
-        <form-directive form="previewForm"></form-directive>
-
-        <p class="text-center">
-            <button class="btn btn-primary" type="button" ng-click="previewOff()"><span class="glyphicon glyphicon-hand-left"></span> Back to Create Mode</button>
-        </p>
-    </div>
 </div>
