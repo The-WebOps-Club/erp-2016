@@ -6,7 +6,6 @@
 
         <div class="col-sm-12">
              <form name="myForm" id="myForm" novalidate>
-                
                 <div class="row" ng-repeat="field in form.fields">
                     <div class="container">
                         <field-directive field="field">
@@ -14,14 +13,14 @@
                         </field-directive>
                     </div>
                 </div>
-                 <fieldset><legend>Upload on form submit</legend>
-                    File: <input type="file" ng-file-select="" ng-model="file" name="file" accept="*/*" required="">
-                    <br>
-                    
-                    <span class="progress" ng-show="file.progress >= 0">      
-                        <div style="width:{{file.progress}}%" ng-bind="file.progress + '%'" class="ng-binding"></div>
-                    </span> 
-                    <span ng-show="file.result">Upload Successful</span>
+                 <fieldset ng-show="form.allowUploads" class="col-sm-12">
+                    <p>App File:</p><a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                    <input type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
+                    <div>
+                        <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                            <i>{{progressPercentage}}%</i>
+                        </progressbar>
+                    </div>
                 </fieldset>
             </form>
             <br>

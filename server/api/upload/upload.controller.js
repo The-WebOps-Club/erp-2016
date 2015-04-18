@@ -9,46 +9,45 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
-  console.log(req);
   var part = req.files.file;
-  // mime.define({
-  //   'application/x-zip': ['zip'],
-  // });
-  // console.log(mime.lookup(part.name));
-  // part.mimetype = mime.lookup(part.name);
-  // console.log(part);
-  var writeStream = gfs.createWriteStream({
-    filename: part.name,
-    mode: 'w',
-    content_type:part.mimetype
-  });
-
-
-  writeStream.on('close', function() {
-    return res.status(200).send({
-      message: 'Success'
+  if(part.mimetype != "application/zip"){
+    res.send({
+      message: 'Please upload zip files only'
+    })
+  }
+  else{
+    var writeStream = gfs.createWriteStream({
+      filename: part.name,
+      mode: 'w',
+      content_type:part.mimetype
     });
-  });
-  
-  writeStream.write(part.data);
 
-  writeStream.end();
+
+    writeStream.on('close', function(file) {
+      return res.status(200).send({
+        fileId: file._id,
+        message: 'Success'
+      });
+    });
+    
+    writeStream.write(part.data);
+
+    writeStream.end();
+  }
 }
 
 exports.serve = function(req, res) {
- 
-  gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
- 
-      if(files.length===0){
-      return res.status(400).send({
-        message: 'File not found'
-      });
+  gfs.findOne({ _id: req.params.id}, function (err, file) {
+      if(!file){
+        return res.status(400).send({
+          message: 'File not found'
+        });
       }
   
-    res.writeHead(200, {'Content-Type': files[0].contentType});
+    res.writeHead(200, {'Content-Type': file.contentType});
     
     var readstream = gfs.createReadStream({
-        filename: files[0].filename
+        filename: file.filename
     });
  
       readstream.on('data', function(data) {
@@ -64,7 +63,15 @@ exports.serve = function(req, res) {
       throw err;
     });
   });
- 
+}
+
+exports.destroy = function (req, res) {
+  gfs.remove({_id: req.params.id}, function (err) {
+    if (err) return handleError(err);
+    res.status(200).send({
+      message: 'Success',
+    });
+  });  
 };
 
 // exports.create = function(req, res) {
