@@ -3,7 +3,7 @@
 angular.module('erp2015App')
   .controller('MainCtrl', function ($scope, $state, $http, socket) {
 
-    $state.go('coordPortalDashboardCtrl');
+    $state.go('coordPortalDashboard');
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {
