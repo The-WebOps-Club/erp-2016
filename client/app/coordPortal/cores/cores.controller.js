@@ -6,6 +6,8 @@ angular.module('erp2015App')
 
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();
+
+    // making the process synchronous
     $scope.user.$promise.then(function () {
       $http.get('/api/departments/' + $scope.user.department[0] + '/')
         .success(function (response) {
