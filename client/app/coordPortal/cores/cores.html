@@ -2,7 +2,7 @@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-sm-offset-2 col-sm-4">
+		<div class="col-sm-offset-3 col-sm-6">
 			<div class="container-fluid">
 				<h4><b>Welcome {{ user.name }}</b></h4>
 				<br>
@@ -14,19 +14,20 @@
 			<table ng-show="1" st-table="responses" class="table table-striped">
 				<thead>
 					<tr>
-						<th>Name</th>
-						<th>Applying for</th>
+						<th>Form</th>
 						<th>Position</th>
-						<!-- <th>Department</th> -->
+						<th>Submissions</th>
+						<th>Edit</th>
 						<!-- <th>Sub-Department</th> -->
-						<th>Response</th>
+						<!-- <th>Response</th> -->
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="response in responses">
-						<td>{{response.user.name}}</td>
-						<td>{{response.form.name}}</td>
-						<td>{{response.form.position}}</td>
+					<tr ng-repeat="form in forms">
+						<td>{{form.name}}</td>
+						<td>{{form.position}}</td>
+						<td><a ng-href="coordPortal/admin/submissions/{{form._id}}">View</a></td>
+						<td><a href="/forms/edit/{{form._id}}">Edit</a></td>
 						<!-- <td>{{response.form.department}}</td> -->
 						<!-- <td>{{response.form.subDepartment}}</td> -->
 						<td><button class="btn btn-primary" ng-click="showResponse(response)">View<a/></td>
@@ -34,40 +35,9 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-sm-4" ng-show="responseDetails">
-			<div class="container-fluid">
-				<h4><b>Responses from {{ response.user.name }} for {{response.form.name}}</b></h4>
-				<br>
-			</div>
-			<table ng-show="1" st-table="responses" class="table table-striped">
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th>Answer</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="set in response.values">
-						<td>{{set.field_title}}</td>
-						<td>{{set.field_value}}</td>
-					</tr>
-				</tbody>
-			</table>
-			<div>
-				<h5>Comments:</h5>
-				<textarea ng-model="response.comments"></textarea>
-			</div>
-			<div class="btn-group">
-		        <label class="btn btn-success" ng-model="response.status" btn-radio="'Selected'" uncheckable>Select</label>
-		        <label class="btn btn-warning" ng-model="response.status" btn-radio="'Shortlisted'" uncheckable>Shortlist</label>
-		        <label class="btn btn-danger" ng-model="response.status" btn-radio="'Rejected'" uncheckable>Reject</label>
-		    </div>
-		    <br><br>
-		    <button class="btn btn-success">Save</button>
-		</div>
 	</div>
 	<div class="row">
-		<div class="col-sm-offset-2 col-md-6">
+		<div class="col-sm-offset-3 col-md-6">
 			<p>Departments under {{department.name}}:</p>
 			<ul>
 				<li ng-repeat="subDepartment in department.subDepartments">{{subDepartment.name}}</li>

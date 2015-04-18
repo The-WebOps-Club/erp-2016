@@ -12,5 +12,16 @@ angular.module('erp2015App')
         url: '/coordPortal/admin',
         templateUrl: 'app/coordPortal/cores/cores.html',
         controller: 'CoordPortalCoresCtrl',
+      })
+      .state('coordPortalResponses', {
+        url: '/coordPortal/admin/submissions/:id',
+        templateUrl: 'app/coordPortal/cores/responses.html',
+        controller: 'CoordPortalResponsesCtrl',
+      })
+      .state('coordPortalResponseDetails', {
+        url: '/coordPortal/admin/application/:id',
+        templateUrl: 'app/coordPortal/cores/responseDetails.html',
+        controller: 'CoordPortalResponseDetailsCtrl',
       });
+
   });

@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-offset-3">
+			<h2>Submissions for {{responses[0].form.name}}</h2>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-offset-3 col-sm-6">
+			<table ng-show="1" st-table="responses" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>View Application</th>
+						<th>Status</th>
+						<!-- <th>Sub-Department</th> -->
+						<!-- <th>Response</th> -->
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="response in responses">
+						<td>{{response.user.name}}</td>
+						<td><a ng-href="coordPortal/admin/application/{{response._id}}">View</a></td>
+						<td>{{response.status}}</td>
+						<!-- <td>{{response.form.department}}</td> -->
+						<!-- <td>{{response.form.subDepartment}}</td> -->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
