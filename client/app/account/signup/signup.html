@@ -79,11 +79,12 @@
 
         <div class="form-group" ng-class="{ 'has-success': form.city.$valid && submitted,
                                             'has-error': form.city.$invalid && submitted }">
-          <label>City</label> <span class="help-block">Which city you are from ?</span>
+          <label>City</label>
 
           <input type="text" name="city" class="form-control" ng-model="user.city"
                  required
                  mongoose-error/>
+          <span class="help-block">Which city you are from ?</span>                 
           <span class="help-block" ng-show="form.city.$error.required && submitted">
             City is required
           </span>
@@ -94,11 +95,12 @@
 
         <div class="form-group" ng-class="{ 'has-success': form.summerLocation.$valid && submitted,
                                             'has-error': form.summerLocation.$invalid && submitted }">
-          <label>Summer Location</label> <span class="help-block">Where are you staying during summer vacation ?</span>
+          <label>Summer Location</label>
 
           <input type="text" name="summerLocation" class="form-control" ng-model="user.summerLocation"
                  required
                  mongoose-error/>
+          <span class="help-block">Where are you staying during summer vacation ?</span>       
           <span class="help-block" ng-show="form.summerLocation.$error.required && submitted">
             Summer location is required
           </span>
@@ -109,13 +111,14 @@
 
         <div class="form-group" ng-class="{ 'has-success': form.rollNumber.$valid && submitted,
                                             'has-error': form.rollNumber.$invalid && submitted }">
-          <label>Roll No.</label> <span class="help-block">Enter your roll number</span>
+          <label>Roll No.</label>
 
           <input type="text" name="rollNumber" class="form-control" ng-model="user.rollNumber"
                  ng-minlength="8"
                  ng-maxlength="8"
                  required
                  mongoose-error/>
+          <span class="help-block">Enter your roll number</span>
           <span class="help-block" 
              ng-show="(form.rollNumber.$error.minlength || form.rollNumber.$error.maxlength || form.rollNumber.$error.required) && submitted">
             Roll Number must be of 8 characters
@@ -133,6 +136,7 @@
                  ng-pattern="/^\d{10}$/"
                  required
                  mongoose-error/>
+          <span class="help-block">Do not include +91 before your 10 digit number</span>
           <span class="help-block" 
              ng-show="(form.phoneNumber.$error.pattern || form.phoneNumber.$error.required) && submitted">
             Phone Number must be of 10 digits

@@ -22,6 +22,10 @@ angular.module('erp2015App')
         url: '/coordPortal/admin/application/:id',
         templateUrl: 'app/coordPortal/cores/responseDetails.html',
         controller: 'CoordPortalResponseDetailsCtrl',
-      });
-
+      })
+      .state('coordPortalEditProfile', {
+        url: '/coordPortal/editProfile',
+        templateUrl: 'app/coordPortal/editProfile/editProfile.html',
+        controller: 'CoordPortalEditProfileCtrl'
+      });      
   });

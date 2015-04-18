@@ -17,7 +17,7 @@
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
         
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/coordPortal/dashboard')}"><a href="/coordPortal/dashboard"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/editProfile')}"><a href="/editProfile"><span class="glyphicon glyphicon-edit"></span> Edit Profile</a></li>
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/coordPortal/editProfile')}"><a ng-href="/coordPortal/editProfile"><span class="glyphicon glyphicon-edit"></span> Edit Profile</a></li>
 
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
       </ul>

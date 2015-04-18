@@ -16,7 +16,7 @@ var validationError = function(res, err) {
  */
 exports.index = function(req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
-    if(err) return res.send(500, err);
+    if(err) return res.json(500, err);
     res.json(200, users);
   })
   .populate('department', 'name');
@@ -46,7 +46,7 @@ exports.show = function (req, res, next) {
 
   User.findById(userId, function (err, user) {
     if (err) return next(err);
-    if (!user) return res.send(401);
+    if (!user) return res.sendStatus(401);
     res.json(user.profile);
   });
 };
@@ -57,8 +57,8 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) return res.send(500, err);
-    return res.send(204);
+    if(err) return res.json(500, err);
+    return res.sendStatus(204);
   });
 };
 
@@ -70,16 +70,42 @@ exports.changePassword = function(req, res, next) {
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
+  console.log(req.params);
+  console.log(req.user._id);
+
   User.findById(userId, function (err, user) {
     if(user.authenticate(oldPass)) {
       user.password = newPass;
       user.save(function(err) {
         if (err) return validationError(res, err);
-        res.send(200);
+        res.sendStatus(200);
       });
     } else {
-      res.send(403);
+      res.sendStatus(403);
     }
+  });
+};
+
+/**
+ * Updates a users profile details
+ */
+exports.updateProfile = function(req, res, next) {
+  var userId = req.user._id;
+  var userUpdate = req.body.userUpdate;
+
+  // I'm no where using req.params.id here. Do a better algo
+  User.findById(userId, function (err, user) {
+    if(err) return validationError(res, err);
+    if(!user) return res.sendStatus(404);
+    user.name = userUpdate.name;
+    user.city = userUpdate.city;
+    user.summerLocation = userUpdate.summerLocation;
+    user.cgpa = userUpdate.cgpa;
+    user.phoneNumber = userUpdate.phoneNumber;
+    user.save(function (err) {
+      if(err) return validationError(res, err);
+      res.sendStatus(200);
+    });
   });
 };
 
@@ -113,7 +139,7 @@ exports.addDepartment = function(req, res, next) {
         return handleError(res, err);
       }
       if(!department) {
-        return res.send(404);
+        return res.sendStatus(404);
       }
       if (department[req.body.role].indexOf(user._id) == -1){
         department[req.body.role].push(user._id);
@@ -127,10 +153,10 @@ exports.addDepartment = function(req, res, next) {
         user.department.push(req.body.department);
         user.save(function(err) {
           if (err) return validationError(res, err);
-          res.send(200); 
+          res.sendStatus(200); 
         });
       }
-      else res.send(200);
+      else res.sendStatus(200);
     });
   });
 };
@@ -151,7 +177,7 @@ exports.addSubDepartment = function(req, res, next) {
         return handleError(res, err);
       }
       if(!subDepartment) {
-        return res.send(404);
+        return res.sendStatus(404);
       }
       if (subDepartment[req.body.role].indexOf(user._id) == -1){
         subDepartment[req.body.role].push(user._id);
@@ -163,12 +189,12 @@ exports.addSubDepartment = function(req, res, next) {
             user.subDepartment.push(req.body.subDepartment);
             user.save(function(err) {
               if (err) return validationError(res, err);
-              res.send(200); 
+              res.sendStatus(200); 
             });
           }
         });
       }
-      else res.send(200);
+      else res.sendStatus(200);
     });
   });
 };

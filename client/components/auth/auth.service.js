@@ -93,6 +93,25 @@ angular.module('erp2015App')
       },
 
       /**
+       * Update Profile
+       * 
+       * @param  {[type]}   user     [description]
+       * @param  {Function} callback [description]
+       * @return {[type]}            [description]
+       */
+      updateProfile: function(user, callback) {
+        var cb = callback || angular.noop;
+        console.log(user);
+        return User.updateProfile({ id: currentUser._id }, {
+          userUpdate: user
+        }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);          
+        }).$promise;
+      },
+
+      /**
        * Gets all available info on authenticated user
        *
        * @return {Object} user

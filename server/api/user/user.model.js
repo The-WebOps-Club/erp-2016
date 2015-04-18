@@ -111,7 +111,7 @@ UserSchema
     if (authTypes.indexOf(this.provider) !== -1) return true;
     var regExpPhone = /^\d{10}$/; 
     return (regExpPhone.test(phoneNumber));
-  }, 'Phone Number must have 10 dis');
+  }, 'Phone Number must have 10 digits');
 
 // Validate rollNumber
 UserSchema
