@@ -2,7 +2,7 @@
 
 angular.module('erp2015App')
   // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth, FileUploader) {
-  .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth) {
+  .controller('CoordPortalDashboardCtrl', function ($scope, $state, $location, $http, CoordPortalService, Auth) {
 
     $scope.getCurrentUser = Auth.getCurrentUser;
 
@@ -35,7 +35,8 @@ angular.module('erp2015App')
       $http.post('/api/coordForms/deleteApp', { formId: id })
         .success(function (response) {
           console.log(response);
-          $location.url('/coordPortal/dashboard');
+
+          $state.reload();
         })
         .error(function (err) {
           console.log(err);
