@@ -27,11 +27,11 @@ exports.showById = function(req, res) {
 };
 
 // Get a form by category
-exports.showByCategory = function(req, res) {
-	CoordForm.find({department : req.params.category}, function (err, form) {
+exports.showByDepartment = function(req, res) {
+	CoordForm.find({department : req.params.department}, function (err, form) {
 		if(err) { return handleError(res, err); }
 		if(!form[0]) return res.sendStatus(404); 
-		return res.json(form[0]);
+		return res.json(form);
 	});
 };
 
@@ -55,8 +55,18 @@ exports.getResponse = function(req, res) {
 	});
 };
 
+exports.showResponse = function (req, res) {
+	Response.findById(req.params.id, function (err, response) {
+		if(err) { return handleError(res, err); }
+		if(!response) { return res.sendStatus(404); }
+		return res.json(response);
+	})
+	.populate('user', 'name cgpa')
+	.populate('form', 'name department subDepartment position');
+}
+
 // sends forms applied by the user
-exports.showByIdArray = function(req, res) {
+exports.showByUser = function(req, res) {
 	Response.find({user: req.user._id}, function (err, response) {
 		if(err) { return handleError(res, err); }
 		if(!response) { return res.sendStatus(404); }
@@ -66,17 +76,17 @@ exports.showByIdArray = function(req, res) {
 };
 
 // gets all the responses for a given category for core
-exports.showValuesAll = function(req, res) {
-	CoordForm.find({department: req.params.id}, function (err, coordForm) {
+exports.showAllResponses = function(req, res) {
+	CoordForm.findById(req.params.id, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
 		if(!coordForm) { return res.sendS(404); }
-		Response.find({form: {$in: coordForm}}, function (err, response) {
+		Response.find({form: coordForm._id}, function (err, response) {
 			if(err) { return handleError(res, err); }
 			if(!response) { return res.sendStatus(404); }
 			console.log(response);
 			return res.json(response);
 		})
-		.populate('user', 'name')
+		.populate('user', 'name cgpa')
 		.populate('form', 'name department subDepartment position');
 	});
 };
@@ -142,6 +152,19 @@ exports.saveForm = function (req, res) {
 		});
 	});
 };
+
+exports.updateResponse = function (req, res) {
+	if(req.body._id) { delete req.body._id; }
+	Response.findById(req.params.id, function (err, response) {
+		if (err) { return handleError(res, err); }
+		if(!response) { return res.send(404); }
+		var updated = _.merge(response, req.body);
+		updated.save(function (err) {
+		  if (err) { return handleError(res, err); }
+		  return res.json(200, response);
+		});
+	});
+}
 
 // Deletes a response from the db
 exports.deleteApp = function(req, res) {

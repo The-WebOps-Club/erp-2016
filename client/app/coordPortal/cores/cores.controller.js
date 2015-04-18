@@ -17,13 +17,13 @@ angular.module('erp2015App')
         .error(function (err) {
           console.log(err);
         });
-        CoordPortalService.formValuesAll($scope.user.department[0]).then(function (responses) {
-          if(responses.length !== 0) {
-            $scope.responses = responses;
-            // console.log(responses);
+        CoordPortalService.formByDepartment($scope.user.department[0]).then(function (forms) {
+          if(forms.length !== 0) {
+            $scope.forms = forms;
+            // console.log(forms);
             // socket.syncUpdates('form', $scope.allForms);
           } else {
-            $scope.responses = '';
+            $scope.forms = '';
           }
         });
     })
@@ -48,6 +48,7 @@ angular.module('erp2015App')
     $scope.addSubDepartment = function () {
       $http.post('/api/subDeparments/', {name: $scope.newSubDepartment, department: $scope.department._id})
         .success(function (response) {
+          $scope.message = "Added!"
           console.log(response);
         })
         .error(function (err) {

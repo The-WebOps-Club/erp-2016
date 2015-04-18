@@ -14,8 +14,8 @@ angular.module('erp2015App')
           return response.data;
         });
       },
-      formByCategory: function (category) {
-        return $http.get('/api/coordForms/dashFormFields' + category).then(function (response) {
+      formByDepartment: function (department) {
+        return $http.get('/api/coordForms/department/' + department).then(function (response) {
           return response.data;
         });
       },
@@ -25,20 +25,26 @@ angular.module('erp2015App')
           return response.data;
         });            
       },
-      getResponse: function (formId) {
-        return $http.get('/api/coordForms/getResponse/' + formId).then(function (response) {
+      getResponse: function (responseId) {
+        return $http.get('/api/coordForms/getResponse/' + responseId).then(function (response) {
           // console.log(response.data);    
           return response.data;
         });            
       },
-      formValuesAll: function (category) {
-        return $http.get('/api/coordForms/showDepartmentResponses/' + category).then(function (response) {
+      showResponse: function (responseId) {
+        return $http.get('/api/coordForms/showResponse/' + responseId).then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
+      },
+      formResponses: function (formId) {
+        return $http.get('/api/coordForms/showResponses/' + formId).then(function (response) {
           // console.log(response.data);    
           return response.data;
         });            
       },
       formsApplied: function () {
-        return $http.get('/api/coordForms/dashForms').then(function (response) {
+        return $http.get('/api/coordForms/myForms').then(function (response) {
           // console.log(response.data);    
           return response.data;
         });            
