@@ -5,6 +5,10 @@ angular.module('erp2015App')
   .controller('CoordPortalDashboardCtrl', function ($scope, $state, $location, $http, CoordPortalService, Auth) {
 
     $scope.getCurrentUser = Auth.getCurrentUser;
+    if ($scope.getCurrentUser().role === 'core')
+      $state.go('coordPortalCoresCtrl');
+    if (!$scope.getCurrentUser())
+      $state.go('LoginCtrl');
 
     $scope.allForms = '';
     $scope.preference = '';

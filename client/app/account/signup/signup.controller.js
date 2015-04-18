@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('SignupCtrl', function ($scope, Auth, $location, $window) {
+  .controller('SignupCtrl', function ($scope, Auth, $state, $location, $window) {
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    if (Auth.isLoggedIn())
+      $state.go('coordPortalDashboard');
+
     $scope.user = {};
     $scope.errors = {};
 

@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('MainCtrl', function ($scope, $http, socket) {
+  .controller('MainCtrl', function ($scope, $state, $http, socket) {
+
+    $state.go('coordPortalDashboardCtrl');
     $scope.awesomeThings = [];
 
     $http.get('/api/things').success(function(awesomeThings) {

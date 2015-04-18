@@ -2,6 +2,9 @@
 
 angular.module('erp2015App')
   .controller('DepartmentsCtrl', function ($scope, $http) {
+    //walling 'em out
+    $state.go('coordPortalDashboardCtrl');
+
     $http.get('/api/departments')
       .success(function(data) {
         $scope.departments = data;

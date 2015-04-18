@@ -6,6 +6,12 @@ angular.module('erp2015App')
       .state('tasks', {
         url: '/tasks',
         templateUrl: 'app/tasks/tasks.html',
-        controller: 'TasksCtrl'
+        controller: 'TasksCtrl',
+		    // data: {
+	     //    permissions: {
+      //   	  	except: ['anonymous', 'admin', 'user', 'core'],
+      //     		redirectTo: 'coordPortalDashboard'
+			   //  }        
+      //   }        
       });
   });

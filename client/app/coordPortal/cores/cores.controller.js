@@ -2,7 +2,13 @@
 
 angular.module('erp2015App')
   // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth, FileUploader) {
-  .controller('CoordPortalCoresCtrl', function ($scope, $location, $http, CoordPortalService, Auth) {
+  .controller('CoordPortalCoresCtrl', function ($scope, $state, $location, $http, CoordPortalService, Auth) {
+
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    if ($scope.getCurrentUser().role === 'user')
+      $state.go('coordPortalDashboardCtrl');
+    if (!$scope.getCurrentUser())
+      $state.go('LoginCtrl');
 
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();

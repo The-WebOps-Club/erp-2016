@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('FormCreateCtrl', function ($scope, CoordPortalService, FormService, Auth, $http, $filter) {
+  .controller('FormCreateCtrl', function ($scope, $state, CoordPortalService, FormService, Auth, $http, $filter) {
+
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    if ($scope.getCurrentUser().role === 'user')
+      $state.go('coordPortalDashboardCtrl');
+    if (!$scope.getCurrentUser())
+      $state.go('LoginCtrl');
 
     // for backing up the form
     $scope.backupForm = {};

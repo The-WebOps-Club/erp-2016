@@ -1,6 +1,11 @@
 'use strict';
 
-var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', function ($scope, CoordPortalService, $stateParams, $http) {
+var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', function ($scope, CoordPortalService, $stateParams, $http, Auth) {
+    
+    $scope.getCurrentUser = Auth.getCurrentUser;
+    if (!$scope.getCurrentUser())
+      $state.go('LoginCtrl');
+   
     $scope.form = {};
     $scope.getForm = {};
     $scope.getResponse = {};
