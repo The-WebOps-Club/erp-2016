@@ -14,7 +14,8 @@ exports.index = function(req, res) {
 	CoordForm.find(function (err, forms) {
 		if(err) { return handleError(res, err); }
 		return res.status(200).json(forms);
-	});
+	})
+	.populate('department subDepartment', 'name');
 };	
 
 // Get a single form or all forms by id

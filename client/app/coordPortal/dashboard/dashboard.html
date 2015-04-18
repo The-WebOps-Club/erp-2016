@@ -16,13 +16,13 @@
 			<div class="container-fluid">
 				<h4><b>Welcome {{ getCurrentUser().name }}</b></h4>
 				<br>
-				<p>Please choose the department of your choice and <b>save</b>.</p>
+				<p>Please choose the department of your choice and <b>Apply</b>.</p>
 				<p>Please complete the questionnaire before the deadline.</p>
 				<p>You are allowed to apply to any number of departments</p>
-				<br>
 				<h5><b>Good Luck!!</b></h5>
 			</div>
 			<br><br>
+				<h4>Your Applications</h4>
 			<table ng-show="1" st-table="formsApplied" class="table table-striped">
 				<thead>
 					<tr>
@@ -50,7 +50,7 @@
 	        			<label for="department-select">Select</label>
 			            <select class="form-control" ng-model="preference" id="department-select">
 			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
-			            		{{form.name}}
+			            		{{form.department.name}} | {{form.name}}
 			            	</option>
 			        	</select>
 	        		</div>
@@ -65,22 +65,19 @@
 	        	<h4 class="text-center"><b>Instructions and Regulations</b></h4>
 	        	<h5><b>General</b></h5>
 	        	<ul>
-	        		<li><a href="#">Contact Details</a> of previous year's Coordinators.</li>
+	        		<li><a href="https://docs.google.com/spreadsheets/d/1gqGkgST8mce3FgcYVYAeKNeTRQcLWrb2Wwnme5L1rWU/">Contact Details</a> of previous year's Coordinators.</li>
 	        		<br>
 
 	        		<li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
 	        		<br>
 	        		
-	        		<li>Deadline is <b>11:59pm, Tuesday, 12th August, 2015</b>.</li>
+	        		<li>Deadline is <b>Deadline Here</b>.</li>
 	        		<br>
-	        		
-	        		<li><b>Please fill this <a href="#">form</a> if you are interested in applying</b>.</li>
-	        		<br>
-	        		
+	        			        		
 	        		<li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
 	        		<br>
 	        		
-	        		<li>Contact ... (WebOps Core) in case of any problems with the portal.</li>
+	        		<li>Contact the <a href="mailto:deepak@saarang.org?Subject=Saarang%20Coord%20Portal">WebOps Core</a> in case of any problems with the portal.</li>
 	        	</ul>
 	        </div>
 		</div>
@@ -90,9 +87,9 @@
 <footer class="footer">
   	<div class="container">
     	<p>
-	      	<a href="http://www.shaastra.org">Shaastra 2015</a> |
-	        <a href="https://twitter.com/ShaastraIITM">Twitter</a> |
-	        <a href="https://www.facebook.com/Shaastra?ref=br_tf">Facebook</a>
+	      	<a href="http://www.saarang.org">Saarang 2016</a> |
+	        <a href="https://twitter.com/saarang_iitm">Twitter</a> |
+	        <a href="https://www.facebook.com/saarangiitm">Facebook</a>
 	    </p>
 	</div>
 </footer>
