@@ -6,11 +6,11 @@ angular.module('erp2015App')
       .state('formsCreate', {
         url: '/forms/formCreate',
         templateUrl: 'app/forms/formCreate/formCreate.html',
-        controller: 'FormCreateCtrl',
+        controller: 'FormCreateCtrl'
       })
       .state('formsView', {
         url: '/forms/formView/:id',
         templateUrl: 'app/forms/formView/formView.html',
-        controller: 'FormViewCtrl',
+        controller: 'FormViewCtrl'
       });
   });
