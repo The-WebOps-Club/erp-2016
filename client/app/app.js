@@ -20,15 +20,15 @@ angular.module('erp2015App', [
     $httpProvider.interceptors.push('authInterceptor');
   })
   .config( function( $facebookProvider ) {
-    $facebookProvider.setAppId('<your-facebook-app-id>');
+    $facebookProvider.setAppId('1597426613877122');
   })
   .run( function ($rootScope) {
-    (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1597426613877122";
+      fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   })
 
