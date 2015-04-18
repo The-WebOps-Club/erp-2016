@@ -14,7 +14,15 @@
                         </field-directive>
                     </div>
                 </div>
-            
+                 <fieldset><legend>Upload on form submit</legend>
+                    File: <input type="file" ng-file-select="" ng-model="file" name="file" accept="*/*" required="">
+                    <br>
+                    
+                    <span class="progress" ng-show="file.progress >= 0">      
+                        <div style="width:{{file.progress}}%" ng-bind="file.progress + '%'" class="ng-binding"></div>
+                    </span> 
+                    <span ng-show="file.result">Upload Successful</span>
+                </fieldset>
             </form>
             <br>
             <div>
@@ -25,6 +33,12 @@
                     <a ng-href="/coordPortal/dashboard">Return to dashboard</a>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-12">
+            <form name="myForm">
+               
+                <br>
+            </form>
         </div>
     </div>
 </div>

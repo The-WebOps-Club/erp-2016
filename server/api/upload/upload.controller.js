@@ -9,7 +9,8 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
-  var part = req.files.filefield;
+  console.log(req);
+  var part = req.files.file;
   // mime.define({
   //   'application/x-zip': ['zip'],
   // });

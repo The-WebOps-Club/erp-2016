@@ -6,8 +6,9 @@ angular.module('erp2015App', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
+  'ngFileUpload',
   'ui.bootstrap',
-  'smart-table'
+  'smart-table',
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
