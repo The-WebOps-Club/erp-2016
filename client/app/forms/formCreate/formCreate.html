@@ -41,6 +41,10 @@
             <label for="form-position">Position</label>
             <select class="form-control" id="form-position" ng-model="form.position" ng-options="role.name for role in positions track by role.value"></select>
         </div>
+        <div class="form-group col-sm-6">
+            <input type="checkbox" ng-model="form.allowUploads">
+            <label for="form-allowUploads">Allow Uploads</label>
+        </div>
     </form>
 
     <hr>

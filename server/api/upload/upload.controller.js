@@ -1,68 +1,83 @@
 'use strict';
 
-var _ = require('lodash');
-var multiparty = require('multiparty');
-var fs  = require('fs');
-var path = require('path');
-var mime = require('mime');
+var _ = require('lodash'),
+  mongoose = require('mongoose'),
+  Grid = require('gridfs-stream'),
+  mime = require('mime');
 
-//Serves the given filepath from /server/api/uploads/storage
+Grid.mongo = mongoose.mongo;
+var gfs = new Grid(mongoose.connection.db);
+
+exports.create = function (req, res) {
+  var part = req.files.filefield;
+  // mime.define({
+  //   'application/x-zip': ['zip'],
+  // });
+  // console.log(mime.lookup(part.name));
+  // part.mimetype = mime.lookup(part.name);
+  // console.log(part);
+  var writeStream = gfs.createWriteStream({
+    filename: part.name,
+    mode: 'w',
+    content_type:part.mimetype
+  });
+
+
+  writeStream.on('close', function() {
+    return res.status(200).send({
+      message: 'Success'
+    });
+  });
+  
+  writeStream.write(part.data);
+
+  writeStream.end();
+}
 
 exports.serve = function(req, res) {
-  // var options = {
-  //   root: __dirname + '/static/',
-  //   dotfiles: 'deny',
-  //   headers: {
-  //       'x-timestamp': Date.now(),
-  //       'x-sent': true
-  //   }
-  // };
-
-  var fileName = __dirname + '/static/' + req.params.name;
-  console.log(fileName);
-  res.sendFile(fileName);
-
-  // var mypath = req.params[0] ? req.params[0] : 'index.html';
-  // console.log(__dirname);
  
-  // var file = __dirname + '/static/' + mypath;
-
-  // res.download(file, function(err){
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     console.log("success");
-  //   }
-  // });
+  gfs.files.find({ filename: req.params.filename }).toArray(function (err, files) {
+ 
+      if(files.length===0){
+      return res.status(400).send({
+        message: 'File not found'
+      });
+      }
   
-  // console.log(file);
-  // var filename = path.basename(file);
-  // var mimetype = mime.lookup(file);
-  // console.log(filename, mimetype);
-
-  // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-  // res.setHeader('Content-type', mimetype);
-
-  // var filestream = fs.createReadStream(file);
-  // filestream.pipe(res);
-};
-
-// Creates a new upload in the DB. 
-// Will upload to a temp folder, need to move the file away later.
-// Use UUID and fs to rename and relocate the folder accordingly
-
-exports.create = function(req, res) {
-  var form = new multiparty.Form(
-    {uploadDir: __dirname + '/static'}
-  );
-
-  form.parse(req, function(err, fields, files) {
-    console.log(fields);
-    console.log(files);
-    console.log(err);
-    res.json(200, files);
+    res.writeHead(200, {'Content-Type': files[0].contentType});
+    
+    var readstream = gfs.createReadStream({
+        filename: files[0].filename
+    });
+ 
+      readstream.on('data', function(data) {
+          res.write(data);
+      });
+      
+      readstream.on('end', function() {
+          res.end();        
+      });
+ 
+    readstream.on('error', function (err) {
+      console.log('An error occurred!', err);
+      throw err;
+    });
   });
+ 
 };
+
+// exports.create = function(req, res) {
+//   var form = new multiparty.Form(
+//     {uploadDir: __dirname + '/static'}
+//   );
+
+//   form.parse(req, function(err, fields, files) {
+//     console.log(fields);
+//     console.log(files);
+//     console.log(err);
+//     res.json(200, files);
+//   });
+// };
 
 function handleError(res, err) {
   return res.send(500, err);
