@@ -44,21 +44,19 @@
 		</div>
 <!-- onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);" -->
         <div class="col-sm-offset-1 col-sm-4">
-        	Select:
-			<div class="container-fluid">
-				<div class="col-sm-8">
-		            <select class="form-control" ng-model="preference">
-		               	<!-- <optgroup ng-repeat="form in allForms" label="{{form.department[0].name}}"> -->
-		            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
-		            		{{form.name}}
-		            	</option>
-		            	<!-- </optgroup> -->
-		        	</select>
-	        	</div>
-	        	<div class="col-sm-3">
-		        	<a class="btn btn-primary" ng-href="{{preference}}">View Questions</a>
-				</div>
-	        </div>
+        	<div class="container-fluid">
+	        	<form>
+	        		<div class="form-group">
+	        			<label for="department-select">Select</label>
+			            <select class="form-control" ng-model="preference" id="department-select">
+			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
+			            		{{form.name}}
+			            	</option>
+			        	</select>
+	        		</div>
+			        <a class="btn btn-primary" ng-href="{{preference}}">View Questions</a>
+	        	</form>
+        	</div>
 	        <br>
 			<div class="jumbotron">
 				put fb thingy here

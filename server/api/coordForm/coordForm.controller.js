@@ -52,7 +52,8 @@ exports.getResponse = function(req, res) {
 		if(err) { return handleError(res, err); }
 		if(!response) { return res.sendStatus(404); }
 		return res.json(response);
-	});
+	})
+	.populate('form', 'name');
 };
 
 exports.showResponse = function (req, res) {
