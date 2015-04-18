@@ -34,7 +34,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="Form in formsApplied">
-						<td>{{Form.form.department}}</td>
+						<td>{{Form.form.name}}</td>
 						<td>{{Form.form.position.name}}</td>
 						<td><a class="btn btn-info" ng-href="/forms/formView/{{Form.form._id}}">View<a/></td>
 						<td><a class="btn btn-danger" ng-click="deleteApp(Form.form._id)">Delete</a></td>

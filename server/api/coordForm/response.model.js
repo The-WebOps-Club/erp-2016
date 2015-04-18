@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var ResponseSchema = new Schema({
 	form: { type: Schema.Types.ObjectId, ref: 'CoordForm' },
 	user: { type: Schema.Types.ObjectId, ref: 'User' },
+	fileId: String,
 	valid: Boolean,
 	fields: [],
 	createdOn: {
