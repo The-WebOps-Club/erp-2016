@@ -35,7 +35,6 @@ angular.module('erp2015App')
       $http.post('/api/coordForms/deleteApp', { formId: id })
         .success(function (response) {
           console.log(response);
-
           $state.reload();
         })
         .error(function (err) {
