@@ -4,6 +4,7 @@
   "main": "server/app.js",
   "dependencies": {
     "body-parser": "~1.5.0",
+    "busboy-body-parser": "0.0.8",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
     "connect-mongo": "^0.4.1",
@@ -14,6 +15,7 @@
     "express-jwt": "*",
     "express-session": "~1.0.2",
     "googleapis": "^2.0.2",
+    "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "*",
     "lodash": "~2.4.1",
     "method-override": "~1.0.0",
