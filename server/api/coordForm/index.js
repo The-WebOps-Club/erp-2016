@@ -19,7 +19,7 @@ router.get('/showResponses/:id', auth.hasRole('core'), controller.showAllRespons
 router.post('/', auth.isAuthenticated(), auth.hasRole('core'), controller.create);
 router.post('/saveForm', auth.isAuthenticated(), controller.saveForm);
 
-router.post('/delete', auth.isAuthenticated(), controller.destroy);
+router.post('/delete', auth.isAuthenticated(), auth.hasRole('core'), controller.destroy);
 router.post('/deleteApp', auth.isAuthenticated(), controller.deleteApp);
 
 router.put('/response/:id', auth.hasRole('core'), controller.updateResponse)
