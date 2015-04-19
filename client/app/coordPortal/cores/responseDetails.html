@@ -5,6 +5,10 @@
 			<div class="container-fluid">
 				<h4><b> Application for {{response.form.name}} submitted by {{response.user.name}}</b></h4>
 				<br>
+				<div ng-show="response.fileId" class="col-sm-12">
+                    <a ng-href="api/uploads/{{response.fileId}}" target="_blank" ng-if="response.fileId">Download the App file</a>
+                </div>
+                <br>
 				<table ng-show="1" st-table="responses" class="table table-striped">
 					<thead>
 						<tr>

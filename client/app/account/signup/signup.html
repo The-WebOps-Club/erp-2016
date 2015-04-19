@@ -58,6 +58,18 @@
           </span>
         </div>
 
+        <div class="form-group" ng-class="{ 'has-success': (user.password === user.confirmPassword && submitted),
+                                            'has-error': (user.password != user.confirmPassword && submitted) }">
+          <label>Confirm Password</label>
+
+          <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword"
+                 required/>
+          <span class="help-block"
+             ng-show="((user.password != user.confirmPassword) || form.confirmPassword.$error.required) && submitted">
+            Password's do not match.
+          </span>
+        </div>
+
         <div class="form-group" ng-class="{ 'has-success': form.cgpa.$valid && submitted,
                                             'has-error': form.cgpa.$invalid && submitted }">
           <label>CGPA</label>
