@@ -6,6 +6,12 @@ angular.module('erp2015App')
       .state('admin', {
         url: '/admin',
         templateUrl: 'app/admin/admin.html',
-        controller: 'AdminCtrl'
+        controller: 'AdminCtrl',
+        // data: {
+        // 	permissions: {
+        // 		except: ['admin', 'anonymous', 'user', 'core'],
+        // 		redirectTo: 'coordPortalDashboard'
+        // 	}
+        // }
       });
   });

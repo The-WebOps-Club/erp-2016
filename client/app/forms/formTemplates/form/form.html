@@ -1,0 +1,46 @@
+<div class="jumbotron col-sm-offset-3 col-sm-6">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2 class="text-center">Application for {{ form.form.name }}</h2>
+        </div>
+
+        <div class="col-sm-12">
+             <form name="myForm" id="myForm" novalidate>
+                <div class="row" ng-repeat="field in form.fields">
+                    <div class="container">
+                        <field-directive field="field">
+
+                        </field-directive>
+                    </div>
+                </div>
+                 <fieldset ng-show="form.allowUploads" class="col-sm-12">
+                    <p>App File: </p>
+                    <div class="alert alert-warning">Only one zip file per application allowed. Warning: Submitting a second file will replace your original submission.</div>
+                    <a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                    <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
+                    <div>
+                        <br>
+                        <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                            <i>{{progressPercentage}}%</i>
+                        </progressbar>
+                    </div>
+                </fieldset>
+            </form>
+            <br>
+            <div>
+                <p class="text-center">
+                    <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
+                </p>
+                <div class="text-center">
+                    <a ng-href="/coordPortal/dashboard">Return to dashboard</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <form name="myForm">
+               
+                <br>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<form-directive form="form"></form-directive>
+
+<div ng-show="showJson">
+	<h4>Form object:</h4>
+	<pre>{{ form | json }}</pre>
+</div>
