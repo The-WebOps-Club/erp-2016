@@ -20,14 +20,14 @@ angular.module('erp2015App', [
     $httpProvider.interceptors.push('authInterceptor');
   })
   .config( function( $facebookProvider ) {
-    $facebookProvider.setAppId('1597426613877122');
+    $facebookProvider.setAppId('1630409340524916');
   })
   .run( function ($rootScope) {
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1597426613877122";
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1630409340524916";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
   })

@@ -1,7 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var SubDepartmentSchema = new Schema({
   name: String,
@@ -32,7 +32,6 @@ var SubDepartmentSchema = new Schema({
 SubDepartmentSchema
   .path('name')
   .validate(function(name) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
     return name.length;
   }, 'Sub-Department name cannot be blank');
 
