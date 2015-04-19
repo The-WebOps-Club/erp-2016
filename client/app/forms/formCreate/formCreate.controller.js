@@ -31,7 +31,7 @@ angular.module('erp2015App')
     $scope.form = {};
     $scope.form.name = '';
     $scope.form.department = '';
-    $scope.form.position = '';
+    $scope.form.position = 'coord';
     $scope.form.fields = [];
 
     // is executed if $scope.form.department is changed to get the values for the subDepartments
