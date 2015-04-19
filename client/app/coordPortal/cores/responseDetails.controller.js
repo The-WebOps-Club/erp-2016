@@ -15,11 +15,11 @@ angular.module('erp2015App')
 
     CoordPortalService.showResponse($stateParams.id)
       .then(function (data) {
-        console.log(data)
-        $scope.response = data
+        console.log(data);
+        $scope.response = data;
       });
 
-    $scope.saveFeedback = function () {
+    $scope.saveFeedback = function() {
       var backupResponse = angular.copy($scope.response);
       $scope.response.form = $scope.response.form._id;
       $scope.response.user = $scope.response.user._id;
@@ -27,6 +27,7 @@ angular.module('erp2015App')
       if (!$scope.response.status) $scope.response.status = "Pending";
       $http.put('/api/coordForms/response/' + $scope.response._id + '/', $scope.response)
         .success(function (response) {
+          console.log(response);
           $scope.response = angular.copy(backupResponse);
           $scope.showSaved = 1;
         })
