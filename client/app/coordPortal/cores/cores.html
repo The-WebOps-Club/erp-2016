@@ -35,16 +35,18 @@
 			</table>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-sm-offset-3 col-md-6">
-			<p>Departments under {{department.name}}:</p>
-			<ul>
-				<li ng-repeat="subDepartment in department.subDepartments">{{subDepartment.name}}</li>
-			</ul>
-		</div>
-		<div class="col-sm-offset-3 col-md-6 form-inline">
-			<input class="form-control" ng-model="newSubDepartment"></input>
-			<button class="btn btn-primary" ng-click="addSubDepartment()">Add Subdepartment</button>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-offset-3 col-md-6">
+				<p>Departments under {{department.name}}:</p>
+				<ul>
+					<li ng-repeat="subDepartment in department.subDepartments">{{subDepartment.name}}</li>
+				</ul>
+			</div>
+			<div class="col-sm-offset-3 col-md-6 form-inline">
+				<input class="form-control" ng-model="newSubDepartment"></input>
+				<button class="btn btn-primary" ng-click="addSubDepartment()">Add Subdepartment</button>
+			</div>
 		</div>
 	</div>
 </div>
