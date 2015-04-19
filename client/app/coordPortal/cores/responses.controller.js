@@ -13,6 +13,7 @@ angular.module('erp2015App')
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();
 
+    console.log($stateParams);
     CoordPortalService.formResponses($stateParams.id)
       .then(function (data) {
         console.log(data);

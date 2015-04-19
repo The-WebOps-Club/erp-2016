@@ -81,7 +81,7 @@ exports.showByUser = function(req, res) {
 exports.showAllResponses = function(req, res) {
 	CoordForm.findById(req.params.id, function (err, coordForm) {
 		if(err) { return handleError(res, err); }
-		if(!coordForm) { return res.sendS(404); }
+		if(!coordForm) { return res.sendStatus(404); }
 		Response.find({form: coordForm._id}, function (err, response) {
 			if(err) { return handleError(res, err); }
 			if(!response) { return res.sendStatus(404); }
@@ -161,11 +161,13 @@ exports.updateResponse = function (req, res) {
 	if(req.body._id) { delete req.body._id; }
 	Response.findById(req.params.id, function (err, response) {
 		if (err) { return handleError(res, err); }
-		if(!response) { return res.send(404); }
+		if(!response) { return res.sendStatus(404); }
 		var updated = _.merge(response, req.body);
-		updated.save(function (err) {
-		  if (err) { return handleError(res, err); }
-		  return res.json(200, response);
+		console.log(response);
+		response.save(function (err) {
+			if (err) { return handleError(res, err); }
+			console.log(response);
+		  	return res.json(response);
 		});
 	});
 }
