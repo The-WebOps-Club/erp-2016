@@ -52,7 +52,7 @@ angular.module('erp2015App')
     };
 
     $scope.addSubDepartment = function () {
-      $http.post('/api/subDeparments/', {name: $scope.newSubDepartment, department: $scope.department._id})
+      $http.post('/api/subDepartments/', {name: $scope.newSubDepartment, department: $scope.department._id})
         .success(function (response) {
           $scope.message = "Added!"
           console.log(response);
