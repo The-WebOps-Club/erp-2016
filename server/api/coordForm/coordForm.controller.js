@@ -163,8 +163,9 @@ exports.updateResponse = function (req, res) {
 		if (err) { return handleError(res, err); }
 		if(!response) { return res.sendStatus(404); }
 		var updated = _.merge(response, req.body);
-		console.log(response);
-		response.save(function (err) {
+		console.log(updated);
+		updated.markModified('fields');
+		updated.save(function (err) {
 			if (err) { return handleError(res, err); }
 			console.log(response);
 		  	return res.json(response);
