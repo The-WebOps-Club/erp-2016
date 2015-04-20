@@ -15,12 +15,14 @@ var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', funct
 		$scope.form.form = {};
 		$scope.form.form._id = getForm._id;
 		$scope.form.form.name = getForm.name;
+		$scope.form.formFileId = getForm.fileId;
 		$scope.form.form.allowUploads = getForm.allowUploads;
 		console.log(getForm);
 		CoordPortalService.getResponse($stateParams.id).then(function (getResponse) {
 			if(getResponse.form) { 
 				$scope.form = getResponse;
 				$scope.form.allowUploads = getForm.allowUploads;
+				$scope.form.formFileId = getForm.fileId;
 			}
 			console.log(getResponse);
 		});
