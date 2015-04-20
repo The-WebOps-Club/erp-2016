@@ -6,25 +6,30 @@
 
         <div class="col-sm-12">
              <form name="myForm" id="myForm" novalidate>
-                <div class="row" ng-repeat="field in form.fields">
+                <!-- <div class="row" ng-repeat="field in form.fields">
                     <div class="container">
                         <field-directive field="field">
 
                         </field-directive>
                     </div>
-                </div>
-                 <fieldset ng-show="form.allowUploads" class="col-sm-12">
-                    <p>App File: </p>
-                    <div class="alert alert-warning">Only one zip file per application allowed. Warning: Submitting a second file will replace your original submission.</div>
-                    <a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
-                    <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
-                    <div>
-                        <br>
-                        <progressbar class="progress-striped active" max="100" value="progressPercentage">
-                            <i>{{progressPercentage}}%</i>
-                        </progressbar>
+                </div> -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a ng-href = "{{form.formFileId}}" target="_blank"><h4> Download the app questionnaire </h4></a>
+                        <fieldset ng-show="form.allowUploads" class="col-sm-12">
+                            <p>App File: </p>
+                            <div class="alert alert-warning">Only one zip file per application allowed. Warning: Submitting a second file will replace your original submission.</div>
+                            <a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                            <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
+                            <div>
+                                <br>
+                                <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                                    <i>{{progressPercentage}}%</i>
+                                </progressbar>
+                            </div>
+                        </fieldset>
                     </div>
-                </fieldset>
+                </div>
             </form>
             <br>
             <div>

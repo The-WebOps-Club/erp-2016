@@ -50,6 +50,19 @@
 
 <div class="col-sm-12 jumbotron">
 
+
+
+    <fieldset class="col-sm-12">
+        <p>App Questionnaire: </p>
+        <input class="form-control" type="text" ng-model="form.formFileId">
+        <div>
+            <br>
+            <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                <i>{{progressPercentage}}%</i>
+            </progressbar>
+        </div>
+    </fieldset>
+
     <div class="row">
         <h4 class="text-center" ng-show="form.fields.length == 0">No question added yet</h4>
     </div>

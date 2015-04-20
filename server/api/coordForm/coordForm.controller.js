@@ -95,7 +95,8 @@ exports.showAllResponses = function(req, res) {
 
 // Create a new form in the db
 exports.create = function(req, res) {
-	var newForm = new CoordForm(req.body); 
+	var newForm = new CoordForm(req.body);
+	newForm.fileId = req.body.formFileId;
 
 	// console.log(formDetails.formValues.fields);
 	newForm.save(function (err, form) {

@@ -6,7 +6,7 @@ var controller = require('./upload.controller');
 var router = express.Router();
 
 
-router.get('/:id', controller.serve);
+router.get('/:id/:filename', controller.serve);
 router.post('/', controller.create);
 router.delete('/:id', controller.destroy);
 

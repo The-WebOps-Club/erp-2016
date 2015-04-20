@@ -135,16 +135,14 @@ angular.module('erp2015App')
     // creates the form
     $scope.createForm = function() {
         
-        if($scope.form.fields === null || $scope.form.fields.length === 0) {
-            window.alert('Please choose some fields to save!');
-        } else if($scope.form.role === '' || $scope.form.department === '') {
+        if($scope.form.department === '') {
             window.alert('Please select the "role", "department" and "sub-department"');
         } else {
             angular.copy($scope.form, $scope.backupForm);
             $scope.form = {};            
             
             // need to do some stuff here
-            console.log($scope.form);
+            console.log($scope.backupForm);
             $http.post('/api/coordForms', $scope.backupForm).success(function (message) {
                     $scope.message = message;
                     console.log('Form Saved');
