@@ -6,7 +6,7 @@ var Response = require('./response.model');
 var User = require('../user/user.model');
 
 var validationError = function(res, err) {
-  return res.json(422, err);
+  return res.status(422).json(err);
 };
 
 // Get the list of forms
