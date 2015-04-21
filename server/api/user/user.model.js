@@ -28,6 +28,8 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
   facebook: {},
   google: {},
   github: {}

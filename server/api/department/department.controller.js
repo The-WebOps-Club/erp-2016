@@ -7,7 +7,7 @@ var Department = require('./department.model');
 exports.index = function(req, res) {
   Department.find(function (err, departments){
     if(err) { return handleError(res, err); }
-    return res.json(200, departments);
+    return res.status(200).json(departments);
   })
   .populate('cores coords superCoords qms subDepartments');
 };
@@ -17,7 +17,7 @@ exports.show = function(req, res) {
   Department.findById(req.params.id, function (err, department) {
     if(err) { return handleError(res, err); }
     if(!department) { return res.sendStatus(404); }
-    return res.json(200, department);
+    return res.status(200).json(department);
   })
   .populate('cores coords superCoords qms subDepartments');
 };
@@ -26,7 +26,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   Department.create(req.body, function(err, department) {
     if(err) { return handleError(res, err); }
-    return res.json(201, department);
+    return res.status(200).json(department);
   });
 };
 
@@ -39,7 +39,7 @@ exports.update = function(req, res) {
     var updated = _.merge(department, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, department);
+      return res.status(200).json(department);
     });
   });
 };
@@ -49,7 +49,7 @@ exports.destroy = function(req, res) {
   Department.findById(req.params.id, function (err, department) {
     if(err) { return handleError(res, err); }
     if(!department) { return res.sendStatus(404); }
-    department.remove(function(err) {
+    department.remove(function (err) {
       if(err) { return handleError(res, err); }
       return res.sendStatus(204);
     });
@@ -57,5 +57,5 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }

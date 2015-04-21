@@ -27,11 +27,11 @@ function isAuthenticated() {
     .use(function(req, res, next) {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
-        if (!user) return res.send(401);
+        if (!user) return res.sendStatus(401);
 
         user.lastSeen = Date.now();
         user.save(function(err) {
-          if(err) return res.send(err);
+          if(err) return res.json(err);
         });
         req.user = user;
         next();
@@ -52,7 +52,7 @@ function hasRole(roleRequired) {
         next();
       }
       else {
-        res.send(403);
+        res.sendStatus(403);
       }
     });
 }
@@ -73,6 +73,7 @@ function setTokenCookie(req, res) {
   res.cookie('token', JSON.stringify(token));
   res.redirect('/');
 }
+
 
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;

@@ -4,7 +4,15 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var async = require('async');
+var crypto = require('crypto');
+var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer');
+var smtpapi    = require('smtpapi');
 var Department = require('../department/department.model');
+
+var EMAIL = ''; // Put your fest mail id here
+var PASSWORD = ''; // Put your fest password here 
 
 var validationError = function (res, err) {
   return res.json(422, err);
@@ -183,6 +191,114 @@ exports.addSubDepartment = function(req, res, next) {
         });
       }
       else res.sendStatus(200);
+    });
+  });
+};
+
+/**
+ * Sends a mail to the user to reset the password
+ * 
+ * @param  {[type]} req [description]
+ * @param  {[type]} res [description]
+ * @return {[type]}     [description]
+ */
+exports.sendResetMail = function(req, res, next) {
+  async.waterfall([
+    function (done) {
+      crypto.randomBytes(25, function (err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function (token, done) {
+      User.findOne({ email: req.body.email }, function (err, user) {
+        if(err) { return handleError(res, err); }
+        if(!user) { return res.sendStatus(404); }
+        
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // one hour
+
+        user.save(function (err) {
+          done(err, token, user);
+        })
+      })
+    },
+    function (token, user, done) {
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: EMAIL,
+          pass: PASSWORD
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: EMAIL,
+        subject: 'Account Password Reset',
+        text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function (err, info) {
+        if(err) {
+          console.log('Error Occurred');
+          console.log(err);
+          return res.sendStatus(500);
+        } else {
+          console.log(info);
+          res.sendStatus(200);
+        }
+      });      
+    }
+  ], function (err) {
+    if(err) { return next(err); }
+    res.redirect('/forgotPassword');
+  });
+};
+
+/**
+ * Resets the password of the user
+ * 
+ * @param  {[type]} req [description]
+ * @param  {[type]} res [description]
+ * @return {[type]}     [description]
+ */
+exports.resetPassword = function(req, res) {
+  console.log(req.params);
+  console.log(req.body);
+  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
+    if(err) { return handleError(res, err); }
+    if(!user) { console.log('sdad'); return res.sendStatus(404); }
+    user.password = req.body.newPassword;
+    user.token = '';
+    user.save(function (err, user) {
+      if(err) { return handleError(res, err); }
+
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: EMAIL,
+          pass: PASSWORD
+        }
+      });
+      var mailOptions = {
+        to: user.email,
+        from: EMAIL,
+        subject: 'Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      smtpTransport.sendMail(mailOptions, function (err, info) {
+        if(err) {
+          console.log('Error Occurred');
+          console.log(err);
+          return res.sendStatus(500);
+        } else {
+          console.log(info);
+          res.sendStatus(200);
+        }
+      });      
     });
   });
 };
