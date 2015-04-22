@@ -16,7 +16,7 @@ angular.module('erp2015App')
     console.log($stateParams);
     CoordPortalService.formResponses($stateParams.id)
       .then(function (data) {
-        console.log(data);
+        // console.log(data);
         $scope.responses = data;
       });
     // console.log($scope.user.$promise);

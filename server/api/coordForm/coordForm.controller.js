@@ -77,6 +77,16 @@ exports.showByUser = function(req, res) {
 	.populate('form', 'name department position');
 };
 
+// sends all forms applied by user to the core
+exports.showAllFormsApplied = function(req, res) {
+	Response.find({user: req.params.id}, function (err, responses) {
+		if(err) { return handleError(res, err); }
+		if(!responses) { return res.sendStatus(404); }
+		return res.json(responses);
+	})
+	.populate('form', 'name department position subDepartment');
+};
+
 // gets all the responses for a given category for core
 exports.showAllResponses = function(req, res) {
 	CoordForm.findById(req.params.id, function (err, coordForm) {
@@ -85,7 +95,7 @@ exports.showAllResponses = function(req, res) {
 		Response.find({form: coordForm._id}, function (err, response) {
 			if(err) { return handleError(res, err); }
 			if(!response) { return res.sendStatus(404); }
-			console.log(response);
+			// console.log(response);
 			return res.json(response);
 		})
 		.populate('user', 'name cgpa')

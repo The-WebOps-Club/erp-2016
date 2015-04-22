@@ -4,20 +4,29 @@ angular.module('erp2015App')
   // .controller('CoordPortalDashboardCtrl', function ($scope, $location, $http, CoordPortalService, Auth, FileUploader) {
   .controller('CoordPortalResponseDetailsCtrl', function ($scope, $state, $location, $stateParams, $http, CoordPortalService, Auth) {
 
-    $scope.getCurrentUser = Auth.getCurrentUser;
-    if ($scope.getCurrentUser().role === 'user')
-      $state.go('coordPortalCoresCtrl');
-    if (!$scope.getCurrentUser())
-      $state.go('LoginCtrl');
-
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();
+    $scope.showAll = false;
+
+    if ($scope.user.role === 'user')
+      $state.go('coordPortalCoresCtrl');
+    if (!$scope.user)
+      $state.go('LoginCtrl');
 
     CoordPortalService.showResponse($stateParams.id)
       .then(function (data) {
-        console.log(data);
+        // console.log(data);
         $scope.response = data;
       });
+
+    $scope.getApplications = function(id) {
+      $scope.showAll = true;
+      CoordPortalService.userAppliedFor(id)
+      .then(function (data) {
+        // console.log(data);
+        $scope.forms = data;
+      });
+    };
 
     $scope.saveFeedback = function() {
       var backupResponse = angular.copy($scope.response);

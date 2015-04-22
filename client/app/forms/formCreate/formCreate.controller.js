@@ -54,7 +54,7 @@ angular.module('erp2015App')
 
     // create new field button click
     $scope.addNewField = function() {
-        $scope.addField.new = 'textfield'
+        $scope.addField.new = 'textarea'
 
         // incr field_id counter
         $scope.addField.lastAddedID++;

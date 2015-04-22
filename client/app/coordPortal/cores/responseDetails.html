@@ -1,19 +1,29 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="row">
 	<div class="container-fluid">
-		<div class="col-sm-offset-3 col-sm-6">
+		<div class="col-sm-12">
 			<div class="container-fluid">
-				<h4><b> Application for {{response.form.name}} submitted by {{response.user.name}}</b></h4>
+				<h4>
+					<b> Application for {{response.form.name}} submitted by {{response.user.name}} | 
+					<span ng-class="{ 'text-success': response.status==='Selected',
+									  'text-danger': response.status==='Rejected',
+									  'text-primary': response.status==='Shortlisted',
+									  'text-warning': response.status==='Pending' }">
+						{{response.status}}
+					</span>
+					</b>
+				</h4>
 				<br>
 				<div ng-show="response.fileId" class="col-sm-12">
                     <a ng-href="api/uploads/{{response.fileId}}" target="_blank" ng-if="response.fileId">Download the App file</a>
                 </div>
                 <br>
-				<table ng-show="1" st-table="responses" class="table table-striped">
+				<table ng-show="1" st-table="response" class="table table-striped">
 					<thead>
 						<tr>
 							<th>Question</th>
 							<th>Answer</th>
+							<th st-sort="updatedOn">Last Edit</th>
 							<th>Comment</th>
 						</tr>
 					</thead>
@@ -21,7 +31,8 @@
 						<tr ng-repeat="set in response.fields">
 							<td>{{set.field_title}}</td>
 							<td>{{set.field_value}}</td>
-							<td><input class="form-control" ng-model="response.fields[$index].field_comment"></td>
+							<td>{{response.updatedOn | date}}</td>
+							<td><textarea class="form-control" ng-model="response.fields[$index].field_comment"></textarea></td>
 						</tr>
 					</tbody>
 				</table>
@@ -32,11 +43,34 @@
 				</div>
 				<div class="btn-group">
 			        <label class="btn btn-success" ng-model="response.status" btn-radio="'Selected'" uncheckable>Select</label>
-			        <label class="btn btn-warning" ng-model="response.status" btn-radio="'Shortlisted'" uncheckable>Shortlist</label>
+			        <label class="btn btn-primary" ng-model="response.status" btn-radio="'Shortlisted'" uncheckable>Shortlist</label>
+			        <label class="btn btn-warning" ng-model="response.status" btn-radio="'Pending'" uncheckable>Pending</label>
 			        <label class="btn btn-danger" ng-model="response.status" btn-radio="'Rejected'" uncheckable>Reject</label>
 			    </div>
+			    <button ng-show="response" class="btn btn-info" ng-click="getApplications(response.user._id)">See what all he applied for</button>
+			    <br><br>
+				<table ng-show="showAll" st-table="forms" class="table table-striped">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Position</th>
+							<th>Status</th>
+							<th>Last Edit</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="form in forms">
+							<td>{{form.form.name}}</td>
+							<td>{{form.form.position.name}}</td>
+							<td>{{form.status}}</td>
+							<td>{{form.updatedOn | date}}</td>
+						</tr>
+					</tbody>
+				</table>			    
 			    <br><br>
 			    <button class="btn btn-primary" ng-click="saveFeedback(response)">Save</button>
+			    <a ui-sref="coordPortalCores">Back to Main menu</a>
+			    <a ui-sref="coordPortalResponses({ id: response.form._id })">Back to Responses menu</a>
 			    <br><br>
 			    <div class="alert alert-success" ng-show="showSaved">Saved</div>
 			</div>

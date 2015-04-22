@@ -126,6 +126,12 @@ angular.module('erp2015App')
           // console.log(response.data);    
           return response.data;
         });            
+      },
+      userAppliedFor: function (id) {
+        return $http.get('/api/coordForms/allForms/' + id).then(function (response) {
+          // console.log(response.data);    
+          return response.data;
+        });            
       }
   	};
 });

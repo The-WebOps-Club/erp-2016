@@ -8,6 +8,7 @@ var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/myForms', auth.isAuthenticated(), controller.showByUser);
+router.get('/allForms/:id', auth.hasRole('core'), controller.showAllFormsApplied);
 router.get('/:id', auth.isAuthenticated(), controller.showById);
 router.get('/department/:department', auth.isAuthenticated(), controller.showByDepartment);
 router.get('/getForm/:id', auth.isAuthenticated(), controller.getForm);

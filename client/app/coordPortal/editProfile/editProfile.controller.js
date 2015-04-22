@@ -6,7 +6,7 @@ angular.module('erp2015App')
   	$scope.user = Auth.getCurrentUser();
     $scope.hostels = [];
 
-    console.log($scope.user);
+    // console.log($scope.user);
 
     $scope.hostels = CoordPortalService.hostels;    
 
