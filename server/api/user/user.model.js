@@ -4,11 +4,33 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+var allHostels = ['alakananda',
+                  'brahmaputra',
+                  'cauvery',
+                  'ganga',
+                  'jamuna',
+                  'krishna',
+                  'mandakini',
+                  'mahanadi',
+                  'narmada',
+                  'pampa',
+                  'saraswathi',
+                  'sabarmathi',
+                  'sindhu',
+                  'sharavati',
+                  'sarayu',
+                  'sarayuExtension',
+                  'thamiriapani',
+                  'tapti',
+                  'dayScholar'
+                  ];
 
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   nick: String,
-  rollNumber: { type: String, default: ' ' },
+  rollNumber: { type: String, default: '' },
+  hostel: {},
+  roomNumber: { type: String, default: '' },
   email: { type: String, lowercase: true, default: '' },
   role: {
     type: String,
@@ -18,9 +40,7 @@ var UserSchema = new Schema({
   city: { type: String, default: '' },
   summerLocation: { type: String, default: '' },
   cgpa: { type: Number, default: '' },
-  lastSeen: {
-    type: Date
-  },
+  lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
   formApplied: [],
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
@@ -28,6 +48,8 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  updatedOn: { type: Date },
+  createdOn: { type: Date },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   facebook: {},
@@ -88,6 +110,24 @@ UserSchema
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return city.length;
   }, 'City cannot be blank');
+
+// Validate hostel
+// WARNING - validating only the value name can be corrupted. There is a bug
+UserSchema
+  .path('hostel')
+  .validate(function(hostel) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return (allHostels.indexOf(hostel.value) !== -1);
+  }, 'This is not a valid hostel');
+
+// Validate empty roomNumber
+UserSchema
+  .path('roomNumber')
+  .validate(function(roomNumber) {
+    var regExpRoom = /\d+/;
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return (regExpRoom.test(roomNumber));
+  }, 'Room Number cannot be blank');
 
 // Validate empty summerLocation
 UserSchema

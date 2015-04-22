@@ -31,7 +31,7 @@ function isAuthenticated() {
 
         user.lastSeen = Date.now();
         user.save(function(err) {
-          if(err) return res.json(err);
+          if(err) return res.status(500).json(err);
         });
         req.user = user;
         next();

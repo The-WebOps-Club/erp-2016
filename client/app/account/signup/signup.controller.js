@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('SignupCtrl', function ($scope, Auth, $state, $location, $window) {
+  .controller('SignupCtrl', function ($scope, Auth, $state, $location, $window, CoordPortalService) {
     $scope.getCurrentUser = Auth.getCurrentUser;
     if (Auth.isLoggedIn())
       $state.go('coordPortalDashboard');
 
     $scope.user = {};
     $scope.errors = {};
+    $scope.hostels = [];
+
+    $scope.hostels = CoordPortalService.hostels;
+    // console.log($scope.hostels);
 
     $scope.register = function(form) {
       $scope.submitted = true;
@@ -21,7 +25,9 @@ angular.module('erp2015App')
           rollNumber: $scope.user.rollNumber,
           phoneNumber: $scope.user.phoneNumber,
           summerLocation: $scope.user.summerLocation,
-          cgpa: $scope.user.cgpa
+          cgpa: $scope.user.cgpa,
+          hostel: $scope.user.hostel,
+          roomNumber: $scope.user.roomNumber
         })
         .then( function() {
           // Account created, redirect to dashboard

@@ -31,7 +31,7 @@
                  required
                  mongoose-error/>
           <span class="help-block" ng-show="form.email.$error.email && submitted">
-            Doesn't look like a valid email.
+            Doesn't look like a valid email
           </span>
           <span class="help-block" ng-show="form.email.$error.required && submitted">
             What's your email address?
@@ -51,24 +51,55 @@
                  mongoose-error/>
           <span class="help-block"
              ng-show="(form.password.$error.minlength || form.password.$error.required) && submitted">
-            Password must be at least 3 characters.
+            Password must be at least 3 characters
           </span>
           <span class="help-block" ng-show="form.password.$error.mongoose">
             {{ errors.password }}
           </span>
         </div>
 
-        <div class="form-group" ng-class="{ 'has-success': (user.password === user.confirmPassword && submitted),
-                                            'has-error': (user.password != user.confirmPassword && submitted) }">
+        <div class="form-group" ng-class="{ 'has-success': (user.password === user.confirmPassword && submitted && form.confirmPassword.$valid),
+                                            'has-error': (user.password != user.confirmPassword && submitted && form.confirmPassword.$invalid) }">
           <label>Confirm Password</label>
 
           <input type="password" name="confirmPassword" class="form-control" ng-model="user.confirmPassword"
                  required/>
           <span class="help-block"
              ng-show="((user.password != user.confirmPassword) || form.confirmPassword.$error.required) && submitted">
-            Password's do not match.
+            Password's do not match
           </span>
         </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.hostel.$valid && submitted,
+                                            'has-error': form.hostel.$invalid && submitted }">
+          <label>Hostel Name (includes day-scholar)</label>
+
+          <select name="hostel" class="form-control" ng-model="user.hostel" ng-options="hostel.name for hostel in hostels track by hostel.value" required mongoose-error></select>
+          <span class="help-block"
+             ng-show="(form.hostel.$error.required) && submitted">
+            Please select the hostel name
+          </span>
+          <span class="help-block" ng-show="form.hostel.$error.mongoose">
+            {{ errors.hostel }}
+          </span>          
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.roomNumber.$valid && submitted,
+                                            'has-error': form.roomNumber.$invalid && submitted }">
+          <label>Room Number</label>
+
+          <input type="text" name="roomNumber" class="form-control" ng-model="user.roomNumber"
+                 ng-pattern="/\d+/"
+                 required
+                 mongoose-error/>
+          <span class="help-block"
+             ng-show="(form.roomNumber.$error.required) && submitted">
+            Room number is required
+          </span>
+          <span class="help-block" ng-show="form.roomNumber.$error.mongoose">
+            {{ errors.roomNumber }}
+          </span>
+        </div>        
 
         <div class="form-group" ng-class="{ 'has-success': form.cgpa.$valid && submitted,
                                             'has-error': form.cgpa.$invalid && submitted }">
