@@ -15,11 +15,11 @@ var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
 
 var validationError = function (res, err) {
-  return res.json(422, err);
+  return res.status(422).json(err);
 };
 
 function handleError(res, err) {
-  return res.json(500, err);
+  return res.status(500).json(err);
 };
 
 /**
@@ -29,7 +29,7 @@ function handleError(res, err) {
 exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
     if(err) return res.json(500, err);
-    res.json(200, users);
+    res.status(200).json(users);
   })
   .populate('department', 'name');
 };
@@ -38,12 +38,15 @@ exports.index = function (req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  // console.log(req.body);
+  console.log('asdasdasdasd');
+  console.log(req.body);
   var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
+  newUser.createdOn = Date.now();
+  newUser.updatedOn = Date.now();
   newUser.save(function (err, user) {
-    if (err) return validationError(res, err);
+    if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
@@ -68,7 +71,7 @@ exports.show = function (req, res, next) {
  */
 exports.destroy = function (req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) return res.json(500, err);
+    if(err) return res.status(500).json(err);
     return res.sendStatus(204);
   });
 };
@@ -110,6 +113,9 @@ exports.updateProfile = function (req, res, next) {
     user.summerLocation = userUpdate.summerLocation;
     user.cgpa = userUpdate.cgpa;
     user.phoneNumber = userUpdate.phoneNumber;
+    user.roomNumber = userUpdate.roomNumber;
+    user.hostel = userUpdate.hostel;
+    user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
       res.sendStatus(200);
@@ -153,6 +159,7 @@ exports.addDepartment = function (req, res, next) {
       }
       if(user.department.indexOf(department._id) == -1){
         user.department.push(req.body.department);
+        user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
           res.sendStatus(200); 
@@ -183,6 +190,7 @@ exports.addSubDepartment = function(req, res, next) {
           if(err) { return handleError(res, err); }
           if(user.subDepartment(subDepartment._id) == -1){
             user.subDepartment.push(req.body.subDepartment);
+            user.updatedOn = Date.now();
             user.save(function (err) {
               if(err) { return handleError(res, err); }
               res.sendStatus(200); 
@@ -272,6 +280,7 @@ exports.resetPassword = function(req, res) {
     if(!user) { console.log('sdad'); return res.sendStatus(404); }
     user.password = req.body.newPassword;
     user.token = '';
+    user.updatedOn = Date.now();
     user.save(function (err, user) {
       if(err) { return handleError(res, err); }
 

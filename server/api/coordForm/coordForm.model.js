@@ -8,14 +8,8 @@ var CoordFormSchema = new Schema({
 		type: String,
 		required: true
 	},
-	created_on: {
-		type: Date,
-		default: Date.now()
-	},
-	updated_on: {
-		type: Date,
-		default: Date.now()
-	},
+	created_on: { type: Date },
+	updated_on: { type: Date },
 	department: { type: Schema.Types.ObjectId, ref: 'Department' },
 	subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
 	position: {},

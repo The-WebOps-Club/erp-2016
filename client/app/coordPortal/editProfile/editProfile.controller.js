@@ -4,6 +4,11 @@ angular.module('erp2015App')
   .controller('CoordPortalEditProfileCtrl', function ($scope, $http, $location, CoordPortalService, Auth) {
   	$scope.errors = {};
   	$scope.user = Auth.getCurrentUser();
+    $scope.hostels = [];
+
+    console.log($scope.user);
+
+    $scope.hostels = CoordPortalService.hostels;    
 
   	// console.log($scope.user);
   	$scope.updateProfile = function(form) {
@@ -16,7 +21,9 @@ angular.module('erp2015App')
 	          city: $scope.user.city,
 	          phoneNumber: $scope.user.phoneNumber,
 	          summerLocation: $scope.user.summerLocation,
-	          cgpa: $scope.user.cgpa
+	          cgpa: $scope.user.cgpa,
+            roomNumber: $scope.user.roomNumber,
+            hostel: $scope.user.hostel
   			})
   			.then( function() {
 	          // Account created, redirect to dashboard

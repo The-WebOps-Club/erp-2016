@@ -22,6 +22,36 @@
           </span>
         </div>
 
+        <div class="form-group" ng-class="{ 'has-success': form.hostel.$valid && submitted,
+                                            'has-error': form.hostel.$invalid && submitted }">
+          <label>Hostel Name (includes day-scholar)</label>
+
+          <select name="hostel" class="form-control" ng-model="user.hostel" ng-options="hostel.name for hostel in hostels track by hostel.value" required mongoose-error></select>
+          <span class="help-block"
+             ng-show="(form.hostel.$error.required) && submitted">
+            Please select the hostel name
+          </span>
+          <span class="help-block" ng-show="form.hostel.$error.mongoose">
+            {{ errors.hostel }}
+          </span>          
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.roomNumber.$valid && submitted,
+                                            'has-error': form.roomNumber.$invalid && submitted }">
+          <label>Room Number</label>
+
+          <input type="text" name="roomNumber" class="form-control" ng-model="user.roomNumber"
+                 required
+                 mongoose-error/>
+          <span class="help-block"
+             ng-show="(form.roomNumber.$error.required) && submitted">
+            Room number is required
+          </span>
+          <span class="help-block" ng-show="form.roomNumber.$error.mongoose">
+            {{ errors.roomNumber }}
+          </span>
+        </div>        
+
         <div class="form-group" ng-class="{ 'has-success': form.city.$valid && submitted,
                                             'has-error': form.city.$invalid && submitted }">
           <label>City</label>

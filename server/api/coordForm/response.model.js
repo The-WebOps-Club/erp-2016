@@ -9,14 +9,8 @@ var ResponseSchema = new Schema({
 	fileId: String,
 	valid: Boolean,
 	fields: [],
-	createdOn: {
-		type: Date,
-		default: Date.now()
-	},
-	updatedOn: {
-		type: Date,
-		default: Date.now()
-	},
+	createdOn: { type: Date	},
+	updatedOn: { type: Date },
 	comments: String,
 	status: { 
 		type: String,

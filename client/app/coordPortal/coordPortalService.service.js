@@ -4,6 +4,84 @@ angular.module('erp2015App')
   .service('CoordPortalService', function CoordPortalService ($http) {
 
   	return {
+      hostels:[
+        {
+          name : 'Alakananda',
+          value : 'alakananda'
+        },      
+        {
+          name : 'Brahmaputra',
+          value : 'brahmaputra'
+        },
+        {
+          name : 'Cauvery',
+          value : 'cauvery'
+        },
+        {
+          name : 'Ganga',
+          value : 'ganga'
+        },        
+        {
+          name : 'Jamuna',
+          value : 'jamuna'
+        },        
+        {
+          name : 'Krishna',
+          value : 'krishna'
+        },
+        {
+          name : 'Mandakini',
+          value : 'mandakini'
+        },
+        {
+          name : 'Mahanadi',
+          value : 'mahanadi'
+        },
+        {
+          name : 'Narmada',
+          value : 'narmada'
+        },
+        {
+          name : 'Pampa',
+          value : 'pampa'
+        },
+        {
+          name : 'Saraswathi',
+          value : 'saraswathi'
+        },
+        {
+          name : 'Sabarmathi',
+          value : 'sabarmathi'
+        },
+        {
+          name: 'Sindhu',
+          value: 'sindhu'
+        },
+        {
+          name : 'Sharavati',
+          value : 'sharavati'
+        },
+        {
+          name : 'Sarayu',
+          value : 'sarayu'
+        },
+        {
+          name : 'Sarayu - Extension',
+          value : 'sarayuExtension'
+        },
+        {
+          name : 'Tharmirapani',
+          value : 'thamiriapani'
+        },
+        {
+          name : 'Tapti',
+          value : 'tapti'
+        },
+        {
+          name: 'Day Scholar',
+          value: 'dayScholar'
+        }
+      ],      
       options: function () {
         return $http.get('/api/coordForms/').then(function (response) {
           return response.data;
