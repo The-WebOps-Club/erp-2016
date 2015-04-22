@@ -98,6 +98,8 @@ exports.create = function(req, res) {
 	var newForm = new CoordForm(req.body); 
 
 	// console.log(formDetails.formValues.fields);
+	newForm.createdOn = Date.now();
+	newForm.updatedOn = Date.now();
 	newForm.save(function (err, form) {
 		if(err) return validationError(res, err);
 		else res.send({type: 'success', msg: 'Created successfully'});
@@ -137,6 +139,8 @@ exports.saveForm = function (req, res) {
 				response.fields = values;
 				if(req.body.fileId)	response.fileId = req.body.fileId;
 
+				response.createdOn = Date.now();
+				response.updatedOn = Date.now();
 				response.save(function (err) {
 					if(err) return validationError(res, err);
 					else res.send({type: 'success', msg: 'Applied and saved successfully'});
@@ -163,10 +167,11 @@ exports.updateResponse = function (req, res) {
 		if (err) { return handleError(res, err); }
 		if(!response) { return res.sendStatus(404); }
 		var updated = _.merge(response, req.body);
-		console.log(response);
+		// console.log(response);
+		response.updatedOn = Date.now();
 		response.save(function (err) {
 			if (err) { return handleError(res, err); }
-			console.log(response);
+			// console.log(response);
 		  	return res.json(response);
 		});
 	});
