@@ -21,7 +21,7 @@ angular.module('erp2015App')
         var deferred = $q.defer();
 
         $http.post('/auth/local', {
-          email: user.email,
+          rollNumber: user.rollNumber,
           password: user.password
         }).
         success(function(data) {

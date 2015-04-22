@@ -40,6 +40,9 @@ exports.index = function (req, res) {
 exports.create = function (req, res, next) {
   console.log('asdasdasdasd');
   console.log(req.body);
+  // CONVERT THE ROLL NUMBER INTO CAPS HERE
+  // converting the rollNumber into caps
+  req.body.rollNumber = req.body.rollNumber.toLowerCase();
   var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';

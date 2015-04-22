@@ -10,7 +10,7 @@ angular.module('erp2015App')
 
       if(form.$valid) {
         Auth.login({
-          email: $scope.user.email,
+          rollNumber: $scope.user.rollNumber,
           password: $scope.user.password
         })
         .then( function() {

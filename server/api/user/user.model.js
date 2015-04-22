@@ -194,6 +194,22 @@ UserSchema
     });
 }, 'The specified email address is already in use.');
 
+// Validate rollNumber is not taken
+UserSchema
+  .path('rollNumber')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({rollNumber: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+      console.log(value);
+    });
+}, 'The specified Roll Number is already in use.');
+
 var validatePresenceOf = function(value) {
   return value && value.length;
 };
