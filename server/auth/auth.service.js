@@ -57,6 +57,26 @@ function hasRole(roleRequired) {
     });
 }
 
+function belongsTo() {
+
+  return compose()
+    .use(isAuthenticated())
+    .use(function meetsRequirements(req, res, next) {
+      if (!req.params.role) throw new Error('Required role needs to be set');
+      if (!req.params.type) throw new Error('Required role needs to be set');
+      if (!req.params.entity) throw new Error('Entity to be checked needs to be set');
+      console.log(req.params.role);
+      console.log(req.params.type);
+      console.log(req.params.entity);
+      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(req.params.role)) {
+        next();
+      }
+      else {
+        res.send(403);
+      }
+    });
+
+}
 /**
  * Returns a jwt token signed by the app secret
  */
@@ -65,7 +85,7 @@ function signToken(id) {
 }
 
 /**
- * Set token cookie directly for oAuth strategies
+ * Set token cookie directly for oAuth strategiesntity
  */
 function setTokenCookie(req, res) {
   if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
@@ -78,3 +98,4 @@ exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
 exports.setTokenCookie = setTokenCookie;
+exports.belongsTo = belongsTo;

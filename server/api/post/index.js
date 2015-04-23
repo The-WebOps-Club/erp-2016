@@ -11,6 +11,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:type/:id', auth.isAuthenticated(), controller.index);
 
 router.post('/createPost', auth.isAuthenticated(), controller.createPost);
+router.post('/:entity/:id', auth.belongsTo(), controller.create);
 router.post('/addComment', auth.isAuthenticated(), controller.addComment);
 
 router.put('/:id', controller.update);
