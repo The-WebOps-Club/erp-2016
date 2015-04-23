@@ -59,22 +59,17 @@ angular.module('erp2015App')
        */
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
-        var deferred = $q.defer();
-        User.save(user,
-          function (data) {
+
+        return User.save(user,
+          function(data) {
             $cookieStore.put('token', data.token);
-            currentUser = User.get(function () {
-              console.log('User.save(), user role: ' + currentUser.role);
-              deferred.resolve(data);
-              return cb(currentUser);
-            });
+            currentUser = User.get();
+            return cb(user);
           },
-          function (err) {
+          function(err) {
             this.logout();
             return cb(err);
-            deferred.reject(err);
-          });
-        return deferred.promise;
+          }.bind(this)).$promise;
       },
 
       /**

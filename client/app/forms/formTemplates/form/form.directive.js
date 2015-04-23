@@ -6,8 +6,8 @@ angular.module('erp2015App')
         controller: function ($scope, $upload) {
             $scope.save = function() {
                 console.log($scope.form);
-                if($scope.file){
-                    if($scope.form.fileId) $http.delete('api/uploads/'+$scope.form.fileId+'/')
+                if($scope.file) {
+                    if($scope.form.fileId) $http.delete('api/uploads/' + $scope.form.fileId + '/');
                     var file = $scope.file;
                     $upload.upload({
                         url: 'api/uploads/',
