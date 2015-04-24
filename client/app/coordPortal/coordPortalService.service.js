@@ -18,6 +18,10 @@ angular.module('erp2015App')
           value : 'cauvery'
         },
         {
+          name: 'Godavari',
+          value: 'godavari'
+        },
+        {
           name : 'Ganga',
           value : 'ganga'
         },        

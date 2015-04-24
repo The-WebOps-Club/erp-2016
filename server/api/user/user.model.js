@@ -7,6 +7,7 @@ var authTypes = ['github', 'twitter', 'facebook', 'google'];
 var allHostels = ['alakananda',
                   'brahmaputra',
                   'cauvery',
+                  'godavari',
                   'ganga',
                   'jamuna',
                   'krishna',
