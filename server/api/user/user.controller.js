@@ -11,8 +11,8 @@ var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Department = require('../department/department.model');
 
-var EMAIL = ''; // Put your fest mail id here
-var PASSWORD = ''; // Put your fest password here 
+var EMAIL = 'webops@shaastra.org'; // Put your fest mail id here
+var PASSWORD = 'sha05rocks'; // Put your fest password here 
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
