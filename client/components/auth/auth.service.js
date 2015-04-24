@@ -157,6 +157,15 @@ angular.module('erp2015App')
       },
 
       /**
+       * Check if a user is a core
+       * 
+       * @return {Boolean} [description]
+       */
+      isCore: function() {
+        return currentUser.role === 'core';
+      },
+
+      /**
        * Get auth token
        */
       getToken: function() {

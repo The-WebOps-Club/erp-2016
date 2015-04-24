@@ -17,8 +17,9 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><a href="/signup">Sign up</a></li>
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
-        
-        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/coordPortal/dashboard')}"><a href="/coordPortal/dashboard"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+
+        <li ng-show="isCore() || isAdmin()" ng-class="{active: isActive('/coordPortal/admin')}"><a href="/coordPortal/admin"><span class="glyphicon glyphicon-home"></span> Admin</a></li>
+        <li ng-show="isLoggedIn() && !isCore()" ng-class="{active: isActive('/coordPortal/dashboard')}"><a href="/coordPortal/dashboard"><span class="glyphicon glyphicon-home"></span> Dashboard</a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/coordPortal/editProfile')}"><a ng-href="/coordPortal/editProfile"><span class="glyphicon glyphicon-edit"></span> Edit Profile</a></li>
 
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
