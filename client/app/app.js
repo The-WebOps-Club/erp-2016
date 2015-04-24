@@ -71,35 +71,35 @@ angular.module('erp2015App', [
     /**
      * Defining all roles
      */
-  //   Permission
-  //     .defineRole('anonymous', function(stateParams) {
-  //       Auth.isLoggedInAsync(function(success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser) {
-  //           return true;
-  //         }
-  //         return false;
-  //       });
-  //     })
-  //     .defineRole('user', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'user') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('core', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'core') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('admin', function(stateParams) {
-  //       return Auth.isAdmin();       
-  //     })
-  // });
+    Permission
+      .defineRole('anonymous', function(stateParams) {
+        Auth.isLoggedInAsync(function(success) {
+          var currUser = Auth.getCurrentUser();
+          if(currUser) {
+            return true;
+          }
+          return false;
+        });
+      })
+      .defineRole('user', function(stateParams) {
+        Auth.isLoggedInAsync(function (success) {
+          var currUser = Auth.getCurrentUser();
+          if(currUser.role === 'user') {
+            return true;
+          }
+        });
+        return false;        
+      })
+      .defineRole('core', function(stateParams) {
+        Auth.isLoggedInAsync(function (success) {
+          var currUser = Auth.getCurrentUser();
+          if(currUser.role === 'core') {
+            return true;
+          }
+        });
+        return false;        
+      })
+      .defineRole('admin', function(stateParams) {
+        return Auth.isAdmin();       
+      })
+  });
