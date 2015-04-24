@@ -42,7 +42,7 @@ var UserSchema = new Schema({
   cgpa: { type: Number, default: '' },
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
-  formApplied: [],
+  // formApplied: [], //Is this even used?
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
   hashedPassword: String,
