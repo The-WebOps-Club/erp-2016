@@ -66,8 +66,7 @@ angular.module('erp2015App', [
           $location.url('/login');
         }
       });
-    });
-  });
+    })
     /**
      * Defining all roles
      */
@@ -101,5 +100,5 @@ angular.module('erp2015App', [
       })
       .defineRole('admin', function(stateParams) {
         return Auth.isAdmin();       
-      })
+      });
   });
