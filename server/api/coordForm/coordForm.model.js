@@ -17,6 +17,8 @@ var CoordFormSchema = new Schema({
 		type:Boolean,
 		default: false
 	},
+	fileId: String,
+	trackFormId: String,
 	fields: []
 });
 

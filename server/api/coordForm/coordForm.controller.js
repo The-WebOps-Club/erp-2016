@@ -63,7 +63,7 @@ exports.showResponse = function (req, res) {
 		if(!response) { return res.sendStatus(404); }
 		return res.json(response);
 	})
-	.populate('user', 'name cgpa')
+	.populate('user', 'name cgpa rollNumber')
 	.populate('form', 'name department subDepartment position');
 }
 

@@ -24,5 +24,6 @@ var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', funct
 			}
 			console.log(getResponse);
 		});
+		console.log($scope.form);
 	});
 });
