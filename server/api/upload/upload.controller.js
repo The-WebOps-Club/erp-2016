@@ -10,7 +10,7 @@ var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
   var part = req.files.file;
-  if(part.mimetype != "application/zip" && part.mimetype != "application/octet-stream" && part.mimetype != "application/x-zip-compressed") {
+  if(part.mimetype != "application/zip" && part.mimetype != "application/octet-stream" && part.mimetype != "application/x-zip-compressed" && part.mimetype != "application/x-zip") {
     res.send({
       message: 'Please upload zip files only'
     })
