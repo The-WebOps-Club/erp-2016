@@ -5,14 +5,39 @@
 			<div class="container-fluid">
 				<h4>
 					<b> Application for <span class="bg-info">{{response.form.name}}</span> submitted by <span class="bg-info">{{response.user.name}}-[{{response.user.rollNumber}}]</span> | 
-					<span ng-class="{ 'text-success': response.status==='Selected',
+						<span ng-class="{ 'text-success': response.status==='Selected',
 									  'text-danger': response.status==='Rejected',
 									  'text-primary': response.status==='Shortlisted',
 									  'text-warning': response.status==='Pending' }">
-						{{response.status}}
-					</span>
+							{{response.status}}
+						</span>
 					</b>
 				</h4>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Name : {{response.user.name}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Roll No : {{response.user.rollNumber}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						CGPA : {{response.user.cgpa}}
+					</div>
+				</div>				
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Email : {{response.user.email}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Phone No : {{response.user.phoneNumber}}
+					</div>
+				</div>				
 				<h4 ng-show="response.fileId" class="col-sm-12">
                     <a ng-href="api/uploads/{{response.fileId}}/{{response.form.name}}_{{response.user.rollNumber}}" target="_blank" ng-if="response.fileId">Download the Submitted file</a>
                     <p ng-if="!response.fileId">No file has been submitted</p>
