@@ -22,6 +22,9 @@
                             <a ng-href="api/uploads/{{form.fileId}}/{{form.form.name}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
                             <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip || application/octet-stream || application/x-zip-compressed || application/x-zip" required="">
                             <div>
+                            <div class="alert alert-info">
+                                Note that if you upload a file, you have automatically applied for that position. 
+                            </div>
                                 <br>
                                 <progressbar class="progress-striped active" max="100" value="progressPercentage">
                                     <i>{{progressPercentage}}%</i>
