@@ -50,7 +50,7 @@
 	        			<label for="department-select">Select</label>
 			            <select class="form-control" ng-model="preference" id="department-select">
 			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
-			            		{{form.department.name}} | {{form.name}}
+			            		{{form.name}}
 			            	</option>
 			        	</select>
 	        		</div>
