@@ -7,13 +7,13 @@ angular.module('erp2015App')
         url: '/coordPortal/dashboard',
         templateUrl: 'app/coordPortal/dashboard/dashboard.html',
         controller: 'CoordPortalDashboardCtrl',
-        authenticate: true,
-        data: {
-          permissions: {
-              only: ['admin', 'user'],
-              redirectTo: 'coordPortalEditProfile'
-          }        
-        }                
+        authenticate: true
+        // data: {
+        //   permissions: {
+        //       only: ['admin', 'user'],
+        //       redirectTo: 'coordPortalEditProfile'
+        //   }        
+        // }                
       })
       .state('coordPortalCores', {
         url: '/coordPortal/admin',
