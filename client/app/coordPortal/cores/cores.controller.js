@@ -57,6 +57,7 @@ angular.module('erp2015App')
           $scope.message = "Added!"
           window.alert($scope.message);
           console.log(response);
+          window.location.reload();
         })
         .error(function (err) {
           window.alert("Some error happened");
