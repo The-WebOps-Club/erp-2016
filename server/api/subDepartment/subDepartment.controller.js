@@ -9,7 +9,7 @@ var Department = require('../department/department.model');
 exports.index = function(req, res) {
   SubDepartment.find(function (err, subDepartments) {
     if(err) { return handleError(res, err); }
-    return res.json(200, subDepartments);
+    return res.status(200).json(subDepartments);
   });
 };
 
@@ -33,7 +33,7 @@ exports.create = function(req, res) {
         department.subDepartments.push(subDepartment._id);
         department.save(function (err) {
           if(err) { return handleError(res, err); }
-          return res.json(201, subDepartment);
+          return res.status(201).json(subDepartment);
         });
       }
     });
@@ -49,7 +49,7 @@ exports.update = function(req, res) {
     var updated = _.merge(subDepartment, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, subDepartment);
+      return res.status(200).json(subDepartment);
     });
   });
 };
@@ -67,5 +67,5 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }
