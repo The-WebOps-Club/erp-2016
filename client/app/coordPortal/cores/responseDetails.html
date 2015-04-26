@@ -38,6 +38,16 @@
 						Phone No : {{response.user.phoneNumber}}
 					</div>
 				</div>				
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Hostel : {{response.hostel.name}}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 col-sm-offset-2">
+						Room No : {{response.roomNumber}}
+					</div>
+				</div>
 				<h4 ng-show="response.fileId" class="col-sm-12">
                     <a ng-href="api/uploads/{{response.fileId}}/{{response.form.name}}_{{response.user.rollNumber}}" target="_blank" ng-if="response.fileId">Download the Submitted file</a>
                     <p ng-if="!response.fileId">No file has been submitted</p>
