@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<h4 ng-show="response.fileId" class="col-sm-12">
-                    <a ng-href="api/uploads/{{response.fileId}}/{{response.form.name}}_{{response.user.rollNumber}}" target="_blank" ng-if="response.fileId">Download the Submitted file</a>
+                    <a ng-href="api/uploads/{{response.fileId}}/{{response.form.name}}_{{response.user.rollNumber}}.zip" target="_blank" ng-if="response.fileId">Download the Submitted file</a>
                     <p ng-if="!response.fileId">No file has been submitted</p>
                 </h4>
                 <br>
