@@ -274,8 +274,8 @@ exports.sendResetMail = function(req, res, next) {
  * @return {[type]}     [description]
  */
 exports.resetPassword = function(req, res) {
-  console.log(req.params);
-  console.log(req.body);
+  // console.log(req.params);
+  // console.log(req.body);
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
     if(err) { return handleError(res, err); }
     if(!user) { console.log('sdad'); return res.sendStatus(404); }
