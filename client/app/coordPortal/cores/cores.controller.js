@@ -32,6 +32,13 @@ angular.module('erp2015App')
             $scope.forms = '';
           }
         });
+        if($scope.user.role === 'admin') {
+            CoordPortalService.options().then(function (forms) {
+                if (forms.length != 0){
+                    $scope.forms = forms;
+                }
+            });
+        }
     })
     // console.log($scope.user.$promise);
 
@@ -49,6 +56,17 @@ angular.module('erp2015App')
     $scope.updateResponse = function () {
       if (!response.status) response.status = "Pending";
       console.log(response);
+    };
+
+    $scope.deactivate = function (formId) {
+      console.log(formId)
+      $http.post('/api/coordForms/deactivate/', {formId: formId})
+        .success(function (response) {
+          console.log(response);
+        })
+        .error(function (err) {
+          console.log(err);
+        });
     };
 
     $scope.addSubDepartment = function () {

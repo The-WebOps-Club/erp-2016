@@ -14,8 +14,8 @@
 			<table ng-show="1" st-table="responses" class="table table-striped">
 				<thead>
 					<tr>
+						<th>Department</th>
 						<th>Form</th>
-						<th>Position</th>
 						<th>Submissions</th>
 						<!-- <th>Edit Questions</th> -->
 						<!-- <th>Sub-Department</th> -->
@@ -24,8 +24,8 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="form in forms">
+						<td>{{form.department.name}}</td>
 						<td>{{form.name}}</td>
-						<td>{{form.position.name}}</td>
 						<td><a ng-href="coordPortal/admin/submissions/{{form._id}}">View</a></td>
 						<!-- <td><a href="/forms/edit/{{form._id}}">Edit</a></td> -->
 						<!-- <td>{{response.form.department}}</td> -->
@@ -35,6 +35,7 @@
 			</table>
 		</div>
 	</div>
+        <!--
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-offset-3 col-md-6">
@@ -49,4 +50,5 @@
 			</div>
 		</div>
 	</div>
+        -->
 </div>

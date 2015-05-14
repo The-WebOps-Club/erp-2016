@@ -19,7 +19,7 @@
                         <fieldset ng-show="form.allowUploads" class="col-sm-12">
                             <p>App File: </p>
                             <div class="alert alert-warning">Only one zip file per application allowed. Warning: Submitting a second file will replace your original submission.</div>
-                            <a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                            <a ng-href="api/uploads/{{form.fileId}}/{{form.form.name}}.zip" target="_blank" ng-if="form.fileId">Download your previous submission</a>
                             <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
                             <div>
                                 <br>
@@ -27,6 +27,9 @@
                                     <i>{{progressPercentage}}%</i>
                                 </progressbar>
                             </div>
+                        </fieldset>
+                        <fieldset ng-hide="form.allowUploads" class="col-md-12">
+                            <div class="alert alert-error">Applications have been closed.</div>
                         </fieldset>
                     </div>
                 </div>

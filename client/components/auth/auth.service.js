@@ -160,7 +160,6 @@ angular.module('erp2015App')
       isAdmin: function() {
         return currentUser.role === 'admin';
       },
-
       /**
        * Get auth token
        */

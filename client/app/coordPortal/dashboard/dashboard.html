@@ -27,7 +27,7 @@
 				<thead>
 					<tr>
 						<th>Applied for</th>
-						<th>Position</th>
+						<th>Department</th>
 						<th>Fill your App</th>
 						<th>Delete Application</th>
 					</tr>
@@ -35,7 +35,7 @@
 				<tbody>
 					<tr ng-repeat="Form in formsApplied">
 						<td>{{Form.form.name}}</td>
-						<td>{{Form.form.position.name}}</td>
+						<td>{{Form.form.department.name}}</td>
 						<td><a class="btn btn-info" ng-href="/forms/formView/{{Form.form._id}}">View<a/></td>
 						<td><a class="btn btn-danger" ng-click="deleteApp(Form.form._id)">Delete</a></td>
 					</tr>
@@ -49,7 +49,7 @@
 	        		<div class="form-group">
 	        			<label for="department-select">Select</label>
 			            <select class="form-control" ng-model="preference" id="department-select">
-			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
+			            	<option ng-repeat="form in allForms | orderBy:'department.name' | filter: {allowUploads: true}" value="/forms/formView/{{form._id}}">
 			            		{{form.department.name}} | {{form.name}}
 			            	</option>
 			        	</select>
@@ -68,19 +68,24 @@
 	        	<h4 class="text-center"><b>Instructions and Regulations</b></h4>
 	        	<h5><b>General</b></h5>
 	        	<ul>
-	        		<li><a href="#">Contact Details</a> of previous year's Coordinators.</li>
+	        		<li><a href="https://docs.google.com/spreadsheets/d/1gqGkgST8mce3FgcYVYAeKNeTRQcLWrb2Wwnme5L1rWU/">Contact Details</a> of previous year's Coordinators.</li>
 	        		<br>
 
 	        		<li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
 	        		<br>
 	        		
-	        		<li>Deadline is <b>Deadline Here</b>.</li>
+                                <li>The deadlines are:<li>
+                                <ul>
+                                    <li>Sponsorship Creative: <b>16th May, 11:59PM</b></li>
+                                    <li>WebOps Coordinators (All positions): <b>23rd May, 11:59PM</b></li>
+                                    <li>Publicity Coordinator:<b>17th May, 11:59PM</b></li>
+                                </ul>
 	        		<br>
 	        			        		
-	        		<li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
+	        		<li><b>You can find the ACM presentations <a href="https://drive.google.com/folderview?id=0B8GwZw8Y5XKDfmNYVnFmUl9sWmJMb0N5clpfWXpVekR0YUgxSlh2MEROc2JmS3N0djZWVFk&usp=sharing">here</a></b>.</li>
 	        		<br>
 	        		
-	        		<li>Contact the <a href="#">WebOps Core</a> in case of any problems with the portal.</li>
+	        		<li>Contact the <a href="mailto:deepak@saarang.org">WebOps Core</a> in case of any problems with the portal.</li>
 	        	</ul>
 	        </div>
 		</div>

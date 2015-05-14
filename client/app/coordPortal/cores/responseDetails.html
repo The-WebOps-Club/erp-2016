@@ -6,7 +6,14 @@
 				<h4><b> Application for {{response.form.name}} submitted by {{response.user.name}}</b></h4>
 				<br>
 				<div ng-show="response.fileId" class="col-sm-12">
-                    <a ng-href="api/uploads/{{response.fileId}}" target="_blank" ng-if="response.fileId">Download the App file</a>
+                    <a ng-href="api/uploads/{{response.fileId}}/{{response.form.name}}_{{response.user.name}}.zip" target="_blank" ng-if="response.fileId">Download the App file</a>
+                    <p ng-if="!response.fileId"> No File has been submitted</p>
+                </div>
+                <div class="col-sm-12">
+                    <p>Roll Number: {{response.user.rollNumber}}</p>
+                    <p>CGPA: {{response.user.cgpa}}</p>
+                    <p>Email: {{response.user.email}}</p>
+                    <p>Phone: {{response.user.phoneNumber}}</p>
                 </div>
                 <br>
 				<table ng-show="1" st-table="responses" class="table table-striped">

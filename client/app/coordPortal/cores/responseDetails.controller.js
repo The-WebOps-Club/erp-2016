@@ -17,6 +17,7 @@ angular.module('erp2015App')
       .then(function (data) {
         console.log(data);
         $scope.response = data;
+        $scope.response.updatedOn = Date($scope.response.updatedOn);
       });
 
     $scope.saveFeedback = function() {

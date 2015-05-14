@@ -33,7 +33,8 @@ exports.showByDepartment = function(req, res) {
 		if(err) { return handleError(res, err); }
 		if(!form[0]) return res.sendStatus(404); 
 		return res.json(form);
-	});
+	})
+        .populate('department', 'name');
 };
 
 // Get form for the given formId
@@ -63,7 +64,7 @@ exports.showResponse = function (req, res) {
 		if(!response) { return res.sendStatus(404); }
 		return res.json(response);
 	})
-	.populate('user', 'name cgpa')
+	.populate('user', 'name cgpa rollNumber email phoneNumber')
 	.populate('form', 'name department subDepartment position');
 }
 
@@ -96,7 +97,6 @@ exports.showAllResponses = function(req, res) {
 // Create a new form in the db
 exports.create = function(req, res) {
 	var newForm = new CoordForm(req.body);
-	newForm.fileId = req.body.formFileId;
 
 	// console.log(formDetails.formValues.fields);
 	newForm.save(function (err, form) {
@@ -105,6 +105,16 @@ exports.create = function(req, res) {
 	});
 };
 
+exports.toggleSubmissions = function(req, res) {
+	CoordForm.findById(req.body.formId, function (err, form) {
+            form.allowUploads = !form.allowUploads;
+            form.save(function (err) {
+		if (err) { return handleError(res, err); }
+	       	console.log(form);
+	  	return res.json(form);
+	    });
+        });
+};
 // Saves the form into the database
 exports.saveForm = function (req, res) {
 	// should not send this formId using req.body :(
