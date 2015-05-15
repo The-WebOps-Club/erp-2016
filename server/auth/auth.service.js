@@ -62,13 +62,15 @@ function belongsTo() {
   return compose()
     .use(isAuthenticated())
     .use(function meetsRequirements(req, res, next) {
-      if (!req.params.role) throw new Error('Required role needs to be set');
-      if (!req.params.type) throw new Error('Required role needs to be set');
-      if (!req.params.entity) throw new Error('Entity to be checked needs to be set');
-      console.log(req.params.role);
-      console.log(req.params.type);
-      console.log(req.params.entity);
-      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf(req.params.role)) {
+      var memberOf = req.user.department.concat(req.user.subDepartment)
+      // pseudo:
+      // if user is core
+      //    user is in the dept
+      //    user is in the subDept
+      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('core')) {
+        next();
+      }
+      else if (memberOf.toString().indexOf(req.params.id) > -1){
         next();
       }
       else {
