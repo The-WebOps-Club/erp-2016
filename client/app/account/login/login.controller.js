@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('LoginCtrl', function ($scope, Auth, $location, $window) {
+  .controller('LoginCtrl', function ($scope, Auth, $location, $window, $state) {
     $scope.user = {};
     $scope.errors = {};
 
@@ -15,7 +15,8 @@ angular.module('erp2015App')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/');
+          // $location.path('/coordPortal/dashboard');
+          $state.go('coordPortalEditProfile');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;

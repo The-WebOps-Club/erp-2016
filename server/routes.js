@@ -9,6 +9,9 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/uploads', require('./api/upload'));
+  app.use('/api/forms', require('./api/form'));
+  app.use('/api/coordForms', require('./api/coordForm'));
   app.use('/api/subDepartments', require('./api/subDepartment'));
   app.use('/api/posts', require('./api/post'));
   app.use('/api/departments', require('./api/department'));
@@ -25,6 +28,8 @@ module.exports = function(app) {
   // All other routes should redirect to the index.html
   app.route('/*')
     .get(function(req, res) {
-      res.sendfile(app.get('appPath') + '/index.html');
+      // console.log(app.get('appPath'));
+      // res.sendfile(app.get('appPath') + '/index.html');
+      res.sendFile('index.html', { root: app.get('appPath') });
     });
 };

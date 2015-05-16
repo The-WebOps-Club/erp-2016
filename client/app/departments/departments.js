@@ -6,6 +6,12 @@ angular.module('erp2015App')
       .state('departments', {
         url: '/departments',
         templateUrl: 'app/departments/departments.html',
-        controller: 'DepartmentsCtrl'
+        controller: 'DepartmentsCtrl',
+		  // data: {
+      //    permissions: {
+      //     		except: ['anonymous', 'admin', 'user', 'core'],
+      //     		redirectTo: 'coordPortalDashboard'
+      //     }
+      //   }                
       });
   });

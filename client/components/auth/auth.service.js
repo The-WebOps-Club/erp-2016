@@ -26,9 +26,10 @@ angular.module('erp2015App')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
-          deferred.resolve(data);
-          return cb();
+          currentUser = User.get(function() {
+            deferred.resolve(data);
+            return cb();
+          });
         }).
         error(function(err) {
           this.logout();
@@ -58,17 +59,22 @@ angular.module('erp2015App')
        */
       createUser: function(user, callback) {
         var cb = callback || angular.noop;
-
-        return User.save(user,
-          function(data) {
+        var deferred = $q.defer();
+        User.save(user,
+          function (data) {
             $cookieStore.put('token', data.token);
-            currentUser = User.get();
-            return cb(user);
+            currentUser = User.get(function () {
+              console.log('User.save(), user role: ' + currentUser.role);
+              deferred.resolve(data);
+              return cb(currentUser);
+            });
           },
-          function(err) {
+          function (err) {
             this.logout();
             return cb(err);
-          }.bind(this)).$promise;
+            deferred.reject(err);
+          });
+        return deferred.promise;
       },
 
       /**
@@ -89,6 +95,25 @@ angular.module('erp2015App')
           return cb(user);
         }, function(err) {
           return cb(err);
+        }).$promise;
+      },
+
+      /**
+       * Update Profile
+       * 
+       * @param  {[type]}   user     [description]
+       * @param  {Function} callback [description]
+       * @return {[type]}            [description]
+       */
+      updateProfile: function(user, callback) {
+        var cb = callback || angular.noop;
+        console.log(user);
+        return User.updateProfile({ id: currentUser._id }, {
+          userUpdate: user
+        }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);          
         }).$promise;
       },
 

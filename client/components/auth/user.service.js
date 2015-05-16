@@ -17,6 +17,12 @@ angular.module('erp2015App')
         params: {
           id:'me'
         }
+      },
+      updateProfile: {
+        method: 'PUT',
+        params: {
+          controller:'updateProfile'
+        }
       }
 	  });
   });

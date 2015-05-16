@@ -84,6 +84,9 @@ exports.changePassword = function (req, res, next) {
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
 
+  console.log(req.params);
+  console.log(req.user._id);
+
   User.findById(userId, function (err, user) {
     if(user.authenticate(oldPass)) {
       user.password = newPass;
@@ -113,7 +116,6 @@ exports.updateProfile = function (req, res, next) {
     user.summerLocation = userUpdate.summerLocation;
     user.cgpa = userUpdate.cgpa;
     user.phoneNumber = userUpdate.phoneNumber;
-    user.roomNumber = userUpdate.roomNumber;
     user.hostel = userUpdate.hostel;
     user.updatedOn = Date.now();
     user.save(function (err) {
@@ -149,9 +151,13 @@ exports.me = function (req, res, next) {
 exports.addDepartment = function (req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Department.findById(req.body.department, function (err, department) {
-      if(err) { return handleError(res, err); }
-      if(!department) { return res.sendStatus(404); }
-      if(department[req.body.role].indexOf(user._id) == -1){
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!department) {
+        return res.sendStatus(404);
+      }
+      if (department[req.body.role].indexOf(user._id) == -1){
         department[req.body.role].push(user._id);
         department.save(function (err) {
           if(err) { return handleError(res, err); }
@@ -182,8 +188,12 @@ exports.addDepartment = function (req, res, next) {
 exports.addSubDepartment = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
-      if(err) { return handleError(res, err); }
-      if(!subDepartment) { return res.sendStatus(404); }
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!subDepartment) {
+        return res.sendStatus(404);
+      }
       if (subDepartment[req.body.role].indexOf(user._id) == -1){
         subDepartment[req.body.role].push(user._id);
         subDepartment.save(function (err) {

@@ -6,14 +6,30 @@ angular.module('erp2015App', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ngFileUpload',
+  'ui.bootstrap',
+  'smart-table',
+  'permission',
+  'ngFacebook',
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/coordPortal/dashboard');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+  })
+  .config( function( $facebookProvider ) {
+    $facebookProvider.setAppId('1597426613877122');
+  })
+  .run( function ($rootScope) {
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1597426613877122";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   })
 
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
@@ -42,13 +58,48 @@ angular.module('erp2015App', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $location, Auth, Permission) {
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
-          $location.path('/login');
+          $location.url('/login');
         }
       });
     });
   });
+    /**
+     * Defining all roles
+     */
+  //   Permission
+  //     .defineRole('anonymous', function(stateParams) {
+  //       Auth.isLoggedInAsync(function(success) {
+  //         var currUser = Auth.getCurrentUser();
+  //         if(currUser) {
+  //           return true;
+  //         }
+  //         return false;
+  //       });
+  //     })
+  //     .defineRole('user', function(stateParams) {
+  //       Auth.isLoggedInAsync(function (success) {
+  //         var currUser = Auth.getCurrentUser();
+  //         if(currUser.role === 'user') {
+  //           return true;
+  //         }
+  //       });
+  //       return false;        
+  //     })
+  //     .defineRole('core', function(stateParams) {
+  //       Auth.isLoggedInAsync(function (success) {
+  //         var currUser = Auth.getCurrentUser();
+  //         if(currUser.role === 'core') {
+  //           return true;
+  //         }
+  //       });
+  //       return false;        
+  //     })
+  //     .defineRole('admin', function(stateParams) {
+  //       return Auth.isAdmin();       
+  //     })
+  // });

@@ -35,13 +35,23 @@ User.find({}).remove(function() {
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test'
+    password: 'test',
+    city: 'testCity',
+    summerLocation: 'testSummer',
+    cgpa: '5',
+    phoneNumber: '5555555555',
+    rollNumber: 'tttttttt'
   }, {
     provider: 'local',
     role: 'admin',
     name: 'Admin',
     email: 'admin@admin.com',
-    password: 'admin'
+    password: 'admin',
+    city: 'adminCity',
+    summerLocation: 'adminSummer',
+    cgpa: '10',
+    phoneNumber: '9999999999',
+    rollNumber: 'aaaaaaaa'
   }, function() {
       console.log('finished populating users');
     }
