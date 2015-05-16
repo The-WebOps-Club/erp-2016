@@ -4,7 +4,11 @@ var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
+var crypto = require('crypto');
 var Department = require('../department/department.model');
+var nodemailer = require('nodemailer');
+var directTransport = require('nodemailer-direct-transport');
+var async = require('async');
 
 var validationError = function (res, err) {
   return res.json(422, err);
@@ -183,6 +187,104 @@ exports.addSubDepartment = function(req, res, next) {
         });
       }
       else res.sendStatus(200);
+    });
+  });
+};
+
+/**
+ *  * Sends a mail to the user to reset the password
+ *   * 
+ *    * @param  {[type]} req [description]
+ *     * @param  {[type]} res [description]
+ *      * @return {[type]}     [description]
+ *       */
+exports.forgotPassword = function(req, res, next) {
+    console.log("in")
+  async.waterfall([
+    function (done) {
+      crypto.randomBytes(25, function (err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
+    },
+    function (token, done) {
+    console.log("in")
+      User.findOne({ email: req.body.email }, function (err, user) {
+        if(err) { return handleError(res, err); }
+        if(!user) { return res.sendStatus(404); }
+        
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // one hour
+
+        user.save(function (err) {
+          done(err, token, user);
+        })
+      })
+    },
+    function (token, user, done) {
+    console.log("in")
+        var transporter = nodemailer.createTransport(directTransport());
+        var mailOptions = {
+            to: user.email,
+            from: config.defaultEmail,
+            subject: '[Saarang] Account Password Reset',
+            text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
+          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+          'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
+          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };
+        transporter.sendMail(mailOptions, function (err, info) {
+        if(err) {
+          console.log('Error Occurred');
+          console.log(err);
+          return res.sendStatus(500);
+        } else {
+          console.log(info);
+          res.sendStatus(200);
+        }
+      });
+    }
+  ], function (err) {
+    if(err) { return next(err); }
+    res.send(200);
+  });
+};
+
+/**
+ *  * Resets the password of the user
+ *   * 
+ *    * @param  {[type]} req [description]
+ *     * @param  {[type]} res [description]
+ *      * @return {[type]}     [description]
+ *       */
+exports.resetPassword = function(req, res) {
+  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
+    if(err) { return handleError(res, err); }
+    if(!user) { console.log('sdad'); return res.sendStatus(404); }
+    user.password = req.body.newPassword;
+    user.token = '';
+    user.updatedOn = Date.now();
+    user.save(function (err, user) {
+      if(err) { return handleError(res, err); }
+
+      var transporter = nodemailer.createTransport(directTransport());
+      var mailOptions = {
+        to: user.email,
+        from: config.defaultEmail,
+        subject: '[Saarang] Your password has been changed',
+        text: 'Hello,\n\n' +
+          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+      };
+      transporter.sendMail(mailOptions, function (err, info) {
+        if(err) {
+          console.log('Error Occurred');
+          console.log(err);
+          return res.sendStatus(500);
+        } else {
+          console.log(info);
+          res.sendStatus(200);
+        }
+      });      
     });
   });
 };

@@ -25,6 +25,8 @@ var UserSchema = new Schema({
   formApplied: [],
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
   hashedPassword: String,
   provider: String,
   salt: String,

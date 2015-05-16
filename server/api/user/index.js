@@ -15,6 +15,8 @@ router.put('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfil
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
 router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
+router.post('/forgotPassword', controller.forgotPassword);
+router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);
 
 module.exports = router;
