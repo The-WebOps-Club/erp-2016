@@ -6,12 +6,13 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
+router.get('/testing', controller.paginate);
 router.get('/newsfeed', auth.isAuthenticated(), controller.newsfeed);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:type/:id', auth.isAuthenticated(), controller.index);
 
 router.post('/createPost', auth.isAuthenticated(), controller.createPost);
-router.post('/:entity/:id/:role', auth.belongsTo(), controller.createPost);
+router.post('/:id', auth.belongsTo(), controller.createPost);
 router.post('/addComment', auth.isAuthenticated(), controller.addComment);
 
 router.put('/:id', controller.update);

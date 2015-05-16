@@ -7,6 +7,10 @@ var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var auth = require('../../auth/auth.service');
 
+var mongoosePaginate = require('mongoose-paginate');
+
+
+
 // Get list of posts
 exports.index = function(req, res) {
   if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
@@ -81,6 +85,7 @@ exports.index = function(req, res) {
 };
 
 // Get comiled list of all posts related to one user
+// TODO: Limit it to 10 posts, send the next 10 and so on
 exports.newsfeed = function(req, res) {
   Post.find({
     $or: [
@@ -119,15 +124,9 @@ exports.createPost = function(req, res) {
       if(err) { return handleError(res, err); }
       if(!user) { return res.send(404); }
     });
-
   }
 
   if(req.body.type === 'department') {
-    if (req.user.department.indexOf(req.body.destId) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-
     Department.findById(req.body.destId, function (err, dept) {
       if(err) { return handleError(res, err); }
       if(!dept) { return res.send(404); }
@@ -135,11 +134,6 @@ exports.createPost = function(req, res) {
   }
 
   if(req.body.type === 'subDepartment') {
-    if (req.user.subDepartment.indexOf(req.body.destId) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-
     subDepartment.findById(req.body.destId, function (err, subDept) {
       if(err) { return handleError(res, err); }
       if(!subDept) { return res.send(404); }
@@ -158,11 +152,6 @@ exports.createPost = function(req, res) {
     if (err) { return handleError(res, err); }
     else res.json(201, post);
   });
-
-  // Post.create(req.body, function(err, post) {
-  //   if(err) { return handleError(res, err); }
-  //   return res.json(201, post);
-  // });
 };
 
 // Appends a new comment to the existing post
@@ -214,6 +203,19 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+exports.paginate = function (req, res) {
+  Post.plugin(mongoosePaginate)
+
+  Post.paginate({}, 2, 10, function(error, pageCount, paginatedResults, itemCount) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Pages:', pageCount);
+      console.log(paginatedResults);
+    }
+  });
+}
 
 function handleError(res, err) {
   return res.send(500, err);

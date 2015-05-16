@@ -7,7 +7,6 @@ var jwt = require('jsonwebtoken');
 var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
-var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Department = require('../department/department.model');
 
@@ -210,7 +209,8 @@ exports.addSubDepartment = function(req, res, next) {
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
  */
-exports.sendResetMail = function(req, res, next) {
+exports.forgotPassword = function(req, res, next) {
+
   async.waterfall([
     function (done) {
       crypto.randomBytes(25, function (err, buf) {
@@ -232,23 +232,25 @@ exports.sendResetMail = function(req, res, next) {
       })
     },
     function (token, user, done) {
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: EMAIL,
-          pass: PASSWORD
-        }
-      });
+      var transporter = nodemailer.createTransport();
+      // var smtpTransport = nodemailer.createTransport({
+      //   service: 'Gmail',
+      //   auth: {
+      //     user: EMAIL,
+      //     pass: PASSWORD
+      //   }
+      // });
+      
       var mailOptions = {
         to: user.email,
         from: EMAIL,
-        subject: 'Account Password Reset',
+        subject: '[Saarang Coordapp] Account Password Reset',
         text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
-      smtpTransport.sendMail(mailOptions, function (err, info) {
+      transporter.sendMail(mailOptions, function (err, info) {
         if(err) {
           console.log('Error Occurred');
           console.log(err);
@@ -294,7 +296,7 @@ exports.resetPassword = function(req, res) {
       var mailOptions = {
         to: user.email,
         from: EMAIL,
-        subject: 'Your password has been changed',
+        subject: '[Saarang Coordapp] Your password has been changed',
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
