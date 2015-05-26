@@ -20,7 +20,7 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial ) {
         from: EMAIL,
         subject: sub,
         text: text,
-        messageId: messageId+'-erp-saarang.saarang.org'
+        messageId: messageId+'-erp-saarang@saarang.org'
       };
       }
       if(initial){
@@ -29,8 +29,8 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial ) {
         from: EMAIL,
         subject: sub,
         text: text,
-        messageId: messageId+'-erp-saarang.saarang.org',
-        inReplyTo: messageId+'-erp-saarang.saarang.org'
+        messageId: messageId+'-erp-saarang@saarang.org',
+        inReplyTo: messageId+'-erp-saarang@saarang.org'
       };
       }
       smtpTransport.sendMail(mailOptions, function (err, info) {
