@@ -27,15 +27,13 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.find({ profile: req.params.id })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn')
-    .exec(
-      function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
-    });
+    Post.paginate({profile: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
   if(req.params.type === 'department') {
     if(!req.params.id) { return res.send(404); }
@@ -52,13 +50,13 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.find({ department: req.params.id }, function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
-    })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn');
+    Post.paginate({department: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
   if(req.params.type === 'subDepartment') {
     if(!req.params.id) { return res.send(404); }
@@ -74,13 +72,13 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.find({ subDepartment: req.params.id }, function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
-    })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn');
+    Post.paginate({subDepartment: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
 };
 
@@ -205,16 +203,16 @@ exports.destroy = function(req, res) {
 };
 
 exports.paginate = function (req, res) {
-  Post.plugin(mongoosePaginate)
-
-  Post.paginate({}, 2, 10, function(error, pageCount, paginatedResults, itemCount) {
+  Post.paginate({profile: "5551b0a5fed2d93220bb50dc"}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
     if (error) {
       console.error(error);
     } else {
       console.log('Pages:', pageCount);
+      console.log('Items:', itemCount); 
       console.log(paginatedResults);
+      res.send(paginatedResults);
     }
-  });
+  }, {populate: 'createdBy', sortBy : { updatedOn : -1 }});
 }
 
 function handleError(res, err) {

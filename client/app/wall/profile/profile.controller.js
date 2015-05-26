@@ -10,11 +10,6 @@ angular.module('erp2015App')
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
-            $scope.posts.sort(function(a, b) {
-                a = new Date(a.updatedOn);
-                b = new Date(b.updatedOn);
-                return a>b ? -1 : a<b ? 1 : 0;
-            });
     	})
     	.error(function(err) {
     		/*
