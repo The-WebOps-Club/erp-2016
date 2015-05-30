@@ -1,5 +1,32 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl">
-  <div class="container">
+<div layout="column" layout-fill ng-controller="NavbarCtrl">
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button href="/">
+        erp 2016
+      </md-button>
+      <!-- fill up the space between left and right area -->
+      <span flex></span>
+      <md-button ng-hide="isLoggedIn()" href="/signup">
+        Sign up
+      </md-button>
+      <md-button ng-hide="isLoggedIn()" href="/login">
+        Login
+      </md-button>
+      <md-button ng-show="isLoggedIn()" href='/profile/{{getCurrentUser()._id}}'>
+        Profile
+      </md-button>
+      <md-button ng-show="isLoggedIn()">
+        Hello {{ getCurrentUser().name }}
+      </md-button>
+      <md-button ng-show="isLoggedIn()" href="/settings">
+        <span class="glyphicon glyphicon-cog"></span>
+      </md-button>
+      <md-button ng-show="isLoggedIn()" ng-click="logout()">
+        Logout
+      </md-button>
+    </div>
+  </md-toolbar>
+  <!-- <div class="container">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
         <span class="sr-only">Toggle navigation</span>
@@ -26,5 +53,5 @@
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()">Logout</a></li>
       </ul>
     </div>
-  </div>
+  </div> -->
 </div>
