@@ -4,6 +4,9 @@ angular.module('erp2015App')
   .controller('MainCtrl', function ($scope, $http, socket) {
     $scope.awesomeThings = [];
 
+    $http.get('/api/posts/newsfeed/1').success(function (data) {
+      $scope.posts = data;
+    })
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
       socket.syncUpdates('thing', $scope.awesomeThings);

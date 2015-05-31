@@ -35,13 +35,33 @@ User.find({}).remove(function() {
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test'
+    password: 'test',
+    city: 'testCity',
+    summerLocation: 'testSummer',
+    cgpa: '5',
+    phoneNumber: '5555555555',
+    rollNumber: 'tttttttt',
+    roomNumber: '111',
+    hostel: {
+              name : 'Narmada',
+              value : 'narmada'
+            }
   }, {
     provider: 'local',
     role: 'admin',
     name: 'Admin',
     email: 'admin@admin.com',
-    password: 'admin'
+    password: 'admin',
+    city: 'adminCity',
+    summerLocation: 'adminSummer',
+    cgpa: '10',
+    phoneNumber: '9999999999',
+    rollNumber: 'aaaaaaaa',
+    roomNumber: '222',
+    hostel: {
+              name : 'Narmada',
+              value : 'narmada'
+            }    
   }, function() {
       console.log('finished populating users');
     }

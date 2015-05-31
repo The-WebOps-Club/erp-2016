@@ -6,7 +6,7 @@ angular.module('erp2015App')
     $scope.newPostTitle = '';
     $scope.posts = {};
 
-    $http.get('/api/posts/profile/' + $stateParams.userId)
+    $http.get('/api/posts/profile/' + $stateParams.userId + '/1')
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);

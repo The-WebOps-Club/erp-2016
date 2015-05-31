@@ -7,7 +7,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/testing/:page', controller.paginate);
-router.get('/newsfeed', auth.isAuthenticated(), controller.newsfeed);
+router.get('/newsfeed/:page', auth.isAuthenticated(), controller.newsfeed);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:type/:id/:page', auth.isAuthenticated(), controller.index);
 

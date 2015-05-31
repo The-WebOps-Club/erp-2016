@@ -9,7 +9,7 @@ var auth = require('../../auth/auth.service');
 
 var mongoosePaginate = require('mongoose-paginate');
 
-
+var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
@@ -22,18 +22,14 @@ exports.index = function(req, res) {
     User.findById(req.params.id, function (err, user) {
       if(err) { return handleError(res, err); }
       if(!user) { return res.send(404); }
+      Post.paginate({profile: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(paginatedResults);
+        }
+      }, {populate: 'profile department subDepartment createdBy'  , sortBy : { updatedOn : -1 }});
     });
-    
-    /*
-    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-     */
-    Post.paginate({profile: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
-      if (error) {
-        console.error(error);
-      } else {
-        res.send(paginatedResults);
-      }
-    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
   if(req.params.type === 'department') {
     if(!req.params.id) { return res.send(404); }
@@ -45,18 +41,15 @@ exports.index = function(req, res) {
     Department.findById(req.params.id, function (err, dept) {
       if(err) { return handleError(res, err); }
       if(!dept) { return res.send(404); }
+      Post.paginate({department: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(paginatedResults);
+        }
+      }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
     });
     
-    /*
-    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-     */
-    Post.paginate({department: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
-      if (error) {
-        console.error(error);
-      } else {
-        res.send(paginatedResults);
-      }
-    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
   if(req.params.type === 'subDepartment') {
     if(!req.params.id) { return res.send(404); }
@@ -72,7 +65,7 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.paginate({subDepartment: req.params.id}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
+    Post.paginate({subDepartment: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
         console.error(error);
       } else {
@@ -85,20 +78,19 @@ exports.index = function(req, res) {
 // Get comiled list of all posts related to one user
 // TODO: Limit it to 10 posts, send the next 10 and so on
 exports.newsfeed = function(req, res) {
-  Post.find({
-    $or: [
-      {department: {$in: req.user.department}},
-      {subDepartment: {$in: req.user.subDepartment}},
-      {profile: req.user._id}
-    ]}
-  )
-  .sort('-updatedOn')
-  .exec(
-    function (err, post) {
-      if(err) { return handleError(res, err); }
-      if(!post) { return res.send(404); }
-      return res.json(post);
-  });
+  Post.paginate({
+      $or: [
+        {department: {$in: req.user.department}},
+        {subDepartment: {$in: req.user.subDepartment}},
+        {profile: req.user._id}
+      ]}, 
+      req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
 };
 // Get a single post
 exports.show = function(req, res) {
