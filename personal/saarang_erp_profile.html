@@ -1,0 +1,381 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Profile</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="erp-bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="icons-color.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="jquery.min.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="saarang_erp_profile.js"></script>
+	<script src="textarea.js"></script>
+</head>
+<body ng-app="myApp">
+<div class="container-fluid" id="main">
+	<div class="row-fluid"> 
+	<div id="body" class="col-md-8	 col-md-offset-1" ng-controller="myCtrl">
+		<div id="profile_back" class="col-md-12">
+			<div id="profile_title">
+				{{user.name}}			
+			</div>
+			<div id="profile_pic">
+				<img ng-src="{{image}}" />
+			</div>
+		</div>
+		<div id="banner_bar" class="col-md-12">
+			<div class="banner_item col-md-2">
+			<a href="">
+			Wall
+			</a>
+			</div>
+			<div class="banner_item col-md-2">
+			<a href="">
+			Profile
+			</a>
+			</div>
+			<div class="banner_item col-md-2">
+			<a href="">
+			Docs
+			</a>
+			</div>
+			<div class="banner_item col-md-2">
+			<a href="">
+			Portals
+			</a>
+			</div>
+		</div>	
+		<div id="content" class="content col-md-12" >
+			<div id="content_head">
+				About
+				<small class="small">last login : &nbspdays,&nbsp hours ago</small>
+				<a class="btn form_edit pull-right" href="">
+				<i class="icon-pencil"></i>
+					<span class="edit_text"><b>Edit Profile</b></span>
+				</a>
+			</div>
+			<div id="content_body">
+			<div class="side col-md-6" id="leftside" >
+			<!-- Basic info -->
+			<div class="box col-md-12" id="basic">
+				<div class="headings"><b>Basic Info</b></div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="name">Name:</label>
+					<div class="data col-md-6" id="name">{{user.name}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="Nickname">Nickname:</label>
+					<div class="data col-md-6" id="Nickname">{{user.nickname}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="gender">Gender:</label>
+					<div class="data col-md-6" id="gender">{{user.gender}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="date_of_birth">Date of Birth:</label>
+					<div class="data col-md-6" id="date_of_birth">{{user.date_of_birth}}</div>
+				</div>
+			</div>
+			<!-- Contact info-->
+			<div class="box col-md-12" id="contact">
+				<div class="headings"><b>Contact info</b></div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="mobile">Mobile number:</label>
+					<div class="data col-md-6" id="mobile">{{user.mobile_number}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="summer">Summer number:</label>
+					<div class="data col-md-6" id="summer">{{user.summer_number}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="email">Email address:</label>
+					<div class="data col-md-6" id="email">{{user.email}}</div>
+				</div>
+			</div>
+			</div>
+			<div class="side col-md-6" id="rightside">			
+			<!-- College info -->
+			<div class="box col-md-12" id="college">
+				<div class="headings"><b>College info</b></div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="college_name">College:</label>
+					<div class="data col-md-6" id="college_name">{{user.college}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="roll">College roll:</label>
+					<div class="data col-md-6" id="roll">{{user.college_roll}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="branch">Branch:</label>
+					<div class="data col-md-6" id="branch">{{user.branch}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="room">Room no:</label>
+					<div class="data col-md-6" id="room">{{user.room_no}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="hostel">Hostel:</label>
+					<div class="data col-md-6" id="hostel">{{user.hostel}}</div>
+				</div>
+			</div>
+			<!-- Accomodation info -->
+			<div class="box col-md-12" id="accomodation">
+				<div class="headings"><b>Accomodation info</b></div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="summer_stay">Summer stay:</label>
+					<div class="data col-md-6" id="summer_stay">{{user.summer_stay}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="winter_stay">Winter stay:</label>
+					<div class="data col-md-6" id="winter_stay">{{user.winter_stay}}</div>
+				</div>
+				<div class="info col-md-12">
+					<label class="labels col-md-4" for="want_accomodation">Want accomodation:</label>
+					<div class="data col-md-6" id="want_accomodation">{{user.want_accomodation}}</div>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="rightbar" class="rightbar col-md-2">
+		<div>
+			<textarea class="col-md-10" id="post_area" rows="3" placeholder="Quick Post">
+			</textarea>
+		</div>
+		<div>
+		<button class="btn primary " id="post_button">Quick Post</button>
+		</div>
+		<hr>
+		<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-folder"></i>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-folder"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="calendar_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul>
+					<li>
+						<a href="">
+						<i class="icon-calendar"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+<style type="text/css">
+#main
+{
+	padding-top: 5px;
+	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+}
+#body
+{
+	border-left: 1px solid rgb(204, 204, 204);
+	border-right: 1px solid rgb(204, 204, 204);
+	padding: 10px;
+}
+#profile_back
+{
+	background: -webkit-linear-gradient(top, white, #ccc);
+    background: -moz-linear-gradient(top, white, #ccc);
+    background: linear-gradient(top, white, #ccc);
+    min-height : 250px;
+    max-height: 500px;
+}
+#profile_title
+{
+	font-size: 2em;
+	height: 20px;
+	color: white;
+	padding: 25px;
+	padding-top: 10px;
+	padding-bottom: 50px;
+	background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    background: linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+}
+#profile_pic
+{
+	background: rgba(250, 250, 250, 1);
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    -moz-border-radius: 3px;
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    border : 1px solid #aaa;
+    height : 160px;
+    width: 160px;
+    margin : 20px;
+    padding : 4px;
+    position : absolute;
+}
+#banner_bar
+{
+	border:1px solid #ddd;
+	height: 40px;
+}
+.banner_item
+{
+	display : inline-block;
+	border-right: 1px solid #ddd;
+    width : auto;
+    height : 35px;
+    font-size : 14px;
+    font-weight : bold;
+    padding : 10px 30px;
+    vertical-align: middle;
+}
+a
+{
+	color: #3b5998;
+  	text-decoration: none;
+  	line-height: inherit;
+  	font-weight: inherit;
+}
+.selection_caret {
+    background-image: url(/static/img/fb_icons_4.png);
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: -267px -239px;
+    display: block;
+    height: 6px;
+    width: 9px;
+}
+.content
+{
+	margin-top: 10px;
+	border:1px solid #ddd; 
+	padding: 0px;
+}
+#content_head
+{
+	font-size: 25px;
+	line-height: 12px;
+	font-weight: bold;
+	background-color: #F6F7F8;	
+	padding-top: 20px;
+	padding-bottom: 30px;
+	padding-left: 20px; 
+	border-bottom: 1px solid #ddd; 
+}
+.small
+{
+	font-size: 10px;
+	font-weight: normal;
+	color: #999999;
+}
+.box
+{
+	padding: 10px;
+}
+.headings
+{
+	padding: 10px;
+	font-size: 15px; 
+}
+.info
+{
+	padding-bottom: 2px;
+	padding-left: 0px;
+	padding-right: 0px;
+	color: #333333;
+}
+.labels
+{
+	display: inline-block;
+  	font-weight: normal;
+  	font-size: 12px;
+  	padding-top: 10px;
+  	padding-bottom: 10px;
+  	padding-left: 0px;
+  	padding-right: 0px;
+}
+.data
+{
+	display: inline-block;
+	font-size: 12px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.side
+{
+	display: inline-block;
+}
+#rightside
+{
+	border-left:  1px solid #ddd;
+}
+#basic,
+#college 
+ {
+	border-bottom:  1px solid #ddd;
+}
+#profile_back
+{
+	padding: 0px;
+}
+.group_link_head ,.calendar_head
+{
+	color: #999;
+  font-size: 9px;
+  font-weight: bold;
+  padding-top: 10px;
+}
+.vertical
+{
+	font-size: 11px;
+}
+#post_area
+{
+	overflow: hidden;
+	padding: 10px;
+}
+
+
+</style>
+<script>
+$(document).ready(function () {
+     var el = $('#rightbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#rightbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
+$(function() {
+   $('#post_area').autogrow();
+});
+</script>
+</body>
+</html>
