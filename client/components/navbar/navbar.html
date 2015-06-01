@@ -15,6 +15,7 @@
       <md-button ng-show="isLoggedIn()" href='/profile/{{getCurrentUser()._id}}'>
         Profile
       </md-button>
+      <img ng-src="{{profilePic}}" class="md-avatar" />
       <md-button ng-show="isLoggedIn()">
         Hello {{ getCurrentUser().name }}
       </md-button>

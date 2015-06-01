@@ -146,6 +146,7 @@ exports.createPost = function(req, res) {
 
 // Appends a new comment to the existing post
 exports.addComment = function(req, res) {
+  console.log(req.body);
   Post.findById(req.body.postId, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }

@@ -108,6 +108,8 @@ exports.updateProfile = function (req, res, next) {
     if(err) return validationError(res, err);
     if(!user) return res.sendStatus(404);
     user.name = userUpdate.name;
+    user.nick = userUpdate.nick;
+    user.profilePic = userUpdate.profilePic;
     user.city = userUpdate.city;
     user.summerLocation = userUpdate.summerLocation;
     user.cgpa = userUpdate.cgpa;

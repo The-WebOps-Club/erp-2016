@@ -12,8 +12,8 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:type/:id/:page', auth.isAuthenticated(), controller.index);
 
 router.post('/createPost', auth.isAuthenticated(), controller.createPost);
-router.post('/:id', auth.belongsTo(), controller.createPost);
 router.post('/addComment', auth.isAuthenticated(), controller.addComment);
+router.post('/:id', auth.belongsTo(), controller.createPost); //What does this do?
 
 router.put('/:id', controller.update);
 
