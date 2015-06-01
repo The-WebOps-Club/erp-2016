@@ -10,7 +10,7 @@ var PostSchema = new Schema({
   subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
   profile: { type: Schema.Types.ObjectId, ref: 'User' },
   taggedTo: [],
-  comments: [],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   seenBy: [],
   createdOn: {

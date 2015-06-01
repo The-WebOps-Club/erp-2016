@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Post = require('./post.model');
+var Comment = require('../comment/comment.model');
 var User = require('../user/user.model');
 var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
@@ -24,7 +25,7 @@ exports.index = function(req, res) {
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
     Post.find({ profile: req.params.id })
-    .populate('profile department subDepartment createdBy')
+    .populate('profile department subDepartment createdBy comments comments')
     .sort('updatedOn')
     .exec(
       function (err, posts) {
@@ -53,7 +54,7 @@ exports.index = function(req, res) {
       if(!posts) { return res.send(404); }
       return res.json(200, posts);
     })
-    .populate('profile department subDepartment createdBy')
+    .populate('profile department subDepartment createdBy comments')
     .sort('updatedOn');
   }
   if(req.params.type === 'subDepartment') {
@@ -75,7 +76,7 @@ exports.index = function(req, res) {
       if(!posts) { return res.send(404); }
       return res.json(200, posts);
     })
-    .populate('profile department subDepartment createdBy')
+    .populate('profile department subDepartment createdBy comments')
     .sort('updatedOn');
   }
 };
@@ -171,17 +172,14 @@ exports.addComment = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     
-    var comment = {};
-    comment.name = req.user.name;
-    comment.id = req.user._id;
-    comment.email = req.user.email;
+    var comment = new Comment();
+    comment.createdBy = req.user._id;
     comment.info = req.body.comment;
     comment.createdOn = Date(Date.now());
     comment.updatedOn = Date(Date.now());
 
     post.updatedOn = Date.now();
 
-    post.comments.push(comment);
     post.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, post);
