@@ -7,13 +7,13 @@ angular.module('erp2015App')
         url: '/profile/:userId',
         templateUrl: 'app/wall/profile/profile.html',
         controller: 'ProfileCtrl',
-        authenticate: true,
-        data: {
-          permissions: {
-              only: [],
-              redirectTo: 'coordPortalDashboard'
-          }        
-        }                
+        // authenticate: true,
+        // data: {
+        //   permissions: {
+        //       only: [],
+        //       redirectTo: 'coordPortalDashboard'
+        //   }        
+        // }                
       })
       .state('department', {
         url: '/department/:deptId',
