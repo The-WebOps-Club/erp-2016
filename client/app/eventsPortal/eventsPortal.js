@@ -26,7 +26,7 @@ angular.module('erp2015App')
       })
     $stateProvider
       .state('eventList', {
-        url: 'eventsPortal/eventList',
+        url: '/eventsPortal/eventList',
         templateUrl: 'app/eventsPortal/eventList/eventList.html',
         controller: 'EventsPortalEventListCtrl'
       });

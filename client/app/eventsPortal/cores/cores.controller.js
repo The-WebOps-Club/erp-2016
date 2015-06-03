@@ -1,19 +1,19 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('EventsPortalCoresCtrl', function ($scope, EventsPortalService) {
+  .controller('EventsPortalCoresCtrl', function ($scope, EventsPortalService, $state, $http) {
     $scope.submitted = false;
    
    	$scope.newEventList = function(form) {
     	$scope.submitted = true;
-    
     	if(form.$valid) {
       		EventsPortalService.createEventList({
         		title: $scope.eventList.title,
         		info: $scope.eventList.info
       		})
       		.then(function (data) {
-            	console.log(data);
+              console.log(data);
+            	//$state.go('eventList');
       		})
       		.catch(function (err) {
         		err = err.data;
