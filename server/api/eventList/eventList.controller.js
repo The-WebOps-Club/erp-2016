@@ -24,8 +24,8 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   req.body.createdOn = Date.now();
   req.body.updatedOn = Date.now();
-  //req.body.createdBy = req.user._id;
-  //req.body.lastUpdatedBy = req.user._id;
+  req.body.createdBy = req.user._id;
+  req.body.lastUpdatedBy = req.user._id;
   EventList.create(req.body, function(err, eventList) {
     if(err) { return handleError(res, err); }
     return res.json(201, eventList);

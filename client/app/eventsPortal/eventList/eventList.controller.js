@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('EventsPortalEventListCtrl', function ($scope, EventsPortalService, $state, $http) {
-
+  .controller('EventsPortalEventListCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog) {
     EventsPortalService.getAllEventLists()
     	.then(function (allEventLists) {
-        	console.log(allEventLists);
     		$scope.allEventLists = allEventLists;
     	});
 
@@ -14,7 +12,7 @@ angular.module('erp2015App')
     		controller: eventListEditModalCtrl,
     		templateUrl: '/app/eventsPortal/eventList/eventListEditModal.tmpl.html',
     		locals: {
-    			eventListPassed: $scope.eventList
+    			eventListPassed: eventList
     		}
     	})
     	.then(function (response) {
@@ -24,7 +22,8 @@ angular.module('erp2015App')
     	});
     };		
 
-    function eventListEditModalCtrl($scope, $mdDialog, eventListPassed) {
+    function eventListEditModalCtrl($scope, $mdDialog, eventListPassed) {	
+    	console.log(eventListPassed);
     	$scope.editEventList = eventListPassed;
     	
         $scope.cancel = function() {
@@ -39,8 +38,7 @@ angular.module('erp2015App')
                 info: $scope.editEventList.info
             })
             .then(function (data) {
-            	console.log(data)
-                //$state.go('eventList');
+                $state.go('eventList');
             });
 
 			$mdDialog.hide('Save edited deal');

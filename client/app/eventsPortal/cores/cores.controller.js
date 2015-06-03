@@ -12,8 +12,7 @@ angular.module('erp2015App')
         		info: $scope.eventList.info
       		})
       		.then(function (data) {
-              console.log(data);
-            	//$state.go('eventList');
+            	$state.go('eventList');
       		})
       		.catch(function (err) {
         		err = err.data;

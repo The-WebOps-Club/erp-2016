@@ -8,7 +8,6 @@ angular.module('erp2015App')
         templateUrl: 'app/eventsPortal/cores/cores.html',
         controller: 'EventsPortalCoresCtrl'
       })
-    $stateProvider
       .state('eventsPortalDashboard', {
         url: '/eventsPortal/dashboard',
         templateUrl: 'app/eventsPortal/dashboard/dashboard.html',
@@ -20,11 +19,10 @@ angular.module('erp2015App')
         controller: 'EventsPortalEventCtrl'
       })
       .state('allEvents', {
-        url: 'eventsPortal/allEvents',
+        url: '/eventsPortal/allEvents',
         templateUrl: 'app/eventsPortal/allEvents/allEvents.html',
         controller: 'EventsPortalAllEventsCtrl'
       })
-    $stateProvider
       .state('eventList', {
         url: '/eventsPortal/eventList',
         templateUrl: 'app/eventsPortal/eventList/eventList.html',
