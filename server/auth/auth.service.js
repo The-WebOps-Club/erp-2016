@@ -86,6 +86,10 @@ function signToken(id) {
   return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*2 });
 }
 
+function signMobileToken(id) {
+  return jwt.sign({ _id: id }, config.secrets.session, {});
+}
+
 /**
  * Set token cookie directly for oAuth strategiesntity
  */
@@ -99,5 +103,6 @@ function setTokenCookie(req, res) {
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
+exports.signMobileToken = signMobileToken;
 exports.setTokenCookie = setTokenCookie;
 exports.belongsTo = belongsTo;
