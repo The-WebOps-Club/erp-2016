@@ -1,3 +1,40 @@
-<div class="col-md-12">
-This is the cores view.
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div style="padding-left: 15%; padding-right: 15%">
+
+  <md-toolbar class="md-primary">
+    <h1 class="md-toolbar-tools">
+      Create a new Category
+    </h1>
+  </md-toolbar>
+
+  <md-content layout-padding>
+    <form name="form" ng-submit="newEventList(form)" novalidate>
+
+      <md-input-container>
+        <label>Category Name</label>
+        <input name="title" ng-model="eventList.title" ng-required="true" mongoose-error />
+        <div ng-messages="form.title.$error">
+          <div ng-message="required && submitted">This is required.</div>
+        </div>
+        <div ng-messages="form.title.$error">
+          <div ng-message="mongoose && submitted">{{ errors.title }}</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container>
+        <label>Category Info</label>
+        <textarea required name="info" ng-model="eventList.info" mongoose-error></textarea>
+        <div ng-messages="deal.info.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+        <div ng-messages="form.info.$error">
+          <div ng-message="mongoose && submitted">{{ errors.info }}</div>
+        </div>
+      </md-input-container>
+
+      <md-button type="submit" class="md-raised md-primary">Create</md-button>
+    </form>
+  </md-content>  
+
 </div>
