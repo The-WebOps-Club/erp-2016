@@ -18,6 +18,9 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/eventTab/eventTab.socket').register(socket);
+  require('../api/event/event.socket').register(socket);
+  require('../api/eventList/eventList.socket').register(socket);
   require('../api/comment/comment.socket').register(socket);
   require('../api/subDepartment/subDepartment.socket').register(socket);
   require('../api/post/post.socket').register(socket);
