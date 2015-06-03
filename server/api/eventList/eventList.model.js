@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var EventListSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean
+  events: [{ type: Schema.Types.ObjectId, ref: 'Event' }]
 });
 
 module.exports = mongoose.model('EventList', EventListSchema);

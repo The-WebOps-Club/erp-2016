@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var EventTabSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean
+  eventDetails: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
+  tabNumber: Number
 });
 
 module.exports = mongoose.model('EventTab', EventTabSchema);
