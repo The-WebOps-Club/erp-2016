@@ -15,10 +15,10 @@
           <md-list-item class="md-3-line">
               <div class="md-list-item-text">
               	<ng-md-icon icon="view_headline" ></ng-md-icon>
-                <h4>{{ eventList.title }}</h4>
+                <h4>{{ eventList.title | characters:20 :false }}</h4>
                 <br>
                 <ng-md-icon icon="info" ></ng-md-icon>
-                <p>{{ eventList.info }}</p>
+                <p>{{ eventList.info | characters:80 :false }}</p>
               </div>
           </md-list-item>
           <md-list-item class="md-3-line">
