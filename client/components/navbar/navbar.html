@@ -1,26 +1,26 @@
 <div layout="column" layout-fill ng-controller="NavbarCtrl">
   <md-toolbar>
-    <div class="md-toolbar-tools">
+    <div class="md-toolbar-tools" layout="row" layout-align="center center">
       <md-button href="/">
         erp 2016
       </md-button>
       <!-- fill up the space between left and right area -->
-      <span flex></span>
-      <md-button ng-hide="isLoggedIn()" href="/signup">
+      <span flex></span>      
+      <p ng-show="isLoggedIn()">
+        Hello {{ getCurrentUser().name }}
+      </p>
+      <md-button ng-hide="isLoggedIn()" ui-sref='signup'>
         Sign up
       </md-button>
-      <md-button ng-hide="isLoggedIn()" href="/login">
+      <md-button ng-hide="isLoggedIn()" ui-sref='login'>
         Login
       </md-button>
-      <md-button ng-show="isLoggedIn()" href='/profile/{{getCurrentUser()._id}}'>
-        Profile
+      <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='profile({ userId: getCurrentUser()._id })'>
+        <ng-md-icon icon="person" style="fill: white" size="24"></ng-md-icon>
       </md-button>
       <img ng-src="{{profilePic}}" class="md-avatar" />
-      <md-button ng-show="isLoggedIn()">
-        Hello {{ getCurrentUser().name }}
-      </md-button>
-      <md-button ng-show="isLoggedIn()" href="/settings">
-        <span class="glyphicon glyphicon-cog"></span>
+      <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='settings'>
+        <ng-md-icon icon="settings" style="fill: white" size="24"></ng-md-icon>
       </md-button>
       <md-button ng-show="isLoggedIn()" ng-click="logout()">
         Logout
