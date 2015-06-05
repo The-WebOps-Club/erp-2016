@@ -14,22 +14,22 @@
         <div layout="row">
           <md-list-item class="md-3-line">
               <div class="md-list-item-text">
-              	<h3>Title</h3>
+              	<ng-md-icon icon="view_headline" ></ng-md-icon>
                 <h4>{{ eventList.title }}</h4>
                 <br>
-                <h3>Info</h3>
+                <ng-md-icon icon="info" ></ng-md-icon>
                 <p>{{ eventList.info }}</p>
               </div>
           </md-list-item>
           <md-list-item class="md-3-line">
-            <ng-md-icon icon="today" style="fill:#0082CC" size="32" class="md-avatar" alt="deal-created-img"></ng-md-icon>
+            <ng-md-icon icon="today" style="fill:#0082CC" size="32" class="md-avatar" alt="eventList-created-img"></ng-md-icon>
               <div class="md-list-item-text">
                 <h3> Created On </h3>
                 <p>{{ eventList.createdOn | date: 'medium' }}</p>
               </div>
           </md-list-item>
           <md-list-item class="md-3-line">
-            <ng-md-icon icon="schedule" style="fill:#00517F" size="32" class="md-avatar" alt="deal-last-updated-img"></ng-md-icon>
+            <ng-md-icon icon="schedule" style="fill:#00517F" size="32" class="md-avatar" alt="eventList-last-updated-img"></ng-md-icon>
               <div class="md-list-item-text">
                 <h3> Latest Activity </h3>
                 <p>{{ eventList.updatedOn | date: 'medium' }}</p>

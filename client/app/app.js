@@ -11,7 +11,7 @@ angular.module('erp2015App', [
   'smart-table',
   'permission',
   'ngFacebook',
-  'ngMaterial',
+  'ngMaterial'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
