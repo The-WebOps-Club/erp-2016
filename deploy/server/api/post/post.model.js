@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+    mongoosePaginate = require('mongoose-paginate'),
     Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
@@ -10,7 +11,7 @@ var PostSchema = new Schema({
   subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
   profile: { type: Schema.Types.ObjectId, ref: 'User' },
   taggedTo: [],
-  comments: [],
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   seenBy: [],
   createdOn: {
@@ -22,5 +23,7 @@ var PostSchema = new Schema({
   	default: Date.now
   }
 });
+
+PostSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Post', PostSchema);
