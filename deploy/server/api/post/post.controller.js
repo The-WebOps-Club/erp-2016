@@ -2,10 +2,15 @@
 
 var _ = require('lodash');
 var Post = require('./post.model');
+var Comment = require('../comment/comment.model');
 var User = require('../user/user.model');
 var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var auth = require('../../auth/auth.service');
+
+var mongoosePaginate = require('mongoose-paginate');
+
+var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
@@ -18,19 +23,13 @@ exports.index = function(req, res) {
     User.findById(req.params.id, function (err, user) {
       if(err) { return handleError(res, err); }
       if(!user) { return res.send(404); }
-    });
-    
-    /*
-    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-     */
-    Post.find({ profile: req.params.id })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn')
-    .exec(
-      function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
+      Post.paginate({profile: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(paginatedResults);
+        }
+      }, {populate: 'profile department subDepartment createdBy'  , sortBy : { updatedOn : -1 }});
     });
   }
   if(req.params.type === 'department') {
@@ -43,18 +42,16 @@ exports.index = function(req, res) {
     Department.findById(req.params.id, function (err, dept) {
       if(err) { return handleError(res, err); }
       if(!dept) { return res.send(404); }
+      Post.paginate({department: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+        if (error) {
+          console.error(error);
+        } else {
+          res.send(paginatedResults);
+        }
+      }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
     });
     
-    /*
-    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-     */
-    Post.find({ department: req.params.id }, function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
-    })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn');
+
   }
   if(req.params.type === 'subDepartment') {
     if(!req.params.id) { return res.send(404); }
@@ -70,32 +67,33 @@ exports.index = function(req, res) {
     /*
     Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
      */
-    Post.find({ subDepartment: req.params.id }, function (err, posts) {
-      if(err) { return handleError(res, err); }
-      if(!posts) { return res.send(404); }
-      return res.json(200, posts);
-    })
-    .populate('profile department subDepartment createdBy')
-    .sort('updatedOn');
+
+    Post.paginate({subDepartment: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
   }
 };
 
 // Get comiled list of all posts related to one user
+// TODO: Limit it to 10 posts, send the next 10 and so on
 exports.newsfeed = function(req, res) {
-  Post.find({
-    $or: [
-      {department: {$in: req.user.department}},
-      {subDepartment: {$in: req.user.subDepartment}},
-      {profile: req.user._id}
-    ]}
-  )
-  .sort('-updatedOn')
-  .exec(
-    function (err, post) {
-      if(err) { return handleError(res, err); }
-      if(!post) { return res.send(404); }
-      return res.json(post);
-  });
+  Post.paginate({
+      $or: [
+        {department: {$in: req.user.department}},
+        {subDepartment: {$in: req.user.subDepartment}},
+        {profile: req.user._id}
+      ]}, 
+      req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+      if (error) {
+        console.error(error);
+      } else {
+        res.send(paginatedResults);
+      }
+    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
 };
 // Get a single post
 exports.show = function(req, res) {
@@ -119,15 +117,9 @@ exports.createPost = function(req, res) {
       if(err) { return handleError(res, err); }
       if(!user) { return res.send(404); }
     });
-
   }
 
   if(req.body.type === 'department') {
-    if (req.user.department.indexOf(req.body.destId) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-
     Department.findById(req.body.destId, function (err, dept) {
       if(err) { return handleError(res, err); }
       if(!dept) { return res.send(404); }
@@ -135,11 +127,6 @@ exports.createPost = function(req, res) {
   }
 
   if(req.body.type === 'subDepartment') {
-    if (req.user.subDepartment.indexOf(req.body.destId) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-
     subDepartment.findById(req.body.destId, function (err, subDept) {
       if(err) { return handleError(res, err); }
       if(!subDept) { return res.send(404); }
@@ -158,30 +145,23 @@ exports.createPost = function(req, res) {
     if (err) { return handleError(res, err); }
     else res.json(201, post);
   });
-
-  // Post.create(req.body, function(err, post) {
-  //   if(err) { return handleError(res, err); }
-  //   return res.json(201, post);
-  // });
 };
 
 // Appends a new comment to the existing post
 exports.addComment = function(req, res) {
+  console.log(req.body);
   Post.findById(req.body.postId, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     
-    var comment = {};
-    comment.name = req.user.name;
-    comment.id = req.user._id;
-    comment.email = req.user.email;
+    var comment = new Comment();
+    comment.createdBy = req.user._id;
     comment.info = req.body.comment;
     comment.createdOn = Date(Date.now());
     comment.updatedOn = Date(Date.now());
 
     post.updatedOn = Date.now();
 
-    post.comments.push(comment);
     post.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, post);
@@ -214,6 +194,19 @@ exports.destroy = function(req, res) {
     });
   });
 };
+
+exports.paginate = function (req, res) {
+  Post.paginate({profile: "5551b0a5fed2d93220bb50dc"}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log('Pages:', pageCount);
+      console.log('Items:', itemCount); 
+      console.log(paginatedResults);
+      res.send(paginatedResults);
+    }
+  }, {populate: 'createdBy', sortBy : { updatedOn : -1 }});
+}
 
 function handleError(res, err) {
   return res.send(500, err);

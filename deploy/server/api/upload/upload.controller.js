@@ -10,12 +10,13 @@ var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
   var part = req.files.file;
-  if(part.mimetype != "application/zip"){
-    res.send({
-      message: 'Please upload zip files only'
-    })
-  }
-  else{
+  console.log(part.mimetype);
+  // if(part.mimetype != "application/zip"){
+  //   res.send({
+  //     message: 'Please upload zip files only'
+  //   })
+  // }
+  // else{
     var writeStream = gfs.createWriteStream({
       filename: part.name,
       mode: 'w',
@@ -33,7 +34,7 @@ exports.create = function (req, res) {
     writeStream.write(part.data);
 
     writeStream.end();
-  }
+  // }
 }
 
 exports.serve = function(req, res) {
