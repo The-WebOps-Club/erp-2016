@@ -14,24 +14,24 @@
       <md-input-container>
         <label>Category Name</label>
         <input name="title" ng-model="eventList.title" ng-required="true" mongoose-error />
-        <div ng-messages="form.title.$error">
-          <div ng-message="required && submitted">This is required.</div>
-        </div>
-        <div ng-messages="form.title.$error">
-          <div ng-message="mongoose && submitted">{{ errors.title }}</div>
-        </div>
       </md-input-container>
+      <div style="color:red">
+        <span ng-show="form.title.$error.required && submitted">
+          Title is required.
+        </span>
+        <span>{{ errors.other }}</sapn>
+      </div>
 
       <md-input-container>
         <label>Category Info</label>
         <textarea required name="info" ng-model="eventList.info" mongoose-error></textarea>
-        <div ng-messages="form.info.$error">
-          <div ng-message="required">This is required.</div>
-        </div>
-        <div ng-messages="form.info.$error">
-          <div ng-message="mongoose && submitted">{{ errors.info }}</div>
-        </div>
       </md-input-container>
+      <div style="color:red">
+        <span ng-show="form.info.$error.required && submitted">
+          Info is required.
+        </span>
+        <span>{{ errors.other }}</sapn>
+      </div>
 
       <md-button type="submit" class="md-raised md-primary">Create</md-button>
     </form>

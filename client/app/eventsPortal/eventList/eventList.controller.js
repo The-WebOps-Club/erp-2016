@@ -5,7 +5,9 @@ angular.module('erp2015App')
     EventsPortalService.getAllEventLists()
     	.then(function (allEventLists) {
     		$scope.allEventLists = allEventLists;
+            console.log(allEventLists);
     	});
+    $scope.eventsShow = false;
 
 	$scope.eventListEditModal = function (eventList) {
     	$mdDialog.show({
@@ -44,5 +46,11 @@ angular.module('erp2015App')
 			$mdDialog.hide('Save edited deal');
 		};    	
     }
+
+    $scope.getEvents = function (eventList) {
+        $scope.events = eventList.events;
+        console.log(eventList.events);
+        $scope.eventsShow = true;
+    };      
 
 });

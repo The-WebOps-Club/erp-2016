@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div style="padding-left: 10%; padding-right: 10%; padding-top: 5%">
+<div style="position: absolute; left: 5%; padding-right: 45%; padding-top: 5%">
 
   <md-toolbar class="md-theme-light">
     <h2 class="md-toolbar-tools">
@@ -14,7 +14,7 @@
         <div layout="row">
           <md-list-item class="md-3-line">
               <div class="md-list-item-text">
-              	<ng-md-icon icon="view_headline" ></ng-md-icon>
+              	<ng-md-icon icon="view_headline"></ng-md-icon>
                 <h4>{{ eventList.title | characters:20 :false }}</h4>
                 <br>
                 <ng-md-icon icon="info" ></ng-md-icon>
@@ -39,7 +39,34 @@
       </md-card-content>
       <div class="md-actions" layout="row" layout-align="end center">
         <md-button ng-click="eventListEditModal(eventList)" class="md-raised md-primary md-hue-3">Edit Event List</md-button>
+        <md-button ng-click="getEvents(eventList)" class="md-raised md-primary md-hue-3">View events</md-button>
       </div>
+    </md-card>
+  </md-content>
+</div>
+
+<div style="padding-left: 60%; padding-right: 5%; padding-top: 5%" ng-show="eventsShow">
+  <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+      <span>List of all the Events</span>
+    </h2>
+  </md-toolbar>
+
+  <md-content>
+    <md-card ng-repeat="event in events">
+      <md-card-content layout="column">
+        <div layout="row">
+          <md-list-item class="md-3-line">
+              <div class="md-list-item-text">
+                <h3>Event Name</h3>
+                <h4>{{ event.name }}</h4>
+                <br>
+                <h3>Event Info</h3>
+                <p>{{ event.info }}</p>
+              </div>
+          </md-list-item>
+        </div>
+      </md-card-content>
     </md-card>
   </md-content>
 </div>
