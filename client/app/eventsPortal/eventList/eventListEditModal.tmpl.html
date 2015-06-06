@@ -1,27 +1,28 @@
 <md-dialog aria-label="Edit Event List Details" style="width:80%;">
   <form>
     <md-dialog-content>
-      <div layout="column">
+      <div layout="column" class="eventsPortal">
+        <div class="md-whiteframe-z1">
+          <md-toolbar class="md-primary">
+            <h1 class="md-toolbar-tools">
+              Edit Event List Details
+            </h1>
+          </md-toolbar>
 
-        <md-toolbar class="md-primary">
-          <h1 class="md-toolbar-tools">
-            Edit Event List Details
-          </h1>
-        </md-toolbar>
+          <md-content layout-padding>
+            <md-input-container>
+              <label>Event List Title</label>      
+              <!-- <ng-md-icon icon="perm_identity" style="fill:#00a1f4" class="name"></ng-md-icon> -->
+              <input ng-model="editEventList.title" type="text">
+            </md-input-container>
 
-        <md-content layout-padding class="autoScroll">
-          <md-input-container>
-            <label>Event List Title</label>      
-            <!-- <ng-md-icon icon="perm_identity" style="fill:#00a1f4" class="name"></ng-md-icon> -->
-            <input ng-model="editEventList.title" type="text">
-          </md-input-container>
-          <md-input-container>
-            <label>Event List Info</label>      
-            <!-- <ng-md-icon icon="perm_identity" style="fill:#00a1f4" class="name"></ng-md-icon> -->
-            <textarea ng-model="editEventList.info"></textarea>
-          </md-input-container>
-        </md-content>
-
+            <md-input-container>
+              <label>Event List Info</label>      
+              <!-- <ng-md-icon icon="perm_identity" style="fill:#00a1f4" class="name"></ng-md-icon> -->
+              <textarea ng-model="editEventList.info"></textarea>
+            </md-input-container>
+          </md-content>
+        </div>
       </div>
     </md-dialog-content>
     <div class="md-actions" layout="row">
@@ -34,3 +35,4 @@
     </div>
   </form>
 </md-dialog>
+

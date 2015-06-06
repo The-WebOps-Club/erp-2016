@@ -1,45 +1,79 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div style="padding-left: 10%; padding-right: 10%; padding-top: 5%">
+<div layout="row" layout-margin>
+  <div class="eventsPortal" flex flex-order="1">
+    <div class="md-whiteframe-z1">
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>List of all the Event Lists</span>
+        </h2>
+      </md-toolbar>
 
-  <md-toolbar class="md-theme-light">
-    <h2 class="md-toolbar-tools">
-      <span>List of all the Event Lists</span>
-    </h2>
-  </md-toolbar>
+      <md-content>
+        <md-list ng-repeat="eventList in allEventLists">
+          <md-list-item>
+            <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon>
+            <div layout="row"  layout-fill layout-padding>
+              <div flex="33">
+                  <div class="md-list-item-text">
+                    <h6 class="md-title">Title</h6>
+                    <p>{{ eventList.title | characters:20 :true }}</p>
+                  </div>
+              </div>
 
-  <md-content>
-    <md-card ng-repeat="eventList in allEventLists">
-      <md-card-content layout="column">
-        <div layout="row">
-          <md-list-item class="md-3-line">
-              <div class="md-list-item-text">
-              	<ng-md-icon icon="view_headline" ></ng-md-icon>
-                <h4>{{ eventList.title | characters:20 :false }}</h4>
-                <br>
-                <ng-md-icon icon="info" ></ng-md-icon>
-                <p>{{ eventList.info | characters:80 :false }}</p>
+              <div flex="33">
+                  <div class="md-list-item-text">
+                    <h6 class="md-title"> Created On </h6>
+                    <p>{{ eventList.createdOn | date: 'medium' }}</p>
+                  </div>
               </div>
-          </md-list-item>
-          <md-list-item class="md-3-line">
-            <ng-md-icon icon="today" style="fill:#0082CC" size="32" class="md-avatar" alt="eventList-created-img"></ng-md-icon>
-              <div class="md-list-item-text">
-                <h3> Created On </h3>
-                <p>{{ eventList.createdOn | date: 'medium' }}</p>
+
+              <div flex="33">
+                  <div class="md-list-item-text">
+                    <h6 class="md-title"> Latest Activity </h6>
+                    <p>{{ eventList.updatedOn | date: 'medium' }}</p>
+                  </div>
               </div>
+            </div>
           </md-list-item>
-          <md-list-item class="md-3-line">
-            <ng-md-icon icon="schedule" style="fill:#00517F" size="32" class="md-avatar" alt="eventList-last-updated-img"></ng-md-icon>
-              <div class="md-list-item-text">
-                <h3> Latest Activity </h3>
-                <p>{{ eventList.updatedOn | date: 'medium' }}</p>
+          <div class="md-actions" layout="row" layout-align="end center">
+            <md-button ng-click="eventListEditModal(eventList)" class="md-raised md-primary">Edit Event List</md-button>
+            <md-button ng-click="getEvents(eventList)" class="md-raised md-primary">View events</md-button>
+          </div>
+          <md-divider></md-divider>
+        </md-list>
+      </md-content>
+    </div>
+  </div>
+
+<!-- 
+  <div class="eventsPortal"  flex flex-order="2">
+    <div class="md-whiteframe-z1">
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>List of all the Events</span>
+        </h2>
+      </md-toolbar>
+
+      <md-content>
+        <md-list ng-repeat="event in events">
+          <md-list-item>
+            <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon>
+            <div layout="row" layout-margin layout-fill layout-padding>
+              <div flex="33">
+                  <div class="md-list-item-text">
+                    <h6 class="md-title">Name</h6>
+                    <h4>{{ event.name | characters:20 :false }}</h4>
+                    <br>
+                    <h6 class="md-title">Info</h6>
+                    <p>{{ eventList.info | characters:80 :false }}</p>
+                  </div>
               </div>
+            </div>
           </md-list-item>
-        </div>
-      </md-card-content>
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-button ng-click="eventListEditModal(eventList)" class="md-raised md-primary md-hue-3">Edit Event List</md-button>
-      </div>
-    </md-card>
-  </md-content>
+        </md-list>
+      </md-content>
+    </div>
+  </div>
+ -->
 </div>
