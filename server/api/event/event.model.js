@@ -8,7 +8,11 @@ var EventSchema = new Schema({
   info: String,
   eventTabs: [{ type: Schema.Types.ObjectId, ref: 'EventTab' }],
   assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  eventCategory: [{ type: Schema.Types.ObjectId, ref: 'EventList' }]
+  eventCategory: [{ type: Schema.Types.ObjectId, ref: 'EventList' }],
+  createdOn: Date,
+  updatedOn: Date,
+  createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
+  lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' }
 });
 
 module.exports = mongoose.model('Event', EventSchema);

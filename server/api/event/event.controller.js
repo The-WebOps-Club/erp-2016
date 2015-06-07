@@ -20,8 +20,22 @@ exports.show = function(req, res) {
   });
 };
 
+//Get multiple events
+exports.getMultiple = function(req, res) {
+  Event.find({ 'eventCategory': req.params.id }, function (err, events) {
+    if(err) { return handleError(res, err); }
+    if(!events) { return res.send(404); }
+    console.log(events);
+    return res.json(events);
+  });
+};
+
 // Creates a new event in the DB.
 exports.create = function(req, res) {
+  req.body.createdOn = Date.now();
+  req.body.updatedOn = Date.now();
+  req.body.createdBy = req.user._id;
+  req.body.lastUpdatedBy = req.user._id;
   Event.create(req.body, function(err, event) {
     if(err) { return handleError(res, err); }
     return res.json(201, event);

@@ -333,3 +333,10 @@ exports.resetPassword = function(req, res) {
 exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
+
+exports.getCoords = function (req, res, next) {
+  User.find({ role:'coord' }, 'name _id', function (err, result) {
+    if (err) { console.log("minu");return handleError(res, err); }
+    return res.json(result);
+  });
+};

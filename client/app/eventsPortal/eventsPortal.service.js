@@ -10,7 +10,7 @@ angular.module('erp2015App')
         	});
       	},
         getEventList: function (eventListId) {
-          return $http.get('api/eventLists/' + eventListId).then(function (response) {
+          return $http.get('/api/eventLists/' + eventListId).then(function (response) {
             return response.data;
           });
         },
@@ -23,6 +23,21 @@ angular.module('erp2015App')
           return $http.get('/api/eventLists').then(function (response) {
             return response.data;
           });
+        },
+        getCoords: function(){
+          return $http.get('/api/users/getCoords').then(function (response){
+            return response.data;
+          });
+        },
+        createEvent:function(data){
+          return $http.post('/api/events', data).then(function(response){
+              return response.data;
+          });
+        },
+        getEvents:function(data){
+          return $http.get('/api/events/getMultiple/' + data._id).then(function(response){
+              return response.data;
+          });
         }
   	};
-});
+  });

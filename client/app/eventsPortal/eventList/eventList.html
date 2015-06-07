@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div layout="row" layout-margin>
-  <div class="eventsPortal" flex flex-order="1">
+  <div class="eventsPortal eventListContainer" flex flex-order="1">
     <div class="md-whiteframe-z1">
       <md-toolbar class="md-theme-light">
         <h2 class="md-toolbar-tools">
@@ -46,8 +46,8 @@
     </div>
   </div>
 
-<!-- 
-  <div class="eventsPortal"  flex flex-order="2">
+
+  <div class="eventsPortal eventsContainer"  flex flex-order="2" ng-show="eventsShow">
     <div class="md-whiteframe-z1">
       <md-toolbar class="md-theme-light">
         <h2 class="md-toolbar-tools">
@@ -63,17 +63,22 @@
               <div flex="33">
                   <div class="md-list-item-text">
                     <h6 class="md-title">Name</h6>
-                    <h4>{{ event.name | characters:20 :false }}</h4>
-                    <br>
-                    <h6 class="md-title">Info</h6>
-                    <p>{{ eventList.info | characters:80 :false }}</p>
+                    <p>{{ event.name | characters:20 :false }}</h4>
+                  </div>
+              </div>
+
+              <div flex="33">
+                  <div class="md-list-item-text">
+                    <h6 class="md-title"> Info </h6>
+                    <p>{{ event.info | characters:80 :false }}</p>
                   </div>
               </div>
             </div>
           </md-list-item>
+          <hr>
         </md-list>
       </md-content>
     </div>
   </div>
- -->
+
 </div>

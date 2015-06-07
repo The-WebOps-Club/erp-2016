@@ -11,7 +11,7 @@
       </md-toolbar>
 
       <md-content layout-padding>
-        <form name="form" ng-submit="newEventList(form)" novalidate>
+        <form name="newEventListForm" ng-submit="newEventList(newEventListForm)" novalidate>
 
           <md-input-container>
             <label>Category Name</label>
@@ -50,7 +50,7 @@
       </md-toolbar>
 
       <md-content layout-padding>
-        <form name="form" ng-submit="" novalidate>
+        <form name="newEventForm" ng-submit="createEvent(newEventForm)" novalidate>
 
           <md-input-container>
             <label>Event Name</label>
@@ -71,8 +71,37 @@
             <span ng-show="form.info.$error.required && submitted">
               Info is required.
             </span>
-            <span>{{ errors.other }}</sapn>
+            <span>{{ errors.other }}</span>
           </div>
+
+          <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in coords"
+              md-item-text="item.name"
+              placeholder="Assign a team member">
+                <span md-highlight-text="searchText">{{item.name}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.name }}</strong>
+            </md-chip-template>
+          </md-chips>
+          <br>
+
+          <md-chips ng-model="selectedEventLists" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in eventLists"
+              md-item-text="item.title"
+              placeholder="Assign an event list">
+                <span md-highlight-text="searchText">{{item.title}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.title }}</strong>
+            </md-chip-template>
+          </md-chips>
 
           <md-button type="submit" class="md-raised md-primary">Create</md-button>
         </form>
