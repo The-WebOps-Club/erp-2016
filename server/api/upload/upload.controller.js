@@ -9,7 +9,9 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
+  // console.log("its working");
   var part = req.files.file;
+  console.log(part);
   console.log(part.mimetype);
   // if(part.mimetype != "application/zip"){
   //   res.send({
