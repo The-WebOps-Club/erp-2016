@@ -1,42 +1,209 @@
  <!DOCTYPE html>
 <html lang="en" ng-app="StarterApp">
   <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
   	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="erp-bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="icons-color.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="jquery.min.js"></script>
 	<script src="angular.min.js"></script>
 	<script src="saarang_erp_profile.js"></script>
 	<script src="textarea.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
-    <meta name="viewport" content="initial-scale=1" />
+	<title>Profile</title>
   </head>
 <body layout="column" ng-controller="AppCtrl">
-	
 
 
+	<!-- DIV FOR TOOLBAR
+	<div layout="row"></div> -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	<!-- BODY -->
+	<div layout="row" class="body">
+		<!-- MAIN -->
+		<div flex="66" offset="10">
+		<div layout="column" class="main md-whiteframe-z1" flex="66" offset="5">
+			<div layout="column" id="profile_back">
+				<div id="profile_title">
+					{{user.name}}
+				</div>
+				<div id="profile_pic">
+				<img ng-src="{{image}}" />
+				</div>
+			</div>
+			<div id="banner_bar" flex>
+				<div class="banner_item" flex="10">
+				<a href="">
+				Wall
+				</a>
+				</div>
+				<div class="banner_item" flex="10">
+				<a href="">
+				Profile
+				</a>
+				</div>
+				<div class="banner_item" flex="10">
+				<a href="">
+				Docs
+				</a>
+				</div>
+				<div class="banner_item" flex="10">
+				<a href="">
+				Portals
+				</a>
+				</div>
+			</div>
+			<div>
+			<div id="content" class="content" flex="100" layout="column">
+				<div id="content_head" >
+					About
+					<small class="small">last login : &nbspdays,&nbsp hours ago</small>
+					<md-button class="md-raised btn-1 pull-right">
+					<i class="icon-pencil"></i>
+						<span class="edit_text"><b>Edit Profile</b></span>
+					</md-button>
+				</div>
+				<div id="content_body" layout="row" flex>
+					<div class="side" layout="column"  flex="50" id="leftside">
+						<!-- Basic info -->
+						<div>
+						<div class="box" flex="100" id="basic">
+							<div class="headings" layout-padding flex="100"><b>Basic Info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels"  flex="33" for="name">Name:</label>
+								<div class="data"  flex="50" id="name">{{user.name}}</div>
+							</div>
+							<div class="info"   flex="100" layout="row">
+								<label class="labels"  flex="33" for="Nickname">Nickname:</label>
+								<div class="data"  flex="50" id="Nickname">{{user.nickname}}</div>
+							</div>
+							<div class="info"   flex="100" layout="row"> 
+								<label class="labels"  flex="33" for="gender">Gender:</label>
+								<div class="data"  flex="50" id="gender">{{user.gender}}</div>
+							</div>
+							<div class="info"   flex="100" layout="row">
+								<label class="labels"  flex="33" for="date_of_birth">Date of Birth:</label>
+								<div class="data"  flex="50" id="date_of_birth">{{user.date_of_birth}}</div>
+							</div>
+						</div>
+						</div>
+						<!-- Contact info-->
+						<div>
+						<div class="box" flex="100" id="contact">
+							<div class="headings" layout-padding flex="100"><b>Contact info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="mobile">Mobile number:</label>
+								<div class="data" flex="50" id="mobile">{{user.mobile_number}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="summer">Summer number:</label>
+								<div class="data" flex="50" id="summer">{{user.summer_number}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="email">Email address:</label>
+								<div class="data" flex="50" id="email">{{user.email}}</div>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="side" layout="column" flex="50" id="rightside">	
+						<!-- College info -->
+						<div class="box" flex="100" id="college">
+							<div class="headings" layout-padding flex="100"><b>College info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="college_name">College:</label>
+								<div class="data" flex="50" id="college_name">{{user.college}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="roll">College roll:</label>
+								<div class="data" flex="50" id="roll">{{user.college_roll}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="branch">Branch:</label>
+								<div class="data" flex="50" id="branch">{{user.branch}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="room">Room no:</label>
+								<div class="data" flex="50" id="room">{{user.room_no}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="hostel">Hostel:</label>
+								<div class="data" flex="50" id="hostel">{{user.hostel}}</div>
+							</div>
+						</div>
+						<!-- Accomodation info -->
+						<div class="box" flex="100" id="accomodation">
+							<div class="headings" layout-padding flex="100"><b>Accomodation info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="summer_stay">Summer stay:</label>
+								<div class="data" flex="50" id="summer_stay">{{user.summer_stay}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="winter_stay">Winter stay:</label>
+								<div class="data" flex="50" id="winter_stay">{{user.winter_stay}}</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="want_accomodation">Want accomodation:</label>
+								<div class="data" flex="50" id="want_accomodation">{{user.want_accomodation}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+		<!-- SIDEBAR -->
+		<div layout="column"class="sidebar"  flex="15">
+		<div id="rightbar">
+			<div>
+				<textarea flex="5" id="post_area" rows="4" placeholder="Quick Post">
+				</textarea>
+			</div>
+			<div>
+			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			</div>
+			<hr>
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-folder"></i>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-folder"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="calendar_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul>
+					<li>
+						<a href="">
+						<i class="icon-calendar"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</div>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
@@ -69,5 +236,166 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', function($scope, $mdSidenav){
  
 }]);
     </script>
+<style type="text/css">
+    .main
+    {
+    	border-left: 1px solid rgb(204, 204, 204);
+		border-right: 1px solid rgb(204, 204, 204);
+    	padding: 10px;
+    }
+    #profile_back
+    {
+    	background: -webkit-linear-gradient(top, white, #ccc);
+    	background: -moz-linear-gradient(top, white, #ccc);
+    	background: linear-gradient(top, white, #ccc);
+    	min-height : 250px;
+    	max-height: 500px;
+    }
+    #profile_title
+	{
+		font-size: 2em;
+		height: 20px;
+		color: white;
+		padding: 25px;
+		padding-top: 10px;
+		padding-bottom: 50px;
+		background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    	background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    	background: linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+	}
+	#profile_pic
+	{
+		background: rgba(250, 250, 250, 1);
+	    -webkit-border-radius: 3px;
+	    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    -moz-border-radius: 3px;
+	    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    border-radius: 3px;
+	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    border : 1px solid #aaa;
+	    height : 160px;
+	    width: 160px;
+	    margin : 20px;
+	    padding : 4px;
+	    position : absolute;
+	}
+	#banner_bar
+	{
+		border:1px solid #ddd;
+		height: 40px;
+	}
+	.banner_item
+	{
+		display : inline-block;
+		border-right: 1px solid #ddd;
+	    width : auto;
+	    height : 35px;
+	    font-size : 14px;
+	    font-weight : bold;
+	    padding : 10px 30px;
+	    vertical-align: middle;
+	}
+	a
+	{
+		color: #3b5998;
+	  	text-decoration: none;
+	  	line-height: inherit;
+	  	font-weight: inherit;
+	}
+	/*.selection_caret 
+	{
+	    background-image: url(/static/img/fb_icons_4.png);
+	    background-repeat: no-repeat;
+	    background-size: auto;
+	    background-position: -267px -239px;
+	    display: block;
+	    height: 6px;
+	    width: 9px;
+	}*/
+.btn-1
+{
+	font-size: 12px;
+}
+.content
+{
+	margin-top: 10px;
+	border:1px solid #ddd;
+}
+#content_head
+{
+	font-size: 25px;
+	line-height: 12px;
+	font-weight: bold;
+	background-color: #F6F7F8;	
+	padding-top: 20px;
+	padding-left: 20px; 
+	border-bottom: 1px solid #ddd; 
+}
+#content_body
+{
+	padding: 10px;
+}
+.small
+{
+	font-size: 10px;
+	font-weight: normal;
+	color: #999999;
+}
+.side
+{
+	padding: 10px;
+}
+.box
+{
+	padding: 10px;
+}
+.headings
+{
+	font-size: 15px; 
+}
+.info
+{
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+#rightside
+{
+	border-left:  1px solid #ddd;
+}
+#basic,
+#college 
+ {
+	border-bottom:  1px solid #ddd;
+}
+.sidebar
+{
+	padding: 10px;
+}
+#post_button
+{
+	color: white;
+	background-color:  #3b5998;
+	font:12px;
+}
+</style>
+<script>
+$(document).ready(function () {
+     var el = $('#rightbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#rightbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
+$(function() {
+   $('#post_area').autogrow();
+});
+</script>
 </body>
 </html>
