@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var Post = require('./post.model');
+var Wall = require('../wall/wall.model');
 var Comment = require('../comment/comment.model');
 var User = require('../user/user.model');
 var Department = require('../department/department.model');
@@ -14,87 +15,54 @@ var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
-  if(req.params.type != 'profile' && req.params.type != 'department' && req.params.type != 'subDepartment')
-    return res.send(404);
-
-  if(req.params.type === 'profile') {
-    if(!req.params.id) { return res.send(404); }
-
-    User.findById(req.params.id, function (err, user) {
-      if(err) { return handleError(res, err); }
-      if(!user) { return res.send(404); }
-      Post.paginate({profile: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
-        if (error) {
-          console.error(error);
-        } else {
-          res.send(paginatedResults);
-        }
-      }, {populate: 'profile department subDepartment createdBy'  , sortBy : { updatedOn : -1 }});
-    });
-  }
-  if(req.params.type === 'department') {
-    if(!req.params.id) { return res.send(404); }
-    if (req.user.department.indexOf(req.params.id) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-
-    Department.findById(req.params.id, function (err, dept) {
-      if(err) { return handleError(res, err); }
-      if(!dept) { return res.send(404); }
-      Post.paginate({department: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
-        if (error) {
-          console.error(error);
-        } else {
-          res.send(paginatedResults);
-        }
-      }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
-    });
-    
-
-  }
-  if(req.params.type === 'subDepartment') {
-    if(!req.params.id) { return res.send(404); }
-    if (req.user.subDepartment.indexOf(req.params.id) == -1){
-      console.log("not allowed");
-      return res.send(403);
-    }
-    subDepartment.findById(req.params.id, function (err, subDept) {
-      if(err) { return handleError(res, err); }
-      if(!subDept) { return res.send(404); }
-    });
-    
-    /*
-    Fetches all posts depending on the id. Need to make it to fetch only first 20 and later on update
-     */
-
-    Post.paginate({subDepartment: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+  Post.paginate(
+      {wall: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
         console.error(error);
       } else {
         res.send(paginatedResults);
       }
-    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
-  }
+    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
 };
 
-// Get comiled list of all posts related to one user
+// Get compiled list of all posts related to one user
+// Will be given an array of walls.
 // TODO: Limit it to 10 posts, send the next 10 and so on
 exports.newsfeed = function(req, res) {
-  Post.paginate({
-      $or: [
-        {department: {$in: req.user.department}},
-        {subDepartment: {$in: req.user.subDepartment}},
-        {profile: req.user._id}
-      ]}, 
-      req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+  var required  = []
+  required.push(req.user._id)
+  required.push(req.user.department)
+  required.push(req.user.subDepartment)
+  Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
+    required = [] //Reusing the variable used above
+    console.log(walls);
+    for (var i = walls.length - 1; i >= 0; i--) {
+      required.push(walls[i]._id)
+    };
+    console.log(required)
+    Post.paginate(
+      {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
         console.error(error);
       } else {
         res.send(paginatedResults);
       }
-    }, {populate: 'profile department subDepartment createdBy', sortBy : { updatedOn : -1 }});
+    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+  })
 };
+
+exports.newsfeedRefresh = function(req, res) {
+  Post.find({
+    updatedOn:{
+      $gte: new Date(2014, 5, 4)
+    }}, function (err, posts) {
+    console.log(posts)
+    if(err) { return handleError(res, err); }
+    if(!posts) { return res.send(404); }
+    return res.json(posts);
+    })
+}
+
 // Get a single post
 exports.show = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
@@ -109,42 +77,24 @@ exports.createPost = function(req, res) {
   var newPost = new Post();
   console.log(req.body.destId);
   if(!req.body.destId) { return res.send(404); }
-  if(req.body.type != 'profile' && req.body.type != 'department' && req.body.type != 'subDepartment')
-    return res.send(404);
+  Wall.findOne({parentId: req.body.destId}, function (err, wall) {
+    if(err) { return handleError(res, err); }
+    if(!wall) { return res.send(404); }
+    console.log(wall);
+    newPost.title = req.body.title;
+    newPost.info = req.body.info;
+    newPost.wall = wall._id;
+    
+    newPost.createdBy = req.user._id;
 
-  if(req.body.type === 'profile') {
-    User.findById(req.body.destId, function (err, user) {
-      if(err) { return handleError(res, err); }
-      if(!user) { return res.send(404); }
+    newPost.createdOn = Date.now();
+    newPost.updatedOn = Date.now();
+
+    newPost.save(function (err, post) {
+      if (err) { return handleError(res, err); }
+      else res.json(201, post);
     });
-  }
-
-  if(req.body.type === 'department') {
-    Department.findById(req.body.destId, function (err, dept) {
-      if(err) { return handleError(res, err); }
-      if(!dept) { return res.send(404); }
-    });
-  }
-
-  if(req.body.type === 'subDepartment') {
-    subDepartment.findById(req.body.destId, function (err, subDept) {
-      if(err) { return handleError(res, err); }
-      if(!subDept) { return res.send(404); }
-    });
-  }
-  newPost.title = req.body.title;
-  newPost.info = req.body.info;
-  newPost[req.body.type] = req.body.destId;
-  
-  newPost.createdBy = req.user._id;
-
-  newPost.createdOn = Date.now();
-  newPost.updatedOn = Date.now();
-
-  newPost.save(function (err, post) {
-    if (err) { return handleError(res, err); }
-    else res.json(201, post);
-  });
+  });  
 };
 
 // Appends a new comment to the existing post
@@ -194,19 +144,6 @@ exports.destroy = function(req, res) {
     });
   });
 };
-
-exports.paginate = function (req, res) {
-  Post.paginate({profile: "5551b0a5fed2d93220bb50dc"}, req.params.page, 3, function(error, pageCount, paginatedResults, itemCount) {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log('Pages:', pageCount);
-      console.log('Items:', itemCount); 
-      console.log(paginatedResults);
-      res.send(paginatedResults);
-    }
-  }, {populate: 'createdBy', sortBy : { updatedOn : -1 }});
-}
 
 function handleError(res, err) {
   return res.send(500, err);

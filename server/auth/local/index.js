@@ -22,9 +22,20 @@ router.post('/mobile', function(req, res, next) {
 		var error = err || info;
 		if (error) return res.json(401, error);
 		if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
-
+		console.log(req.body.deviceId);
+		user.deviceId = req.body.deviceId; //Saving device ID to user
+		user.save(function (err) {
+	        if (err) return res.status(401).json(error);
+      	});
 		var token = auth.signMobileToken(user._id, user.role);
-		res.json({token: token});
+		var sentUser = JSON.parse(JSON.stringify(user));
+		sentUser.hashedPassword = undefined;
+		sentUser.salt = undefined;
+		sentUser.provider = undefined;
+		res.json({
+			token: token,
+			user: sentUser
+		});
 	})(req, res, next)
 });
 

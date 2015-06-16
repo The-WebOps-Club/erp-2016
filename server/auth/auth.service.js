@@ -87,7 +87,7 @@ function signToken(id) {
 }
 
 function signMobileToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, {});
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*365 });
 }
 
 /**
