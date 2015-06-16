@@ -9,9 +9,11 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Department = require('../department/department.model');
+var SubDepartment = require('../subDepartment/subDepartment.model');
+var Wall = require('../wall/wall.model');
 
-var EMAIL = ''; // Put your fest mail id here
-var PASSWORD = ''; // Put your fest password here 
+var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
+var PASSWORD = 'H4wke1373'; // Put your fest password here 
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -37,17 +39,20 @@ exports.index = function (req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log('asdasdasdasd');
-  console.log(req.body);
   var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
-  newUser.save(function (err, user) {
+  var newWall = new Wall({ name: req.body.name, parentId: newUser._id});
+  newWall.save(function (err, wall) {
     if (err) { console.log(err); return validationError(res, err); }
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    res.json({ token: token });
+    newUser.wall = wall._id;
+    newUser.save(function (err, user) {
+      if (err) { console.log(err); return validationError(res, err); }
+      var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+      res.json({ token: token });
+    });
   });
 };
 
@@ -104,20 +109,20 @@ exports.changePassword = function (req, res, next) {
  */
 exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
-  var userUpdate = req.body.userUpdate;
+  var userUpdate = req.body;
 
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.sendStatus(404);
-    user.name = userUpdate.name;
-    user.nick = userUpdate.nick;
+    // user.name = userUpdate.name;
+    // user.nick = userUpdate.nick;
     user.profilePic = userUpdate.profilePic;
-    user.city = userUpdate.city;
-    user.summerLocation = userUpdate.summerLocation;
-    user.cgpa = userUpdate.cgpa;
-    user.phoneNumber = userUpdate.phoneNumber;
-    user.hostel = userUpdate.hostel;
+    // user.city = userUpdate.city;
+    // user.summerLocation = userUpdate.summerLocation;
+    // user.cgpa = userUpdate.cgpa;
+    // user.phoneNumber = userUpdate.phoneNumber;
+    // user.hostel = userUpdate.hostel;
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
@@ -137,7 +142,8 @@ exports.me = function (req, res, next) {
     if (err) return next(err);
     if (!user) return res.sendStatus(401);
     res.json(user);
-  });
+  })
+  .populate('department subDepartment', 'name');
 };
 
 /**
@@ -199,14 +205,14 @@ exports.addSubDepartment = function(req, res, next) {
         subDepartment[req.body.role].push(user._id);
         subDepartment.save(function (err) {
           if(err) { return handleError(res, err); }
-          if(user.subDepartment(subDepartment._id) == -1){
-            user.subDepartment.push(req.body.subDepartment);
-            user.updatedOn = Date.now();
-            user.save(function (err) {
-              if(err) { return handleError(res, err); }
-              res.sendStatus(200); 
-            });
-          }
+        });
+      }
+      if(user.subDepartment.indexOf(subDepartment._id) == -1){
+        user.subDepartment.push(req.body.subDepartment);
+        user.updatedOn = Date.now();
+        user.save(function (err) {
+          if(err) { return handleError(res, err); }
+          res.sendStatus(200); 
         });
       }
       else res.sendStatus(200);
@@ -245,13 +251,13 @@ exports.forgotPassword = function(req, res, next) {
     },
     function (token, user, done) {
       var transporter = nodemailer.createTransport();
-      // var smtpTransport = nodemailer.createTransport({
-      //   service: 'Gmail',
-      //   auth: {
-      //     user: EMAIL,
-      //     pass: PASSWORD
-      //   }
-      // });
+      var smtpTransport = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: EMAIL,
+          pass: PASSWORD
+        }
+      });
       
       var mailOptions = {
         to: user.email,

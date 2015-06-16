@@ -5,6 +5,7 @@ angular.module('erp2015App')
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
+    $scope.user = Auth.getCurrentUser();
 
     $http.get('/api/posts/profile/' + $stateParams.userId + '/1')
     	.success(function(posts) {
@@ -20,7 +21,7 @@ angular.module('erp2015App')
     	});
 
     $scope.createPost = function() {
-        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $stateParams.userId)
+        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user._id)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
