@@ -24,7 +24,7 @@ router.post('/mobile', function(req, res, next) {
 		if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
 		if (!req.body.deviceId) return res.status(401).json({message: 'Device ID cannot be empty'})
 		console.log(req.body.deviceId);
-		user.deviceId = req.body.deviceId; //Saving device ID to user
+		user.deviceId.push(req.body.deviceId); //Saving device ID to user
 		user.save(function (err) {
 	        if (err) return res.status(401).json(error);
       	});

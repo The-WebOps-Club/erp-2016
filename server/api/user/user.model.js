@@ -48,7 +48,7 @@ var UserSchema = new Schema({
   wall: {type: Schema.Types.ObjectId, ref: 'Wall'},
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
-  deviceId: String, //Mobile ID for GCM push notifs
+  deviceId: [String], //Mobile ID for GCM push notifs
   hashedPassword: String,
   provider: String,
   salt: String,
