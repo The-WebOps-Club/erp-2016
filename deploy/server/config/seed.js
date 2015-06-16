@@ -40,6 +40,7 @@ User.find({}).remove(function() {
     summerLocation: 'testSummer',
     cgpa: '5',
     phoneNumber: '5555555555',
+    alternateNumber: '9999999999',
     rollNumber: 'tttttttt',
     roomNumber: '111',
     hostel: {
@@ -56,6 +57,7 @@ User.find({}).remove(function() {
     summerLocation: 'adminSummer',
     cgpa: '10',
     phoneNumber: '9999999999',
+    alternateNumber: '9999999999',
     rollNumber: 'aaaaaaaa',
     roomNumber: '222',
     hostel: {

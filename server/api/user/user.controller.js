@@ -12,8 +12,8 @@ var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
 
-var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
-var PASSWORD = 'H4wke1373'; // Put your fest password here 
+var EMAIL = ''; // Put your fest mail id here
+var PASSWORD = ''; // Put your fest password here 
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -268,7 +268,7 @@ exports.forgotPassword = function(req, res, next) {
           'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
-      transporter.sendMail(mailOptions, function (err, info) {
+      smtpTransport.sendMail(mailOptions, function (err, info) {
         if(err) {
           console.log('Error Occurred');
           console.log(err);

@@ -43,9 +43,12 @@ var UserSchema = new Schema({
   cgpa: { type: Number, default: '' },
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
+  alternateNumber: { type: String, default: '' },
   // formApplied: [], //Is this even used?
+  wall: {type: Schema.Types.ObjectId, ref: 'Wall'},
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
+  deviceId: [String], //Mobile ID for GCM push notifs
   hashedPassword: String,
   provider: String,
   salt: String,
@@ -114,21 +117,21 @@ UserSchema
 
 // Validate hostel
 // WARNING - validating only the value name can be corrupted. There is a bug
-UserSchema
-  .path('hostel')
-  .validate(function(hostel) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (allHostels.indexOf(hostel.value) !== -1);
-  }, 'This is not a valid hostel');
+// UserSchema
+//   .path('hostel')
+//   .validate(function(hostel) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (allHostels.indexOf(hostel.value) !== -1);
+//   }, 'This is not a valid hostel');
 
 // Validate empty roomNumber
-UserSchema
-  .path('roomNumber')
-  .validate(function(roomNumber) {
-    var regExpRoom = /\d+/;
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (regExpRoom.test(roomNumber));
-  }, 'Room Number cannot be blank');
+// UserSchema
+//   .path('roomNumber')
+//   .validate(function(roomNumber) {
+//     var regExpRoom = /\d+/;
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (regExpRoom.test(roomNumber));
+//   }, 'Room Number cannot be blank');
 
 // Validate empty summerLocation
 UserSchema
@@ -155,6 +158,15 @@ UserSchema
     var regExpPhone = /^\d{10}$/; 
     return (regExpPhone.test(phoneNumber));
   }, 'Phone Number must have 10 digits');
+
+// //Validate Alternate Phone Number
+// UserSchema
+//   .path('alternateNumber')
+//   .validate(function(alternateNumber) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     var regExpPhone = /^\d{10}$/; 
+//     return (regExpPhone.test(alternateNumber));
+//   }, 'Phone Number must have 10 digits');
 
 // Validate rollNumber
 UserSchema
