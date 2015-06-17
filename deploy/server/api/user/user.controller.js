@@ -119,7 +119,7 @@ exports.updateProfile = function (req, res, next) {
     user.summerLocation = userUpdate.summerLocation;
     user.phoneNumber = userUpdate.phoneNumber;
     user.alternateNumber = userUpdate.alternateNumber;
-    user.hostel = userUpdate.hostel;
+    // user.hostel = userUpdate.hostel;
     user.roomNumber = userUpdate.roomNumber;
     user.updatedOn = Date.now();
     user.save(function (err) {
