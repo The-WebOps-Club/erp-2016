@@ -12,7 +12,7 @@ var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
 
-var EMAIL = ''; // Put your fest mail id here
+var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
 
 var validationError = function (res, err) {
@@ -64,7 +64,7 @@ exports.show = function (req, res, next) {
 
   User.findById(userId, function (err, user) {
     if (err) return next(err);
-    if (!user) return res.sendStatus(401);
+    if (!user) return res.status(404).json({message: "User does not exist"});
     res.json(user.profile);
   });
 };
@@ -76,7 +76,7 @@ exports.show = function (req, res, next) {
 exports.destroy = function (req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) return res.status(500).json(err);
-    return res.sendStatus(204);
+    return res.status(200).json({message: 'deleted'});
   });
 };
 
@@ -96,10 +96,10 @@ exports.changePassword = function (req, res, next) {
       user.password = newPass;
       user.save(function (err) {
         if (err) return validationError(res, err);
-        res.sendStatus(200);
+        res.status(200).json({message: "Successful"});
       });
     } else {
-      res.sendStatus(403);
+      res.status(403).json({validationError: "Wrong Password"});
     }
   });
 };
@@ -114,7 +114,7 @@ exports.updateProfile = function (req, res, next) {
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
-    if(!user) return res.sendStatus(404);
+    if(!user) return res.status(404).json({message: "User does not exist"});
     user.profilePic = userUpdate.profilePic;
     user.summerLocation = userUpdate.summerLocation;
     user.phoneNumber = userUpdate.phoneNumber;
@@ -124,7 +124,7 @@ exports.updateProfile = function (req, res, next) {
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
-      res.sendStatus(200);
+      res.status(200).json({message: "Successful"});
     });
   });
 };
@@ -138,8 +138,8 @@ exports.me = function (req, res, next) {
     _id: userId
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
     if (err) return next(err);
-    if (!user) return res.sendStatus(401);
-    res.json(user);
+    if(!user) return res.status(404).json({message: "User does not exist"});
+    res.status(200).json(user);
   })
   .populate('department subDepartment', 'name');
 };
@@ -160,7 +160,7 @@ exports.addDepartment = function (req, res, next) {
         return handleError(res, err);
       }
       if(!department) {
-        return res.sendStatus(404);
+        return res.status(404).json({message: "Department does not exist"});
       }
       if (department[req.body.role].indexOf(user._id) == -1){
         department[req.body.role].push(user._id);
@@ -173,10 +173,10 @@ exports.addDepartment = function (req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.sendStatus(200); 
+          res.status(200).json({message: "Successful"});; 
         });
       }
-      else res.sendStatus(200);
+      else res.status(200).json({message: "Successful"});;
     });
   });
 };
@@ -197,7 +197,7 @@ exports.addSubDepartment = function(req, res, next) {
         return handleError(res, err);
       }
       if(!subDepartment) {
-        return res.sendStatus(404);
+        return res.status(404).json({message: "Sub Department does not exist"});;
       }
       if (subDepartment[req.body.role].indexOf(user._id) == -1){
         subDepartment[req.body.role].push(user._id);
@@ -210,10 +210,10 @@ exports.addSubDepartment = function(req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.sendStatus(200); 
+          res.status(200).json({message: "Successful"}); 
         });
       }
-      else res.sendStatus(200);
+      else res.status(200).json({message: "Successful"});
     });
   });
 };
@@ -237,7 +237,7 @@ exports.forgotPassword = function(req, res, next) {
     function (token, done) {
       User.findOne({ email: req.body.email }, function (err, user) {
         if(err) { return handleError(res, err); }
-        if(!user) { return res.sendStatus(404); }
+        if(!user) { return res.status(404).json({message: "User does not exist"}); }
         
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // one hour
@@ -249,13 +249,13 @@ exports.forgotPassword = function(req, res, next) {
     },
     function (token, user, done) {
       var transporter = nodemailer.createTransport();
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: EMAIL,
-          pass: PASSWORD
-        }
-      });
+      // var smtpTransport = nodemailer.createTransport({
+      //   service: 'Gmail',
+      //   auth: {
+      //     user: EMAIL,
+      //     pass: PASSWORD
+      //   }
+      // });
       
       var mailOptions = {
         to: user.email,
@@ -266,14 +266,11 @@ exports.forgotPassword = function(req, res, next) {
           'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
-      smtpTransport.sendMail(mailOptions, function (err, info) {
+      transporter.sendMail(mailOptions, function (err, info) {
         if(err) {
-          console.log('Error Occurred');
-          console.log(err);
-          return res.sendStatus(500);
+          return res.status(500);
         } else {
-          console.log(info);
-          res.sendStatus(200);
+          res.status(200).json({message: "Successful"});
         }
       });      
     }
@@ -291,24 +288,23 @@ exports.forgotPassword = function(req, res, next) {
  * @return {[type]}     [description]
  */
 exports.resetPassword = function(req, res) {
-  console.log(req.params);
-  console.log(req.body);
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
     if(err) { return handleError(res, err); }
-    if(!user) { console.log('sdad'); return res.sendStatus(404); }
+    if(!user) { return res.status(404).json({message: "User does not exist"}); }
     user.password = req.body.newPassword;
     user.token = '';
     user.updatedOn = Date.now();
     user.save(function (err, user) {
       if(err) { return handleError(res, err); }
+      var transporter = nodemailer.createTransport();
 
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: EMAIL,
-          pass: PASSWORD
-        }
-      });
+      // var smtpTransport = nodemailer.createTransport({
+      //   service: 'Gmail',
+      //   auth: {
+      //     user: EMAIL,
+      //     pass: PASSWORD
+      //   }
+      // });
       var mailOptions = {
         to: user.email,
         from: EMAIL,
@@ -316,14 +312,11 @@ exports.resetPassword = function(req, res) {
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
-      smtpTransport.sendMail(mailOptions, function (err, info) {
+      transporter.sendMail(mailOptions, function (err, info) {
         if(err) {
-          console.log('Error Occurred');
-          console.log(err);
-          return res.sendStatus(500);
+          return res.status(500);
         } else {
-          console.log(info);
-          res.sendStatus(200);
+          res.status(200).json({message: "Successful"});
         }
       });      
     });

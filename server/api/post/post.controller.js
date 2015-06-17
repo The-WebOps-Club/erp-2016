@@ -35,11 +35,9 @@ exports.newsfeed = function(req, res) {
   required.push(req.user.subDepartment)
   Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
     required = [] //Reusing the variable used above
-    console.log(walls);
     for (var i = walls.length - 1; i >= 0; i--) {
       required.push(walls[i]._id)
     };
-    console.log(required)
     Post.paginate(
       {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
@@ -52,15 +50,27 @@ exports.newsfeed = function(req, res) {
 };
 
 exports.newsfeedRefresh = function(req, res) {
-  Post.find({
-    updatedOn:{
-      $gte: new Date(2014, 5, 4)
-    }}, function (err, posts) {
-    console.log(posts)
-    if(err) { return handleError(res, err); }
-    if(!posts) { return res.send(404); }
-    return res.json(posts);
+  var required  = []
+  required.push(req.user._id)
+  required.push(req.user.department)
+  required.push(req.user.subDepartment)
+  Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
+    required = [] //Reusing the variable used above
+    for (var i = walls.length - 1; i >= 0; i--) {
+      required.push(walls[i]._id)
+    };
+    Post.find({
+      updatedOn:{
+        $gte: new Date(2014, 5, 4)
+      },
+      wall: {$in: required}
+    }, function (err, posts) {
+      console.log(posts)
+      if(err) { return handleError(res, err); }
+      if(!posts) { return res.send(404); }
+      return res.json(posts);
     })
+  });
 }
 
 // Get a single post
