@@ -115,14 +115,12 @@ exports.updateProfile = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.sendStatus(404);
-    // user.name = userUpdate.name;
-    // user.nick = userUpdate.nick;
     user.profilePic = userUpdate.profilePic;
-    // user.city = userUpdate.city;
-    // user.summerLocation = userUpdate.summerLocation;
-    // user.cgpa = userUpdate.cgpa;
-    // user.phoneNumber = userUpdate.phoneNumber;
-    // user.hostel = userUpdate.hostel;
+    user.summerLocation = userUpdate.summerLocation;
+    user.phoneNumber = userUpdate.phoneNumber;
+    user.alternateNumber = userUpdate.alternateNumber;
+    user.hostel = userUpdate.hostel;
+    user.roomNumber = userUpdate.roomNumber;
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
