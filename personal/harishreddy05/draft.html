@@ -214,7 +214,7 @@
 								<label class="labels" flex="33" for="room">Room no:</label>
 								<div class="data view" flex="50"  id="room">{{user.room_no}}</div>
 								<md-input-container  class="input" flex="50">
-						           <input class="form-control" ng-model="user.roo_no" class="room_no" maxlength="5">
+						           <input class="form-control" ng-model="user.room_no" class="room_no" maxlength="5">
 						         </md-input-container>
 							</div>
 							<div class="info" flex="100" layout="row">
@@ -250,17 +250,33 @@
 							<div class="headings" layout-padding flex="100"><b>Accomodation info</b></div>
 							<div class="info" flex="100" layout="row">
 								<label class="labels" flex="33" for="summer_stay">Summer stay:</label>
-								<div class="data view" flex="50" id="summer_stay">{{user.summer_stay}}</div>
+								<div layout="column">
+								<div class="data view" flex="50" id="summer_stay_1">{{user.summer_stay_1}}</div>
+								<div class="data view" flex="50" id="summer_stay_2">{{user.summer_stay_2}}</div>
+								<!-- </div>
+								<div layout="column"> -->
 								<md-input-container class="input">
-								<input class="form-control" ng-model="summer_stay" maxlength="30" class="form-control date_range_picker">
+								<input  ng-model="user.summer_stay_1" maxlength="30" class="form-control date_range_picker">
 								</md-input-container>
+								<a href="" class="input summer">and</a>
+								<md-input-container class="input ">
+								<input  ng-model="user.summer_stay_2" maxlength="30" class="form-control date_range_picker summer_second">
+								</md-input-container>
+								</div>
 							</div>
 							<div class="info" flex="100" layout="row">
 								<label class="labels" flex="33" for="winter_stay">Winter stay:</label>
-								<div class="data view" flex="50" id="winter_stay">{{user.winter_stay}}</div>
+								<div class="data view" flex="50" id="winter_stay_1">{{user.winter_stay_1}}</div>
+								<div class="data view" flex="50" id="winter_stay_2">{{user.winter_stay_2}}</div>
+								<div layout="column">
 								<md-input-container class="input">
-								<input  ng-model="winter_stay" maxlength="30" class="form-control date_range_picker">
+								<input  ng-model="user.winter_stay_1" maxlength="30" class="form-control date_range_picker">							
 								</md-input-container>
+								<a href="" class="input winter">and</a>
+								<md-input-container class="input ">
+								<input  ng-model="user.winter_stay_2" maxlength="30" class="form-control date_range_picker winter_second">
+								</md-input-container>
+								</div>
 							</div>
 							<div class="info" flex="100" layout="row">
 								<label class="labels" flex="33" for="want_accomodation">Want accomodation:</label>
@@ -373,8 +389,10 @@ app.controller('AppCtrl', ['$scope','$timeout', '$mdSidenav', '$mdUtil', '$log',
 			branch:"Arts",
 			room_no:"room no",
 			hostel:"Ganga",
-			summer_stay:"summer stay",
-			winter_stay:"winter stay",
+			summer_stay_1:"",
+			summer_stay_2:"",
+			winter_stay_1:"",
+			winter_stay_2:"",
 			want_accomodation:"No",
 		}
 }])
@@ -632,7 +650,6 @@ $(".date_range_picker").dateRangePicker({
 		    maxDays: 1,
 		    singleDate: true,
 		});
-		$(".add_another_field").click(add_another_field);
 </script>
   <!-- Script for Hostel -->
   <script src="jquery-1.11.1.min.js"></script>
@@ -678,6 +695,8 @@ $(".date_range_picker").dateRangePicker({
   <script type="text/javascript">
   $(document).ready(function(){
 	$(".input").hide();
+	$(".summer_second").hide();
+	$(".winter_second").hide();
 	$("#edit").click(function(){
 	$(".input").show();
 	$(".view").hide();		
@@ -685,6 +704,14 @@ $(".date_range_picker").dateRangePicker({
 	$("#view").click(function(){
 		$(".input").hide();
 	$(".view").show();	
+	})
+	$("a.summer").click(function(){
+		$(".summer_second").show();
+		$(this).hide();
+	})
+	$("a.winter").click(function(){
+		$(".winter_second").show();
+		$(this).hide();
 	})
 });
 
