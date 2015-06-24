@@ -15,6 +15,7 @@ router.post('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfi
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
 router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
+router.post('/addGroup', auth.hasRole('core'), controller.addGroup);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);
