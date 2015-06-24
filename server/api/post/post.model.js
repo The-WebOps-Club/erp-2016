@@ -13,6 +13,7 @@ var PostSchema = new Schema({
   // profile: { type: Schema.Types.ObjectId, ref: 'User' },
   taggedTo: [],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}],
+  acknowledged: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   seenBy: [],
   createdOn: {

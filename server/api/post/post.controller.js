@@ -108,9 +108,22 @@ exports.createPost = function(req, res) {
   });  
 };
 
+//Acknowledges a post
+
+exports.acknowledge = function(req, res) {
+  Post.findById(req.body.postId, function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.status(404).json({message: "Post not found"}); }
+    if(post.acknowledged.indexOf(req.user._id) === -1 ){ 
+      post.acknowledged.push(req.user._id); 
+      res.status(200).json({message: "Acknowledged"})
+    }
+    else{ req.status(200).json({message: "Already acknowledged"}); }
+  });
+}
+
 // Appends a new comment to the existing post
 exports.addComment = function(req, res) {
-  console.log(req.body);
   Post.findById(req.body.postId, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }

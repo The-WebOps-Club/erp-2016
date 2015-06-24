@@ -13,12 +13,12 @@ router.get('/:type/:id/:page', auth.isAuthenticated(), controller.index);
 
 router.post('/', auth.isAuthenticated(), controller.createPost);
 router.post('/addComment', auth.isAuthenticated(), controller.addComment);
-router.post('/:id', auth.belongsTo(), controller.createPost); //What does this do?
+router.post('/:id', auth.belongsTo(), controller.acknowledge); //What does this do?
 
-router.put('/:id', controller.update);
+router.put('/:id', auth.isAuthenticated(), controller.update);
 
-router.patch('/:id', controller.update);
+router.patch('/:id', auth.isAuthenticated(), controller.update);
 
-router.delete('/:id', controller.destroy);
+router.delete('/:id', auth.hasRole("admin"), controller.destroy);
 
 module.exports = router;
