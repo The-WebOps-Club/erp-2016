@@ -7,7 +7,7 @@ angular.module('erp2015App')
     $scope.posts = {};
     $scope.user = Auth.getCurrentUser();
 
-    $http.get('/api/posts/profile/' + $stateParams.userId + '/1')
+    $http.get('/api/posts/profile/' + $scope.user.wall + '/1')
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
@@ -21,7 +21,7 @@ angular.module('erp2015App')
     	});
 
     $scope.createPost = function() {
-        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user._id)
+        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*

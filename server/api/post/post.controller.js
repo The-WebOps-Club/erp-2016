@@ -15,6 +15,7 @@ var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
+  console.log(req.params.id);
   Post.paginate(
       {wall: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {

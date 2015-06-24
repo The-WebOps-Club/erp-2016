@@ -1,6 +1,7 @@
-'use strict';
+ 'use strict';
 
 var _ = require('lodash');
+var Wall = require('../wall/wall.model');
 var Department = require('./department.model');
 
 // Get list of departments
