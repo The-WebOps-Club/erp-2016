@@ -26,6 +26,19 @@ exports.index = function(req, res) {
     }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
 };
 
+exports.refresh = function(req, res) {
+  Post.paginate({
+      wall: req.params.id, 
+      updatedOn: {$gte: req.body.date}
+    }, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+    if (error) {
+      console.error(error);
+    } else {
+      res.send(paginatedResults);
+    }
+  }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+}
+
 // Get compiled list of all posts related to one user
 // Will be given an array of walls.
 // TODO: Limit it to 10 posts, send the next 10 and so on
@@ -34,6 +47,7 @@ exports.newsfeed = function(req, res) {
   required.push(req.user._id)
   required.push(req.user.department)
   required.push(req.user.subDepartment)
+  required.push(req.user.groups)
   Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
     required = [] //Reusing the variable used above
     for (var i = walls.length - 1; i >= 0; i--) {
@@ -43,8 +57,12 @@ exports.newsfeed = function(req, res) {
       {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
         console.error(error);
-      } else {
-        res.send(paginatedResults);
+      } 
+      if (paginatedResults.length === 0){
+        res.status(404).send(paginatedResults);
+      }
+      else {
+        res.status(200).send(paginatedResults);
       }
     }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
   })
@@ -55,6 +73,7 @@ exports.newsfeedRefresh = function(req, res) {
   required.push(req.user._id)
   required.push(req.user.department)
   required.push(req.user.subDepartment)
+  required.push(req.user.groups)
   Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
     required = [] //Reusing the variable used above
     for (var i = walls.length - 1; i >= 0; i--) {
@@ -62,7 +81,7 @@ exports.newsfeedRefresh = function(req, res) {
     };
     Post.find({
       updatedOn:{
-        $gte: new Date(2014, 5, 4)
+        $gte: req.body.date
       },
       wall: {$in: required}
     }, function (err, posts) {
@@ -87,11 +106,11 @@ exports.show = function(req, res) {
 exports.createPost = function(req, res) {
   var newPost = new Post();
   console.log(req.body.destId);
+  console.log(req.body.info);
   if(!req.body.destId) { return res.send(404); }
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }
     if(!wall) { return res.send(404); }
-    console.log(wall);
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;

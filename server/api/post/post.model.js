@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var PostSchema = new Schema({
   title: String,
   info: String,
+  logic: { type: Number, default: 1},
   wall: { type: Schema.Types.ObjectId, ref: 'Wall' },
   // department: { type: Schema.Types.ObjectId, ref: 'Department' },
   // subDepartment: { type: Schema.Types.ObjectId, ref: 'SubDepartment' },
