@@ -22,14 +22,6 @@ router.post('/mobile', function(req, res, next) {
 		var error = err || info;
 		if (error) return res.json(401, error);
 		if (!user) return res.json(404, {message: 'Something went wrong, please try again.'});
-		if (!req.body.deviceId) return res.status(422).json({message: 'Device ID cannot be empty'})
-		console.log(req.body.deviceId);
-		if(user.deviceId.indexOf(req.body.deviceId) == -1){
-			user.deviceId.push(req.body.deviceId); //Saving device ID to user
-			user.save(function (err) {
-		        if (err) return res.status(500).json(error);
-	      	});
-		}
 		var token = auth.signMobileToken(user._id, user.role);
 		var sentUser = JSON.parse(JSON.stringify(user));
 		sentUser.hashedPassword = undefined;

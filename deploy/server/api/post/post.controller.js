@@ -15,6 +15,7 @@ var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
+  console.log(req.params.id);
   Post.paginate(
       {wall: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
@@ -22,8 +23,21 @@ exports.index = function(req, res) {
       } else {
         res.send(paginatedResults);
       }
-    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
 };
+
+exports.refresh = function(req, res) {
+  Post.paginate({
+      wall: req.params.id, 
+      updatedOn: {$gte: req.body.date}
+    }, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+    if (error) {
+      console.error(error);
+    } else {
+      res.send(paginatedResults);
+    }
+  }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
+}
 
 // Get compiled list of all posts related to one user
 // Will be given an array of walls.
@@ -33,6 +47,7 @@ exports.newsfeed = function(req, res) {
   required.push(req.user._id)
   required.push(req.user.department)
   required.push(req.user.subDepartment)
+  required.push(req.user.groups)
   Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
     required = [] //Reusing the variable used above
     for (var i = walls.length - 1; i >= 0; i--) {
@@ -42,10 +57,14 @@ exports.newsfeed = function(req, res) {
       {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
         console.error(error);
-      } else {
-        res.send(paginatedResults);
+      } 
+      if (paginatedResults.length === 0){
+        res.status(404).send(paginatedResults);
       }
-    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+      else {
+        res.status(200).send(paginatedResults);
+      }
+    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
   })
 };
 
@@ -54,6 +73,7 @@ exports.newsfeedRefresh = function(req, res) {
   required.push(req.user._id)
   required.push(req.user.department)
   required.push(req.user.subDepartment)
+  required.push(req.user.groups)
   Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
     required = [] //Reusing the variable used above
     for (var i = walls.length - 1; i >= 0; i--) {
@@ -61,7 +81,7 @@ exports.newsfeedRefresh = function(req, res) {
     };
     Post.find({
       updatedOn:{
-        $gte: new Date(2014, 5, 4)
+        $gte: req.body.date
       },
       wall: {$in: required}
     }, function (err, posts) {
@@ -75,10 +95,13 @@ exports.newsfeedRefresh = function(req, res) {
 
 // Get a single post
 exports.show = function(req, res) {
-  Post.findById(req.params.id, function (err, post) {
+  Post.findById(req.params.id)
+  .populate('comments wall createdBy')
+  .deepPopulate('comments.createdBy')
+  .exec(function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    return res.json(post);
+    return res.status(200).json(post);
   });
 };
 
@@ -86,11 +109,11 @@ exports.show = function(req, res) {
 exports.createPost = function(req, res) {
   var newPost = new Post();
   console.log(req.body.destId);
+  console.log(req.body.info);
   if(!req.body.destId) { return res.send(404); }
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }
     if(!wall) { return res.send(404); }
-    console.log(wall);
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;
@@ -107,9 +130,22 @@ exports.createPost = function(req, res) {
   });  
 };
 
+//Acknowledges a post
+
+exports.acknowledge = function(req, res) {
+  Post.findById(req.body.postId, function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.status(404).json({message: "Post not found"}); }
+    if(post.acknowledged.indexOf(req.user._id) === -1 ){ 
+      post.acknowledged.push(req.user._id); 
+      res.status(200).json({message: "Acknowledged"})
+    }
+    else{ req.status(200).json({message: "Already acknowledged"}); }
+  });
+}
+
 // Appends a new comment to the existing post
 exports.addComment = function(req, res) {
-  console.log(req.body);
   Post.findById(req.body.postId, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
@@ -120,11 +156,15 @@ exports.addComment = function(req, res) {
     comment.createdOn = Date(Date.now());
     comment.updatedOn = Date(Date.now());
 
-    post.updatedOn = Date.now();
-
-    post.save(function (err) {
+    comment.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, post);
+      post.comments.push(comment._id)
+      post.updatedOn = Date.now();
+
+      post.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, post);
+      });
     });
   });
 };

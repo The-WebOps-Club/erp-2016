@@ -9,6 +9,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Department = require('../department/department.model');
+var Group = require('../group/group.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
 
@@ -32,7 +33,7 @@ exports.index = function (req, res) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
   })
-  .populate('department', 'name');
+  .populate('department subDepartment groups', 'name');
 };
 
 /**
@@ -66,7 +67,8 @@ exports.show = function (req, res, next) {
     if (err) return next(err);
     if (!user) return res.status(404).json({message: "User does not exist"});
     res.json(user.profile);
-  });
+  })
+  .populate('department subDepartment groups', 'name');
 };
 
 /**
@@ -141,7 +143,7 @@ exports.me = function (req, res, next) {
     if(!user) return res.status(404).json({message: "User does not exist"});
     res.status(200).json(user);
   })
-  .populate('department subDepartment', 'name');
+  .populate('department subDepartment groups', 'name');
 };
 
 /**
@@ -190,6 +192,34 @@ exports.addDepartment = function (req, res, next) {
  *                   Using that we see if user already exists in subDepartment
  *                   or if SubDepartment already exists in the user
  */
+exports.addGroup = function(req, res, next) {
+  User.findById(req.body.user, function (err, user) {
+    Group.findById(req.body.group, function (err, group) {
+      if(err) { 
+        return handleError(res, err);
+      }
+      if(!group) {
+        return res.status(404).json({message: "Group does not exist"});;
+      }
+      if (group[req.body.role].indexOf(user._id) == -1){
+        group[req.body.role].push(user._id);
+        group.save(function (err) {
+          if(err) { return handleError(res, err); }
+        });
+      }
+      if(user.groups.indexOf(group._id) == -1){
+        user.groups.push(req.body.group);
+        user.updatedOn = Date.now();
+        user.save(function (err) {
+          if(err) { return handleError(res, err); }
+          res.status(200).json({message: "Successful"}); 
+        });
+      }
+      else res.status(200).json({message: "Successful"});
+    });
+  });
+};
+
 exports.addSubDepartment = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
@@ -217,6 +247,23 @@ exports.addSubDepartment = function(req, res, next) {
     });
   });
 };
+
+exports.gcmRegister = function(req, res) {
+  Users.findById(req.user._id, function (err, user) {
+    if (err) { return handleError(res, err); }
+    if (!user) { res.status(404).json({message: "User does not exist"}); }
+    if(req.body.oldId) {
+      if( user.deviceId.indexOf(req.body.oldId) > -1)
+        user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+    }
+    if( user.deviceId.indexOf(req.body.deviceId) === -1)
+      req.user.deviceId.push(user.body.deviceId);
+    user.save(function (err) {
+      if(err) { return handleError(res, err); }
+      res.status(200).json({message: "Successful"}); 
+    });
+  })
+}
 
 /**
  * Sends a mail to the user to reset the password
