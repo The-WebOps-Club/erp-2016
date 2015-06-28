@@ -17,8 +17,8 @@ exports.sendNotif = function(req, res) {
 
   message.addData('message', 'This is a test');
 
-  var regIds = [''];
-  var sender = new gcm.Sender('-----BEGIN PRIVATE KEY-----\nMIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANlVwKNUxx6sct3e\nhtPfNZUvRLbyOy5LeiML+SyMoDGa/ro9KU/5J7ZAVaA6FQhDEc6RL/bjWxrq8Tfc\niYr4vwtuZJ5htsS77xKA0RGBaSMX+TpYZoqeU/4HuWrSgUfwv1ZVC58vCcaq6gKY\noA/aYYGgHow+mBM2B3Qu4l2yCLgvAgMBAAECgYAf5TfaQIzgcYqCCTBcU7u3YzKA\nbthEmQsZrZ4p7ZFs9kQ/7M3tULGFS7fFRgDkL4Ojfyc84mzybFxuSE1fOdY/f9wu\nV/tYCzT6+42rX8CQOXQ3h9PKSHr9o1NcO1zq04245QInmKZIh53b+TwOniUVlKre\n+F3xraN7IAFZsQ6zUQJBAPrs5urhIxdoiPa+oZCbaNWyb8NlJknH3gm7w/T0NN3J\n4cgdj1TkGAguw4w7jf/XSFdsC1z2/G31qdnUPxT4KvMCQQDduvH2qBAWawKvQ9Az\nxeciYL47DxHq5e1AjzQ8Ao5MEFOGuhcEavX4o9Wd7qbzujHI3x9uWraL4n+ox2Fb\nhhTVAkEAy4KSMpOQY27cDstDvEXfO9pxvNbvu81HbzuDTcs2iV8wKJ6Y3i/0scZD\nwRuYKpTPTmAJw0dqKkChllMHKpmwMwJAba+hKseQzcY6GcGOKU5pPJRnBog58N21\nNA6jZFxPUElzSF6eLE1NSKajcfExHbiqEBhwUAMH8sMlK7UV8FSv0QJAdaSLm/Ow\noZkAUaV/BM4P7JgR8UdDBMesMJT+JbF3s3B4nHYFq1U2AtS+4S3JeEdbH7cCCF8v\nEgJUX0QmL1Yyjw\u003d\u003d\n-----END PRIVATE KEY-----\n');
+  var regIds = ['fV2UjeX-Hss:APA91bFadbsF_OfuoOgDEjMwAytPocrp9zoeYp8aFsUrMCp7Orl-gYwEkdeRmSkx6-uucnWROifcij9aUERvLTL4T840zAbDjymToLeCS6Ws5yytDeMpnVSyMgVwiCkU-99xF6Wvrjs2'];
+  var sender = new gcm.Sender('AIzaSyDSLwzK4C2Dqth55Z3SgXU77D7Xsex4VbI');
 
   sender.send(message, regIds, function (err, result) {
     if(err) console.error(err);

@@ -16,6 +16,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
 router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
 router.post('/addGroup', auth.hasRole('core'), controller.addGroup);
+router.post('/gcmRegister', auth.isAuthenticated(), controller.gcmRegister);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);

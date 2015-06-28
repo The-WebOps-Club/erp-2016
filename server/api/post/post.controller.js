@@ -23,7 +23,7 @@ exports.index = function(req, res) {
       } else {
         res.send(paginatedResults);
       }
-    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
 };
 
 exports.refresh = function(req, res) {
@@ -36,7 +36,7 @@ exports.refresh = function(req, res) {
     } else {
       res.send(paginatedResults);
     }
-  }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+  }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
 }
 
 // Get compiled list of all posts related to one user
@@ -64,7 +64,7 @@ exports.newsfeed = function(req, res) {
       else {
         res.status(200).send(paginatedResults);
       }
-    }, {populate: 'wall createdBy', sortBy : { updatedOn : -1 }});
+    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
   })
 };
 
@@ -95,10 +95,13 @@ exports.newsfeedRefresh = function(req, res) {
 
 // Get a single post
 exports.show = function(req, res) {
-  Post.findById(req.params.id, function (err, post) {
+  Post.findById(req.params.id)
+  .populate('comments wall createdBy')
+  .deepPopulate('comments.createdBy')
+  .exec(function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    return res.json(post);
+    return res.status(200).json(post);
   });
 };
 
@@ -153,11 +156,15 @@ exports.addComment = function(req, res) {
     comment.createdOn = Date(Date.now());
     comment.updatedOn = Date(Date.now());
 
-    post.updatedOn = Date.now();
-
-    post.save(function (err) {
+    comment.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, post);
+      post.comments.push(comment._id)
+      post.updatedOn = Date.now();
+
+      post.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, post);
+      });
     });
   });
 };

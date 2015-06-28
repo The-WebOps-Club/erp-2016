@@ -248,6 +248,23 @@ exports.addSubDepartment = function(req, res, next) {
   });
 };
 
+exports.gcmRegister = function(req, res) {
+  Users.findById(req.user._id, function (err, user) {
+    if (err) { return handleError(res, err); }
+    if (!user) { res.status(404).json({message: "User does not exist"}); }
+    if(req.body.oldId) {
+      if( user.deviceId.indexOf(req.body.oldId) > -1)
+        user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+    }
+    if( user.deviceId.indexOf(req.body.deviceId) === -1)
+      req.user.deviceId.push(user.body.deviceId);
+    user.save(function (err) {
+      if(err) { return handleError(res, err); }
+      res.status(200).json({message: "Successful"}); 
+    });
+  })
+}
+
 /**
  * Sends a mail to the user to reset the password
  * 
