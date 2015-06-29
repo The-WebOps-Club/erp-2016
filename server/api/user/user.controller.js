@@ -16,6 +16,8 @@ var Wall = require('../wall/wall.model');
 var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
 
+var mailer_util = require('./util').mailer_util;
+
 var validationError = function (res, err) {
   return res.status(422).json(err);
 };
@@ -28,7 +30,7 @@ function handleError(res, err) {
  * Get list of users
  * restriction: 'admin'
  */
-exports.index = function (req, res) {
+ exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
@@ -39,7 +41,7 @@ exports.index = function (req, res) {
 /**
  * Creates a new user
  */
-exports.create = function (req, res, next) {
+ exports.create = function (req, res, next) {
   var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
@@ -60,7 +62,7 @@ exports.create = function (req, res, next) {
 /**
  * Get a single user
  */
-exports.show = function (req, res, next) {
+ exports.show = function (req, res, next) {
   var userId = req.params.id;
 
   User.findById(userId, function (err, user) {
@@ -75,7 +77,7 @@ exports.show = function (req, res, next) {
  * Deletes a user
  * restriction: 'admin'
  */
-exports.destroy = function (req, res) {
+ exports.destroy = function (req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) return res.status(500).json(err);
     return res.status(200).json({message: 'deleted'});
@@ -85,7 +87,7 @@ exports.destroy = function (req, res) {
 /**
  * Change a users password
  */
-exports.changePassword = function (req, res, next) {
+ exports.changePassword = function (req, res, next) {
   var userId = req.user._id;
   var oldPass = String(req.body.oldPassword);
   var newPass = String(req.body.newPassword);
@@ -109,7 +111,7 @@ exports.changePassword = function (req, res, next) {
 /**
  * Updates a users profile details
  */
-exports.updateProfile = function (req, res, next) {
+ exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
   var userUpdate = req.body;
 
@@ -134,15 +136,15 @@ exports.updateProfile = function (req, res, next) {
 /**
  * Get my info
  */
-exports.me = function (req, res, next) {
+ exports.me = function (req, res, next) {
   var userId = req.user._id;
   User.findOne({
     _id: userId
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
-    if (err) return next(err);
-    if(!user) return res.status(404).json({message: "User does not exist"});
-    res.status(200).json(user);
-  })
+  if (err) return next(err);
+  if(!user) return res.status(404).json({message: "User does not exist"});
+  res.status(200).json(user);
+})
   .populate('department subDepartment groups', 'name');
 };
 
@@ -155,7 +157,7 @@ exports.me = function (req, res, next) {
  *                     Using that we see if user already exists in department
  *                     or if Department already exists in the user
  */
-exports.addDepartment = function (req, res, next) {
+ exports.addDepartment = function (req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Department.findById(req.body.department, function (err, department) {
       if(err) { 
@@ -192,7 +194,7 @@ exports.addDepartment = function (req, res, next) {
  *                   Using that we see if user already exists in subDepartment
  *                   or if SubDepartment already exists in the user
  */
-exports.addGroup = function(req, res, next) {
+ exports.addGroup = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Group.findById(req.body.group, function (err, group) {
       if(err) { 
@@ -272,14 +274,11 @@ exports.gcmRegister = function(req, res) {
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
  */
-exports.forgotPassword = function(req, res, next) {
+ exports.forgotPassword = function(req, res, next) {
 
   async.waterfall([
     function (done) {
-      crypto.randomBytes(25, function (err, buf) {
-        var token = buf.toString('hex');
-        done(err, token);
-      });
+      mailer_util.generateToken(done);
     },
     function (token, done) {
       User.findOne({ email: req.body.email }, function (err, user) {
@@ -295,36 +294,34 @@ exports.forgotPassword = function(req, res, next) {
       })
     },
     function (token, user, done) {
-      var transporter = nodemailer.createTransport();
-      // var smtpTransport = nodemailer.createTransport({
-      //   service: 'Gmail',
-      //   auth: {
-      //     user: EMAIL,
-      //     pass: PASSWORD
-      //   }
-      // });
-      
       var mailOptions = {
         to: user.email,
         from: EMAIL,
         subject: '[Saarang Coordapp] Account Password Reset',
         text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-      };
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err) {
-          return res.status(500);
-        } else {
-          res.status(200).json({message: "Successful"});
-        }
-      });      
+        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+        'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
+        'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+      };  
+
+      mailer_util.sendMail({
+       service: 'Gmail',
+       auth: {
+         user: EMAIL,
+         pass: PASSWORD
+       }
+     }, mailOptions, function (err, info) {
+      if(err) {
+        return res.status(500);
+      } else {
+        res.status(200).json({message: "Successful"});
+      }
+    });
     }
-  ], function (err) {
-    if(err) { return next(err); }
-    res.redirect('/forgotPassword');
-  });
+    ], function (err) {
+      if(err) { return next(err); }
+      res.redirect('/forgotPassword');
+    });
 };
 
 /**
@@ -334,7 +331,7 @@ exports.forgotPassword = function(req, res, next) {
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
  */
-exports.resetPassword = function(req, res) {
+ exports.resetPassword = function(req, res) {
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
     if(err) { return handleError(res, err); }
     if(!user) { return res.status(404).json({message: "User does not exist"}); }
@@ -352,21 +349,21 @@ exports.resetPassword = function(req, res) {
       //     pass: PASSWORD
       //   }
       // });
-      var mailOptions = {
-        to: user.email,
-        from: EMAIL,
-        subject: '[Saarang Coordapp] Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
-      };
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err) {
-          return res.status(500);
-        } else {
-          res.status(200).json({message: "Successful"});
-        }
-      });      
-    });
+    var mailOptions = {
+      to: user.email,
+      from: EMAIL,
+      subject: '[Saarang Coordapp] Your password has been changed',
+      text: 'Hello,\n\n' +
+      'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+    };
+    transporter.sendMail(mailOptions, function (err, info) {
+      if(err) {
+        return res.status(500);
+      } else {
+        res.status(200).json({message: "Successful"});
+      }
+    });      
+  });
   });
 };
 
@@ -374,6 +371,6 @@ exports.resetPassword = function(req, res) {
  * 
  * Authentication callback
  */
-exports.authCallback = function(req, res, next) {
+ exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
