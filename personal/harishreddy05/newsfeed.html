@@ -1,0 +1,212 @@
+ <!DOCTYPE html>
+<html lang="en" ng-app="StarterApp">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+  	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="erp-bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="icons-color.css">
+	<link href="daterangepicker.css" rel="stylesheet" media="screen">
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="daterangepicker.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="saarang_erp_profile.js"></script>
+	<script src="textarea.js"></script>
+	<title>Newsfeed</title>
+  </head>
+<body layout="column" ng-controller="AppCtrl">
+
+
+	<!-- DIV FOR TOOLBAR
+	<div layout="row"></div> -->
+
+	<!-- BODY -->
+	<div layout="row" class="body">
+		<!-- MAIN -->
+		</div>
+		<!-- Gap -->
+		<div>&nbsp</div>
+		<!-- SIDEBAR -->
+			
+		<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+		<div id="rightbar">
+			<div>
+				<textarea flex="5" id="post_area" rows="4" placeholder="Quick Post">
+				</textarea>
+			</div>
+			<div>
+			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			</div>
+			<hr>
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-folder"></i>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-folder"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="calendar_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul>
+					<li>
+						<a href="">
+						<i class="icon-calendar"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</md-sidenav>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
+<script type="text/javascript">
+    	var app = angular.module('StarterApp', ['ngMaterial']);
+
+app.controller('AppCtrl', ['$scope','$timeout', '$mdSidenav', '$mdUtil', '$log', function($scope, $timeout, $mdSidenav, $mdUtil, $log){
+
+	$scope.toggleRight = buildToggler('right');
+    $scope.toggleLeft = buildToggler('left');
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildToggler(navID) {
+      var debounceFn =  $mdUtil.debounce(function(){
+            $mdSidenav(navID)
+              .toggle()
+              .then(function () {
+                $log.debug("toggle " + navID + " is done");
+              });
+          },300);
+      return debounceFn;
+    }
+  // $scope.toggleSidenav = function(menuId) {
+  //   $mdSidenav(menuId).toggle();
+  // };
+  $scope.user={
+			first_name:"firstname",
+			last_name:"lastname",
+			image: "url_for_image",
+			nickname: "nickname",
+			gender: "M",
+			date_of_birth: "00/00/0000",
+			mobile_number:"0000000000",
+			summer_number:"0000000000",
+			email:"email",
+			college:"college",
+			college_roll:"AA11A111",
+			branch:"Arts",
+			room_no:"room no",
+			hostel:"Ganga",
+			summer_stay_1:"",
+			summer_stay_2:"",
+			winter_stay_1:"",
+			winter_stay_2:"",
+			want_accomodation:"No",
+		}
+}])
+app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+      $mdSidenav('right').close()
+        .then(function () {
+          $log.debug("close RIGHT is done");
+        });
+    };
+  });
+    </script>
+    <script>
+    $(document).ready(function() {
+    $("#inputphonenumber").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+             // Allow: Ctrl+C
+            (e.keyCode == 67 && e.ctrlKey === true) ||
+             // Allow: Ctrl+X
+            (e.keyCode == 88 && e.ctrlKey === true) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't doa nything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    });
+  </script>
+<style type="text/css">
+    
+#rightside
+{
+	border-left:  1px solid #ddd;
+}
+#b
+.sidebar
+{
+	padding: 10px;
+	height: 780px;
+}
+#post_button
+{
+	color: white;
+	background-color:  #3b5998;
+	font:12px;
+}
+.date
+{
+	width: 125px;
+}
+#rightbar
+{
+	position: relative;
+}
+</style>
+	<!-- Script for sidebar scrolling -->
+<script>
+$(document).ready(function () {
+     var el = $('#rightbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#rightbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
+$(function() {
+   $('#post_area').autogrow();
+});
+</script>
+
+</body>
+</html>
