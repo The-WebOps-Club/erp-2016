@@ -16,7 +16,7 @@ var Wall = require('../wall/wall.model');
 var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
 
-var mailer_util = require('./util').mailer_util;
+var mailer_util = require('../../components/mailer');
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -278,7 +278,10 @@ exports.gcmRegister = function(req, res) {
 
   async.waterfall([
     function (done) {
-      mailer_util.generateToken(done);
+      crypto.randomBytes(25, function (err, buf) {
+        var token = buf.toString('hex');
+        done(err, token);
+      });
     },
     function (token, done) {
       User.findOne({ email: req.body.email }, function (err, user) {

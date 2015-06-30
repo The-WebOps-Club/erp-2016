@@ -13,4 +13,4 @@ var sendMail = function(auth_credentials, mailOptions, callback) {
 	transporter.sendMail(mailOptions, callback);
 }
 
-module.exports.mailer_util = { generateToken : generateToken , sendMail : sendMail};
+module.exports = { generateToken : generateToken , sendMail : sendMail};
