@@ -24,11 +24,140 @@
 
 	<!-- BODY -->
 	<div layout="row" class="body">
+		<!-- LEFTBAR -->
+		<md-sidenav layout="column" class="sidebar" md-component-id="left" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+			<div id="leftbar" flex offset="35">
+				<div layout="row" id="profile_tab">
+					<div id="profile_pic">
+					<img ng-src="{{image}}" alt="image"/>
+					</div>
+					<div layout="column">
+						<a href="">
+							<b>{{user.first_name}} {{user.last_name}}</b>
+						</a>
+						<a href="">
+						Edit profile
+						</a>
+					</div>
+				</div>
+			<div id="fav_links" class="links">
+			<div class="group_link_head">
+				FAVOURITES
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li class>
+						<a href="">
+							<i class="icon-profile-black"></i>
+							<span>Profile</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-checklist"></i>
+						<span>News feed</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-contact-email"></i>
+						<span>User Contacts</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			</div>
+			<div id="wall_links" class="links">
+			<div class="group_link_head">
+				WALLS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-dept"></i>
+							<span>Web Operations</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-subdept"></i>
+						<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-profile-blue"></i>
+						<span>Personal Wall</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-page"></i>
+						<span>Saarang 2015</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			</div>
+			<div id="portal_links" class="links">
+			<div class="group_link_head">
+				PORTALS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-crown"></i>
+							<span>Admin Portal</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-crown"></i>
+						<span>Finance Portal</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-crown"></i>
+						<span>Hospitality Portal</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-crown"></i>
+						<span>Events Portal</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-crown"></i>
+						<span>Spons Portal</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-crown"></i>
+						<span>OMS Portal</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			</div>		
+
+
+			</div>
+		</md-sidenav>
 		<!-- MAIN -->
+		<div flex="50">
+		<div layout="column" class="main md-whiteframe-z1" flex="50">
+ 			hello
+		</div>
 		</div>
 		<!-- Gap -->
 		<div>&nbsp</div>
-		<!-- SIDEBAR -->
+		<!-- RIGHTBAR -->
 			
 		<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
 		<div id="rightbar">
@@ -37,7 +166,7 @@
 				</textarea>
 			</div>
 			<div>
-			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			<md-button class="md-raised primary" id="post_button">Quick Post</md-button>
 			</div>
 			<hr>
 			<div id="docs_links" class="links">
@@ -62,7 +191,7 @@
 			</div>
 		</div>
 		<div id="calendar_links" class="links">
-			<div class="calendar_head">
+			<div class="group_link_head">
 				CALENDAR
 			</div>
 			<div class="group_link vertical">	
@@ -162,13 +291,21 @@ app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     });
   </script>
 <style type="text/css">
-    
-#rightside
+#profile_tab
 {
-	border-left:  1px solid #ddd;
+	padding-bottom: 20px;
 }
-#b
-.sidebar
+#leftbar
+{
+	padding: 10px;
+
+}
+ #profile_pic
+ {
+ 	margin-right: 3px;
+ 	width: 47px;
+ }
+#rightbar
 {
 	padding: 10px;
 	height: 780px;
@@ -183,9 +320,24 @@ app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
 {
 	width: 125px;
 }
-#rightbar
+.group_link_head
+{
+	color: #999;
+  	font-size: 9px;
+  	font-weight: bold;
+}
+#rightbar,
+#leftbar
 {
 	position: relative;
+}
+li
+{
+	padding: 5px;
+}
+.vertical span
+{
+	color: black;
 }
 </style>
 	<!-- Script for sidebar scrolling -->
@@ -206,6 +358,21 @@ $(document).ready(function () {
 $(function() {
    $('#post_area').autogrow();
 });
+</script>
+<script>
+$(document).ready(function () {
+     var el = $('#leftbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#leftbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
 </script>
 
 </body>
