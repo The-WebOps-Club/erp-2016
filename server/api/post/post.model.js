@@ -30,6 +30,12 @@ var PostSchema = new Schema({
 });
 
 PostSchema.plugin(mongoosePaginate);
-PostSchema.plugin(deepPopulate);
+PostSchema.plugin(deepPopulate, {
+  populate: {
+    'comments.createdBy': {
+      select: 'name profilePic'
+    }
+  }
+});
 
 module.exports = mongoose.model('Post', PostSchema);
