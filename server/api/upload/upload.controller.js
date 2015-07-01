@@ -9,19 +9,12 @@ Grid.mongo = mongoose.mongo;
 var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
-  console.log(req);
   var part = req.files.file;
-  console.log(part.mimetype);
-  // if(part.mimetype != "application/zip"){
-  //   res.send({
-  //     message: 'Please upload zip files only'
-  //   })
-  // }
-  // else{
+    console.log(part.mimetype);
     var writeStream = gfs.createWriteStream({
       filename: part.name,
       mode: 'w',
-      content_type:part.mimetype
+      content_type:'image/jpeg'
     });
 
 

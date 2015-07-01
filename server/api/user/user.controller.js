@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
@@ -80,6 +81,7 @@ exports.show = function (req, res, next) {
 
 exports.profilePic = function (req, res) {
   User.findById(req.params.id, function (err, user) {
+    console.log(user.profilePic);
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
@@ -151,18 +153,13 @@ exports.changePassword = function (req, res, next) {
  */
 exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
-  var userUpdate = req.body;
 
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
-    user.profilePic = userUpdate.profilePic;
-    user.summerLocation = userUpdate.summerLocation;
-    user.phoneNumber = userUpdate.phoneNumber;
-    user.alternateNumber = userUpdate.alternateNumber;
-    // user.hostel = userUpdate.hostel;
-    user.roomNumber = userUpdate.roomNumber;
+    var updated = _.merge(user, req.body);
+    updated = _.omit(updated, 'hashedPassword');
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
@@ -181,6 +178,8 @@ exports.me = function (req, res, next) {
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    _.omit(user, 'lastSeen');
+    console.log(user);
     res.status(200).json(user);
   })
   .populate('department subDepartment groups', 'name');
@@ -290,6 +289,7 @@ exports.addSubDepartment = function(req, res, next) {
 
 exports.gcmRegister = function(req, res) {
   User.findById(req.user._id, function (err, user) {
+    console.log(req.body.deviceId);
     if (err) { return handleError(res, err); }
     if (!user) { res.status(404).json({message: "User does not exist"}); }
     if(!req.body.deviceId) {res.status(401).json({message: "No deviceId in request"}); }

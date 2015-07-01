@@ -14,11 +14,10 @@ var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
-  console.log(req.params.id);
   Post.paginate(
       {wall: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
-        console.error(error);
+        return handleError(res, error);
       } else {
         var populated = []
         forEach(paginatedResults, function(post, index, arr) {
@@ -31,18 +30,18 @@ exports.index = function(req, res) {
           res.status(200).send(populated);
         });
       }
-    }, {populate: 'wall createdBy comments acknowledged', sortBy : { updatedOn : -1 }});
+    }, {populate: {path: 'acknowledged', select: 'name'}, sortBy : { updatedOn : -1 }});
 };
 
 exports.refresh = function(req, res) {
   Post.find({
     updatedOn:{
-      $gte: req.body.date
+      $gt: req.body.date
     },
     wall: req.params.id
   })
-  .populate('comments wall createdBy acknowledged')
   .sort({ updatedOn : -1 })
+  .populate('acknowledged', 'name')
   .exec(function (err, posts) {
     if(err) { return handleError(res, err); }
     if(!posts) { return res.send(404); }
@@ -66,8 +65,8 @@ exports.history = function(req, res) {
     },
     wall: req.params.id
   })
-  .populate('comments wall createdBy acknowledged')
   .sort({ updatedOn : -1 })
+  .populate('acknowledged', 'name')
   .exec(function (err, posts) {
     if(err) { return handleError(res, err); }
     if(!posts) { return res.send(404); }
@@ -101,7 +100,7 @@ exports.newsfeed = function(req, res) {
     Post.paginate(
       {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function (error, pageCount, paginatedResults, itemCount) {
       if (error) {
-        console.error(error);
+        return handleError(res, error);
       }
       if (paginatedResults.length === 0){
         res.status(404).send(paginatedResults);
@@ -118,7 +117,7 @@ exports.newsfeed = function(req, res) {
           res.status(200).send(populated);
         });
       }
-    }, {populate: 'wall createdBy comments acknowledged', sortBy : { updatedOn : -1 }});
+    }, {populate: {path: 'acknowledged', select: 'name'}, sortBy : { updatedOn : -1 }});
   })
 };
 
@@ -135,12 +134,12 @@ exports.newsfeedRefresh = function(req, res) {
     };
     Post.find({
       updatedOn:{
-        $gte: req.body.date
+        $gt: req.body.date
       },
       wall: {$in: required}
     })
-    .populate('comments wall createdBy acknowledged')
     .sort({updatedOn: -1})
+    .populate('acknowledged', 'name')
     .exec(function (err, posts) {
       if(err) { return handleError(res, err); }
       if(!posts) { return res.send(404); }
@@ -175,7 +174,7 @@ exports.newsfeedHistory = function(req, res) {
       },
       wall: {$in: required}
     })
-    .populate('comments wall createdBy acknowledged')
+    .populate('acknowledged', 'name')
     .exec(function (err, posts) {
       if(err) { return handleError(res, err); }
       if(!posts) { return res.send(404); }
@@ -196,8 +195,7 @@ exports.newsfeedHistory = function(req, res) {
 // Get a single post
 exports.show = function(req, res) {
   Post.findById(req.params.id)
-  .populate('comments wall createdBy acknowledged')
-  // .deepPopulate('comments.createdBy')
+  .populate('acknowledged', 'name')
   .exec(function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
@@ -210,8 +208,6 @@ exports.show = function(req, res) {
 // Creates a new post in the DB.
 exports.createPost = function(req, res) {
   var newPost = new Post();
-  console.log(req.body.destId);
-  console.log(req.body.info);
   if(!req.body.destId) { return res.send(404); }
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }

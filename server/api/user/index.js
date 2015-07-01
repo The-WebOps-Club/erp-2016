@@ -10,7 +10,7 @@ var router = express.Router();
 router.get('/', auth.isAuthenticated(), controller.index);
 router.get('/me', auth.isAuthenticated(), controller.me);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.get('/:id/profilePic', auth.isAuthenticated(), controller.profilePic);
+router.get('/:id/profilePic', controller.profilePic);
 
 router.post('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.post('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfile);

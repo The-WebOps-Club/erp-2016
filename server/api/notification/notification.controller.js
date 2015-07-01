@@ -24,23 +24,23 @@ exports.show = function(req, res) {
 
 // Creates a new notification in the DB.
 exports.create = function(req, res) {
-  Notification.create(req.body, function(err, notification) {
+  Notification.create(req.body, function (err, notification) {
     if(err) { return handleError(res, err); }
-
+    console.log(notification);
     if(notification.user.deviceId){
-    if(notification.action=='post'){
-      message=notification.postedBy.name +" posted on "+notification.post.wall.name;
-      console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
-      notifier.sendNotif(message, notification.user.deviceId);
-    } else {
-      message=notification.commentedBy.name +" comment on a post by "+
-        notification.postedBy.name+ " on the " + notification.post.wall.name+" wall";
-      console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
-      notifier.sendNotif(message, notification.user.deviceId);
+      if(notification.action=='post'){
+        message=notification.postedBy.name +" posted on "+notification.post.wall.name;
+        console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
+        notifier.sendNotif(message, notification.user.deviceId);
+      } else {
+        message=notification.commentedBy.name +" comment on a post by "+
+          notification.postedBy.name+ " on the " + notification.post.wall.name+" wall";
+        console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
+        notifier.sendNotif(message, notification.user.deviceId);
+      }
     }
-  }
     return res.json(201, notification);
-  }).deepPopulate();
+  });
   
 };
 
