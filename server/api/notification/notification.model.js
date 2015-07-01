@@ -18,5 +18,14 @@ var NotificationSchema = new Schema({
   commentedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   active: Boolean
 });
-
+NotificationSchema.plugin(deepPopulate, {
+  populate: {
+    'post.wall': {
+      select: 'name'
+    },
+    'postedBy' : {
+      select: 'name'
+    }
+  }
+});
 module.exports = mongoose.model('Notification', NotificationSchema);
