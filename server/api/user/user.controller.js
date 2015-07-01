@@ -8,10 +8,17 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
+var Grid = require('gridfs-stream');
+var mime = require('mime');
+var mongoose = require('mongoose');
+Grid.mongo = mongoose.mongo;
+
+var gfs = new Grid(mongoose.connection.db);
 var Department = require('../department/department.model');
 var Group = require('../group/group.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
+
 
 var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
@@ -69,6 +76,39 @@ exports.show = function (req, res, next) {
     res.json(user.profile);
   })
   .populate('department subDepartment groups', 'name');
+};
+
+exports.profilePic = function (req, res) {
+  User.findById(req.params.id, function (err, user) {
+    if(err) return validationError(res, err);
+    if(!user) return res.status(404).json({message: "User does not exist"});
+    gfs.findOne({ _id: user.profilePic}, function (err, file) {
+        if(!file){
+          return res.status(400).send({
+            message: 'File not found'
+          });
+        }
+    
+      res.writeHead(200, {'Content-Type': file.contentType});
+      
+      var readstream = gfs.createReadStream({
+          filename: file.filename
+      });
+   
+        readstream.on('data', function(data) {
+            res.write(data);
+        });
+        
+        readstream.on('end', function() {
+            res.end();        
+        });
+   
+      readstream.on('error', function (err) {
+        console.log('An error occurred!', err);
+        throw err;
+      });
+    });
+  });
 };
 
 /**
@@ -252,16 +292,19 @@ exports.gcmRegister = function(req, res) {
   User.findById(req.user._id, function (err, user) {
     if (err) { return handleError(res, err); }
     if (!user) { res.status(404).json({message: "User does not exist"}); }
-    if(req.body.oldId) {
-      if( user.deviceId.indexOf(req.body.oldId) > -1)
-        user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+    if(!req.body.deviceId) {res.status(401).json({message: "No deviceId in request"}); }
+    else{
+      if(req.body.oldId) {
+        if( user.deviceId.indexOf(req.body.oldId) > -1)
+          user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+      }
+      if( user.deviceId.indexOf(req.body.deviceId) === -1)
+        user.deviceId.push(req.body.deviceId);
+      user.save(function (err) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json({message: "Successful"}); 
+      });
     }
-    if( user.deviceId.indexOf(req.body.deviceId) === -1)
-      user.deviceId.push(req.body.deviceId);
-    user.save(function (err) {
-      if(err) { return handleError(res, err); }
-      res.status(200).json({message: "Successful"}); 
-    });
   })
 }
 

@@ -140,6 +140,7 @@ exports.newsfeedRefresh = function(req, res) {
       wall: {$in: required}
     })
     .populate('comments wall createdBy acknowledged')
+    .sort({updatedOn: -1})
     .exec(function (err, posts) {
       if(err) { return handleError(res, err); }
       if(!posts) { return res.send(404); }
@@ -244,7 +245,7 @@ exports.acknowledge = function(req, res) {
         else res.status(200).json({message: "Acknowledged"})
       });
     }
-    else{ req.status(200).json({message: "Already acknowledged"}); }
+    else{ res.status(200).json({message: "Already acknowledged"}); }
   });
 }
 

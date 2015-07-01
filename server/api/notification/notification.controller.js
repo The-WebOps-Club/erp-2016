@@ -4,6 +4,11 @@ var _ = require('lodash');
 var Notification = require('./notification.model');
 var gcm = require('node-gcm');
 
+
+//TODO: Paginate the notifs
+//
+//
+//
 // Get list of notifications
 exports.index = function(req, res) {
   Notification.find(function (err, notifications) {
