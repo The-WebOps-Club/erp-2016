@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    deepPopulate = require('mongoose-deep-populate');
 
 //post: ID of the post being notified to
 //user: User to whom the notification belongs
