@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    deepPopulate = require('mongoose-deep-populate');
 
 //post: ID of the post being notified to
 //user: User to whom the notification belongs
@@ -19,4 +20,21 @@ var NotificationSchema = new Schema({
   active: Boolean
 });
 
+NotificationSchema.plugin(deepPopulate, {
+  populate: {
+    'post.wall': {
+      select: 'name'
+    },
+    'postedBy' : {
+      select: 'name'
+    },
+    'commentedBy' : {
+      select: 'name'
+    },
+    'user' : {
+      select: 'deviceId'
+    },
+
+  }
+});
 module.exports = mongoose.model('Notification', NotificationSchema);
