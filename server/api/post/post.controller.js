@@ -9,6 +9,7 @@ var User = require('../user/user.model');
 var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var auth = require('../../auth/auth.service');
+var notifier = require('../notification/notification.controller');
 
 var POSTSPERPAGE = 20
 
@@ -223,9 +224,13 @@ exports.createPost = function(req, res) {
 
     newPost.save(function (err, post) {
       if (err) { return handleError(res, err); }
-      else res.json(201, post);
-    });
-  });  
+      else{
+        notifier.notifyAll(post._id, function(){
+          res.json(201, post);
+        });
+      }
+    });  
+  });
 };
 
 //Acknowledges a post
