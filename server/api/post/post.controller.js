@@ -264,7 +264,14 @@ exports.addComment = function(req, res) {
 
       post.save(function (err) {
         if (err) { return handleError(res, err); }
-        return res.json(200, post);
+        Post.findById(req.body.postId)
+        .populate('acknowledged', 'name')
+        .deepPopulate('comments.createdBy')
+        .exec(function (err, post) {
+          if (err) { return handleError(res, err); }
+          if(!post) { return res.send(404); }
+          return res.json(200, post);
+        });
       });
     });
   });

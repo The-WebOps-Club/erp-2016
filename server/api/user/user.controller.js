@@ -158,8 +158,16 @@ exports.updateProfile = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    req.body.role = undefined;
+    req.body.hashedPassword = undefined;
+    req.body.salt = undefined;
+    req.body.wall = undefined;
+    req.body.department = undefined;
+    req.body.subDepartment = undefined;
+    req.body.groups = undefined;
+    req.body.deviceId = undefined;
+    req.body.provider = undefined;
     var updated = _.merge(user, req.body);
-    updated = _.omit(updated, 'hashedPassword');
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
@@ -178,8 +186,6 @@ exports.me = function (req, res, next) {
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
     if (err) return next(err);
     if(!user) return res.status(404).json({message: "User does not exist"});
-    _.omit(user, 'lastSeen');
-    console.log(user);
     res.status(200).json(user);
   })
   .populate('department subDepartment groups', 'name');

@@ -28,9 +28,13 @@ NotificationSchema.plugin(deepPopulate, {
     'postedBy' : {
       select: 'name'
     },
+    'commentedBy' : {
+      select: 'name'
+    },
     'user' : {
       select: 'deviceId'
-    }
+    },
+
   }
 });
 module.exports = mongoose.model('Notification', NotificationSchema);
