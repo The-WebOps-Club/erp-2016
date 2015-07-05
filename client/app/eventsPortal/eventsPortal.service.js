@@ -5,7 +5,7 @@ angular.module('erp2015App')
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
       	createEventList:function(data){
-        	return $http.post('/api/eventLists', data).then(function(response){
+          return $http.post('/api/eventLists', data).then(function(response){
           		return response.data;
         	});
       	},

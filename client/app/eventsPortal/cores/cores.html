@@ -1,5 +1,16 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
+  <!-- // <script src="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.js"></script> -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.css"> -->
+  <style>
+    .cropArea {
+      background: #E4E4E4;
+      overflow: hidden;
+      width:500px;
+      height:350px;
+    }
+  </style>
+
 <div layout="row" layout-margin>
 
   <div class="eventsPortal" flex flex-order="1">
@@ -34,6 +45,18 @@
             </span>
             <span>{{ errors.other }}</sapn>
           </div>
+
+          <md-input-container>
+            <label>Category Picture</label>
+            <br> &nbsp;
+            Select an Image file: 
+            <input class='btn' type="file" id="file" accept="image/*" required="" />
+            <div class="cropArea">
+       			  <img-crop image="myImage" result-image="myCroppedImage" area-type="square" result-image-size="200"></img-crop>
+  			    </div>
+  			    <div>Cropped Image:</div>
+  			    <div><img ng-src="{{myCroppedImage}}" /></div>
+          </md-input-container>
 
           <md-button type="submit" class="md-raised md-primary">Create</md-button>
         </form>
