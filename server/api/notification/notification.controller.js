@@ -5,7 +5,7 @@ var forEach = require('async-foreach').forEach;
 var Notification = require('./notification.model');
 var User = require('../user/user.model');
 var Post = require('../post/post.model');
-var notifier = require('../../components/gcm')
+var notifier = require('../../components/gcm');
 var gcm = require('node-gcm');
 var getMembers = require('../wall/wall.controller').getMembers;
 
@@ -50,7 +50,7 @@ exports.create = function(req, res) {
         if(notification.action=='post'){
           var message=notification.postedBy.name +" posted on "+notification.post.wall.name;
           console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
-          notifier.sendNotif(message, notification.user.deviceId);
+          notifier(message, notification.user.deviceId);
         } else {
           var message=notification.commentedBy.name +" comment on a post by "+
           notification.postedBy.name+ " on the " + notification.post.wall.name+" wall";
