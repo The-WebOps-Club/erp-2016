@@ -9,18 +9,18 @@ var notifier = require('../../components/gcm')
 var gcm = require('node-gcm');
 var getMembers = require('../wall/wall.controller').getMembers;
 
-var sendNotif = function (text, regIds) {
-  var message = new gcm.Message();
-  message.addData('message',text);
-  // var regIds = ['fV2UjeX-Hss:APA91bFadbsF_OfuoOgDEjMwAytPocrp9zoeYp8aFsUrMCp7Orl-gYwEkdeRmSkx6-uucnWROifcij9aUERvLTL4T840zAbDjymToLeCS6Ws5yytDeMpnVSyMgVwiCkU-99xF6Wvrjs2'];
-  if(!(regIds instanceof Array))
-    regIds=[regIds]
-  var sender = new gcm.Sender('AIzaSyDSLwzK4C2Dqth55Z3SgXU77D7Xsex4VbI');
+// var sendNotif = function (text, regIds) {
+//   var message = new gcm.Message();
+//   message.addData('message',text);
+//   // var regIds = ['fV2UjeX-Hss:APA91bFadbsF_OfuoOgDEjMwAytPocrp9zoeYp8aFsUrMCp7Orl-gYwEkdeRmSkx6-uucnWROifcij9aUERvLTL4T840zAbDjymToLeCS6Ws5yytDeMpnVSyMgVwiCkU-99xF6Wvrjs2'];
+//   if(!(regIds instanceof Array))
+//     regIds=[regIds]
+//   var sender = new gcm.Sender('AIzaSyDSLwzK4C2Dqth55Z3SgXU77D7Xsex4VbI');
 
-  sender.send(message, regIds, function (err, result) {
-    if(err) console.error(err);
-  });
-};
+//   sender.send(message, regIds, function (err, result) {
+//     if(err) console.error(err);
+//   });
+// };
 
 // Get list of notifications
 exports.index = function(req, res) {
@@ -50,12 +50,12 @@ exports.create = function(req, res) {
         if(notification.action=='post'){
           var message=notification.postedBy.name +" posted on "+notification.post.wall.name;
           console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
-          sendNotif(message, notification.user.deviceId);
+          notifier.sendNotif(message, notification.user.deviceId);
         } else {
           var message=notification.commentedBy.name +" comment on a post by "+
           notification.postedBy.name+ " on the " + notification.post.wall.name+" wall";
           console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
-          sendNotif(message, notification.user.deviceId);
+          notifier.sendNotif(message, notification.user.deviceId);
         }
       }
       return res.json(201, notification);
@@ -64,25 +64,33 @@ exports.create = function(req, res) {
 };
 
 exports.notifyAll = function (postId, callback) {
-  Post.findById(postId, function (err, post) {
-    getMembers(post.wall, function (members) {
-      exports.bulkCreate({post: post, members: members}, function () {
-        callback();
+  Post.findById(postId)
+  .exec(function (err, post) {
+    post.deepPopulate('comments.createdBy', function (err, post) {
+      if(post.comments.length === 0) var action = 'post';
+      else var action = 'comment';
+      getMembers(post.wall, function (members) {
+        exports.bulkCreate({post: post, members: members, action: action}, function () {
+          callback();
+        });
       });
     });
   });
-}
+};
+
 exports.bulkCreate = function(data, callback) {
   var deviceIds = [];
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
-    Notification.create({post: data.post._id, user: member._id, action: 'post', postedBy: data.post.createdBy._id} , function (err, notification) {
+    Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id} , function (err, notification) {
       if(err) { return handleError(res, err); }
       Notification.findById(notification._id)
       .deepPopulate('user.deviceId post.wall postedBy.name commentedBy.name')
       .exec( function (err, notification) {
         if(notification.user.deviceId){
-          deviceIds = deviceIds.concat(notification.user.deviceId);
+          if(!data.post.createdBy._id === member._id){
+            deviceIds = deviceIds.concat(notification.user.deviceId);
+          }
         }
         done();
       });
@@ -90,11 +98,11 @@ exports.bulkCreate = function(data, callback) {
   }, function allDone (notAborted, arr) {
     if(data.post.comments.length === 0){
       var message=data.post.createdBy.name +" posted on "+data.post.wall.name;
-      sendNotif(message, deviceIds);
+      notifier.sendNotif(message, deviceIds);
     } else {
       var message=data.post.postedBy.name +" comment on a post by "+
       data.post.postedBy.name+ " on the " + data.post.wall.name+" wall";
-      sendNotif(message, deviceIds);
+      notifier.sendNotif(message, deviceIds);
     }
     callback();
   });

@@ -6,7 +6,7 @@ var nodemailer = require('nodemailer');
 
 
 'use strict';
-module.exports = function sendEmail(sub, text, emailTo, messageId, initial ) {
+module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) {
  var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -37,10 +37,10 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial ) {
         if(err) {
           console.log('Error Occurred');
           console.log(err);
-          return res.sendStatus(500);
+          return cb(500);
         } else {
           console.log(info);
-          res.sendStatus(200);
+          cb(info);
         }
       });   
 };

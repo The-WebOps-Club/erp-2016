@@ -226,7 +226,7 @@ exports.createPost = function(req, res) {
       if (err) { return handleError(res, err); }
       else{
         notifier.notifyAll(post._id, function(){
-          res.json(201, post);
+          return res.json(201, post);
         });
       }
     });  
@@ -275,7 +275,9 @@ exports.addComment = function(req, res) {
         .exec(function (err, post) {
           if (err) { return handleError(res, err); }
           if(!post) { return res.send(404); }
-          return res.json(200, post);
+          notifier.notifyAll(post._id, function(){
+            return res.json(201, post);
+          });
         });
       });
     });
