@@ -39,6 +39,11 @@ angular.module('erp2015App')
               return response.data;
           });
         },
+        editEvent: function (data) {
+          return $http.put('/api/events/' + data._id, data).then(function (response) {
+            return response.data;
+          });
+        },
         getEvent: function(eventId){
           return $http.get('/api/events/' + eventId).then(function (response){
              return response.data;

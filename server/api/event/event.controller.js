@@ -2,6 +2,8 @@
 
 var _ = require('lodash');
 var Event = require('./event.model');
+var User = require('../user/user.model');
+var EventList = require('../eventList/eventList.model');
 
 // Get list of events
 exports.index = function(req, res) {
@@ -44,15 +46,54 @@ exports.create = function(req, res) {
 
 // Updates an existing event in the DB.
 exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Event.findById(req.params.id, function (err, event) {
+  
+  //console.log(req.body);
+  // if(req.body.event._id) { delete req.body.event._id; }
+  Event.findById(req.body.event._id, function (err, event) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
-    var updated = _.merge(event, req.body);
+
+    var updated = _.merge(event, req.body.event);
+    //for saving change in name or info w/out change in assignee or eventList
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, event);
+      if(!req.body.assignees && !req.body.eventCategory){
+        return res.json(200, event);
+      }
     });
+    
+    //For findig id of Assignee and saving
+    if(req.body.assignees){
+      User.findOne({'name': req.body.assignees},'_id',function (err,user){
+        if(err) console.log(err);
+        if(user != null){
+            if(updated.assignees.indexOf(user._id) == -1)
+              updated.assignees.push(user._id);
+            console.log(updated);
+            updated.save(function (err) {
+              if (err) { return handleError(res, err); }
+              return res.json(200, event);
+            });
+        }
+      });
+    }
+
+    //For finding id of eventList and saving
+    if(req.body.eventCategory){
+      EventList.findOne({'title': req.body.eventCategory},'_id',function (err,eventList){
+        if(err){ console.log(err);}
+        if(eventList != null){
+            if(updated.eventCategory.indexOf(eventList._id) == -1)
+              updated.eventCategory.push(eventList._id);
+            console.log(updated);
+            updated.save(function (err) {
+              if (err) { return handleError(res, err); }
+              return res.json(200, event);
+            });
+        }
+      });
+    }
+
   });
 };
 

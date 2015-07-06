@@ -1,0 +1,47 @@
+<md-dialog aria-label="Edit Event Details" style="width:80%;">
+  <form>
+    <md-dialog-content>
+      <div layout="column" class="eventsPortal">
+        <div class="md-whiteframe-z1">
+          <md-toolbar class="md-primary">
+            <h1 class="md-toolbar-tools">
+              Edit Event Details
+            </h1>
+          </md-toolbar>
+          <form onsubmit="save()">
+          <md-content layout-padding>
+            <md-input-container>
+              <label>Event Name</label>      
+              <input ng-model="editEvent.name" type="text">
+            </md-input-container>
+
+            <md-input-container>
+              <label>Event Info</label>      
+              <textarea ng-model="editEvent.info"></textarea>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Assign a Team Member</label>      
+              <input ng-model="assignee" type="text"></input>
+            </md-input-container>
+
+            <md-input-container>
+              <label>Assign a Event Category</label>      
+              <input ng-model="eventCat" type="text"></input>
+            </md-input-container>
+            </form>
+          </md-content>
+        </div>
+      </div>
+    </md-dialog-content>
+    <div class="md-actions" layout="row">
+      <md-button ng-click="cancel()" class="md-raised">
+        Discard changes
+      </md-button>
+      <md-button ng-click="save()" class="md-raised md-primary">
+        Save
+      </md-button>
+    </div>
+  </form>
+</md-dialog>
+

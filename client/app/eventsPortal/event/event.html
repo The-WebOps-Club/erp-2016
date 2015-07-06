@@ -3,78 +3,95 @@
 <div layout="row" layout-margin>
   <div class="eventsPortal eventContainer" flex flex-order="1">
     <div class="md-whiteframe-z1">
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>Event Details</span>
+        </h2>
+      </md-toolbar>
+
       <md-content class="md-theme-light">
             <div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Event Name</h6>
+                      <label>Event Name</label>
                       <p>{{ event.name}}</p>
                     </div>
           	    </div>
-          	</div>
-          	<div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Event Info</h6>
+                      <label>Event Info</label>
                       <p>{{ event.info}}</p>
                     </div>
-          	    </div>
+                </div>
           	</div>
+
             <div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Assignees</h6>
+                      <label>Assignees</label>
                       <ul ng-repeat="assignee in event.assignees">
                         <li>{{assignee.name}}</li>
                       </ul>
                     </div>
                 </div>
-            </div>
-            <div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Event Category</h6>
+                      <label>Event Category</label>
                       <ul ng-repeat="eventCat in event.eventCategory">
                         <li>{{eventCat.title}}</li>
                       </ul>
                     </div>
                 </div>
             </div>
+
             <div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Created By</h6>
+                      <label>Created By</label>
                       <p>{{ event.createdBy.name}}</p>
                     </div>
                 </div>
-            </div>
-          	<div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Created On</h6>
+                      <label>Created On</label>
                       <p>{{ event.createdOn| date: 'medium' }}</p>
                     </div>
           	    </div>
           	</div>
+
             <div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Last Updated By</h6>
+                      <label>Last Updated By</label>
                       <p>{{ event.lastUpdatedBy.name}}</p>
                     </div>
                 </div>
-            </div>
-          	<div layout="row"  layout-fill layout-padding>
                 <div flex="33">
                     <div class="md-list-item-text">
-                      <h6 class="md-title">Updated On</h6>
+                      <label>Updated On</label>
                       <p>{{ event.updatedOn| date: 'medium' }}</p>
                     </div>
           	    </div>
           	</div>
+            <div layout="row"  layout-fill layout-padding>
+                <div flex="33">
+                    <div class="md-list-item-text">
+                       <button class="md-raised md-primary" ng-click="eventEditModal(event)" style="margin: 0 0 0 10">Edit Event</button>
+                       </div>
+                </div>
+            </div>
       </md-content>
-      <md-divider>
-      <h5 class="md-title"><span>&nbsp;List Of Tabs</span></h5>
+    </div>
+  </div>  
+
+  <div class="eventsPortal eventContainer" flex flex-order="2">
+    <div class="md-whiteframe-z1">  
+      <md-toolbar class="md-theme-light">
+        <h2 class="md-toolbar-tools">
+          <span>List Of Event Tabs</span>
+        </h2>
+      </md-toolbar>
+
       <md-content>
         <md-list ng-repeat="eventTab in eventTabs">
           <md-list-item>
