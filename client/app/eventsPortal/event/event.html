@@ -1,6 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div layout="row" layout-margin>
+<!--
   <div class="eventsPortal eventContainer" flex flex-order="1">
     <div class="md-whiteframe-z1">
       <md-content class="md-theme-light">
@@ -106,4 +107,43 @@
       </md-content>
     </div>
   </div>
+</div>
+-->
+<style>
+  .sample {
+    width: 100%;
+    height: auto;
+    overflow-y: scroll;
+    float:left;
+    overflow-y: auto;
+  }
+</style>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<div class="sample tabsdemoDynamicTabs" layout="column" ng-app="MyApp">
+
+  <md-content class="md-padding">
+    <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-on-select="setTab(0)" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
+      <md-tab label="Home">
+          <div><h1>{{event.name }}</div>
+          <font color="#777777">{{ categoryString }}</font>
+          <br>
+      </md-tab>
+      <md-tab label="Description" md-on-select="setTab(1)">
+          <br /><div class='summernote'>Stuff</div>
+      </md-tab>
+      <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
+        <br /><div class="summernote_{{tab._id}}" ng-bind-html="tab.info"></div>
+      </md-tab>
+    </md-tabs>
+  </md-content>
+</div>
+<div style="padding-top: 0; position: fixed; right: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px;">
+  <md-button class="md-primary md-raised" ng-click="newTab()">New Tab</md-button>
+  <md-button class="md-primary md-raised" ng-click="editTab()" id="editButton" name="editButton">Edit Tab</md-button>
+  <md-button class="md-primary md-raised" ng-click="removeTab()">Reorder Tabs</md-button>
+  <md-button class="md-primary md-raised" ng-click="removeTab()">Remove Tab</md-button>
+</div>
+
+<div style="padding-top: 0; position: fixed; left: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px; display: none;" class="saveButton">
+  <md-button class="md-primary md-raised" ng-click="saveChanges()">Save Changes</md-button>
 </div>

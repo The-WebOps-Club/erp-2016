@@ -4,7 +4,7 @@ angular.module('erp2015App')
   .service('EventsPortalService', function ($http) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     return {
-      	createEventList:function(data){
+      	createEventList: function(data){
           return $http.post('/api/eventLists', data).then(function(response){
           		return response.data;
         	});
@@ -29,13 +29,18 @@ angular.module('erp2015App')
             return response.data;
           });
         },
-        createEvent:function(data){
+        createEvent: function(data){
           return $http.post('/api/events', data).then(function (response){
               return response.data;
           });
         },
-        getEvents:function(data){
+        getEvents: function(data){
           return $http.get('/api/events/getMultiple/' + data._id).then(function (response){
+              return response.data;
+          });
+        },
+        getTabs: function(data){
+          return $http.get('/api/eventTabs/' + data._id).then(function (response){
               return response.data;
           });
         },

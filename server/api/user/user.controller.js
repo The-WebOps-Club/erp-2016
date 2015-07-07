@@ -44,6 +44,7 @@ exports.create = function (req, res, next) {
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
+  newUser.roomNumber="721A";
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
