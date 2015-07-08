@@ -99,7 +99,7 @@ exports.newsfeed = function(req, res) {
       required.push(walls[i]._id)
     };
     Post.paginate(
-      {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function (error, pageCount, paginatedResults, itemCount) {
+      {wall: {$in: required}}, { page: req.params.page, limit: POSTSPERPAGE} , function (error, paginatedResults, pageCount, itemCount) {
       if (error) {
         return handleError(res, error);
       }
@@ -107,6 +107,7 @@ exports.newsfeed = function(req, res) {
         res.status(404).send(paginatedResults);
       }
       else {
+        console.log(paginatedResults);
         var populated = []
         forEach(paginatedResults, function(post, index, arr) {
           var done = this.async();
@@ -267,7 +268,7 @@ exports.addComment = function(req, res) {
       post.comments.push(comment._id)
       post.updatedOn = Date.now();
 
-      post.save(function (err) {
+      post.save(function (err)   {
         if (err) { return handleError(res, err); }
         Post.findById(req.body.postId)
         .populate('acknowledged', 'name')

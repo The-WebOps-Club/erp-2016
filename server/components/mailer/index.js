@@ -10,27 +10,27 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) 
  var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-          user: EMAIL,
-          pass: PASSWORD
+          user: 'amkvijay@gmail.com',
+          pass: 'srimuruga'
         }
       });
       if(!(initial)){
       	var mailOptions = {
         to: emailTo,
-        from: EMAIL,
+        from: 'amkvijay@gmail.com',
         subject: sub,
         text: text,
-        messageId: messageId+'-erp-saarang.saarang.org'
+        messageId: messageId+'-erp-saarang@saarang.org'
       };
       }
       if(initial){
       	var mailOptions = {
         to: emailTo,
-        from: EMAIL,
+        from: 'amkvijay@gmail.com',
         subject: sub,
         text: text,
-        messageId: messageId+'-erp-saarang.saarang.org',
-        inReplyTo: messageId+'-erp-saarang.saarang.org'
+        messageId: messageId+'-erp-saarang@saarang.org',
+        inReplyTo: messageId+'-erp-saarang@saarang.org'
       };
       }
       smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -40,7 +40,7 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) 
           return cb(500);
         } else {
           console.log(info);
-          cb(info);
+          return cb(null,info);
         }
       });   
 };

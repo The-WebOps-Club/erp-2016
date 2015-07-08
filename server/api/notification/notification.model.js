@@ -22,6 +22,9 @@ var NotificationSchema = new Schema({
 
 NotificationSchema.plugin(deepPopulate, {
   populate: {
+    'post.comments': {
+      sort: {updatedOn: 1}
+    },
     'post.wall': {
       select: 'name'
     },
@@ -32,9 +35,11 @@ NotificationSchema.plugin(deepPopulate, {
       select: 'name'
     },
     'user' : {
-      select: 'deviceId'
+      select: 'deviceId email'
     },
-
+    'post.comments.createdBy': {
+      select: 'name deviceId'
+    },
   }
 });
 module.exports = mongoose.model('Notification', NotificationSchema);
