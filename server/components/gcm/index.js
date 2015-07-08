@@ -4,7 +4,11 @@ module.exports = function sendNotif(messageText, regIds) {
   var message = new gcm.Message();
   console.log("Hello");
   message.addData('message',messageText);
+<<<<<<< HEAD
   console.log(message);
+=======
+  console.log(messageText);
+>>>>>>> a8f5383d77118063429e70ed481c130f5189b108
   // var regIds = ['fV2UjeX-Hss:APA91bFadbsF_OfuoOgDEjMwAytPocrp9zoeYp8aFsUrMCp7Orl-gYwEkdeRmSkx6-uucnWROifcij9aUERvLTL4T840zAbDjymToLeCS6Ws5yytDeMpnVSyMgVwiCkU-99xF6Wvrjs2'];
   if(!(regIds instanceof Array))
     regIds=[regIds]

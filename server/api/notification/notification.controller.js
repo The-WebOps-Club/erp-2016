@@ -5,7 +5,7 @@ var forEach = require('async-foreach').forEach;
 var Notification = require('./notification.model');
 var User = require('../user/user.model');
 var Post = require('../post/post.model');
-var notifier = require('../../components/gcm')
+var notifier = require('../../components/gcm');
 var gcm = require('node-gcm');
 var mailer=require('../../components/mailer');
 var getMembers = require('../wall/wall.controller').getMembers;
@@ -52,6 +52,7 @@ exports.create = function(req, res) {
           var message=notification.postedBy.name +" posted on "+notification.post.wall.name;
           console.log("Sending notification : "+message + " , id : " + notification.user.deviceId);
           notifier(message, notification.user.deviceId);
+<<<<<<< HEAD
           console.log(notification.user);
           mailer('[sarang-erp-2016] '+ message,notification.post.info,notification.user.email,notification.post._id,false,function cb(err,info){
               if (err){
@@ -61,6 +62,8 @@ exports.create = function(req, res) {
               return res.json(200,'Mail has been sent');
           })
 
+=======
+>>>>>>> a8f5383d77118063429e70ed481c130f5189b108
         } else {
           var myComment = notification.post.comments.reverse()[0];
           var message=myComment.createdBy.name +" comment on a post by "+
