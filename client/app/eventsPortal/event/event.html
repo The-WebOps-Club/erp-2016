@@ -110,40 +110,139 @@
 </div>
 -->
 <style>
-  .sample {
-    width: 100%;
-    height: auto;
-    overflow-y: scroll;
-    float:left;
-    overflow-y: auto;
-  }
+.sample {
+  width: 100%;
+  height: auto;
+  overflow-y: scroll;
+  float:left;
+  overflow-y: auto;
+}
+
+html, body, #summernote {
+  margin: 0;
+  height: 100%;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+textarea, #summernote div {
+  display: inline-block;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+textarea {
+  vertical-align: top;
+  border: none;
+  border-right: 1px solid #ccc;
+  resize: none;
+  outline: none;
+  background-color: #f6f6f6;
+  font-size: 14px;
+  font-family: courier, monospace;
+  padding: 20px;
+}
+
+code {
+  color: #f66;
+}
 </style>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <div class="sample tabsdemoDynamicTabs" layout="column" ng-app="MyApp">
 
   <md-content class="md-padding">
-    <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-on-select="setTab(0)" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
-      <md-tab label="Home">
-          <div><h1>{{event.name }}</div>
-          <font color="#777777">{{ categoryString }}</font>
+    <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
+      <md-tab md-on-select="setTab(0)" label="Home">
+        <table width="100%"><tr width="100%">
+        <td width="50%" style="border-right: 1px solid #ccc;"><form name="newEventForm" ng-submit="updateEvent(newEventForm)" novalidate>
+
+          <md-input-container>
+            <label>Event Name</label>
+            <input name="title" ng-model="event.name" ng-required="true" mongoose-error />
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="form.title.$error.required && submitted">
+              Title is required.
+            </span>
+            <span>{{ errors.other }}</sapn>
+          </div>
+
+          <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in coords"
+              md-item-text="item.name"
+              placeholder="Assign a team member">
+                <span md-highlight-text="searchText">{{item.name}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.name }}</strong>
+            </md-chip-template>
+          </md-chips>
           <br>
+
+          <md-chips ng-model="selectedEventLists" md-autocomplete-snap md-require-match >
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in eventLists"
+              md-item-text="item.title"
+              placeholder="Assign an event list">
+                <span md-highlight-text="searchText">{{item.title}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.title }}</strong>
+            </md-chip-template>
+          </md-chips>
+
+          <md-button type="submit" class="md-raised md-primary">Update</md-button>
+        </form>
+      </td>
+      <td width="50%" style="vertical-align: top; padding-left: 6px;">
+        <table width="100%"><tr>
+        <td width="50%">
+          <h1>{{event.name }}</h1>
+          <font color="#777777">{{ categoryString }}</font>
+        </td>
+        <td width="50%" style="text-align: right">
+          <font color="#777777">
+            Created on {{ event.createdOn| date: 'medium' }}<br />
+            Last updated on {{ event.updatedOn| date: 'medium' }}<br />
+          </font>
+        </td></tr></table>
+      </td>
+      </tr></table>
       </md-tab>
-      <md-tab label="Description" md-on-select="setTab(1)">
-          <br /><div class='summernote'>Stuff</div>
+      <md-tab label="Description" md-on-select="setTab(1)" height="100%">
+          <div id='tab1'>
+            <table width="100%"><tr>
+              <td width="50%"><textarea v-model="input" debounce="300" ng-model="markdown[currentTab]" id="markdown1"></textarea></td>
+              <td width="50%"><div v-html="input | marked" ng-bind-html="xmark(markdown[currentTab])" style="padding-left: 16px"></div></td>
+            </tr></table>
+          </div>
       </md-tab>
       <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
-        <br /><div class="summernote_{{tab._id}}" ng-bind-html="tab.info"></div>
+        <div id='tab1'>
+          <table width="100%"><tr>
+            <td width="50%"><textarea v-model="input" debounce="300" ng-model="markdown[currentTab]" id="markdown1"></textarea></td>
+            <td width="50%"><div v-html="input | marked" ng-bind-html="xmark(markdown[currentTab])" style="padding-left: 16px"></div></td>
+          </tr></table>
+        </div>
       </md-tab>
     </md-tabs>
   </md-content>
 </div>
 <div style="padding-top: 0; position: fixed; right: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px;">
   <md-button class="md-primary md-raised" ng-click="newTab()">New Tab</md-button>
-  <md-button class="md-primary md-raised" ng-click="editTab()" id="editButton" name="editButton">Edit Tab</md-button>
   <md-button class="md-primary md-raised" ng-click="removeTab()">Reorder Tabs</md-button>
-  <md-button class="md-primary md-raised" ng-click="removeTab()">Remove Tab</md-button>
+  <md-button class="md-primary md-raised md-warn" ng-click="removeTab()">Remove Tab</md-button>
+</div>
+<div style="padding-top: 0; position: fixed; left: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px;" class="leftButtons">
+  <md-button class="md-primary md-raised" ng-click="saveChanges()">Save Changes</md-button>
+  <md-button class="md-primary md-raised" ng-click="changeTabTitle()">Change tab title</md-button>
 </div>
 
-<div style="padding-top: 0; position: fixed; left: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px; display: none;" class="saveButton">
-  <md-button class="md-primary md-raised" ng-click="saveChanges()">Save Changes</md-button>
-</div>

@@ -4,8 +4,29 @@ angular.module('erp2015App')
   .controller('EventsPortalEventCtrl', function ($scope,$http,EventsPortalService, $mdToast) {
     var id = location.pathname.split('/')[3];
  	EventsPortalService.getEvent(id).then(function (event){
+ 		var converter = new showdown.Converter();
  		$scope.event = event;
  		var xdata;
+		$scope.currentTab=0;
+ 		$scope.markdown=[];
+ 		$scope.markdown[1]=event.info;
+
+ 		EventsPortalService.getAllEventLists()
+        .then(function (data) {
+          $scope.eventLists = data;
+        },function (err){
+          console.log(err);
+        }); 
+
+	    EventsPortalService.getCoords()
+	      .then(function (data) {
+	        $scope.coords = data;
+	      },function (err){
+	        console.log(err);
+	      });
+        $scope.selectedEventLists=event.eventCategory;
+        $(".leftButtons").hide();
+
 		$.ajax({ url: '/api/eventTabs/'+event._id, success: function(data) { $scope.eventTabs=data; console.log(data); } }).done(function () {
 			$scope.eventTabs.sort(function (a, b) {
 				if(a.tabNumber<b.tabNumber)
@@ -15,36 +36,44 @@ angular.module('erp2015App')
 				else
 					return 0;
 			});
+			$scope.eventTabs.forEach(function (tab) {
+				$scope.markdown[tab._id]=tab.info;
+			});
 		});
-
- 		var cat="";
- 		for(var i=0; i<event.eventCategory.length; i++) {
- 			cat+=event.eventCategory[i].title;
- 			if(i!=event.eventCategory.length-1)
- 				cat+=", ";
- 		}
- 		$scope.categoryString=cat;
 
  		JSON.stringify(eval("(" + $scope.eventTabs + ")"));
  		console.log($scope.eventTabs);
 
-
- 		$scope.currentTab=0;
+ 		$scope.buildCatString = function() {
+ 			var cat="";
+	 		for(var i=0; i<event.eventCategory.length; i++) {
+	 			cat+=event.eventCategory[i].title;
+	 			if(i!=event.eventCategory.length-1)
+	 				cat+=", ";
+	 		}
+	 		$scope.categoryString=cat;
+	 	}
+	 	$scope.buildCatString();
 
  		$scope.newTab = function () {
  			var promptName=prompt("Enter the name of the tab", "");
-      		$scope.eventTabs.push({name: promptName, info: 'Add content here', evntDetails: [], tabNumber: $scope.eventTabs.length});
+ 			var tabData={'name': promptName, 'info': '', 'tabNumber': $scope.eventTabs.length+2, 'eventID': $scope.event._id};
+      		$scope.eventTabs.push(tabData);
 		    $.ajax({
 		        url: "/api/eventTabs",
 		        type: "POST",
-		        data: {'name': promptName, 'info': 'Add content here', 'tabNumber': $scope.eventTabs.length+2, 'eventID': $scope.event._id}
+		        data: tabData
 		    });
-		    $.ajax({ url: '/api/eventTabs/'+event._id, success: function(data) { $scope.eventTabs=data; console.log(data); } });
+		    $.ajax({ url: '/api/eventTabs/'+event._id, success: function(data) { $scope.eventTabs=data;} });
+		    $scope.markdown[$scope.eventTabs.length+2]="";
     	};
 
     	$scope.setTab = function (b) {
     		$scope.currentTab=b;
-    		console.log(b);
+    		if(b==0)
+    			$(".leftButtons").hide();
+    		else
+    			$(".leftButtons").show();
     	}
 
     	$scope.removeTab = function() {
@@ -71,23 +100,28 @@ angular.module('erp2015App')
     		});
 		};
 
-    	$scope.editTab = function() {
+		$scope.xmark = function (b) {
+			return converter.makeHtml(b);
+		}
+
+    	$scope.changeTabTitle = function() {
     		if($scope.currentTab==0) {
     		}
     		else if($scope.currentTab==1) {
-      			$('.summernote').summernote();
-      			$('.saveButton').show();
     		}
     		else {
 	    		var tab=$scope.eventTabs.filter(function (tab) {
 	    			return tab._id==$scope.currentTab;
 	    		})[0];
-      			$('.summernote_'+tab._id).summernote();
-      			$('.saveButton').show();      			
+ 				var promptName=prompt("Enter the name of the tab", "");
+ 				var tabData={'name': promptName, 'info': $scope.markdown[$scope.currentTab], 'tabNumber': tab.tabNumber, 'eventID': $scope.event._id}
       			$.ajax({
 			        url: "/api/eventTabs/"+tab._id,
 			        type: "PATCH",
-			        data: {'name': tab.name, 'info': $('.summernote_'+tab._id).html(), 'tabNumber': $scope.eventTabs.length+2, 'eventID': $scope.event._id}
+			        data: tabData
+			    }).done(function () {
+			    	$mdToast.show($mdToast.simple().content('Title changed successfully!').hideDelay(5000));
+		    		$.ajax({ url: '/api/eventTabs/'+event._id, success: function(data) { $scope.eventTabs=data;} });
 			    });
 	    	}
 		};
@@ -96,25 +130,62 @@ angular.module('erp2015App')
     		if($scope.currentTab==0) {
     		}
     		else if($scope.currentTab==1) {
-      			$('.summernote.ng-scope').destroy();
-      			$('.saveButton').hide();
-      			alert($('.summernote.ng-scope').html());
+      			$.ajax({
+			        url: "/api/events/"+event._id,
+			        type: "PATCH",
+			        data: {'info': $scope.markdown[1]}
+			    }).done(function () {
+			    	$mdToast.show($mdToast.simple().content('Tab changes successfully saved!').hideDelay(5000));
+			    });
     		}
     		else {
 	    		var tab=$scope.eventTabs.filter(function (tab) {
 	    			return tab._id==$scope.currentTab;
 	    		})[0];
-	    		console.log(tab);
-      			$('.summernote_'+tab._id).destroy();
-      			$('.saveButton').hide();
       			$.ajax({
 			        url: "/api/eventTabs/"+tab._id,
 			        type: "PATCH",
-			        data: {'name': tab.name, 'info': $('.summernote_'+tab._id).html(), 'tabNumber': $scope.eventTabs.length+2, 'eventID': $scope.event._id}
+			        data: {'name': tab.name, 'info': $scope.markdown[$scope.currentTab], 'tabNumber': tab.tabNumber, 'eventID': $scope.event._id}
+			    }).done(function () {
+			    	$mdToast.show($mdToast.simple().content('Tab changes successfully saved!').hideDelay(5000));
 			    });
 	    	}
 		};
+		$(window).bind('keydown', function(event) {
+		    if (event.ctrlKey || event.metaKey) {
+		        switch (String.fromCharCode(event.which).toLowerCase()) {
+		        case 's':
+		            event.preventDefault();
+		            $scope.saveChanges();
+		            break;
+		        }
+		    }
+		});
  	});
 
+    $scope.updateEvent = function(form) {
+      $scope.submitted = true;
+      $scope.coordsIds = [];
+      $scope.eventListIds = [];
+      angular.forEach($scope.selectedCoords, function (item) {
+        $scope.coordsIds.push(item._id);
+      });
+      angular.forEach($scope.selectedEventLists, function (item) {
+        $scope.eventListIds.push(item._id);
+      });
+      alert($scope.eventListIds.length);
 
-  })
+      if(form.$valid) {
+          EventsPortalService.updateEvent({
+            name: $scope.event.name,
+            info: $scope.event.info,
+            assignees: $scope.coordsIds,
+            eventCategory: $scope.eventListIds	
+          }, $scope.event._id).then(function () {
+		  	$mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
+		  });
+      }
+    };
+
+
+  });

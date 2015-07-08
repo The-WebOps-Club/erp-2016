@@ -48,7 +48,8 @@ exports.update = function(req, res) {
   Event.findById(req.params.id, function (err, event) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
-    var updated = _.merge(event, req.body);
+    req.body.updatedOn = Date.now();
+    var updated = _.assign(event, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, event);
