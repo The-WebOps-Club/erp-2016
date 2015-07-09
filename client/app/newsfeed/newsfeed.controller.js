@@ -6,7 +6,7 @@ angular.module('erp2015App')
     $scope.newPostTitle = '';
     $scope.posts = {};
 	
-	$http.get('/api/posts/newsfeed/')
+	$http.get('/api/posts/newsfeed/1')
 		.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);			
@@ -16,7 +16,6 @@ angular.module('erp2015App')
             Do some error handling here
              */
             console.log(err);
-            $state.go('404');
 		});
 
     $scope.addComment = function(post) {

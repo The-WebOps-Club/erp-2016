@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment) {
+  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user) {
+    console.log(user);
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
-    $scope.user = Auth.getCurrentUser();
+    $scope.user = user.data;
+    console.log($scope.user);
 
-    $http.get('/api/posts/profile/' + $scope.user.wall + '/1')
+    $http.get('/api/posts/' + $scope.user.wall + '/1')
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
@@ -17,7 +19,6 @@ angular.module('erp2015App')
     		Do some error handling here
     		 */
     		console.log(err);
-            $state.go('404');
     	});
 
     $scope.createPost = function() {

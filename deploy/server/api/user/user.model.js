@@ -47,7 +47,6 @@ var UserSchema = new Schema({
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
   alternateNumber: { type: String, default: '' },
-  // formApplied: [], //Is this even used?
   wall: {type: Schema.Types.ObjectId, ref: 'Wall'},
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],

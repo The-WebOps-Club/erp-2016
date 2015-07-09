@@ -99,7 +99,7 @@ exports.newsfeed = function(req, res) {
       required.push(walls[i]._id)
     };
     Post.paginate(
-      {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function (error, pageCount, paginatedResults, itemCount) {
+      {wall: {$in: required}}, { page: req.params.page, limit: POSTSPERPAGE} , function (error, paginatedResults, pageCount, itemCount) {
       if (error) {
         return handleError(res, error);
       }
@@ -107,6 +107,7 @@ exports.newsfeed = function(req, res) {
         res.status(404).send(paginatedResults);
       }
       else {
+        console.log(paginatedResults);
         var populated = []
         forEach(paginatedResults, function(post, index, arr) {
           var done = this.async();
@@ -213,6 +214,8 @@ exports.createPost = function(req, res) {
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }
     if(!wall) { return res.send(404); }
+    console.log(wall);
+    console.log(newPost);
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;
@@ -225,8 +228,9 @@ exports.createPost = function(req, res) {
     newPost.save(function (err, post) {
       if (err) { return handleError(res, err); }
       else{
+        console.log('notiying');
         notifier.notifyAll(post._id, function(){
-          res.json(201, post);
+          return res.json(201, post);
         });
       }
     });  
@@ -267,7 +271,7 @@ exports.addComment = function(req, res) {
       post.comments.push(comment._id)
       post.updatedOn = Date.now();
 
-      post.save(function (err) {
+      post.save(function (err)   {
         if (err) { return handleError(res, err); }
         Post.findById(req.body.postId)
         .populate('acknowledged', 'name')
@@ -275,7 +279,9 @@ exports.addComment = function(req, res) {
         .exec(function (err, post) {
           if (err) { return handleError(res, err); }
           if(!post) { return res.send(404); }
-          return res.json(200, post);
+          notifier.notifyAll(post._id, function(){
+            return res.json(201, post);
+          });
         });
       });
     });

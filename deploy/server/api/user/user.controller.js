@@ -81,7 +81,6 @@ exports.show = function (req, res, next) {
 
 exports.profilePic = function (req, res) {
   User.findById(req.params.id, function (err, user) {
-    console.log(user.profilePic);
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
