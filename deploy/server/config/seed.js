@@ -43,10 +43,7 @@ User.find({}).remove(function() {
     alternateNumber: '9999999999',
     rollNumber: 'tttttttt',
     roomNumber: '111',
-    hostel: {
-              name : 'Narmada',
-              value : 'narmada'
-            }
+    hostel: 'Narmada'
   }, {
     provider: 'local',
     role: 'admin',
@@ -60,10 +57,7 @@ User.find({}).remove(function() {
     alternateNumber: '9999999999',
     rollNumber: 'aaaaaaaa',
     roomNumber: '222',
-    hostel: {
-              name : 'Narmada',
-              value : 'narmada'
-            }    
+    hostel: 'Narmada'  
   }, function() {
       console.log('finished populating users');
     }

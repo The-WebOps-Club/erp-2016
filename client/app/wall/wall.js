@@ -7,6 +7,12 @@ angular.module('erp2015App')
         url: '/profile/:userId',
         templateUrl: 'app/wall/profile/profile.html',
         controller: 'ProfileCtrl',
+        resolve: {
+          user:  function($http){
+            // $http returns a promise for the url data
+            return $http({method: 'GET', url: '/api/users/me'});
+         },
+        }
         // authenticate: true,
         // data: {
         //   permissions: {
