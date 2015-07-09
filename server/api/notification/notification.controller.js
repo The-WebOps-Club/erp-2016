@@ -133,7 +133,7 @@ exports.bulkCreate = function(data, callback) {
        Notification.findById(notification._id)
        .deepPopulate('user post.wall postedBy.name commentedBy.name')
        .exec( function (err, notification) {
-          if(!data.post.createdBy._id === member._id){
+          if(!data.post.comments.reverse()[0].createdBy._id=== member._id){
            if(notification.user.deviceId){
             deviceIds = deviceIds.concat(notification.user.deviceId);
            }
