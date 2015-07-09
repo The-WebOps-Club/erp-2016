@@ -10,19 +10,6 @@ var gcm = require('node-gcm');
 var mailer=require('../../components/mailer');
 var getMembers = require('../wall/wall.controller').getMembers;
 
-// var sendNotif = function (text, regIds) {
-//   var message = new gcm.Message();
-//   message.addData('message',text);
-//   // var regIds = ['fV2UjeX-Hss:APA91bFadbsF_OfuoOgDEjMwAytPocrp9zoeYp8aFsUrMCp7Orl-gYwEkdeRmSkx6-uucnWROifcij9aUERvLTL4T840zAbDjymToLeCS6Ws5yytDeMpnVSyMgVwiCkU-99xF6Wvrjs2'];
-//   if(!(regIds instanceof Array))
-//     regIds=[regIds]
-//   var sender = new gcm.Sender('AIzaSyDSLwzK4C2Dqth55Z3SgXU77D7Xsex4VbI');
-
-//   sender.send(message, regIds, function (err, result) {
-//     if(err) console.error(err);
-//   });
-// };
-
 // Get list of notifications
 exports.index = function(req, res) {
   Notification.find(function (err, notifications) {
@@ -48,7 +35,6 @@ exports.create = function(req, res) {
     .deepPopulate('user post.wall  postedBy.name commentedBy.name post.comments.createdBy')
     .exec( function (err, notification) {
       if(notification.action=='post'){
-        console.log('post');
         var message=notification.postedBy.name +" posted on "+notification.post.wall.name;
         notifier(message, notification.user.deviceId);
         mailer('[sarang-erp-2016] '+ message,notification.post.info,notification.user.email,notification.post._id,false,function cb(err,info){
@@ -65,11 +51,9 @@ exports.create = function(req, res) {
         notifier(message, notification.user.deviceId);
         mailer(message+'[saarang-erp-2016]',myComment.info,notification.user.email,notification.post._id,true,function cb(err,info){
             if (err){
-              console.log('err'); 
               return res.json(501,err);
             }
             else{
-              console.log('successs');
               return res.json(201, notification);
             }
         });
@@ -101,14 +85,14 @@ exports.bulkCreate = function(data, callback) {
     if (data.action=='post'){
       Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id} , function (err, notification) {
        if(err) { return handleError(res, err); }
+       console.log(notification);
        Notification.findById(notification._id)
        .deepPopulate('user post.wall postedBy.name commentedBy.name')
        .exec( function (err, notification) {
-          if(!data.post.createdBy._id === member._id){
+          if(!(data.post.createdBy._id === member._id)){
            if(notification.user.deviceId){
             deviceIds = deviceIds.concat(notification.user.deviceId);
            }
-           console.log(notification.user.email);
            emails.push(notification.user.email);
           }
          done();
@@ -118,14 +102,14 @@ exports.bulkCreate = function(data, callback) {
     else{
       Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id} , function (err, notification) {
        if(err) { return handleError(res, err); }
+       console.log(notification);
        Notification.findById(notification._id)
        .deepPopulate('user post.wall postedBy.name commentedBy.name')
        .exec( function (err, notification) {
-          if(!data.post.comments.reverse()[0].createdBy._id=== member._id){
+          if(!(data.post.comments.reverse()[0].createdBy._id=== member._id)){
            if(notification.user.deviceId){
             deviceIds = deviceIds.concat(notification.user.deviceId);
            }
-           console.log(notification.user.email);
            emails.push(notification.user.email);
           }
          done();
@@ -137,29 +121,15 @@ exports.bulkCreate = function(data, callback) {
     if(data.post.comments.length === 0){
       var message=data.post.createdBy.name +" posted on "+data.post.wall.name;
       notifier(message, deviceIds);
-      console.log(emails);
-      mailer(message+'[saarang-erp-2016]',data.post.info, emails, data.post._id,false,function cb(err,info){
-        if (err){
-          callback(err, null);
-        }
-        else{
-          callback(null, info);
-        }
-      })
+      mailer('[Saarang ERP] ' + data.post.title, data.post.info, emails, data.post._id, false);
     } else {
       var myComment=data.post.comments.reverse()[0];
       var message=myComment.createdBy.name +" comment on a post by "+
-      data.post.postedBy.name+ " on the " + data.post.wall.name+" wall";
+      data.post.createdBy.name+ " on the " + data.post.wall.name+" wall";
       notifier(message, deviceIds);
-      mailer(message+'[saarang-erp-2016]',myComment.info,emails,data.post._id,true,function cb(err,info){
-        if(err){
-          callback(err, null);
-        }
-        else{
-          callback(null, info);
-        }
-      })
+      mailer('[Saarang ERP] ' + data.post.title ,myComment.info, emails, data.post._id, true);
     }
+    callback();
   });
 };
 

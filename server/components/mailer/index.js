@@ -6,7 +6,7 @@ var nodemailer = require('nodemailer');
 
 
 'use strict';
-module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) {
+module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
  var smtpTransport = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -20,7 +20,7 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) 
         from: 'amkvijay@gmail.com',
         subject: sub,
         text: text,
-        messageId: messageId+'-erp-saarang@saarang.org'
+        messageId: messageId+'-erp-saarang@saarang.org',
       };
       }
       if(initial){
@@ -34,13 +34,6 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial, cb) 
       };
       }
       smtpTransport.sendMail(mailOptions, function (err, info) {
-        if(err) {
-          console.log('Error Occurred');
-          console.log(err);
-          return cb(500);
-        } else {
-          console.log(info);
-          return cb(null,info);
-        }
+        
       });   
 };
