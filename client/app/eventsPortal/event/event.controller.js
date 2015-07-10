@@ -80,7 +80,9 @@ angular.module('erp2015App')
  			var promptName=prompt("Enter the name of the tab", "");
  			if(promptName!=null) {
 	 			if (/\S/.test(promptName)) {
-		 			var tabData={'name': promptName, 'info': '', 'tabNumber': $scope.eventTabs.length+1, 'eventID': $scope.event._id, '_id': String($scope.eventTabs.length+1)};
+	 				var num=Math.max.apply(Math, $scope.eventTabs.map(function(o){return o.tabNumber;}));
+	 				alert(num);
+		 			var tabData={'name': promptName, 'info': '', 'tabNumber': num+1, 'eventID': $scope.event._id, '_id': String($scope.eventTabs.length+1)};
 		      		$scope.eventTabs.push(tabData);
 				    $scope.markdown[$scope.eventTabs.length]="";
 					$mdToast.show($mdToast.simple().content('Add content in \''+promptName+'\' to save to server').hideDelay(5000));
@@ -103,25 +105,27 @@ angular.module('erp2015App')
     	}
 
     	$scope.removeTab = function() {
-    		var idx=-1;
-    		$scope.eventTabs=$scope.eventTabs.filter(function (tab) {
-    			if(tab._id==$scope.currentTab) {    				
-		    		var i=12;
-		    		$scope.eventTabs.forEach(function (tab) {
-		    			tab.tabNumber=i;
-		    			i++;
-		    		});
-	      			$.ajax({
-				        url: "/api/eventTabs/"+tab._id,
-				        type: "DELETE"
-				    });
-    				return false;
-    			}
-    			else
-    				return true;
-    		});
-    		if($scope.eventTabs.length==0)
-        		$(".leftButtons").hide();
+    		if(confirm("Delete this tab?")) {
+	    		var idx=-1;
+	    		$scope.eventTabs=$scope.eventTabs.filter(function (tab) {
+	    			if(tab._id==$scope.currentTab) {    				
+			    		var i=12;
+			    		$scope.eventTabs.forEach(function (tab) {
+			    			tab.tabNumber=i;
+			    			i++;
+			    		});
+		      			$.ajax({
+					        url: "/api/eventTabs/"+tab._id,
+					        type: "DELETE"
+					    });
+	    				return false;
+	    			}
+	    			else
+	    				return true;
+	    		});
+	    		if($scope.eventTabs.length==0)
+	        		$(".leftButtons").hide();
+	        }
 		};
 
 		$scope.xmark = function (b) {
@@ -184,6 +188,28 @@ angular.module('erp2015App')
 		        }
 		    }
 		});
+
+		$scope.reorderTabs = function(ev) {
+		    $mdDialog.show({
+		      controller: reorderController,
+		      templateUrl: 'dialog2.tmpl.html',
+		      parent: angular.element(document.body),
+		      targetEvent: ev,
+		      resolve: {
+				eventTabs: function () {
+					return $scope.eventTabs;
+		      	},
+		      	EventsPortalService: function () {
+		      		return EventsPortalService;
+		      	}
+		      }
+		    })
+		    .then(function(answer) {
+		      $scope.alert = 'You said the information was "' + answer + '".';
+		    }, function() {
+		      $scope.alert = 'You cancelled the dialog.';
+		    });
+		}
  	});
 });
 
@@ -249,4 +275,61 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
       }
 	  $mdDialog.cancel();
     };
+}
+
+
+function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $mdToast) {
+	$scope.xeventTabs = eventTabs;
+    $scope.origNums=[];
+    $scope.currentNums=[];
+    $scope.flag=0;
+
+    $scope.xeventTabs.forEach(function (tab, index) {
+    	$scope.origNums[index]=tab.tabNumber;
+    	$scope.currentNums[index]=tab.tabNumber;
+    });
+
+	$scope.clog = function (s) {
+		var current=$scope.xeventTabs[s];
+		$scope.origNums.forEach(function (num, index) {
+			if(num==$scope.currentNums[s] && s!=index) {
+				var other=$scope.xeventTabs[index];
+				$scope.currentNums[index]=$scope.origNums[s];
+				var temp=$scope.origNums[s];
+				$scope.origNums[s]=$scope.origNums[index];
+				$scope.origNums[index]=temp;
+				temp=current.tabNumber;
+				current.tabNumber=other.tabNumber;
+				other.tabNumber=temp;
+				$scope.xeventTabs.sort(function (a, b) {
+					if(a.tabNumber<b.tabNumber)
+						return -1;
+					else if(a.tabNumber>b.tabNumber)
+						return 1;
+					else
+						return 0;
+				});
+			}
+		});
+	}
+
+	$scope.hide = function() {
+		$mdDialog.hide();
+	};
+
+	$scope.cancel = function() {
+		$mdDialog.cancel();
+	};
+
+	$scope.doReorder = function(answer) {
+		$scope.xeventTabs.forEach(function (tab) {
+			$.ajax({
+		        url: "/api/eventTabs/"+tab._id,
+		        type: "PATCH",
+		        data: {'tabNumber': tab.tabNumber}
+		    });
+		});
+		$mdDialog.cancel();
+		$mdToast.show($mdToast.simple().content('Tab order changed successfully!').hideDelay(5000));
+	};
 }
