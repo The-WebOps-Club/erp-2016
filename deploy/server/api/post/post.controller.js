@@ -99,7 +99,7 @@ exports.newsfeed = function(req, res) {
       required.push(walls[i]._id)
     };
     Post.paginate(
-      {wall: {$in: required}}, { page: req.params.page, limit: POSTSPERPAGE} , function (error, paginatedResults, pageCount, itemCount) {
+      {wall: {$in: required}}, req.params.page, POSTSPERPAGE,  function (error, pageCount,  paginatedResults, itemCount) {
       if (error) {
         return handleError(res, error);
       }
