@@ -280,7 +280,7 @@ exports.addComment = function(req, res) {
           if (err) { return handleError(res, err); }
           if(!post) { return res.send(404); }
           notifier.notifyAll(post._id, function(){
-            return res.json(201, post);
+            return res.json(201, comment);
           });
         });
       });

@@ -14,7 +14,16 @@ var getMembers = require('../wall/wall.controller').getMembers;
 exports.index = function(req, res) {
   Notification.find({user: req.user._id}, function (err, notifications) {
     if(err) { return handleError(res, err); }
-    return res.json(200, notifications);
+    var populated = [];
+    forEach(notifications, function(notification, index, arr) {
+        var done = this.async();
+        notification.deepPopulate('post.wall user postedBy commentedBy', function (err, _notification) {
+          populated.push(_notification);
+          done();
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
   });
 };
 
