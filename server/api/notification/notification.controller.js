@@ -12,7 +12,7 @@ var getMembers = require('../wall/wall.controller').getMembers;
 
 // Get list of notifications
 exports.index = function(req, res) {
-  Notification.find(function (err, notifications) {
+  Notification.find({user: req.user._id}, function (err, notifications) {
     if(err) { return handleError(res, err); }
     return res.json(200, notifications);
   });
