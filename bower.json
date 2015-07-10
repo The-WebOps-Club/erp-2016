@@ -27,7 +27,8 @@
     "angular-ui-bootstrap-bower": "~0.13.0",
     "angular-tags": "~0.2.10",
     "showdown": "*",
-    "ngImgCrop": "~0.3.2"
+    "ngImgCrop": "~0.3.2",
+    "angular-elastic": "*"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

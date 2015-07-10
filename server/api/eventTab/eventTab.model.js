@@ -6,7 +6,7 @@ var mongoose = require('mongoose'),
 var EventTabSchema = new Schema({
   name: String,
   info: String,
-  eventID: Schema.Types.ObjectId,
+  eventID: { type: Schema.Types.ObjectId, ref: "Event" },
   tabNumber: Number
 });
 
