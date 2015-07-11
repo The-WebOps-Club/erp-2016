@@ -17,7 +17,7 @@ var NotificationSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   commentedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  active: Boolean
+  active: {type: Boolean, default: true}
 });
 
 NotificationSchema.plugin(deepPopulate, {
