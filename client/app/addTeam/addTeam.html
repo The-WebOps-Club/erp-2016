@@ -1,6 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="jumbotron col-sm-offset-2 col-sm-4">
+</br></br></br>
+
+<div class="jumbotron col-sm-offset-4 col-sm-4">
 	<div class="row">
 		<div class="col-sm-12">
 			<h2 class="text-center">DEPARTMENT SIGN UP</h2>
@@ -8,7 +10,51 @@
 		<div class="col-sm-12">
 			<form class="form" name="deptForm" ng-submit="validate(deptForm)" novalidate>
 
-				<div class="form-group" ng-class="{'has-success':deptForm.user.$valid && submitted, 'has-error':depForm.user.$invalid && submitted }">
+				<md-content class="md-padding">
+                  <md-autocomplete
+
+                    md-no-cache="ctrl.noCache"
+                    md-selected-item="ctrl.selectedItem"
+                    md-search-text-change="searchName(searchText1)"
+                    md-search-text="searchText1"
+                    md-selected-item-change="ctrl.selectedItemChange(item)"
+                    md-items="item in names"
+                    md-item-text="item.name"
+                    md-min-length="0"
+                    placeholder="UserName">
+                    <md-item-template>
+                      <span md-highlight-text="ctrl.searchText1" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                       No matches found for "{{inputName}}".
+                    </md-not-found>
+                  </md-autocomplete>                  
+                </md-content>
+
+                <br/> <br/>
+
+                <md-content class="md-padding">
+                  <md-autocomplete
+                    md-no-cache="ctrl.noCache"
+                    md-selected-item="ctrl.selectedItem"
+                    md-search-text-change="searchDept(searchText2)"
+                    md-search-text="searchText2"
+                    md-selected-item-change="ctrl.selectedItemChange(item)"
+                    md-items="item in depts"
+                    md-item-text="item.name"
+                    md-min-length="0"
+                    placeholder="Department">
+                    <md-item-template>
+                      <span md-highlight-text="ctrl.searchText2" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                       No matches found for "{{inputDept}}".
+                    </md-not-found>
+                  </md-autocomplete>                  
+                </md-content>
+
+
+				<!-- <div class="form-group" ng-class="{'has-success':deptForm.user.$valid && submitted, 'has-error':depForm.user.$invalid && submitted }">
 
 				 <label> USER NAME </label>
 
@@ -17,8 +63,8 @@
 				 	Name is required
 				 </span>
 				 </div>
-
-                <div class="form-group" ng-class="{'has-success':deptForm.dept.$valid && submitted, 'has-error':deptForm.dept.$invalid && submitted }">
+ -->
+                <!-- <div class="form-group" ng-class="{'has-success':deptForm.dept.$valid && submitted, 'has-error':deptForm.dept.$invalid && submitted }">
 
 				 <label> DEPARTMENT </label>
 
@@ -32,7 +78,7 @@
 				 <button type="submit">
 				 SUBMIT
 				 </button>
-				 </div>
+				 </div> -->
 
 			</form>
 		</div>
