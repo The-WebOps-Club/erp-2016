@@ -5,6 +5,10 @@ angular.module('erp2015App')
     $scope.submitted = false;
     $scope.myImage='';
     $scope.myCroppedImage='';
+    var imageid='';
+    var imagename='';
+
+    var uploadfile='';
 
      var handleFileSelect=function(evt) {
         var myfile=evt.currentTarget.files[0];
@@ -13,6 +17,7 @@ angular.module('erp2015App')
           $scope.$apply(function($scope){
             $scope.myImage=evt.target.result;
           });
+          uploadfile=myfile;
         };
         reader.readAsDataURL(myfile);
       };
@@ -29,29 +34,83 @@ angular.module('erp2015App')
       // $http.post('/api/uploads', {file: $scope.myCroppedImage});
       if(form.$valid) {
           $upload.upload({
-                        url: 'api/uploads',
-                        file: $scope.myCroppedImage
+                        url: 'api/uploads/',
+                        file: uploadfile
                     }).success(function (data, status, headers, config){
                       console.log('done');
+                      console.log(uploadfile.name);
+                      console.log(data.fileId);
+                      imageid=data.fileId;
+                      imagename=uploadfile.name;
+                      console.log(imageid);
+                      console.log(imagename);
+                          EventsPortalService.createEventList({
+                            title: $scope.eventList.title,
+                            info: $scope.eventList.info,
+                            imageid: imageid,
+                            imagename: imagename
+                          })
+                          .then(function (data) {
+                              $state.go('eventList');
+                          })
+                          .catch(function (err) {
+                            err = err.data;
+                            $scope.errors = {};
+
+                            // Update validity of form fields that match the mongoose errors
+                            angular.forEach(err.errors, function (error, field) {
+                                form[field].$setValidity('mongoose', false);
+                                $scope.errors[field] = error.message;
+                            });
+                          });
+                    }).error(function (data, status, headers, config){
+                      console.log('done');
+                      console.log(uploadfile.name);
+                      console.log(data.fileId);
+                      imageid=data.fileId;
+                      imagename=uploadfile.name;
+                      console.log(imageid);
+                      console.log(imagename);
+                          EventsPortalService.createEventList({
+                            title: $scope.eventList.title,
+                            info: $scope.eventList.info,
+                            imageid: imageid,
+                            imagename: imagename
+                          })
+                          .then(function (data) {
+                              $state.go('eventList');
+                          })
+                          .catch(function (err) {
+                            err = err.data;
+                            $scope.errors = {};
+
+                            // Update validity of form fields that match the mongoose errors
+                            angular.forEach(err.errors, function (error, field) {
+                                form[field].$setValidity('mongoose', false);
+                                $scope.errors[field] = error.message;
+                            });
+                          });
                     });
 
-      		EventsPortalService.createEventList({
-        		title: $scope.eventList.title,
-        		info: $scope.eventList.info
-      		})
-      		.then(function (data) {
-            	$state.go('eventList');
-      		})
-      		.catch(function (err) {
-        		err = err.data;
-        		$scope.errors = {};
+      		// EventsPortalService.createEventList({
+        // 		title: $scope.eventList.title,
+        // 		info: $scope.eventList.info,
+        //     imageid: imageid,
+        //     imagename: imagename
+      		// })
+      		// .then(function (data) {
+        //     	$state.go('eventList');
+      		// })
+      		// .catch(function (err) {
+        // 		err = err.data;
+        // 		$scope.errors = {};
 
-        		// Update validity of form fields that match the mongoose errors
-        		angular.forEach(err.errors, function (error, field) {
-          			form[field].$setValidity('mongoose', false);
-          			$scope.errors[field] = error.message;
-        		});
-      		});
+        // 		// Update validity of form fields that match the mongoose errors
+        // 		angular.forEach(err.errors, function (error, field) {
+        //   			form[field].$setValidity('mongoose', false);
+        //   			$scope.errors[field] = error.message;
+        // 		});
+      		// });
     	}
   	};
 });

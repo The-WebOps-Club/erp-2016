@@ -12,7 +12,9 @@
       <md-content>
         <md-list ng-repeat="eventList in allEventLists">
           <md-list-item>
-            <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon>
+            <!-- <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon> -->
+            <!-- <img ng-src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"></ing> -->
+            <img ng-src="api/uploads/{{eventList.imageid}}/{{eventList.imagename}}" width=100 height=100></ing>
             <div layout="row"  layout-fill layout-padding>
               <div flex="33">
                   <div class="md-list-item-text">
