@@ -11,10 +11,12 @@ angular.module('erp2015App', [
   'smart-table',
   'permission',
   'ngFacebook',
+  'ngMaterial',
+  'ngMdIcons'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/coordPortal/dashboard');
+      .otherwise('/');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');

@@ -3,6 +3,10 @@
 var _ = require('lodash');
 var SubDepartment = require('./subDepartment.model');
 var Department = require('../department/department.model');
+<<<<<<< HEAD
+=======
+var Wall = require('../wall/wall.model');
+>>>>>>> master
 
 
 // Get list of subDepartments
@@ -24,6 +28,7 @@ exports.show = function(req, res) {
 
 // Creates a new subDepartment in the DB.
 exports.create = function(req, res) {
+<<<<<<< HEAD
   SubDepartment.create(req.body, function(err, subDepartment) {
     if(err) { return handleError(res, err); }
     Department.findById(req.body.department, function (err, department) {
@@ -36,6 +41,26 @@ exports.create = function(req, res) {
           return res.json(201, subDepartment);
         });
       }
+=======
+  Department.findById(req.body.department, function (err, department) {
+    if(err) { return handleError(res, err); }
+    if(!department) { return res.status(404).json({message: "Department does not exist"}); }
+    var newSubDepartment = new SubDepartment(req.body);
+    if(department.subDepartments.indexOf(newSubDepartment._id) == -1) {
+      department.subDepartments.push(newSubDepartment._id);
+      department.save(function (err) {
+        if(err) { return handleError(res, err); }
+      });
+    }
+    var newWall = new Wall({ name: req.body.name, parentId: newSubDepartment._id});
+    newWall.save(function (err, wall) {
+      if (err) { console.log(err); return validationError(res, err); }
+      newSubDepartment.wall = wall._id;
+      newSubDepartment.save(function (err, subDepartment) {
+        if (err) { console.log(err); return validationError(res, err); }
+        res.status(201).json(subDepartment);
+      });
+>>>>>>> master
     });
   });
 };

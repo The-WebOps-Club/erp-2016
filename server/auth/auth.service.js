@@ -28,10 +28,9 @@ function isAuthenticated() {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
-
         user.lastSeen = Date.now();
         user.save(function(err) {
-          if(err) return res.send(err);
+          if(err) return next(err);
         });
         req.user = user;
         next();
@@ -57,15 +56,41 @@ function hasRole(roleRequired) {
     });
 }
 
+function belongsTo() {
+
+  return compose()
+    .use(isAuthenticated())
+    .use(function meetsRequirements(req, res, next) {
+      var memberOf = req.user.department.concat(req.user.subDepartment)
+      // pseudo:
+      // if user is core
+      //    user is in the dept
+      //    user is in the subDept
+      if (config.userRoles.indexOf(req.user.role) >= config.userRoles.indexOf('core')) {
+        next();
+      }
+      else if (memberOf.toString().indexOf(req.params.id) > -1){
+        next();
+      }
+      else {
+        res.send(403);
+      }
+    });
+
+}
 /**
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*2 });
+}
+
+function signMobileToken(id) {
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*365 });
 }
 
 /**
- * Set token cookie directly for oAuth strategies
+ * Set token cookie directly for oAuth strategiesntity
  */
 function setTokenCookie(req, res) {
   if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
@@ -77,4 +102,6 @@ function setTokenCookie(req, res) {
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
+exports.signMobileToken = signMobileToken;
 exports.setTokenCookie = setTokenCookie;
+exports.belongsTo = belongsTo;

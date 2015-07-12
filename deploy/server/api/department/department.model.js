@@ -8,7 +8,11 @@ var DepartmentSchema = new Schema({
   info: String,
   calendar: String,
   folder: String,
+<<<<<<< HEAD
 
+=======
+  wall: { type: Schema.Types.ObjectId, ref: 'Wall' },
+>>>>>>> master
   subDepartments: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
   cores: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   superCoords: [{ type: Schema.Types.ObjectId, ref: 'User' }],

@@ -40,7 +40,14 @@ User.find({}).remove(function() {
     summerLocation: 'testSummer',
     cgpa: '5',
     phoneNumber: '5555555555',
+<<<<<<< HEAD
     rollNumber: 'tttttttt'
+=======
+    alternateNumber: '9999999999',
+    rollNumber: 'tttttttt',
+    roomNumber: '111',
+    hostel: 'Narmada'
+>>>>>>> master
   }, {
     provider: 'local',
     role: 'admin',
@@ -51,7 +58,14 @@ User.find({}).remove(function() {
     summerLocation: 'adminSummer',
     cgpa: '10',
     phoneNumber: '9999999999',
+<<<<<<< HEAD
     rollNumber: 'aaaaaaaa'
+=======
+    alternateNumber: '9999999999',
+    rollNumber: 'aaaaaaaa',
+    roomNumber: '222',
+    hostel: 'Narmada'  
+>>>>>>> master
   }, function() {
       console.log('finished populating users');
     }

@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 'use strict';
 
 var _ = require('lodash');
+=======
+ 'use strict';
+
+var _ = require('lodash');
+var Wall = require('../wall/wall.model');
+>>>>>>> master
 var Department = require('./department.model');
 
 // Get list of departments
@@ -24,9 +31,21 @@ exports.show = function(req, res) {
 
 // Creates a new department in the DB.
 exports.create = function(req, res) {
+<<<<<<< HEAD
   Department.create(req.body, function(err, department) {
     if(err) { return handleError(res, err); }
     return res.json(201, department);
+=======
+  var newDepartment = new Department(req.body);
+  var newWall = new Wall({ name: req.body.name, parentId: newDepartment._id});
+  newWall.save(function (err, wall) {
+    if (err) { console.log(err); return validationError(res, err); }
+    newDepartment.wall = wall._id;
+    newDepartment.save(function(err, department) {
+      if(err) { return handleError(res, err); }
+      return res.json(201, department);
+    });
+>>>>>>> master
   });
 };
 

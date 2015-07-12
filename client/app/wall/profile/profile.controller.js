@@ -1,42 +1,33 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment) {
+  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user) {
+    console.log(user);
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
+    $scope.user = user.data;
+    console.log($scope.user);
 
-    $http.get('/api/posts/profile/' + $stateParams.userId)
+    $http.get('/api/posts/' + $scope.user.wall + '/1')
     	.success(function(posts) {
     		$scope.posts = posts;
             socket.syncUpdates('post', $scope.posts);
-            $scope.posts.sort(function(a, b) {
-                a = new Date(a.updatedOn);
-                b = new Date(b.updatedOn);
-                return a>b ? -1 : a<b ? 1 : 0;
-            });
     	})
     	.error(function(err) {
     		/*
     		Do some error handling here
     		 */
     		console.log(err);
-            $state.go('404');
     	});
 
     $scope.createPost = function() {
-        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $stateParams)
+        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
                 Check this shit...sorting is fucked up
                  */
-            $scope.posts.sort(function(a, b) {
-                a = new Date(a.updatedOn);
-                b = new Date(b.updatedOn);
-                return a<b ? -1 : a>b ? 1 : 0;
-            });
-
                 $scope.newPost = '';
                 $scope.newPostTitle = '';
             })

@@ -10,18 +10,10 @@ var gfs = new Grid(mongoose.connection.db);
 
 exports.create = function (req, res) {
   var part = req.files.file;
-  if(part.mimetype != "application/zip" && part.mimetype != "application/octet-stream" && part.mimetype != "application/x-zip-compressed" && part.mimetype != "application/x-zip"){
-    console.log(part.mimetype);
-    res.send({
-      message: 'Please upload zip files only',
-      info: part.mimetype
-    })
-  }
-  else{
     var writeStream = gfs.createWriteStream({
       filename: part.name,
       mode: 'w',
-      content_type:part.mimetype
+      content_type:'image/jpeg'
     });
 
 
@@ -35,7 +27,7 @@ exports.create = function (req, res) {
     writeStream.write(part.data);
 
     writeStream.end();
-  }
+  // }
 }
 
 exports.serve = function(req, res) {
@@ -61,7 +53,6 @@ exports.serve = function(req, res) {
       });
  
     readstream.on('error', function (err) {
-      console.log('An error occurred!', err);
       throw err;
     });
   });

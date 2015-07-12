@@ -12,6 +12,7 @@ angular.module('erp2015App')
     $scope.isAdmin = Auth.isAdmin;
     $scope.isCore = Auth.isCore;
     $scope.getCurrentUser = Auth.getCurrentUser;
+    $scope.profilePic = Auth.getCurrentUser().profilePic;
     $scope.logout = function() {
       Auth.logout();
       // $location.path('/login');

@@ -9,6 +9,10 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/groups', require('./api/group'));
+  app.use('/api/walls', require('./api/wall'));
+  app.use('/api/notifications', require('./api/notification'));
+  app.use('/api/comments', require('./api/comment'));
   app.use('/api/uploads', require('./api/upload'));
   app.use('/api/forms', require('./api/form'));
   app.use('/api/coordForms', require('./api/coordForm'));

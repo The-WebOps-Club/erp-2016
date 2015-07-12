@@ -44,7 +44,11 @@ function isAuthenticated() {
 }
 
 /**
+<<<<<<< HEAD
  * Checks if the user role meets the minimum requirements of the route
+=======
+ * Checks if the user role meets the requirements of the destination
+>>>>>>> master
  */
 
 function hasRoleInDepartment() {

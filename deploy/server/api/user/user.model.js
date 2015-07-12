@@ -4,11 +4,44 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
+<<<<<<< HEAD
+=======
+var hostels = ['Alakananda',
+               'Bhadra',
+               'Brahmaputra',
+               'Cauvery',
+               'Ganga',
+               'Godavari',
+               'Jamuna',
+               'Krishna',
+               'Mahanadhi',
+               'Mandakini',
+               'Narmada',
+               'Pampa',
+               'Saraswathi',
+               'Sabarmati',
+               'Sarayu',
+               'Sharavati',
+               'Sindhu',
+               'Sarayu Extension',
+               'Tamraparani',
+               'Tapti',
+               'Tunga',
+               'Day Scholar'
+               ];
+>>>>>>> master
 
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   nick: String,
+<<<<<<< HEAD
   rollNumber: { type: String, default: ' ' },
+=======
+  profilePic: String,
+  rollNumber: { type: String, default: '' },
+  hostel: {type: String, enum: hostels},
+  roomNumber: { type: String, default: '' },
+>>>>>>> master
   email: { type: String, lowercase: true, default: '' },
   role: {
     type: String,
@@ -18,6 +51,7 @@ var UserSchema = new Schema({
   city: { type: String, default: '' },
   summerLocation: { type: String, default: '' },
   cgpa: { type: Number, default: '' },
+<<<<<<< HEAD
   lastSeen: {
     type: Date
   },
@@ -28,6 +62,23 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+=======
+  lastSeen: { type: Date },
+  phoneNumber: { type: String, default: '' },
+  alternateNumber: { type: String, default: '' },
+  wall: {type: Schema.Types.ObjectId, ref: 'Wall'},
+  department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
+  subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
+  groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
+  deviceId: [String], //Mobile ID for GCM push notifs
+  hashedPassword: String,
+  provider: String,
+  salt: String,
+  updatedOn: { type: Date },
+  createdOn: { type: Date },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
+>>>>>>> master
   facebook: {},
   google: {},
   github: {}
@@ -87,6 +138,27 @@ UserSchema
     return city.length;
   }, 'City cannot be blank');
 
+<<<<<<< HEAD
+=======
+// Validate hostel
+// WARNING - validating only the value name can be corrupted. There is a bug
+// UserSchema
+//   .path('hostel')
+//   .validate(function(hostel) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (allHostels.indexOf(hostel.value) !== -1);
+//   }, 'This is not a valid hostel');
+
+// Validate empty roomNumber
+// UserSchema
+//   .path('roomNumber')
+//   .validate(function(roomNumber) {
+//     var regExpRoom = /\d+/;
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (regExpRoom.test(roomNumber));
+//   }, 'Room Number cannot be blank');
+
+>>>>>>> master
 // Validate empty summerLocation
 UserSchema
   .path('summerLocation')
@@ -113,6 +185,18 @@ UserSchema
     return (regExpPhone.test(phoneNumber));
   }, 'Phone Number must have 10 digits');
 
+<<<<<<< HEAD
+=======
+// //Validate Alternate Phone Number
+// UserSchema
+//   .path('alternateNumber')
+//   .validate(function(alternateNumber) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     var regExpPhone = /^\d{10}$/; 
+//     return (regExpPhone.test(alternateNumber));
+//   }, 'Phone Number must have 10 digits');
+
+>>>>>>> master
 // Validate rollNumber
 UserSchema
   .path('rollNumber')
