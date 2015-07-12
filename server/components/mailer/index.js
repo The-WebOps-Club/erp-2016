@@ -11,7 +11,7 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
       if(!(initial)){
       	var mailOptions = {
         to: emailTo,
-        from: 'amkvijay@gmail.com',
+        from: 'erp@saarang.org',
         subject: sub,
         text: text,
         messageId: messageId+'-erp-saarang@saarang.org',
@@ -20,7 +20,7 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
       if(initial){
       	var mailOptions = {
         to: emailTo,
-        from: 'amkvijay@gmail.com',
+        from: 'erp@saarang.com',
         subject: sub,
         text: text,
         messageId: messageId+'-erp-saarang@saarang.org',
