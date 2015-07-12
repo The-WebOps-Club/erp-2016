@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-'use strict';
-
-var _ = require('lodash');
-=======
  'use strict';
 
 var _ = require('lodash');
 var Wall = require('../wall/wall.model');
->>>>>>> master
 var Department = require('./department.model');
 
 // Get list of departments
@@ -23,19 +17,14 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   Department.findById(req.params.id, function (err, department) {
     if(err) { return handleError(res, err); }
-    if(!department) { return res.send(404); }
-    return res.json(department);
+    if(!department) { return res.sendStatus(404); }
+    return res.json(200, department);
   })
   .populate('cores coords superCoords qms subDepartments');
 };
 
 // Creates a new department in the DB.
 exports.create = function(req, res) {
-<<<<<<< HEAD
-  Department.create(req.body, function(err, department) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, department);
-=======
   var newDepartment = new Department(req.body);
   var newWall = new Wall({ name: req.body.name, parentId: newDepartment._id});
   newWall.save(function (err, wall) {
@@ -45,7 +34,6 @@ exports.create = function(req, res) {
       if(err) { return handleError(res, err); }
       return res.json(201, department);
     });
->>>>>>> master
   });
 };
 
@@ -54,7 +42,7 @@ exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Department.findById(req.params.id, function (err, department) {
     if (err) { return handleError(res, err); }
-    if(!department) { return res.send(404); }
+    if(!department) { return res.sendStatus(404); }
     var updated = _.merge(department, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -67,10 +55,10 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
   Department.findById(req.params.id, function (err, department) {
     if(err) { return handleError(res, err); }
-    if(!department) { return res.send(404); }
+    if(!department) { return res.sendStatus(404); }
     department.remove(function(err) {
       if(err) { return handleError(res, err); }
-      return res.send(204);
+      return res.sendStatus(204);
     });
   });
 };

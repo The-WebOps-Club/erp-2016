@@ -32,6 +32,9 @@ var all = {
   // List of user roles
   userRoles: ['user', 'coord', 'superCoord', 'core', 'admin'],
 
+  // Email Account details
+  defaultEmail: 'Saarang <noreply@saarang.org>',
+
   // MongoDB connection options
   mongo: {
     options: {

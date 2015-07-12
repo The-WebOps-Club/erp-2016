@@ -10,6 +10,5 @@ module.exports = function sendNotif(messageText, regIds) {
 
   sender.send(message, regIds, function (err, result) {
     if(err) console.error(err);
-    else    console.log(result);
   });
 };

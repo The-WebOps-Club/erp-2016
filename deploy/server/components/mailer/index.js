@@ -3,21 +3,16 @@
   for sending mails
 */
 var nodemailer = require('nodemailer');
-
+var directTransport = require('nodemailer-direct-transport')
 
 'use strict';
 module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
- var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: 'amkvijay@gmail.com',
-          pass: 'srimuruga'
-        }
-      });
+  
+  var transporter = nodemailer.createTransport(directTransport());
       if(!(initial)){
       	var mailOptions = {
         to: emailTo,
-        from: 'amkvijay@gmail.com',
+        from: 'erp@saarang.org',
         subject: sub,
         text: text,
         messageId: messageId+'-erp-saarang@saarang.org',
@@ -26,14 +21,14 @@ module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
       if(initial){
       	var mailOptions = {
         to: emailTo,
-        from: 'amkvijay@gmail.com',
+        from: 'erp@saarang.com',
         subject: sub,
         text: text,
         messageId: messageId+'-erp-saarang@saarang.org',
         inReplyTo: messageId+'-erp-saarang@saarang.org'
       };
       }
-      smtpTransport.sendMail(mailOptions, function (err, info) {
+      transporter.sendMail(mailOptions, function (err, info) {
         
       });   
 };

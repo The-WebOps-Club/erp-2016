@@ -18,13 +18,10 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-<<<<<<< HEAD
-=======
   require('../api/group/group.socket').register(socket);
   require('../api/wall/wall.socket').register(socket);
   require('../api/notification/notification.socket').register(socket);
   require('../api/comment/comment.socket').register(socket);
->>>>>>> master
   require('../api/subDepartment/subDepartment.socket').register(socket);
   require('../api/post/post.socket').register(socket);
   require('../api/department/department.socket').register(socket);

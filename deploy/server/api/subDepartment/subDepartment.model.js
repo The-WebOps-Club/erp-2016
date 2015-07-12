@@ -1,17 +1,14 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var SubDepartmentSchema = new Schema({
   name: String,
   info: String,
   calendar: String,
   folder: String,
-<<<<<<< HEAD
-=======
   wall: { type: Schema.Types.ObjectId, ref: 'Wall' },
->>>>>>> master
   department: { type: Schema.Types.ObjectId, ref: 'Department' },
   cores: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   superCoords: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -36,10 +33,6 @@ var SubDepartmentSchema = new Schema({
 SubDepartmentSchema
   .path('name')
   .validate(function(name) {
-<<<<<<< HEAD
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-=======
->>>>>>> master
     return name.length;
   }, 'Sub-Department name cannot be blank');
 

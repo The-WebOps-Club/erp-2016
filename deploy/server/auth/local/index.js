@@ -17,8 +17,6 @@ router.post('/', function(req, res, next) {
   })(req, res, next)
 });
 
-<<<<<<< HEAD
-=======
 router.post('/mobile', function(req, res, next) {
 	passport.authenticate('local', function (err, user, info) {
 		var error = err || info;
@@ -39,5 +37,4 @@ router.post('/mobile', function(req, res, next) {
 	})(req, res, next)
 });
 
->>>>>>> master
 module.exports = router;

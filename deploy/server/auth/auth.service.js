@@ -28,16 +28,9 @@ function isAuthenticated() {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
-<<<<<<< HEAD
-
-        user.lastSeen = Date.now();
-        user.save(function(err) {
-          if(err) return res.send(err);
-=======
         user.lastSeen = Date.now();
         user.save(function(err) {
           if(err) return next(err);
->>>>>>> master
         });
         req.user = user;
         next();
@@ -63,8 +56,6 @@ function hasRole(roleRequired) {
     });
 }
 
-<<<<<<< HEAD
-=======
 function belongsTo() {
 
   return compose()
@@ -87,18 +78,10 @@ function belongsTo() {
     });
 
 }
->>>>>>> master
 /**
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-<<<<<<< HEAD
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
-}
-
-/**
- * Set token cookie directly for oAuth strategies
-=======
   return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*2 });
 }
 
@@ -108,7 +91,6 @@ function signMobileToken(id) {
 
 /**
  * Set token cookie directly for oAuth strategiesntity
->>>>>>> master
  */
 function setTokenCookie(req, res) {
   if (!req.user) return res.json(404, { message: 'Something went wrong, please try again.'});
@@ -120,10 +102,6 @@ function setTokenCookie(req, res) {
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
-<<<<<<< HEAD
-exports.setTokenCookie = setTokenCookie;
-=======
 exports.signMobileToken = signMobileToken;
 exports.setTokenCookie = setTokenCookie;
 exports.belongsTo = belongsTo;
->>>>>>> master

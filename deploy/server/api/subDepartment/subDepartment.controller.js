@@ -3,10 +3,7 @@
 var _ = require('lodash');
 var SubDepartment = require('./subDepartment.model');
 var Department = require('../department/department.model');
-<<<<<<< HEAD
-=======
 var Wall = require('../wall/wall.model');
->>>>>>> master
 
 
 // Get list of subDepartments
@@ -21,27 +18,13 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   SubDepartment.findById(req.params.id, function (err, subDepartment) {
     if(err) { return handleError(res, err); }
-    if(!subDepartment) { return res.send(404); }
+    if(!subDepartment) { return res.sendStatus(404); }
     return res.json(subDepartment);
   });
 };
 
 // Creates a new subDepartment in the DB.
 exports.create = function(req, res) {
-<<<<<<< HEAD
-  SubDepartment.create(req.body, function(err, subDepartment) {
-    if(err) { return handleError(res, err); }
-    Department.findById(req.body.department, function (err, department) {
-      if(err) { return handleError(res, err); }
-      if(!department) { return res.send(404); }
-      if(department.subDepartments.indexOf(subDepartment._id) == -1) {
-        department.subDepartments.push(subDepartment._id);
-        department.save(function (err) {
-          if(err) { return handleError(res, err); }
-          return res.json(201, subDepartment);
-        });
-      }
-=======
   Department.findById(req.body.department, function (err, department) {
     if(err) { return handleError(res, err); }
     if(!department) { return res.status(404).json({message: "Department does not exist"}); }
@@ -60,7 +43,6 @@ exports.create = function(req, res) {
         if (err) { console.log(err); return validationError(res, err); }
         res.status(201).json(subDepartment);
       });
->>>>>>> master
     });
   });
 };
@@ -70,7 +52,7 @@ exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   SubDepartment.findById(req.params.id, function (err, subDepartment) {
     if (err) { return handleError(res, err); }
-    if(!subDepartment) { return res.send(404); }
+    if(!subDepartment) { return res.sendStatus(404); }
     var updated = _.merge(subDepartment, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -83,10 +65,10 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
   SubDepartment.findById(req.params.id, function (err, subDepartment) {
     if(err) { return handleError(res, err); }
-    if(!subDepartment) { return res.send(404); }
+    if(!subDepartment) { return res.sendStatus(404); }
     subDepartment.remove(function(err) {
       if(err) { return handleError(res, err); }
-      return res.send(204);
+      return res.sendStatus(204);
     });
   });
 };

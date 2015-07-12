@@ -4,8 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-<<<<<<< HEAD
-=======
 var hostels = ['Alakananda',
                'Bhadra',
                'Brahmaputra',
@@ -29,19 +27,14 @@ var hostels = ['Alakananda',
                'Tunga',
                'Day Scholar'
                ];
->>>>>>> master
 
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   nick: String,
-<<<<<<< HEAD
-  rollNumber: { type: String, default: ' ' },
-=======
   profilePic: String,
   rollNumber: { type: String, default: '' },
   hostel: {type: String, enum: hostels},
   roomNumber: { type: String, default: '' },
->>>>>>> master
   email: { type: String, lowercase: true, default: '' },
   role: {
     type: String,
@@ -51,18 +44,6 @@ var UserSchema = new Schema({
   city: { type: String, default: '' },
   summerLocation: { type: String, default: '' },
   cgpa: { type: Number, default: '' },
-<<<<<<< HEAD
-  lastSeen: {
-    type: Date
-  },
-  phoneNumber: { type: String, default: '' },
-  formApplied: [],
-  department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
-  subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
-  hashedPassword: String,
-  provider: String,
-  salt: String,
-=======
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
   alternateNumber: { type: String, default: '' },
@@ -78,7 +59,6 @@ var UserSchema = new Schema({
   createdOn: { type: Date },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
->>>>>>> master
   facebook: {},
   google: {},
   github: {}
@@ -138,8 +118,6 @@ UserSchema
     return city.length;
   }, 'City cannot be blank');
 
-<<<<<<< HEAD
-=======
 // Validate hostel
 // WARNING - validating only the value name can be corrupted. There is a bug
 // UserSchema
@@ -158,7 +136,6 @@ UserSchema
 //     return (regExpRoom.test(roomNumber));
 //   }, 'Room Number cannot be blank');
 
->>>>>>> master
 // Validate empty summerLocation
 UserSchema
   .path('summerLocation')
@@ -185,8 +162,6 @@ UserSchema
     return (regExpPhone.test(phoneNumber));
   }, 'Phone Number must have 10 digits');
 
-<<<<<<< HEAD
-=======
 // //Validate Alternate Phone Number
 // UserSchema
 //   .path('alternateNumber')
@@ -196,7 +171,6 @@ UserSchema
 //     return (regExpPhone.test(alternateNumber));
 //   }, 'Phone Number must have 10 digits');
 
->>>>>>> master
 // Validate rollNumber
 UserSchema
   .path('rollNumber')
