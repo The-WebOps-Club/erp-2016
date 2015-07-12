@@ -26,7 +26,8 @@ exports.index = function(req, res) {
       }, function allDone (notAborted, arr) {
         res.status(200).send(populated);
       });
-  });
+  })
+  .sort({ updatedOn: 1 });
 };
 
 exports.refresh = function(req, res) {
@@ -117,51 +118,57 @@ exports.bulkCreate = function(data, callback) {
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
     if (data.action=='post'){
-      Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id, updatedOn: Date.now()} , function (err, notification) {
-       if(err) { return handleError(res, err); }
-       console.log(notification);
-       Notification.findById(notification._id)
-       .deepPopulate('user post.wall postedBy.name commentedBy.name')
-       .exec( function (err, notification) {
-          if(!(data.post.createdBy._id === member._id)){
-           if(notification.user.deviceId){
-            deviceIds = deviceIds.concat(notification.user.deviceId);
-           }
-           emails.push(notification.user.email);
-          }
-         done();
+      if(!(data.post.createdBy._id.toString() == member._id.toString())){
+        done();
+      }
+      else {
+        Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id, updatedOn: Date.now()} , function (err, notification) {
+         if(err) { return handleError(res, err); }
+         Notification.findById(notification._id)
+         .deepPopulate('user post.wall postedBy.name commentedBy.name')
+         .exec( function (err, notification) {
+             if(notification.user.deviceId){
+              deviceIds = deviceIds.concat(notification.user.deviceId);
+             }
+             emails.push(notification.user.email);
+           done();
+         });
        });
-     });
+      }
     }
     else{
-      Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id} , function (err, notification) {
-       if(err) { return handleError(res, err); }
-       console.log(notification);
-       Notification.findById(notification._id)
-       .deepPopulate('user post.wall postedBy.name commentedBy.name')
-       .exec( function (err, notification) {
-          if(!(data.post.comments.reverse()[0].createdBy._id=== member._id)){
-           if(notification.user.deviceId){
-            deviceIds = deviceIds.concat(notification.user.deviceId);
-           }
-           emails.push(notification.user.email);
-          }
-         done();
-       });
-     });
+      if(!(data.post.comments.reverse()[0].createdBy._id.toString() == member._id.toString())){
+        done();
+      }
+      else {
+        Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id, updatedOn: Date.now()} , function (err, notification) {
+         if(err) { return handleError(res, err); }
+         Notification.findById(notification._id)
+         .deepPopulate('user post.wall postedBy.name commentedBy.name')
+         .exec( function (err, notification) {
+             if(notification.user.deviceId){
+              deviceIds = deviceIds.concat(notification.user.deviceId);
+             }
+             emails.push(notification.user.email);
+           done();
+         });
+        });
+      }
     }
 
   }, function allDone (notAborted, arr) {
     if(data.post.comments.length === 0){
       var message=data.post.createdBy.name +" posted on "+data.post.wall.name;
+      var emailText = message + ":\n" + data.post.info;
       notifier(message, deviceIds);
-      mailer('[Saarang ERP] ' + data.post.title, data.post.info, emails, data.post._id, false);
+      mailer('[Saarang ERP] ' + data.post.title, emailText, emails, data.post._id, false);
     } else {
       var myComment=data.post.comments.reverse()[0];
       var message=myComment.createdBy.name +" comment on a post by "+
       data.post.createdBy.name+ " on the " + data.post.wall.name+" wall";
+      var emailText = message + ":\n" + myComment.info;
       notifier(message, deviceIds);
-      mailer('[Saarang ERP] ' + data.post.title ,myComment.info, emails, data.post._id, true);
+      mailer('[Saarang ERP] ' + data.post.title , emailText, emails, data.post._id, true);
     }
     callback();
   });

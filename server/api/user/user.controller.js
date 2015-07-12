@@ -37,7 +37,17 @@ function handleError(res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
+  User.find({}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  })
+  .populate('department subDepartment groups', 'name');
+};
+
+exports.refresh = function (req, res) {
+  User.find({updatedOn:{
+        $gt: req.body.date
+      }}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
   })
@@ -137,6 +147,7 @@ exports.changePassword = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(user.authenticate(oldPass)) {
       user.password = newPass;
+      user.updatedOn = Date.now();
       user.save(function (err) {
         if (err) return validationError(res, err);
         res.status(200).json({message: "Successful"});
@@ -304,7 +315,8 @@ exports.gcmRegister = function(req, res) {
           user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
       }
       if( user.deviceId.indexOf(req.body.deviceId) === -1)
-        user.deviceId.push(req.body.deviceId);
+      user.deviceId.push(req.body.deviceId);
+      user.updatedOn = Date.now();
       user.save(function (err) {
         if(err) { return handleError(res, err); }
         res.status(200).json({message: "Successful"}); 

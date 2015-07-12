@@ -214,8 +214,6 @@ exports.createPost = function(req, res) {
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }
     if(!wall) { return res.send(404); }
-    console.log(wall);
-    console.log(newPost);
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;
@@ -228,7 +226,6 @@ exports.createPost = function(req, res) {
     newPost.save(function (err, post) {
       if (err) { return handleError(res, err); }
       else{
-        console.log('notiying');
         notifier.notifyAll(post._id, function(){
           return res.json(201, post);
         });
