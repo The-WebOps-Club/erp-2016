@@ -14,21 +14,21 @@
                   <md-autocomplete
 
                     md-no-cache="ctrl.noCache"
-                    md-selected-item="ctrl.selectedItem"
-                    md-search-text-change="searchName(searchText1)"
-                    md-search-text="searchText1"
+                    md-selected-item="ctrl.selectedItem1"
+                    md-search-text-change="searchName(ctrl.searchText1)"
+                    md-search-text="ctrl.searchText1"
                     md-selected-item-change="ctrl.selectedItemChange(item)"
-                    md-items="item in names"
-                    md-item-text="item.name"
+                    md-items="selected in names"
+                    md-item-text="selected.name"
                     md-min-length="0"
                     placeholder="UserName">
                     <md-item-template>
-                      <span md-highlight-text="ctrl.searchText1" md-highlight-flags="^i">{{item.name}}</span>
+						<span> {{selected.name}}</span>
                     </md-item-template>
                     <md-not-found>
                        No matches found for "{{inputName}}".
                     </md-not-found>
-                  </md-autocomplete>                  
+                  </md-autocomplete>
                 </md-content>
 
                 <br/> <br/>
@@ -45,12 +45,12 @@
                     md-min-length="0"
                     placeholder="Department">
                     <md-item-template>
-                      <span md-highlight-text="ctrl.searchText2" md-highlight-flags="^i">{{item.name}}</span>
+                      <span>{{item.name}}</span>
                     </md-item-template>
                     <md-not-found>
                        No matches found for "{{inputDept}}".
                     </md-not-found>
-                  </md-autocomplete>                  
+                  </md-autocomplete>
                 </md-content>
 
 
@@ -84,9 +84,3 @@
 		</div>
 	</div>
 </div>
-
-
-
-
-
-
