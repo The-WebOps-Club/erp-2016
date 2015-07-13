@@ -12,9 +12,43 @@ var getMembers = require('../wall/wall.controller').getMembers;
 
 // Get list of notifications
 exports.index = function(req, res) {
-  Notification.find(function (err, notifications) {
+  Notification.find({user: req.user._id}, '-user', function (err, notifications) {
     if(err) { return handleError(res, err); }
-    return res.json(200, notifications);
+    var populated = [];
+    forEach(notifications, function(notification, index, arr) {
+        var done = this.async();
+        notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
+          _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
+            populated.push(_notif);
+            done();
+          })
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
+  });
+};
+
+exports.refresh = function(req, res) {
+  Notification.find({
+    user: req.user._id, 
+    updatedOn:{
+        $gt: req.body.date
+      }
+    }, function (err, notifications) {
+    if(err) { return handleError(res, err); }
+    var populated = [];
+    forEach(notifications, function(notification, index, arr) {
+        var done = this.async();
+        notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
+          _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
+            populated.push(_notif);
+            done();
+          })
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
   });
 };
 
@@ -83,7 +117,7 @@ exports.bulkCreate = function(data, callback) {
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
     if (data.action=='post'){
-      Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id} , function (err, notification) {
+      Notification.create({post: data.post._id, user: member._id, action: data.action, postedBy: data.post.createdBy._id, updatedOn: Date.now()} , function (err, notification) {
        if(err) { return handleError(res, err); }
        console.log(notification);
        Notification.findById(notification._id)
@@ -132,6 +166,20 @@ exports.bulkCreate = function(data, callback) {
     callback();
   });
 };
+
+//Marks a notification as seen
+exports.markAsSeen = function(req, res) {
+  Notification.findById(req.params.id, function (err, notification) {
+    if (err) { return handleError(res, err); }
+    if(!notification) { return res.send(404); }
+    var updated = _.merge(notification, {active: false});
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, notification);
+    });
+  });
+};
+
 
 // Updates an existing notification in the DB.
 exports.update = function(req, res) {

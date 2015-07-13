@@ -99,7 +99,7 @@ exports.newsfeed = function(req, res) {
       required.push(walls[i]._id)
     };
     Post.paginate(
-      {wall: {$in: required}}, { page: req.params.page, limit: POSTSPERPAGE} , function (error, paginatedResults, pageCount, itemCount) {
+      {wall: {$in: required}}, req.params.page, POSTSPERPAGE,  function (error, pageCount,  paginatedResults, itemCount) {
       if (error) {
         return handleError(res, error);
       }
@@ -280,7 +280,7 @@ exports.addComment = function(req, res) {
           if (err) { return handleError(res, err); }
           if(!post) { return res.send(404); }
           notifier.notifyAll(post._id, function(){
-            return res.json(201, post);
+            return res.json(201, comment);
           });
         });
       });

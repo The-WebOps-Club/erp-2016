@@ -17,11 +17,15 @@ var NotificationSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   commentedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  active: Boolean
+  active: {type: Boolean, default: true},
+  updatedOn: Date
 });
 
 NotificationSchema.plugin(deepPopulate, {
   populate: {
+    'post': {
+      select: 'wall'
+    },
     'post.comments': {
       sort: {updatedOn: 1}
     },
