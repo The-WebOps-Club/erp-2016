@@ -14,16 +14,16 @@
                   <md-autocomplete
 
                     md-no-cache="ctrl.noCache"
-                    md-selected-item="ctrl.selectedItem"
+                    md-selected-item="ctrl.selectedItem1"
                     md-search-text-change="searchName(searchText1)"
                     md-search-text="searchText1"
-                    md-selected-item-change="ctrl.selectedItemChange(item)"
-                    md-items="item in names"
-                    md-item-text="item.name"
+                    md-selected-item-change="ctrl.selectedItemChange(item1)"
+                    md-items="item1 in names"
+                    md-item-text="item1.name"
                     md-min-length="0"
                     placeholder="UserName">
                     <md-item-template>
-                      <span md-highlight-text="ctrl.searchText1" md-highlight-flags="^i">{{item.name}}</span>
+                      <span md-highlight-text="ctrl.searchText1" md-highlight-flags="^i">{{item1.name}}</span>
                     </md-item-template>
                     <md-not-found>
                        No matches found for "{{inputName}}".
@@ -36,16 +36,16 @@
                 <md-content class="md-padding">
                   <md-autocomplete
                     md-no-cache="ctrl.noCache"
-                    md-selected-item="ctrl.selectedItem"
+                    md-selected-item="ctrl.selectedItem2"
                     md-search-text-change="searchDept(searchText2)"
                     md-search-text="searchText2"
-                    md-selected-item-change="ctrl.selectedItemChange(item)"
-                    md-items="item in depts"
-                    md-item-text="item.name"
+                    md-selected-item-change="ctrl.selectedItemChange(item2)"
+                    md-items="item2 in depts"
+                    md-item-text="item2.name"
                     md-min-length="0"
                     placeholder="Department">
                     <md-item-template>
-                      <span md-highlight-text="ctrl.searchText2" md-highlight-flags="^i">{{item.name}}</span>
+                      <span md-highlight-text="ctrl.searchText2" md-highlight-flags="^i">{{item2.name}}</span>
                     </md-item-template>
                     <md-not-found>
                        No matches found for "{{inputDept}}".
