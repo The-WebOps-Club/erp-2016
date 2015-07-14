@@ -1,44 +1,68 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('DepartmentCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment) {
+  .controller('DepartmentCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postService) {
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = {};
-	
-	$http.get('/api/posts/department/' + $stateParams.deptId)
-		.success(function(posts) {
-    		$scope.posts = posts;
-            socket.syncUpdates('post', $scope.posts);			
+    $scope.page=1;
+    console.log($stateParams)
+    $http.get('/api/departments/'+$stateParams.deptId)
+        .then(function(res) {
+            $scope.department = res.data;
+            $scope.wall=$scope.department.wall;
+            console.log($scope.department)
+            if ($scope.wall)
+                $scope.updatePosts()
         })
-        .error(function(err) {
-            /*
-            Do some error handling here
-             */
+        .catch(function(err) {
             console.log(err);
             $state.go('404');
-		});
+        });
+    $scope.updatePosts=function(){
+        postService.getWallPosts($scope.wall,$scope.page)
+    		.then(function(posts) {
+                console.log('got posts '+posts.length)
+        		$scope.posts = posts;
+                socket.syncFilterUpdates('post', $scope.posts,function(post){
+                    return post.wall==$scope.wall
+                });
+                var make_filter=function(post){
+                    return function(comment){
+                        console.log(post)
+                        return comment.post && (comment.post==post._id)
+                    }
+                }
+                for(var i=0;i<$scope.posts.length;i++){
+                    var post=$scope.posts[i]
+                    socket.syncFilterUpdates('comment',$scope.posts[i].comments,make_filter(post));
+                }
+            })
+            .catch(function(err) {
+                /*
+                Do some error handling here
+                 */
+                console.log(err);
+                $state.go('404');
+    		});
+    }
+
 
     $scope.createPost = function() {
-        postComment.createPost('department', $scope.newPostTitle, $scope.newPost, $stateParams.deptId)
-            .success(function(data) {
+        postService.addPost($scope.newPostTitle, $scope.newPost, $stateParams.deptId)
+            .then(function(data) {
                 $scope.newPost = '';
                 $scope.newPostTitle = '';
             })
-            .error(function(err) {
+            .catch(function(err) {
                 console.log(err);
             })
     }
 
     $scope.addComment = function(post) {
-        postComment.addComment(post._id, post.newComment)
-            .success(function(data) {
-                $scope.newPost = '';
-                $scope.newPostTitle = '';
-            })
-            .error(function(err) {
-                console.log(err);
-            })
+        postService.addComment(post._id,post.newComment).then(function(data){
+            post.newComment=""
+        })
     }
 
   });
