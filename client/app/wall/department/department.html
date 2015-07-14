@@ -11,11 +11,12 @@
 
 	<div class="jumbotron" ng-repeat="post in posts">
 		<div>
-			{{post}}
+			<h3>{{post.title}}</h3>
+			{{post.info}}
 		</div>
 		<br>
 		<div ng-repeat="comment in post.comments">
-			{{comment}}
+			{{comment.info}}
 		</div>
 		<form  ng-submit="addComment(post)" name="commentPost">
 			<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..."></textarea>

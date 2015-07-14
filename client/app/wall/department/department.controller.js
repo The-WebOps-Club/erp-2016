@@ -24,7 +24,9 @@ angular.module('erp2015App')
     		.then(function(posts) {
                 console.log('got posts '+posts.length)
         		$scope.posts = posts;
-                socket.syncUpdates('post', $scope.posts);
+                socket.syncFilterUpdates('post', $scope.posts,function(post){
+                    return post.wall==$scope.wall
+                });
             })
             .catch(function(err) {
                 /*
