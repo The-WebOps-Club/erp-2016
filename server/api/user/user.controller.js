@@ -163,7 +163,6 @@ exports.changePassword = function (req, res, next) {
  */
 exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
-
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
@@ -178,8 +177,9 @@ exports.updateProfile = function (req, res, next) {
     req.body.deviceId = undefined;
     req.body.provider = undefined;
     var updated = _.merge(user, req.body);
-    user.updatedOn = Date.now();
-    user.save(function (err) {
+    console.log(updated);
+    updated.updatedOn = Date.now();
+    updated.save(function (err) {
       if(err) return validationError(res, err);
       res.status(200).json({message: "Successful"});
     });

@@ -1,0 +1,149 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<md-content style="width:50%" offset="25"  layout-padding layout="column" layout-sm="column">
+  <h2 class="md-title">Edit Profile</h2>
+  <form name="editProfile" ng-submit="updateProfile(editProfile)">
+    <md-input-container>
+      <label>Name</label>
+      <input required name="name" ng-model="user.name">
+      <div ng-messages="editProfile.name.$error">
+        <div ng-message="required">This is required.</div>
+      </div>
+    </md-input-container>
+    <md-input-container>
+      <label>City</label>
+      <input required name="city" ng-model="user.city" type="text">
+      <div ng-messages="editProfile.city.$error">
+        <div ng-message="required">This is required.</div>
+      </div>
+    </md-input-container>
+    <md-input-container>
+      <label>Phone Number</label>
+      <input required name="phoneNumber" ng-model="user.phoneNumber" type="text" md-maxlength="10" minlength="10">
+      <div ng-messages="editProfile.phoneNumber.$error">
+        <div ng-message="required">This is required.</div>
+        <div ng-message="md-maxlength">Exactly 10 digits</div>
+        <div ng-message="minlength">Exactly 10 digits</div>
+      </div>
+    </md-input-container>
+    <md-select placeholder="Hostel" ng-model="user.hostel">
+        <md-option ng-repeat="hostel in hostels" value="{{hostel}}">{{hostel}}</md-option>
+    </md-select>
+    <md-input-container>
+      <label>Room Number</label>
+      <input name="roomNumber" ng-model="user.roomNumber" type="text">
+    </md-input-container>
+    <md-button class="md-raised md-primary" type="submit">
+      Submit
+    </md-button>
+  </form>
+</md-content>
+
+<div class="jumbotron col-sm-offset-3 col-sm-6">
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
+    </div>
+    <div class="col-sm-offset-2 col-sm-8">
+      <form class="form" name="form" ng-submit="updateProfile(form)" novalidate>
+
+        <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
+                                            'has-error': form.name.$invalid && submitted }">
+          <label>Name</label>
+
+          <input type="text" name="name" class="form-control" ng-model="user.name"
+                 required
+                 mongoose-error/>
+          <span class="help-block" ng-show="form.name.$error.required && submitted">
+            A name is required
+          </span>
+          <span class="help-block" ng-show="form.name.$error.mongoose">
+            {{ errors.name }}
+          </span>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.city.$valid && submitted,
+                                            'has-error': form.city.$invalid && submitted }">
+          <label>City</label>
+
+          <input type="text" name="city" class="form-control" ng-model="user.city"
+                 required
+                 mongoose-error/>
+          <span class="help-block">Which city you are from ?</span>                 
+          <span class="help-block" ng-show="form.city.$error.required && submitted">
+            City is required
+          </span>
+          <span class="help-block" ng-show="form.city.$error.mongoose">
+            {{ errors.city }}
+          </span>          
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.summerLocation.$valid && submitted,
+                                            'has-error': form.summerLocation.$invalid && submitted }">
+          <label>Summer Location</label>
+
+          <input type="text" name="summerLocation" class="form-control" ng-model="user.summerLocation"
+                 required
+                 mongoose-error/>
+          <span class="help-block">Where are you staying during summer vacation ?</span>       
+          <span class="help-block" ng-show="form.summerLocation.$error.required && submitted">
+            Summer location is required
+          </span>
+          <span class="help-block" ng-show="form.summerLocation.$error.mongoose">
+            {{ errors.summerLocation }}
+          </span>          
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.cgpa.$valid && submitted,
+                                            'has-error': form.cgpa.$invalid && submitted }">
+          <label>CGPA</label>
+
+          <input type="text" name="cgpa" class="form-control" ng-model="user.cgpa"
+                 ng-pattern="/^(10|\d)(\.\d{1,2})?$/"
+                 required
+                 mongoose-error/>
+          <span class="help-block" ng-show="form.cgpa.$error.pattern && submitted">
+            Enter a vaild CGPA
+          </span>
+          <span class="help-block" ng-show="form.cgpa.$error.required && submitted">
+            Your CGPA is required
+          </span>
+          <span class="help-block" ng-show="form.cgpa.$error.mongoose">
+            {{ errors.cgpa }}
+          </span>          
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.phoneNumber.$valid && submitted,
+                                            'has-error': form.phoneNumber.$invalid && submitted }">
+          <label>Phone Number</label>
+
+          <input type="text" name="phoneNumber" class="form-control" ng-model="user.phoneNumber"
+                 ng-pattern="/^\d{10}$/"
+                 required
+                 mongoose-error/>
+          <span class="help-block">Do not include 0 or +91 before your 10 digit number</span>
+          <span class="help-block" 
+             ng-show="(form.phoneNumber.$error.pattern || form.phoneNumber.$error.required) && submitted">
+            Phone Number must be of 10 digits
+          </span>
+          <span class="help-block" ng-show="form.phoneNumber.$error.mongoose">
+            {{ errors.phoneNumber }}
+          </span>          
+          <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/zip" required="">
+          <div>
+              <br>
+              <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                  <i>{{progressPercentage}}%</i>
+              </progressbar>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary btn-login" type="submit">
+            Submit
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
