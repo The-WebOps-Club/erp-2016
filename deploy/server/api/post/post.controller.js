@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var forEach = require('async-foreach').forEach;
 var Post = require('./post.model');
 var Wall = require('../wall/wall.model');
 var Comment = require('../comment/comment.model');
@@ -8,35 +9,79 @@ var User = require('../user/user.model');
 var Department = require('../department/department.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var auth = require('../../auth/auth.service');
-
-var mongoosePaginate = require('mongoose-paginate');
+var notifier = require('../notification/notification.controller');
 
 var POSTSPERPAGE = 20
 
 // Get list of posts
 exports.index = function(req, res) {
-  console.log(req.params.id);
   Post.paginate(
       {wall: req.params.id}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
       if (error) {
-        console.error(error);
+        return handleError(res, error);
       } else {
-        res.send(paginatedResults);
+        var populated = []
+        forEach(paginatedResults, function(post, index, arr) {
+          var done = this.async();
+          post.deepPopulate('comments.createdBy', function (err, _post) {
+            populated.push(_post);
+            done();
+          });
+        }, function allDone (notAborted, arr) {
+          res.status(200).send(populated);
+        });
       }
-    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
+    }, {populate: {path: 'acknowledged', select: 'name'}, sortBy : { updatedOn : -1 }});
 };
 
 exports.refresh = function(req, res) {
-  Post.paginate({
-      wall: req.params.id, 
-      updatedOn: {$gte: req.body.date}
-    }, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
-    if (error) {
-      console.error(error);
-    } else {
-      res.send(paginatedResults);
-    }
-  }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
+  Post.find({
+    updatedOn:{
+      $gt: req.body.date
+    },
+    wall: req.params.id
+  })
+  .sort({ updatedOn : -1 })
+  .populate('acknowledged', 'name')
+  .exec(function (err, posts) {
+    if(err) { return handleError(res, err); }
+    if(!posts) { return res.send(404); }
+    var populated = []
+    forEach(posts, function(post, index, arr) {
+      var done = this.async();
+      post.deepPopulate('comments.createdBy', function (err, _post) {
+        populated.push(_post);
+        done();
+      });
+    }, function allDone (notAborted, arr) {
+      res.status(200).send(populated);
+    });
+  });
+}
+
+exports.history = function(req, res) {
+  Post.find({
+    updatedOn:{
+      $lt: req.body.date
+    },
+    wall: req.params.id
+  })
+  .sort({ updatedOn : -1 })
+  .populate('acknowledged', 'name')
+  .exec(function (err, posts) {
+    if(err) { return handleError(res, err); }
+    if(!posts) { return res.send(404); }
+    var populated = []
+    forEach(posts, function(post, index, arr) {
+      var done = this.async();
+      post.deepPopulate('comments.createdBy', function (err, _post) {
+        populated.push(_post);
+        done();
+      });
+    }, function allDone (notAborted, arr) {
+      res.status(200).send(populated);
+    });
+  });
 }
 
 // Get compiled list of all posts related to one user
@@ -54,17 +99,27 @@ exports.newsfeed = function(req, res) {
       required.push(walls[i]._id)
     };
     Post.paginate(
-      {wall: {$in: required}}, req.params.page, POSTSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+      {wall: {$in: required}}, req.params.page, POSTSPERPAGE,  function (error, pageCount,  paginatedResults, itemCount) {
       if (error) {
-        console.error(error);
-      } 
+        return handleError(res, error);
+      }
       if (paginatedResults.length === 0){
         res.status(404).send(paginatedResults);
       }
       else {
-        res.status(200).send(paginatedResults);
+        console.log(paginatedResults);
+        var populated = []
+        forEach(paginatedResults, function(post, index, arr) {
+          var done = this.async();
+          post.deepPopulate('comments.createdBy', function (err, _post) {
+            populated.push(_post);
+            done();
+          });
+        }, function allDone (notAborted, arr) {
+          res.status(200).send(populated);
+        });
       }
-    }, {populate: 'wall createdBy comments', sortBy : { updatedOn : -1 }});
+    }, {populate: {path: 'acknowledged', select: 'name'}, sortBy : { updatedOn : -1 }});
   })
 };
 
@@ -81,14 +136,60 @@ exports.newsfeedRefresh = function(req, res) {
     };
     Post.find({
       updatedOn:{
-        $gte: req.body.date
+        $gt: req.body.date
       },
       wall: {$in: required}
-    }, function (err, posts) {
-      console.log(posts)
+    })
+    .sort({updatedOn: -1})
+    .populate('acknowledged', 'name')
+    .exec(function (err, posts) {
       if(err) { return handleError(res, err); }
       if(!posts) { return res.send(404); }
-      return res.json(posts);
+      var populated = []
+      forEach(posts, function(post, index, arr) {
+        var done = this.async();
+        post.deepPopulate('comments.createdBy', function (err, _post) {
+          populated.push(_post);
+          done();
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
+    })
+  });
+}
+
+exports.newsfeedHistory = function(req, res) {
+  var required  = []
+  required.push(req.user._id)
+  required.push(req.user.department)
+  required.push(req.user.subDepartment)
+  required.push(req.user.groups)
+  Wall.find({parentId: {$in: required}}, '_id', function (err, walls) {
+    required = [] //Reusing the variable used above
+    for (var i = walls.length - 1; i >= 0; i--) {
+      required.push(walls[i]._id)
+    };
+    Post.find({
+      updatedOn:{
+        $lt: req.body.date
+      },
+      wall: {$in: required}
+    })
+    .populate('acknowledged', 'name')
+    .exec(function (err, posts) {
+      if(err) { return handleError(res, err); }
+      if(!posts) { return res.send(404); }
+      var populated = []
+      forEach(posts, function(post, index, arr) {
+        var done = this.async();
+        post.deepPopulate('comments.createdBy', function (err, _post) {
+          populated.push(_post);
+          done();
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
     })
   });
 }
@@ -96,24 +197,25 @@ exports.newsfeedRefresh = function(req, res) {
 // Get a single post
 exports.show = function(req, res) {
   Post.findById(req.params.id)
-  .populate('comments wall createdBy')
-  .deepPopulate('comments.createdBy')
+  .populate('acknowledged', 'name')
   .exec(function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    return res.status(200).json(post);
+    post.deepPopulate('comments.createdBy', function (err, post) {
+      return res.status(200).json(post);
+    });
   });
 };
 
 // Creates a new post in the DB.
 exports.createPost = function(req, res) {
   var newPost = new Post();
-  console.log(req.body.destId);
-  console.log(req.body.info);
   if(!req.body.destId) { return res.send(404); }
   Wall.findOne({parentId: req.body.destId}, function (err, wall) {
     if(err) { return handleError(res, err); }
     if(!wall) { return res.send(404); }
+    console.log(wall);
+    console.log(newPost);
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;
@@ -125,22 +227,30 @@ exports.createPost = function(req, res) {
 
     newPost.save(function (err, post) {
       if (err) { return handleError(res, err); }
-      else res.json(201, post);
-    });
-  });  
+      else{
+        console.log('notiying');
+        notifier.notifyAll(post._id, function(){
+          return res.json(201, post);
+        });
+      }
+    });  
+  });
 };
 
 //Acknowledges a post
 
 exports.acknowledge = function(req, res) {
-  Post.findById(req.body.postId, function (err, post) {
+  Post.findById(req.params.id, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.status(404).json({message: "Post not found"}); }
     if(post.acknowledged.indexOf(req.user._id) === -1 ){ 
-      post.acknowledged.push(req.user._id); 
-      res.status(200).json({message: "Acknowledged"})
+      post.acknowledged.push(req.user._id);
+      post.save(function (err, post) {
+        if (err) { return handleError(res, err); }
+        else res.status(200).json({message: "Acknowledged"})
+      });
     }
-    else{ req.status(200).json({message: "Already acknowledged"}); }
+    else{ res.status(200).json({message: "Already acknowledged"}); }
   });
 }
 
@@ -161,9 +271,18 @@ exports.addComment = function(req, res) {
       post.comments.push(comment._id)
       post.updatedOn = Date.now();
 
-      post.save(function (err) {
+      post.save(function (err)   {
         if (err) { return handleError(res, err); }
-        return res.json(200, post);
+        Post.findById(req.body.postId)
+        .populate('acknowledged', 'name')
+        .deepPopulate('comments.createdBy')
+        .exec(function (err, post) {
+          if (err) { return handleError(res, err); }
+          if(!post) { return res.send(404); }
+          notifier.notifyAll(post._id, function(){
+            return res.json(201, comment);
+          });
+        });
       });
     });
   });

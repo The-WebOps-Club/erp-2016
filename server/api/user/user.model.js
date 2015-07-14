@@ -4,33 +4,36 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
-var allHostels = ['alakananda',
-                  'brahmaputra',
-                  'cauvery',
-                  'ganga',
-                  'jamuna',
-                  'krishna',
-                  'mandakini',
-                  'mahanadi',
-                  'narmada',
-                  'pampa',
-                  'saraswathi',
-                  'sabarmathi',
-                  'sindhu',
-                  'sharavati',
-                  'sarayu',
-                  'sarayuExtension',
-                  'thamiriapani',
-                  'tapti',
-                  'dayScholar'
-                  ];
+var hostels = ['Alakananda',
+               'Bhadra',
+               'Brahmaputra',
+               'Cauvery',
+               'Ganga',
+               'Godavari',
+               'Jamuna',
+               'Krishna',
+               'Mahanadhi',
+               'Mandakini',
+               'Narmada',
+               'Pampa',
+               'Saraswathi',
+               'Sabarmati',
+               'Sarayu',
+               'Sharavati',
+               'Sindhu',
+               'Sarayu Extension',
+               'Tamraparani',
+               'Tapti',
+               'Tunga',
+               'Day Scholar'
+               ];
 
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   nick: String,
   profilePic: String,
   rollNumber: { type: String, default: '' },
-  hostel: {},
+  hostel: {type: String, enum: hostels},
   roomNumber: { type: String, default: '' },
   email: { type: String, lowercase: true, default: '' },
   role: {
@@ -44,7 +47,6 @@ var UserSchema = new Schema({
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
   alternateNumber: { type: String, default: '' },
-  // formApplied: [], //Is this even used?
   wall: {type: Schema.Types.ObjectId, ref: 'Wall'},
   department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],

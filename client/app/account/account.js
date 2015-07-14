@@ -28,5 +28,16 @@ angular.module('erp2015App')
         url: '/resetPassword/:token',
         templateUrl: 'app/account/password/resetPassword.html',
         controller: 'ResetPasswordCtrl'
+      })
+      .state('editProfile', {
+        url: '/editProfile',
+        templateUrl: 'app/account/editProfile/editProfile.html',
+        controller: 'editProfileCtrl',
+        // data: {
+        //   permissions: {
+        //       except: ['anonymous'],
+        //       redirectTo: 'login'
+        //   }        
+        // }                
       });                  
   });
