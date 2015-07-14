@@ -27,6 +27,16 @@ angular.module('erp2015App')
                 socket.syncFilterUpdates('post', $scope.posts,function(post){
                     return post.wall==$scope.wall
                 });
+                var make_filter=function(post){
+                    return function(comment){
+                        console.log(post)
+                        return comment.post && (comment.post==post._id)
+                    }
+                }
+                for(var i=0;i<$scope.posts.length;i++){
+                    var post=$scope.posts[i]
+                    socket.syncFilterUpdates('comment',$scope.posts[i].comments,make_filter(post));
+                }
             })
             .catch(function(err) {
                 /*
@@ -51,8 +61,7 @@ angular.module('erp2015App')
 
     $scope.addComment = function(post) {
         postService.addComment(post._id,post.newComment).then(function(data){
-            //add sockets for comments
-            $scope.updatePosts()
+            post.newComment=""
         })
     }
 

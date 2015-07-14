@@ -219,7 +219,7 @@ exports.createPost = function(req, res) {
     newPost.title = req.body.title;
     newPost.info = req.body.info;
     newPost.wall = wall._id;
-    
+
     newPost.createdBy = req.user._id;
 
     newPost.createdOn = Date.now();
@@ -233,7 +233,7 @@ exports.createPost = function(req, res) {
           return res.json(201, post);
         });
       }
-    });  
+    });
   });
 };
 
@@ -243,7 +243,7 @@ exports.acknowledge = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.status(404).json({message: "Post not found"}); }
-    if(post.acknowledged.indexOf(req.user._id) === -1 ){ 
+    if(post.acknowledged.indexOf(req.user._id) === -1 ){
       post.acknowledged.push(req.user._id);
       post.save(function (err, post) {
         if (err) { return handleError(res, err); }
@@ -259,13 +259,13 @@ exports.addComment = function(req, res) {
   Post.findById(req.body.postId, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    
+
     var comment = new Comment();
     comment.createdBy = req.user._id;
     comment.info = req.body.comment;
     comment.createdOn = Date(Date.now());
     comment.updatedOn = Date(Date.now());
-
+    comment.post = post._id;
     comment.save(function (err) {
       if (err) { return handleError(res, err); }
       post.comments.push(comment._id)
