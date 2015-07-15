@@ -107,7 +107,6 @@ angular.module('erp2015App')
        */
       updateProfile: function(user, callback) {
         var cb = callback || angular.noop;
-        console.log(user);
         return User.updateProfile({ id: currentUser._id }, {
           userUpdate: user
         }, function(user) {

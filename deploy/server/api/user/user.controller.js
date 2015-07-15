@@ -1,5 +1,6 @@
 'use strict';
 
+var _ = require('lodash');
 var User = require('./user.model');
 var passport = require('passport');
 var config = require('../../config/environment');
@@ -8,10 +9,17 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
+var Grid = require('gridfs-stream');
+var mime = require('mime');
+var mongoose = require('mongoose');
+Grid.mongo = mongoose.mongo;
+
+var gfs = new Grid(mongoose.connection.db);
 var Department = require('../department/department.model');
 var Group = require('../group/group.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
+
 
 var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
@@ -29,7 +37,7 @@ function handleError(res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
+  User.find({}, '-salt -hashedPassword', function (err, users) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
   })
@@ -63,12 +71,45 @@ exports.create = function (req, res, next) {
 exports.show = function (req, res, next) {
   var userId = req.params.id;
 
-  User.findById(userId, function (err, user) {
+  User.findById(userId, '-salt -hashedPassword -deviceId -createdOn -updatedOn', function (err, user) {
     if (err) return next(err);
     if (!user) return res.status(404).json({message: "User does not exist"});
-    res.json(user.profile);
+    res.json(user);
   })
   .populate('department subDepartment groups', 'name');
+};
+
+exports.profilePic = function (req, res) {
+  User.findById(req.params.id, function (err, user) {
+    if(err) return validationError(res, err);
+    if(!user) return res.status(404).json({message: "User does not exist"});
+    gfs.findOne({ _id: user.profilePic}, function (err, file) {
+        if(!file){
+          return res.status(400).send({
+            message: 'File not found'
+          });
+        }
+    
+      res.writeHead(200, {'Content-Type': file.contentType});
+      
+      var readstream = gfs.createReadStream({
+          filename: file.filename
+      });
+   
+        readstream.on('data', function(data) {
+            res.write(data);
+        });
+        
+        readstream.on('end', function() {
+            res.end();        
+        });
+   
+      readstream.on('error', function (err) {
+        console.log('An error occurred!', err);
+        throw err;
+      });
+    });
+  });
 };
 
 /**
@@ -111,18 +152,21 @@ exports.changePassword = function (req, res, next) {
  */
 exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
-  var userUpdate = req.body;
 
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
-    user.profilePic = userUpdate.profilePic;
-    user.summerLocation = userUpdate.summerLocation;
-    user.phoneNumber = userUpdate.phoneNumber;
-    user.alternateNumber = userUpdate.alternateNumber;
-    // user.hostel = userUpdate.hostel;
-    user.roomNumber = userUpdate.roomNumber;
+    req.body.role = undefined;
+    req.body.hashedPassword = undefined;
+    req.body.salt = undefined;
+    req.body.wall = undefined;
+    req.body.department = undefined;
+    req.body.subDepartment = undefined;
+    req.body.groups = undefined;
+    req.body.deviceId = undefined;
+    req.body.provider = undefined;
+    var updated = _.merge(user, req.body);
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
@@ -250,18 +294,22 @@ exports.addSubDepartment = function(req, res, next) {
 
 exports.gcmRegister = function(req, res) {
   User.findById(req.user._id, function (err, user) {
+    console.log(req.body.deviceId);
     if (err) { return handleError(res, err); }
     if (!user) { res.status(404).json({message: "User does not exist"}); }
-    if(req.body.oldId) {
-      if( user.deviceId.indexOf(req.body.oldId) > -1)
-        user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+    if(!req.body.deviceId) {res.status(401).json({message: "No deviceId in request"}); }
+    else{
+      if(req.body.oldId) {
+        if( user.deviceId.indexOf(req.body.oldId) > -1)
+          user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
+      }
+      if( user.deviceId.indexOf(req.body.deviceId) === -1)
+        user.deviceId.push(req.body.deviceId);
+      user.save(function (err) {
+        if(err) { return handleError(res, err); }
+        res.status(200).json({message: "Successful"}); 
+      });
     }
-    if( user.deviceId.indexOf(req.body.deviceId) === -1)
-      user.deviceId.push(req.body.deviceId);
-    user.save(function (err) {
-      if(err) { return handleError(res, err); }
-      res.status(200).json({message: "Successful"}); 
-    });
   })
 }
 

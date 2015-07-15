@@ -2,6 +2,43 @@
 
 var _ = require('lodash');
 var Wall = require('./wall.model');
+var User = require('../user/user.model');
+var Department = require('../department/department.model');
+var SubDepartment = require('../subDepartment/subDepartment.model');
+var Group = require('../group/group.model');
+
+
+//Find members of the wall
+
+exports.getMembers = function (wallId, callback) {
+  var members = []
+  Wall.findById(wallId, function (err, wall) {
+    if (err) return [];
+    if(!wall) return [];
+    User.findOne({wall: wallId}, function (err, user) {
+      if(user){
+        members.push(user);
+        callback(members);
+      }
+    });
+    Department.findOne({wall: wallId}, function (err, department) {
+      if(department){
+        callback(members.concat(department.cores).concat(department.superCoords).concat(department.coords).concat(department.qms));
+      }
+    })
+    .populate('cores coords superCoords qms');
+    SubDepartment.findOne({wall: wallId}, function (err, subDepartment) {
+      if(subDepartment){
+        callback(members.concat(subDepartment.cores).concat(subDepartment.superCoords).concat(subDepartment.coords).concat(subDepartment.qms))      }
+    })
+    .populate('cores coords superCoords qms');
+    Group.findOne({wall: wallId}, function (err, group) {
+      if(group){
+        callback(members.concat(group.cores).concat(group.superCoords).concat(group.coords).concat(group.qms))      }
+    })
+    .populate('cores coords superCoords qms');
+  });
+};
 
 // Get list of walls
 exports.index = function(req, res) {

@@ -46,16 +46,5 @@ angular.module('erp2015App')
         //       redirectTo: 'coordPortalEditProfile'
         //   }        
         // }                      
-      })
-      .state('coordPortalEditProfile', {
-        url: '/coordPortal/editProfile',
-        templateUrl: 'app/coordPortal/editProfile/editProfile.html',
-        controller: 'CoordPortalEditProfileCtrl',
-        // data: {
-        //   permissions: {
-        //       except: ['anonymous'],
-        //       redirectTo: 'login'
-        //   }        
-        // }                
       });      
   });

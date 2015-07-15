@@ -27,6 +27,9 @@ router.post('/mobile', function(req, res, next) {
 		sentUser.hashedPassword = undefined;
 		sentUser.salt = undefined;
 		sentUser.provider = undefined;
+		sentUser.__v = undefined;
+		sentUser.updatedOn = undefined;
+		sentUser.createdOn = undefined;
 		res.json({
 			token: token,
 			user: sentUser
