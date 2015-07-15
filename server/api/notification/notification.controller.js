@@ -10,12 +10,17 @@ var gcm = require('node-gcm');
 var mailer=require('../../components/mailer');
 var getMembers = require('../wall/wall.controller').getMembers;
 
+var NOTIFICATIONSPERPAGE = 10;
+
 // Get list of notifications
 exports.index = function(req, res) {
-  Notification.find({user: req.user._id}, '-user', function (err, notifications) {
-    if(err) { return handleError(res, err); }
-    var populated = [];
-    forEach(notifications, function(notification, index, arr) {
+  Notification.paginate({user: req.user._id}, req.params.page, NOTIFICATIONSPERPAGE, function(error, pageCount, paginatedResults, itemCount) {
+    if(error) {
+      return handleError(res, error);
+    }
+    else {
+      var populated = [];
+      forEach(paginatedResults, function(notification, index, arr) {
         var done = this.async();
         notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
           _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
@@ -26,30 +31,30 @@ exports.index = function(req, res) {
       }, function allDone (notAborted, arr) {
         res.status(200).send(populated);
       });
-  })
-  .sort({ updatedOn: 1 });
+    }
+  }, {sortBy: {updatedOn: 1}});
 };
 
 exports.refresh = function(req, res) {
   Notification.find({
     user: req.user._id, 
     updatedOn:{
-        $gt: req.body.date
-      }
-    }, function (err, notifications) {
+      $gt: req.body.date
+    }
+  }, function (err, notifications) {
     if(err) { return handleError(res, err); }
     var populated = [];
     forEach(notifications, function(notification, index, arr) {
-        var done = this.async();
-        notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
-          _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
-            populated.push(_notif);
-            done();
-          })
-        });
-      }, function allDone (notAborted, arr) {
-        res.status(200).send(populated);
+      var done = this.async();
+      notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
+        _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
+          populated.push(_notif);
+          done();
+        })
       });
+    }, function allDone (notAborted, arr) {
+      res.status(200).send(populated);
+    });
   });
 };
 
@@ -73,11 +78,11 @@ exports.create = function(req, res) {
         var message=notification.postedBy.name +" posted on "+notification.post.wall.name;
         notifier(message, notification.user.deviceId);
         mailer('[sarang-erp-2016] '+ message,notification.post.info,notification.user.email,notification.post._id,false,function cb(err,info){
-            if (err){
-              return res.json(501,err);
-  
-            }
-            return res.json(200,'Mail has been sent');
+          if (err){
+            return res.json(501,err);
+
+          }
+          return res.json(200,'Mail has been sent');
         })
       } else {
         var myComment = notification.post.comments.reverse()[0];
@@ -85,16 +90,16 @@ exports.create = function(req, res) {
         notification.post.createdBy.name+ " on the " + notification.post.wall.name+" wall";
         notifier(message, notification.user.deviceId);
         mailer(message+'[saarang-erp-2016]',myComment.info,notification.user.email,notification.post._id,true,function cb(err,info){
-            if (err){
-              return res.json(501,err);
-            }
-            else{
-              return res.json(201, notification);
-            }
+          if (err){
+            return res.json(501,err);
+          }
+          else{
+            return res.json(201, notification);
+          }
         });
       }
     });
-  });
+});
 };
 
 exports.notifyAll = function (postId, callback) {
@@ -127,12 +132,12 @@ exports.bulkCreate = function(data, callback) {
          Notification.findById(notification._id)
          .deepPopulate('user post.wall postedBy.name commentedBy.name')
          .exec( function (err, notification) {
-             if(notification.user.deviceId){
-              deviceIds = deviceIds.concat(notification.user.deviceId);
-             }
-             emails.push(notification.user.email);
-           done();
-         });
+           if(notification.user.deviceId){
+            deviceIds = deviceIds.concat(notification.user.deviceId);
+          }
+          emails.push(notification.user.email);
+          done();
+        });
        });
       }
     }
@@ -146,13 +151,13 @@ exports.bulkCreate = function(data, callback) {
          Notification.findById(notification._id)
          .deepPopulate('user post.wall postedBy.name commentedBy.name')
          .exec( function (err, notification) {
-             if(notification.user.deviceId){
-              deviceIds = deviceIds.concat(notification.user.deviceId);
-             }
-             emails.push(notification.user.email);
-           done();
-         });
+           if(notification.user.deviceId){
+            deviceIds = deviceIds.concat(notification.user.deviceId);
+          }
+          emails.push(notification.user.email);
+          done();
         });
+       });
       }
     }
 
