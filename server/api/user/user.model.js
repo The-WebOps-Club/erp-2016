@@ -121,14 +121,14 @@ UserSchema
   }, 'This is not a valid hostel');
 
 // Validate empty roomNumber
-UserSchema
+/*UserSchema
   .path('roomNumber')
   .validate(function(roomNumber) {
     var regExpRoom = /\d+/;
     if (authTypes.indexOf(this.provider) !== -1) return true;
     return (regExpRoom.test(roomNumber));
   }, 'Room Number cannot be blank');
-
+  */
 // Validate empty summerLocation
 UserSchema
   .path('summerLocation')
@@ -160,7 +160,10 @@ UserSchema
   .path('rollNumber')
   .validate(function(rollNumber) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (rollNumber.length == 8);
+    if(rollNumber.length) {
+      return (rollNumber.length==8);
+    }
+    else return rollNumber.length;
   }, 'Roll Number must be of 8 characters');
 
 // Validate empty email
