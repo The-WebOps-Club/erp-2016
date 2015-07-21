@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+  	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="erp-bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="icons-color.css">
+	<link href="daterangepicker.css" rel="stylesheet" media="screen">
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="daterangepicker.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="saarang_erp_profile.js"></script>
+	<script src="textarea.js"></script>
+	<title>sidebar</title>
+</head>
+<body>
+<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+		<div id="rightbar">
+			<div>
+				<textarea flex="5" id="post_area" rows="4" placeholder="Quick Post">
+				</textarea>
+			</div>
+			<div>
+			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			</div>
+			<hr>
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-folder"></i>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-folder"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="calendar_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul>
+					<li>
+						<a href="">
+						<i class="icon-calendar"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</md-sidenav>
+			<!-- Script for sidebar scrolling -->
+<script>
+$(document).ready(function () {
+     var el = $('#rightbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#rightbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
+$(function() {
+   $('#post_area').autogrow();
+});
+</script>
+</body>
+
+</html>
