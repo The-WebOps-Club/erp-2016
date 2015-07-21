@@ -5,21 +5,26 @@ angular.module('erp2015App')
     console.log(user);
     $scope.newPost = '';
     $scope.newPostTitle = '';
-    $scope.posts = {};
+    $scope.posts = [];
     $scope.user = user.data;
+    $scope.count=0;
     console.log($scope.user);
-
-    $http.get('/api/posts/' + $scope.user.wall + '/1')
-    	.success(function(posts) {
-    		$scope.posts = posts;
-            socket.syncUpdates('post', $scope.posts);
-    	})
-    	.error(function(err) {
-    		/*
-    		Do some error handling here
-    		 */
-    		console.log(err);
-    	});
+    $scope.load=function(){
+        $scope.count=$scope.count+1;
+        $http.get('/api/posts/' + $scope.user.wall + '/'+$scope.count)
+        	.success(function(posts) {
+        		$scope.posts=$scope.posts.concat(posts);
+                socket.syncUpdates('post', $scope.posts);
+        	})
+        	.error(function(err) {
+        		/*
+        		Do some error handling here
+        		 */
+        		console.log(err);
+        	});
+    
+    }
+    
 
     $scope.createPost = function() {
         postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
