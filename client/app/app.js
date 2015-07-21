@@ -13,6 +13,7 @@ angular.module('erp2015App', [
   'ngFacebook',
   'ngMaterial',
   'ngMessages',
+  'infinite-scroll',
   'ngMdIcons'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
