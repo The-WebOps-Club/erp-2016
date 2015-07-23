@@ -28,14 +28,12 @@
 
 	          <md-input-container>
 	            <label>Title</label>
-
-	            <input type="text" name="newPostTitle" ng-model="newPostTitle" >
+                 <input type="text" name="newPosTitle" ng-model="newPost" >	            
 	          </md-input-container>
 
 	          <md-input-container>
 	            <label>Info</label>
-
-	            <input type="text" name="newPost" ng-model="newPost" >
+	            <textarea type="text" name="newPost" ng-model="newPost" columns="1"></textarea>
 	          </md-input-container>          
 	          <div>
 	            <md-button class="md-raised md-primary" type="submit">
@@ -55,32 +53,32 @@
 	  	<md-whiteframe class="md-whiteframe-z4" flex="50" offset="25" style="background-color : #F5F5F0">
 	  		<div layout="column">
 		  		<div flex layout="row">
-		  			<div flex="10">
-		  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" class="face" alt="{{post.createdBy.name}}">
+		  			<div flex="10" layout-margin><br><br>
+		  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
 		  			</div>
-		  			<div flex>		  			
+		  			<div flex >		  			
 		  				<h3>{{post.title}}</h3>
-		  					<div layout="row">
-		  						<div flex>
-		  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon>  {{post.wall.name}}</h4>
-		  						</div>
-		  						<div flex layout-align="end">
-		  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
-		  						</div>
-		  					</div>
+	  					<div layout="row">
+	  						<div flex>
+	  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: grey" size="15"></ng-md-icon>  {{post.wall.name}}</h4>
+	  						</div>
+	  						<div flex="20">
+	  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
+	  						</div>
+	  					</div>
 		  				<h5>{{post.info}}</h5>
 		  			</div>
 		  		</div>
 		  		<md-divider></md-divider><br>
 		  		<div ng-repeat="comment in post.comments">
 			  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
-			  			<div flex="5">
-			  				<img ng-src="api/users/{{comment.createdBy._id/profilePic}}" class="face" alt="{{comment.createdBy.name}}">
+			  			<div flex="5"><br>
+			  				<img ng-src="api/users/{{comment.createdBy._id}}/profilePic" width="40px" height="40px" style="border-radius: 20px " alt="{{comment.cureatedBy.name}}">
 			  			</div>
 			  			<div flex>
 				  			<div layout="row">
 				  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
-				  				<div flex layout-align="end"><h6>{{ commnent.createdOn | date : 'medium'}}</h6></div>
+				  				<div flex="20"><h6>{{ commnent.createdOn | date : 'medium'}}</h6></div>
 				  			</div>
 				  			<h6>{{comment.info}}</h6>
 			  			</div>
@@ -88,9 +86,19 @@
 		  		</div>
 		  		
 		  		<div flex offset="10">
-			  		<form  ng-submit="addComment(post)" name="commentPost">
-						<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..." style="resize: none"></textarea>
-					</form>
+		  			<md-content>
+				  		<form  ng-submit="addComment(post)" name="commentPost">
+							<md-input-container flex >
+       							 <label>Enter a new comment....</label>
+       							 <textarea ng-model="post.newComment" columns="1"></textarea>
+      						</md-input-container>
+      						<div>
+	         					<md-button class="md-raised md-primary" type="submit">
+	             					Comment
+	           					 </md-button>
+	         			    </div>
+						</form>
+					</md-content>
 				</div>
 				<br>
             </div>
