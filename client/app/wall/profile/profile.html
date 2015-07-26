@@ -28,7 +28,7 @@
 
 	          <md-input-container>
 	            <label>Title</label>
-                 <input type="text" name="newPosTitle" ng-model="newPost" >	            
+                 <input type="text" name="newPosTitle" ng-model="newPostTitle" >	            
 	          </md-input-container>
 
 	          <md-input-container>
@@ -66,7 +66,7 @@
 	  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
 	  						</div>
 	  					</div>
-		  				<h5>{{post.info}}</h5>
+		  				<p style="white-space: pre;">{{post.info}}</p>
 		  			</div>
 		  		</div>
 		  		<md-divider></md-divider><br>

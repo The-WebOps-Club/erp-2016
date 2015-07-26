@@ -27,7 +27,9 @@ angular.module('erp2015App')
     
 
     $scope.createPost = function() {
-        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
+        $scope.newPost = $scope.newPost.replace('\r', '\n');
+        console.log($scope.newPost);
+        postComment.createPost($scope.newPostTitle, $scope.newPost, $scope.user._id)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
