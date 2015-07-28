@@ -102,7 +102,6 @@ angular.module('erp2015App')
  			if(promptName!=null) {
 	 			if (/\S/.test(promptName)) {
 	 				var num=Math.max.apply(Math, $scope.eventTabs.map(function(o){return o.tabNumber;}));
-	 				alert(num);
 		 			var tabData={'name': promptName, 'info': '', 'tabNumber': num+1, 'eventID': $scope.event._id, '_id': String($scope.eventTabs.length+1)};
 		      		$scope.eventTabs.push(tabData);
 				    $scope.markdown[$scope.eventTabs.length]="";
