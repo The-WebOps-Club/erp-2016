@@ -12,6 +12,7 @@ router.get('/getMultiple/:id', controller.getMultiple);
 router.post('/', auth.hasRole('core'), controller.create);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
+router.patch('/toggleVisiblity/:id', auth.hasRole('admin'), controller.update);
 router.delete('/:id', controller.destroy);
 
 module.exports = router;

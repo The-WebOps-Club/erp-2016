@@ -39,6 +39,11 @@ angular.module('erp2015App')
               return response.data;
           });
         },
+        toggleEvent: function(data, id){
+          return $http.patch('/api/events/toggleVisiblity/'+id, data).then(function (response){
+              return response.data;
+          });
+        },
         getEvents: function(data){
           return $http.get('/api/events/getMultiple/' + data._id).then(function (response){
               return response.data;

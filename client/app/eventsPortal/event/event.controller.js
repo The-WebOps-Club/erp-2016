@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('EventsPortalEventCtrl', function ($scope,$http,EventsPortalService, $mdToast, $mdDialog) {
+  .controller('EventsPortalEventCtrl', function ($scope,$http,EventsPortalService, $mdToast, $mdDialog, Auth) {
     var id = location.pathname.split('/')[3];
  	EventsPortalService.getEvent(id).then(function (event){
  		var converter = new showdown.Converter();
@@ -33,6 +33,8 @@ angular.module('erp2015App')
 				$scope.currentTab=$scope.eventTabs[0]._id;
 		});
 
+		$scope.isAdmin = Auth.isAdmin;
+
  		$scope.buildCatString = function() {
  			var cat="";
 	 		for(var i=0; i<$scope.event.eventCategory.length; i++) {
@@ -41,6 +43,25 @@ angular.module('erp2015App')
 	 				cat+=", ";
 	 		}
 	 		return cat;
+	 	}
+
+	 	$scope.getVisiblity = function () {
+	 		if($scope.event.acceptedByAdmin)
+	 			return "";
+	 		else
+	 			return "in";
+	 	}
+
+	 	$scope.toggleVisiblity = function () {
+			EventsPortalService.toggleEvent({
+				acceptedByAdmin: $scope.event.acceptedByAdmin
+			}, $scope.event._id).then(function () {
+				$mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
+			})
+      		.catch(function (err) {
+				$mdToast.show($mdToast.simple().content('You are not authorized to do that.').hideDelay(5000));
+				$scope.event.acceptedByAdmin=!$scope.event.acceptedByAdmin;
+      		});
 	 	}
 
 		$scope.showAdvanced = function(ev) {

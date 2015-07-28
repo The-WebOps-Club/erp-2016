@@ -47,11 +47,21 @@
     <md-card>
       <md-card-content>
         <table width="100%"><tr>
-        <td width="50%">
-          <h1>{{ event.name }}</h1>
-          <font color="#777777">{{ buildCatString() }}</font>
+        <td width="35%">
+          <table><tr>
+            <td>
+              <h1>{{ event.name }}</h1>
+              <font color="#777777">{{ buildCatString() }}</font>
+            </td>
+            <td style="text-align: left; position: relative; top: -7px; padding-left: 24px;">
+              <div style="position: relative; top: 5px;"><md-switch class="md-primary" ng-model="event.acceptedByAdmin" aria-label="Switch 1" ng-change="toggleVisiblity()" ng-show="isAdmin()">Event {{ getVisiblity() }}visible to public</md-switch></div>
+              <ng-md-icon icon="verified_user" style="fill: green; position: relative; top: 6px;" size="24" ng-show="!isAdmin() && event.acceptedByAdmin"></ng-md-icon> <span ng-show="!isAdmin() && event.acceptedByAdmin">Event approved</span>
+              <ng-md-icon icon="report" style="fill: orange; position: relative; top: 6px;" size="24" ng-show="!isAdmin() && !event.acceptedByAdmin"></ng-md-icon> <span ng-show="!isAdmin() && !event.acceptedByAdmin">Event not approved</span>
+            </td>
+          </tr>
+          </table>
         </td>
-        <td width="50%" style="text-align: right">
+        <td width="35%" style="text-align: right">
           <font color="#777777">
             Created on {{ event.createdOn| date: 'medium' }}<br />
             Last updated on {{ event.updatedOn| date: 'medium' }}<br />
