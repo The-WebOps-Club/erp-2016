@@ -50,6 +50,7 @@
         <td width="35%">
           <table><tr>
             <td>
+              {{ event.eventDate }}
               <h1>{{ event.name }}</h1>
               <font color="#777777">{{ buildCatString() }}</font>
             </td>
@@ -83,6 +84,17 @@
 
       <md-content class="md-padding">
         <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
+          <md-tab md-on-select="setTab(-1)" ng-show="isAdmin()" label="Contact">
+            <table>
+              <tr>
+                <td style="padding: 16px;" style="padding: 16px;"><b>Name</b></td>
+                <td style="padding: 16px;"><b>Mobile Number</b></td>
+              <tr ng-repeat="assignee in assignees">
+                <td style="padding: 16px;">{{ assignee.name }}</td>
+                <td style="padding: 16px;">{{ assignee.phoneNumber }}</td>
+              </tr>
+            </table>
+          </md-tab>
           <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
             <div id='tab1'>
               <table width="100%">
@@ -127,7 +139,7 @@
   </div>
   <script type="text/ng-template" id="dialog1.tmpl.html">
     <md-dialog aria-label="Update" flex="50">
-      <div style="padding: 25px;">
+      <div style="padding: 25px; overflow:auto;">
         <form name="newEventForm" ng-submit="updateEvent(newEventForm)">
           <md-input-container>
             <label>Event Name</label>
@@ -150,6 +162,26 @@
             </span>
             <span>{{ errors.other }}</span>
           </div>
+
+          <md-input-container>
+            <label>Venue</label>
+            <input name="title" ng-model="event.venue" ng-required="true" mongoose-error />
+          </md-input-container>
+          <table><tr>
+          <td><md-input-container flex>
+            <label>Event Date</label>
+            <input type='date' ng-model="eventDate">
+          </md-input-container></td>
+
+          <td><md-input-container flex>
+            <label>Start Registration</label>
+            <input type='date' ng-model="startReg">
+          </md-input-container></td>
+
+          <td><md-input-container flex>
+            <label>End Registration</label>
+            <input type='date' ng-model="endReg" min="{{startReg}}">
+          </md-input-container></td></tr></table><br />
 
           <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
             <md-autocomplete
@@ -179,6 +211,10 @@
               <strong>{{ $chip.title }}</strong>
             </md-chip-template>
           </md-chips>
+
+          <md-checkbox ng-model="event.requireTDP" aria-label="Require TDP Submissions">
+            Require TDP Submissions
+          </md-checkbox>
 
           <md-button class="md-primary md-raised" type="submit">Update</md-button><md-button ng-click='cancel()' type="button">Close window</md-button>
         </form>  

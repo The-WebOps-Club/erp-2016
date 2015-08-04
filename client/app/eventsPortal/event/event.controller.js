@@ -6,6 +6,7 @@ angular.module('erp2015App')
  	EventsPortalService.getEvent(id).then(function (event){
  		var converter = new showdown.Converter();
  		$scope.event = event;
+ 		$scope.assignees=event.assignees;
  		var xdata;
 		$scope.currentTab="";
  		$scope.markdown=[];
@@ -34,6 +35,13 @@ angular.module('erp2015App')
 		});
 
 		$scope.isAdmin = Auth.isAdmin;
+
+		EventsPortalService.getCoords()
+		.then(function (data) {
+			$scope.coords = data;
+		},function(err) {
+			console.log(err);
+		});
 
  		$scope.buildCatString = function() {
  			var cat="";
@@ -171,6 +179,8 @@ angular.module('erp2015App')
 		}
 
     	$scope.saveChanges = function() {
+    		if($scope.currentTab==-1)
+    			return;
 		    if($scope.inServer[$scope.currentTab]!=true) {
 	    		var tab=$scope.eventTabs.filter(function (tab) {
 	    			return tab._id==$scope.currentTab;
@@ -237,7 +247,11 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
 	$scope.event = event;
 	$scope.selectedEventLists = selectedEventLists;
 	$scope.buildCatString = buildCatString;
-
+    $scope.selectedCoords=event.assignees;
+    console.log(event);
+    $scope.eventDate=new Date(event.eventDate);
+    $scope.startReg=new Date(event.startReg);
+    $scope.endReg=new Date(event.endReg);
 
 	EventsPortalService.getAllEventLists()
 	.then(function (data) {
@@ -251,6 +265,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
 	},function(err) {
 		console.log(err);
 	});
+
 	$scope.hide = function() {
 		$mdDialog.hide();
 	};
@@ -264,6 +279,10 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
  			event.info = gevent.info;
  			event.createdOn = gevent.createdOn;
  			event.updatedOn = gevent.updatedOn;
+ 			$scope.eventDate=new Date(event.eventDate);
+ 			$scope.startReg=new Date(event.startReg);
+ 			$scope.endReg=new Date(event.endReg);
+ 			console.log(event.assignees);
  		});
 	};
 
@@ -287,13 +306,20 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
             name: $scope.event.name,
             info: $scope.event.info,
             assignees: $scope.coordsIds,
-            eventCategory: $scope.eventListIds	
-          }, $scope.event._id).then(function () {
+            eventCategory: $scope.eventListIds,
+            eventDate: $scope.eventDate.toDateString(),
+            startReg: $scope.startReg.toDateString(),
+            endReg: $scope.endReg.toDateString(),
+            venue: $scope.event.venue,
+            requireTDP: $scope.event.requireTDP
+          }, event._id).then(function () {
 		  	$mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
-		  	$scope.buildCatString();
 		  });
+	  	$mdDialog.cancel();
       }
-	  $mdDialog.cancel();
+      else {
+		$mdToast.show($mdToast.simple().content('End of registration must be AFTER the start of registration.').hideDelay(5000));
+	  }
     };
 }
 

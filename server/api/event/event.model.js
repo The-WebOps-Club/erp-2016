@@ -6,6 +6,7 @@ var mongoose = require('mongoose'),
 var EventSchema = new Schema({
   name: String,
   info: String,
+  venue: String,
   eventTabs: [{ type: Schema.Types.ObjectId, ref: 'EventTab' }],
   assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   eventCategory: [{ type: Schema.Types.ObjectId, ref: 'EventList' }],
@@ -13,7 +14,11 @@ var EventSchema = new Schema({
   updatedOn: Date,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-  acceptedByAdmin: Boolean
+  acceptedByAdmin: Boolean,
+  eventDate: Date,
+  startReg: Date,
+  endReg: Date,
+  requireTDP: Boolean
 });
 
 module.exports = mongoose.model('Event', EventSchema);
