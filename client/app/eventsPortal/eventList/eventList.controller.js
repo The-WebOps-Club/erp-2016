@@ -48,8 +48,14 @@ angular.module('erp2015App')
     }
 
     $scope.getEvents = function (eventList) {
-        $scope.events = eventList.events;
-        console.log(eventList.events);
+        EventsPortalService.getEvents({
+            _id: eventList._id
+        })
+        .then(function (data){
+            $scope.events = data;
+        });
+        //$scope.events = eventList.events;
+        console.log(eventList);
         $scope.eventsShow = true;
     };      
 
