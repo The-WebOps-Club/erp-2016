@@ -13,7 +13,11 @@ exports.index = function(req, res) {
 
 // Get a single event
 exports.show = function(req, res) {
-  Event.findById(req.params.id).populate('createdBy','name').populate('lastUpdatedBy','name').populate('assignees','name phoneNumber').populate('eventCategory','title').exec(function (err, event) {
+  Event.findById(req.params.id)
+  .populate('createdBy','name').populate('lastUpdatedBy','name')
+  .populate('assignees','name phoneNumber')
+  .populate('eventCategory','title')
+  .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
     return res.json(event);
