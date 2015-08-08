@@ -33,11 +33,12 @@ angular.module('erp2015App')
         url: '/editProfile',
         templateUrl: 'app/account/editProfile/editProfile.html',
         controller: 'editProfileCtrl',
-        // data: {
-        //   permissions: {
-        //       except: ['anonymous'],
-        //       redirectTo: 'login'
-        //   }        
-        // }                
+        data: {
+          permissions: {
+              only: ['user','admin','core'],
+              except: ['anonymous'],
+              redirectTo: 'login'
+          }        
+        }                
       });                  
   });
