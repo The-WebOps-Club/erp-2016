@@ -1,6 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div layout="row" layout-margin>
+<!-- 
   <div class="eventsPortal eventContainer" flex flex-order="1">
     <div class="md-whiteframe-z1">
       <md-toolbar class="md-theme-light">
@@ -103,24 +104,243 @@
                     <p>{{ eventTab.name | characters:20 :true }}</p>
                   </div>
               </div>
+ -->
+  <style>
+    .sample {
+      width: 70%;
+      height: auto;
+      overflow-y: scroll;
+      float:left;
+      overflow-y: auto;
+      position: absolute;
+      left: 15%;
+    }
 
-              <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title"> Info </h6>
-                    <p>{{ eventTab.info }}</p>
-                  </div>
-              </div>
+    textarea, #summer div {
+      display: inline-block;
+      width: 100%;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      padding: 0 20px;
+    }
 
-              <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title"> Tab Number </h6>
-                    <p>{{ eventTab.tabNumber }}</p>
-                  </div>
-              </div>
+    textarea, #summer div {
+      vertical-align: top;
+      border: none;
+      border-right: 1px solid #ccc;
+      outline: none;
+      background-color: #f6f6f6;
+      font-size: 14px;
+      padding: 20px;
+      vertical-align: top;
+    }
+
+    .code {
+      font-family: courier, monospace;
+    }
+
+    md-select {
+        display: inline-block;
+        margin-top: 2px;
+        width: 100%;
+    }
+  </style>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <div class="sample tabsdemoDynamicTabs" layout="column" ng-app="MyApp">
+    <md-card>
+      <md-card-content>
+        <table width="100%"><tr>
+        <td width="35%">
+          <table><tr>
+            <td>
+              {{ event.eventDate }}
+              <h1>{{ event.name }}</h1>
+              <font color="#777777">{{ buildCatString() }}</font>
+            </td>
+            <td style="text-align: left; position: relative; top: -7px; padding-left: 24px;">
+              <div style="position: relative; top: 5px;"><md-switch class="md-primary" ng-model="event.acceptedByAdmin" aria-label="Switch 1" ng-change="toggleVisiblity()" ng-show="isAdmin()">Event {{ getVisiblity() }}visible to public</md-switch></div>
+              <ng-md-icon icon="verified_user" style="fill: green; position: relative; top: 6px;" size="24" ng-show="!isAdmin() && event.acceptedByAdmin"></ng-md-icon> <span ng-show="!isAdmin() && event.acceptedByAdmin">Event approved</span>
+              <ng-md-icon icon="report" style="fill: orange; position: relative; top: 6px;" size="24" ng-show="!isAdmin() && !event.acceptedByAdmin"></ng-md-icon> <span ng-show="!isAdmin() && !event.acceptedByAdmin">Event not approved</span>
+            </td>
+          </tr>
+          </table>
+        </td>
+        <td width="35%" style="text-align: right">
+          <font color="#777777">
+            Created on {{ event.createdOn| date: 'medium' }}<br />
+            Last updated on {{ event.updatedOn| date: 'medium' }}<br />
+          </font>
+        </td></tr>
+        <tr>
+          <td colspan="2">
+            <br />
+            {{ event.info }}
+          </td>
+        </tr>
+      </table>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button ng-click="showAdvanced($event)">Edit event details</md-button>
+      </div>
+    </md-card>
+    <div class="tabStuff">
+
+      <md-content class="md-padding">
+        <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
+          <md-tab md-on-select="setTab(-1)" label="Contact">
+            <table>
+              <tr>
+                <td style="padding: 16px;" style="padding: 16px;"><b>Name</b></td>
+                <td style="padding: 16px;"><b>Mobile Number</b></td>
+              <tr ng-repeat="assignee in assignees">
+                <td style="padding: 16px;">{{ assignee.name }}</td>
+                <td style="padding: 16px;">{{ assignee.phoneNumber }}</td>
+              </tr>
+            </table>
+          </md-tab>
+          <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
+            <div id='tab1'>
+              <table width="100%">
+                <tr width="100%">
+                  <td width="30%">
+                    <md-input-container>
+                      <label>Tab name</label>
+                      <input required="" name="description" ng-model="tab.name">
+                    </md-input-container>
+                  </td>
+                  <td style="text-align: right">
+                    <md-button class="md-primary md-raised tabStuff" ng-click="saveChanges()">Save Tab Changes</md-button>
+                    <md-button class="md-primary md-raised md-warn" ng-click="removeTab()">Remove Tab</md-button>
+                  </td>
+                </tr>
+                  <tr>
+                <div class="summer">
+                  <td width="50%" height="auto"><textarea ng-model="markdown[currentTab]" class="code"></textarea></td>
+                  <td width="50%"><div v-html="input | marked" ng-bind-html="xmark(markdown[currentTab])" style="padding-left: 16px"></div></td>
+                </div>
+                  </tr>
+                </table>
             </div>
-          </md-list-item>
-        </md-list>
+          </md-tab>
+        </md-tabs>
       </md-content>
     </div>
   </div>
+  <div style="padding-top: 0; position: fixed; right: 0px; bottom: 0px; padding-right: 6px; padding-bottom: 6px;" class="tabStuff">
+    <md-button class="md-fab md-mini md-primary" aria-label="New Tab" ng-click="newTab()">
+    <md-icon style="content:
+  url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAQAAABKfvVzAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAzklEQVQokc2QzwqCQBCHZ8t7qCEiYnf1JoX0Ej6Hj2ineoeQiPBWau5RxEMyjX8SvMSeyvnBwA7zwewH8K9aUERLg5XkuI4rS7oYcIWzXpyK42V9EwMQcIMPvKOJwoBJ6zMAFrAcwmKrBWIL2DibStZBlmxnt+/j+WFQF3URBp7/mdnORHICCYksefnsklccG2wqXubDhLeSk8nVGh4w7S5vk+GLko3vFCNUcQIwVOiTfQzc0nJG3RhnCm38XOvMAYU0RtSFAUbW1S8i51VvolDI45WzHX4AAAAASUVORK5CYII=);
+  " style="color: greenyellow;">
+    </md-icon><md-tooltip>New Tab</md-tooltip>
+    </md-button>
+    <md-button class="md-fab md-mini md-primary" aria-label="Reorder tabs" ng-click="reorderTabs()">
+    <md-icon style="content:
+  url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACtJREFUeNpiYBgFo4BSwIjM+Q8EVDEUCOhmwSgYjeRRMBrJo2AUgABAgAEAdVMYB4OhELoAAAAASUVORK5CYII=);
+  " style="color: greenyellow;"></md-icon>
+    <md-tooltip>Reorder Tabs</md-tooltip>
+    </md-button>
+  </div>
+  <script type="text/ng-template" id="dialog1.tmpl.html">
+    <md-dialog aria-label="Update" flex="50">
+      <div style="padding: 25px; overflow:auto;">
+        <form name="newEventForm" ng-submit="updateEvent(newEventForm)">
+          <md-input-container>
+            <label>Event Name</label>
+            <input name="title" ng-model="event.name" ng-required="true" mongoose-error />
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="form.title.$error.required && submitted">
+              Title is required.
+            </span>
+            <span>{{ errors.other }}</sapn>
+          </div>
+
+          <md-input-container>
+            <label>Event Info</label>
+            <textarea required name="info" ng-model="event.info" mongoose-error font-face='sans-serif'></textarea>
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="form.info.$error.required && submitted">
+              Info is required.
+            </span>
+            <span>{{ errors.other }}</span>
+          </div>
+
+          <md-input-container>
+            <label>Venue</label>
+            <input name="title" ng-model="event.venue" ng-required="true" mongoose-error />
+          </md-input-container>
+          <table><tr>
+          <td><md-input-container flex>
+            <label>Event Date</label>
+            <input type='date' ng-model="eventDate">
+          </md-input-container></td>
+
+          <td><md-input-container flex>
+            <label>Start Registration</label>
+            <input type='date' ng-model="startReg">
+          </md-input-container></td>
+
+          <td><md-input-container flex>
+            <label>End Registration</label>
+            <input type='date' ng-model="endReg" min="{{startReg}}">
+          </md-input-container></td></tr></table><br />
+
+          <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in coords"
+              md-item-text="item.name"
+              placeholder="Assign a team member">
+                <span md-highlight-text="searchText">{{item.name}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.name }}</strong>
+            </md-chip-template>
+          </md-chips>
+          <br>
+
+          <md-chips ng-model="selectedEventLists" md-autocomplete-snap md-require-match >
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in eventLists"
+              md-item-text="item.title"
+              placeholder="Assign an event list">
+                <span md-highlight-text="searchText">{{item.title}}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.title }}</strong>
+            </md-chip-template>
+          </md-chips>
+
+          <md-checkbox ng-model="event.requireTDP" aria-label="Require TDP Submissions">
+            Require TDP Submissions
+          </md-checkbox>
+
+          <md-button class="md-primary md-raised" type="submit">Update</md-button><md-button ng-click='cancel()' type="button">Close window</md-button>
+        </form>  
+      </div>
+    </md-dialog>
+  </script>
+
+  <script type="text/ng-template" id="dialog2.tmpl.html">
+    <md-dialog aria-label="Mango (Fruit)" flex="50">
+      <div style="padding: 25px;">
+        <table>
+          <tr>
+            <td ng-repeat="tab in xeventTabs" style="padding: 16px;">
+              <md-select class="order_{{tab._id}}" style="width: 100%" ng-model="currentNums[$index]" ng-change="clog($index)">
+                <md-option ng-repeat="xtab in xeventTabs" value="{{xtab.tabNumber}}">{{xtab.name}}</md-option>
+              </md-select>
+            </td>
+          </tr>
+        </table>
+        <md-button class="md-primary md-raised" type="button" ng-click="doReorder()">Update</md-button>
+        <md-button ng-click='cancel()' type="button">Close window</md-button>
+      </div>
+    </md-dialog>
+  </script>
 </div>

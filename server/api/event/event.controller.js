@@ -15,7 +15,11 @@ exports.index = function(req, res) {
 
 // Get a single event
 exports.show = function(req, res) {
-  Event.findById(req.params.id).populate('createdBy','name').populate('lastUpdatedBy','name').populate('assignees','name').populate('eventCategory','title').exec(function (err, event) {
+  Event.findById(req.params.id)
+  .populate('createdBy','name').populate('lastUpdatedBy','name')
+  .populate('assignees','name phoneNumber')
+  .populate('eventCategory','title')
+  .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
     return res.json(event);
@@ -52,9 +56,8 @@ exports.update = function(req, res) {
   Event.findById(req.body.event._id, function (err, event) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
-
-    var updated = _.merge(event, req.body.event);
-    //for saving change in name or info w/out change in assignee or eventList
+    req.body.updatedOn = Date.now();
+    var updated = _.assign(event, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       if(!req.body.assignees && !req.body.eventCategory){
@@ -63,8 +66,8 @@ exports.update = function(req, res) {
     });
     
     //For findig id of Assignee and saving
-    if(req.body.assignees){
-      User.findOne({'name': req.body.assignees},'_id',function (err,user){
+    if(req.body.assignees) {
+      User.findOne({'name': req.body.assignees}, '_id', function (err, user) {
         if(err) console.log(err);
         if(user != null){
             if(updated.assignees.indexOf(user._id) == -1)
@@ -79,9 +82,9 @@ exports.update = function(req, res) {
     }
 
     //For finding id of eventList and saving
-    if(req.body.eventCategory){
-      EventList.findOne({'title': req.body.eventCategory},'_id',function (err,eventList){
-        if(err){ console.log(err);}
+    if(req.body.eventCategory) {
+      EventList.findOne({'title': req.body.eventCategory}, '_id',function (err, eventList) {
+        if(err) { console.log(err); }
         if(eventList != null){
             if(updated.eventCategory.indexOf(eventList._id) == -1)
               updated.eventCategory.push(eventList._id);

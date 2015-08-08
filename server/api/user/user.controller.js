@@ -44,6 +44,7 @@ exports.create = function (req, res, next) {
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
+  newUser.roomNumber="1234";
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
@@ -335,7 +336,7 @@ exports.authCallback = function(req, res, next) {
 };
 
 exports.getCoords = function (req, res, next) {
-  User.find({ role:'coord' }, 'name _id', function (err, result) {
+  User.find({ role:'coord' }, 'name _id phoneNumber', function (err, result) {
     if (err) { console.log("minu");return handleError(res, err); }
     return res.json(result);
   });
