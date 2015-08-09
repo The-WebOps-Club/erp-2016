@@ -18,10 +18,10 @@ angular.module('erp2015App')
         console.log(err);
       });  
     $scope.selectedCoords = []; 
-    $scope.selectedEventLists=[];
+    $scope.selectedEventLists = [];
    
-    $scope.myImage='';
-    $scope.myCroppedImage='';
+    $scope.myImage = '';
+    $scope.myCroppedImage = '';
 
     var handleFileSelect = function (evt) {
       var myfile = evt.currentTarget.files[0];
@@ -35,7 +35,7 @@ angular.module('erp2015App')
     };
     angular.element(document.querySelector('#file')).on('change', handleFileSelect);
 
-   	$scope.newEventList = function(form) {
+   	$scope.newEventList = function (form) {
     	$scope.submitted = true;
 
       /*console.log($scope.eventList.title)
@@ -58,7 +58,7 @@ angular.module('erp2015App')
       		info: $scope.eventList.info
     		})
     		.then(function (data) {
-          	$state.go('eventList');
+          $state.go('eventList');
     		})
     		.catch(function (err) {
       		err = err.data;
