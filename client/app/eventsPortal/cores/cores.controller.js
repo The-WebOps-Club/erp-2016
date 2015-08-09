@@ -3,6 +3,23 @@
 angular.module('erp2015App')
   .controller('EventsPortalCoresCtrl', function ($scope, EventsPortalService, $state, $http, $upload) {
     $scope.submitted = false;
+
+    EventsPortalService.getCoords()
+      .then(function (data) {
+        $scope.coords = data;
+      },function (err){
+        console.log(err);
+      });
+
+    EventsPortalService.getAllEventLists()
+      .then(function (data) {
+        $scope.eventLists = data;
+      },function (err){
+        console.log(err);
+      });  
+    $scope.selectedCoords = []; 
+    $scope.selectedEventLists = [];
+
     $scope.myImage = '';
     $scope.myCroppedImage = '';
 
@@ -19,15 +36,7 @@ angular.module('erp2015App')
       }
       return new Blob([new Uint8Array(array)], {type: mimeString});
     };
-    
-    EventsPortalService.getAllEventLists()
-      .then(function (data) {
-        $scope.eventLists = data;
-      },function (err){
-        console.log(err);
-      });  
-    $scope.selectedCoords = []; 
-    $scope.selectedEventLists = [];
+
    
     var handleFileSelect = function(evt) {
       var myfile = evt.currentTarget.files[0];
@@ -115,7 +124,6 @@ angular.module('erp2015App')
           });
         });
 
-<<<<<<< HEAD
      		// EventsPortalService.createEventList({
         //   title: $scope.eventList.title,
         // 	 info: $scope.eventList.info,
@@ -128,18 +136,6 @@ angular.module('erp2015App')
      		// .catch(function (err) {
         //   err = err.data;
         //   $scope.errors = {};
-=======
-    		EventsPortalService.createEventList({
-      		title: $scope.eventList.title,
-      		info: $scope.eventList.info
-    		})
-    		.then(function (data) {
-          $state.go('eventList');
-    		})
-    		.catch(function (err) {
-      		err = err.data;
-      		$scope.errors = {};
->>>>>>> eventsPortal-events
 
         // 	// Update validity of form fields that match the mongoose errors
         // 	 angular.forEach(err.errors, function (error, field) {
