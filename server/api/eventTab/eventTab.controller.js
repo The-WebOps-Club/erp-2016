@@ -24,7 +24,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   EventTab.create(req.body, function(err, eventTab) {
     if(err) { return handleError(res, err); }
-    return res.json(201, eventTab);
+    return res.status(201).json(eventTab);
   });
 };
 
@@ -37,7 +37,7 @@ exports.update = function(req, res) {
     var updated = _.merge(eventTab, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.json(200, eventTab);
+      return res.status(200).json(eventTab);
     });
   });
 };
@@ -49,11 +49,11 @@ exports.destroy = function(req, res) {
     if(!eventTab) { return res.send(404); }
     eventTab.remove(function(err) {
       if(err) { return handleError(res, err); }
-      return res.send(204);
+      return res.sendStatus(204);
     });
   });
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }

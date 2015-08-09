@@ -63,6 +63,24 @@ angular.module('erp2015App')
         return $http.get('/api/events/' + eventId).then(function (response) {
           return response.data;
         });
+      },
+      deleteEventTab: function (tabId) {
+        return $http.delete("/api/eventTabs/" + tabId);
+      },
+      createEventTab: function (data) {
+        return $http.post("/api/eventTabs", data).then(function (response) {
+          return response.data;
+        });
+      },
+      getEventTabs: function (eventId) {
+        return $http.get('/api/eventTabs/' + eventId).then(function (response) {
+          return response.data;
+        });
+      },
+      updateTab: function (tabId, updatedTab) {
+        return $http.put("/api/eventTabs/" + tabId, updatedTab).then(function (response) {
+          return response;
+        });
       }
   	};
   });
