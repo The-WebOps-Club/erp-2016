@@ -14,7 +14,7 @@ var EventSchema = new Schema({
   updatedOn: Date,
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-  acceptedByAdmin: Boolean,
+  acceptedByAdmin: { type: Boolean, default: false },
   eventDate: Date,
   startReg: Date,
   endReg: Date,
