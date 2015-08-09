@@ -12,91 +12,343 @@
 			
 		</div>
 </div> -->
- 
-
-<div layout="row">
-  
-    <md-whiteframe class="md-whiteframe-z3" flex="50" offset="25" >
-		<md-toolbar class="md-primary">
-	        <h1 class="md-toolbar-tools">
-	          Create a new Post.....
-	        </h1>
-	      </md-toolbar>
-
-	      <md-content layout-padding>
-	        <form class="form" name="wallPost" ng-submit="createPost()" >
-
-	          <md-input-container>
-	            <label>Title</label>
-
-	            <input type="text" name="newPostTitle" ng-model="newPostTitle" >
-	          </md-input-container>
-
-	          <md-input-container>
-	            <label>Info</label>
-
-	            <input type="text" name="newPost" ng-model="newPost" >
-	          </md-input-container>          
-	          <div>
-	            <md-button class="md-raised md-primary" type="submit">
-	              Post
-	            </md-button>
-	          </div>
-
-	        </form>
-	      </md-content>
-  </md-whiteframe>
-</div>
-
-<br><br>
-<div infinite-scroll="load()">	
-	<div ng-repeat="post in posts">
-	  <div layout="row">
-	  	<md-whiteframe class="md-whiteframe-z4" flex="50" offset="25" style="background-color : #F5F5F0">
-	  		<div layout="column">
-		  		<div flex layout="row">
-		  			<div flex="10">
-		  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" class="face" alt="{{post.createdBy.name}}">
-		  			</div>
-		  			<div flex>		  			
-		  				<h3>{{post.title}}</h3>
-		  					<div layout="row">
-		  						<div flex>
-		  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon>  {{post.wall.name}}</h4>
-		  						</div>
-		  						<div flex layout-align="end">
-		  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
-		  						</div>
-		  					</div>
-		  				<h5>{{post.info}}</h5>
-		  			</div>
-		  		</div>
-		  		<md-divider></md-divider><br>
-		  		<div ng-repeat="comment in post.comments">
-			  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
-			  			<div flex="5">
-			  				<img ng-src="api/users/{{comment.createdBy._id/profilePic}}" class="face" alt="{{comment.createdBy.name}}">
-			  			</div>
-			  			<div flex>
-				  			<div layout="row">
-				  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
-				  				<div flex layout-align="end"><h6>{{ commnent.createdOn | date : 'medium'}}</h6></div>
-				  			</div>
-				  			<h6>{{comment.info}}</h6>
-			  			</div>
-			  		</div>
-		  		</div>
-		  		
-		  		<div flex offset="10">
-			  		<form  ng-submit="addComment(post)" name="commentPost">
-						<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..." style="resize: none"></textarea>
-					</form>
+	<!-- BODY -->
+	<div layout="row" class="body">
+		<!-- MAIN -->
+		<div flex="66" offset="10">
+		<div layout="column" class="main md-whiteframe-z3" flex="66" offset="5" >
+			<div layout="row" id="profile_back">
+			<div layout="column">
+				<div id="profile_pic">
+				<img ng-src="api/users/{{user.name}}/profilePic" alt="{{user.name}}" />
 				</div>
-				<br>
-            </div>
-	  	</md-whiteframe>
-	  </div>
-	  <br>
-	</div>
-</div>
+			</div>	
+				<div layout="column" class="name_and_tabs">
+					<div id="profile_title">
+						{{user.name}}
+						<!-- <md-button  ng-controller="RightCtrl" ng-click="toggleRight()"
+	            				class="md-raised pull-right" hide-gt-md>
+	            				SIDE BAR
+	        		  		</md-button>    -->    				
+	        		</div>
+	        		<!-- <hr> -->
+					<div id="tabs">
+						<md-tabs md-dynamic-height md-border-bottom flex="55">
+							<md-tab label="Profile">
+							<md-content>
+								<div layout="column">
+									<md-toolbar class="md-primary">
+										<div layout="row">
+										<div>
+									        <h1 class="md-toolbar-tools">
+									          About
+									        </h1>
+									       </div> 
+									        <div offset="60">						
+												<md-button class="md-raised pull-right view" id="edit" ng-click="shift()">
+												<div layout="row">
+												<ng-md-icon icon="mode_edit" style="fill: green;" size="24"></ng-md-icon>
+													<span class="edit_text" ><b>Edit Profile</b></span>
+												</div>
+												</md-button>
+												<md-button class="md-raised pull-right input" id="save" >
+												<div layout="row">
+												<ng-md-icon icon="save" style="fill: green;" size="24"></ng-md-icon>
+													<span class="save_text" ><b>Save Changes</b></span>
+												</div>
+												</md-button>
+												<md-button class="md-raised pull-right input" id="view">
+												<div layout="row">
+												<ng-md-icon icon="person" style="fill: green;" size="24"></ng-md-icon>
+													<span class="view_text" ><b>View Profile</b></span>
+												</div>
+												</md-button>
+												
+											</div>
+										</div>
+									</md-toolbar>
+									<div layout="column">
+										<div layout="row">
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="perm_identity" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container class="md-icon-float input " >
+									        	<label>Name</label>
+									       		<input ng-model="user.name" type="text">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Name</label>
+										    	{{user.name}}
+										    </div>
+									    </div>
+									    
+									    <br>
+									    <div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="format_list_numbered" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container class="md-icon-float input " >
+									        	<label>Roll no</label>
+									       		<input ng-model="user.name" type="text">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Roll no</label>
+										    	{{user.roll_no}}
+										    </div>
+									    </div>
+									    <br>
+									    <div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="phone" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container class="md-icon-float input " >
+									        	<label>Phone</label>
+									       		<input ng-model="user.name" type="text">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Phone</label>
+										   	 	{{user.phone}}
+										    </div>
+									    </div>
+									    <br>
+									    <div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="email" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container class="md-icon-float input " >
+									        	<label>Email</label>
+									       		<input ng-model="user.name" type="text">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Email</label>
+										    	{{user.email}}
+										    </div>
+									    </div>
+									    <br>
+									    <div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="event" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container class="md-icon-float input " >
+									        	<label>Date of birth</label>
+									       		<input ng-model="" type="date">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Date of birth</label>
+										    	{{user.name}}
+										    </div>
+									    </div>
+									    <br>
+									    <div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="home" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<div>
+											<md-input-container  class="md-icon-float ">
+									       		<md-select placeholder="Hostel" ng-model="user.hostel">
+										        	 	<md-option value="Alakananda">Alakananda</md-option>
+													    <md-option value="Badra">Badra</md-option>
+													    <md-option value="Brahmaputra">Brahmaputra</md-option>    
+													    <md-option value="Cauvery">Cauvery</md-option>
+													    <md-option value="Ganga">Ganga</md-option>
+													    <md-option value="Godavari">Godavari</md-option>
+													    <md-option value="Jamuna">Jamuna</md-option>
+													    <md-option value="Krishna">Krishna</md-option>
+													    <md-option value="Mahanadhi">Mahanadhi</md-option>
+													    <md-option value="Mandakini">Mandakini</md-option>
+													    <md-option value="Narmada">Narmada</md-option>
+													    <md-option value="Pampa">Pampa</md-option>
+													    <md-option value="Saraswathi">Saraswathi</md-option>
+													    <md-option value="Sarayu">Sarayu</md-option>
+													    <md-option value="Sarayu Extension">Sarayu Extension</md-option>
+													    <md-option value="Sharavati">Sharavati</md-option>
+													    <md-option value="Sindhu">Sindhu</md-option>
+													    <md-option value="Tamraparni">Tamraparni</md-option>
+													    <md-option value="Tapti">Tapti</md-option>
+													    <md-option value="Tunga">Tunga</md-option>
+													    <md-option value="Sabarmati">Sabarmati</md-option>
+										        </md-select>
+									    	</md-input-container>
+									    	</div>
+									    	<div>
+									    	<md-input-container class="md-icon-float ">
+									        	<label>Room no</label>
+									       		<input ng-model="user.name" type="text">
+									    	</md-input-container>
+									    	</div>
+											<div layout="column" flex="55" class="view input">
+										    	<label>Hostel</label>
+										    	{{user.hostel}}
+										   	</div>
+										</div>
+									</div>
+								</div>	
+							</md-content>
+							</md-tab>
+							<md-tab label="Wall">
+							<md-content>
+								<div layout="row">
+								    <md-whiteframe class="md-whiteframe-z3" flex="100">
+										<md-toolbar class="md-primary">
+									        <h1 class="md-toolbar-tools">
+									          Create a new Post.....
+									        </h1>
+									      </md-toolbar>
 
+									      <md-content layout-padding>
+									        <form class="form" name="wallPost" ng-submit="createPost()" >
+
+									          <md-input-container>
+									            <label>Title</label>
+
+									            <input type="text" name="newPostTitle" ng-model="newPostTitle" >
+									          </md-input-container>
+
+									          <md-input-container>
+									            <label>Info</label>
+
+									            <input type="text" name="newPost" ng-model="newPost" >
+									          </md-input-container>          
+									          <div>
+									            <md-button class="md-raised md-primary" type="submit">
+									              Post
+									            </md-button>
+									          </div>
+
+									        </form>
+									      </md-content>
+								    </md-whiteframe>
+								</div>
+								<br><br>
+								<div infinite-scroll="load()">	
+									<div ng-repeat="post in posts">
+									  <div layout="row">
+									  	<md-whiteframe class="md-whiteframe-z4" flex="50" offset="25" style="background-color : #F5F5F0">
+									  		<div layout="column">
+										  		<div flex layout="row">
+										  			<div flex="10">
+										  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" class="face" alt="{{post.createdBy.name}}">
+										  			</div>
+										  			<div flex>		  			
+										  				<h3>{{post.title}}</h3>
+										  					<div layout="row">
+										  						<div flex>
+										  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon><ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon>  {{post.wall.name}}</h4>
+										  						</div>
+										  						<div flex layout-align="end">
+										  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
+										  						</div>
+										  					</div>
+										  				<h5>{{post.info}}</h5>
+										  			</div>
+										  		</div>
+										  		<md-divider></md-divider><br>
+										  		<div ng-repeat="comment in post.comments">
+											  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
+											  			<div flex="5">
+											  				<img ng-src="api/users/{{comment.createdBy._id/profilePic}}" class="face" alt="{{comment.createdBy.name}}">
+											  			</div>
+											  			<div flex>
+												  			<div layout="row">
+												  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
+												  				<div flex layout-align="end"><h6>{{ commnent.createdOn | date : 'medium'}}</h6></div>
+												  			</div>
+												  			<h6>{{comment.info}}</h6>
+											  			</div>
+											  		</div>
+										  		</div>
+										  		
+										  		<div flex offset="10">
+											  		<form  ng-submit="addComment(post)" name="commentPost">
+														<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..." style="resize: none"></textarea>
+													</form>
+												</div>
+												<br>
+								            </div>
+									  	</md-whiteframe>
+									  </div>
+									  <br>
+									</div>
+								</div>
+							</md-content>
+							</md-tab>
+							<md-tab label="Docs"></md-tab>
+							<md-tab label="Portal"></md-tab>
+						</md-tabs>
+					</div>
+	       		</div>	
+			</div>
+		</div>
+		</div>
+
+			
+		<!-- Gap -->
+		<div>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</div>
+		<!-- SIDEBAR -->
+			
+		<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+		<div id="rightbar">
+			<div>
+				<textarea flex="5" id="post_area" rows="4" placeholder="Quick Post">
+				</textarea>
+			</div>
+			<div>
+			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			</div>
+			<hr>
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul style="padding:0px"> 
+					<li>
+						<a href="">
+						<ng-md-icon icon="folder" style="fill: green" size="24"></ng-md-icon>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<ng-md-icon icon="folder" style="fill: green" size="24"></ng-md-icon>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="group_link_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul style="padding:0px">
+					<li>
+						<a href="">
+						<ng-md-icon icon="event_note" style="fill: green" size="24"></ng-md-icon>	
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</md-sidenav>
+	</div>
+   
+<!-- Switching from view to edit --> 
+  <script type="text/javascript">
+  $(document).ready(function(){
+	$(".input").hide();
+	$("#edit").click(function(){
+	$(".input").show();
+	$(".view").hide();		
+		})
+	$("#view").click(function(){
+		$(".input").hide();
+		$(".view").show();	
+	})
+	
+});
+
+  </script>

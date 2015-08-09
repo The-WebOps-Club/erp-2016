@@ -54,6 +54,7 @@ angular.module('erp2015App')
     }   
 
 
+
     // $scope.createPost = function() {
     // 	$http.post('/api/posts/createPost', { type: 'profile', title: $scope.newPostTitle, info: $scope.newPost, stateParams: $stateParams })
     // 		.success(function(data) {

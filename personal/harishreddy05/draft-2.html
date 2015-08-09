@@ -54,7 +54,6 @@
 	        	</div>	
 			</div>
 			<div>
-			<ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon>
 			<div id="content" class="content" flex="100" layout="column">
 				<div id="content_head" >
 					About
@@ -118,16 +117,16 @@
 							<div class="headings" layout-padding flex="100"><b>Contact info</b></div>
 							<div class="info" flex="100" layout="row">
 								<label class="labels" flex="33" for="mobile">Mobile number:</label>
-								<div class="data view"  flex="50" id="mobile">{{user.mobile_number}}</div>
-								<md-input-container class="input" type="number" flex="50"> 
-								<input  class="form-control" ng-model="user.mobile_number" maxlength="10" id="inputphonenumber">
+								<div class="data view" flex="50" id="mobile">{{user.mobile_number}}</div>
+								<md-input-container class="input" flex="50"> 
+								<input type="text" class="form-control" ng-model="user.mobile_number" maxlength="10" id="inputphonenumber">
 								</md-input-container>
 							</div>
 							<div class="info" flex="100" layout="row">
 								<label class="labels" flex="33" for="summer">Summer number:</label>
 								<div class="data view" flex="50" id="summer">{{user.summer_number}}</div>
-								<md-input-container class="input" type="number" flex="50"> 
-								<input  class="form-control" ng-model="user.summer_number" maxlength="10" id="inputphonenumber">
+								<md-input-container class="input" flex="50"> 
+								<input type="text" class="form-control" ng-model="user.summer_number" maxlength="10" id="inputphonenumber">
 								</md-input-container>
 							</div>
 							<div class="info" flex="100" layout="row">
@@ -396,7 +395,7 @@ app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     };
   });
     </script>
-  //   <script>
+    <script>
     $(document).ready(function() {
     $("#inputphonenumber").keydown(function (e) {
         // Allow: backspace, delete, tab, escape, enter and .

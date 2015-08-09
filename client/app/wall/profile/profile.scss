@@ -1,0 +1,73 @@
+.main
+{
+	border-left: 1px solid rgb(204, 204, 204);
+	border-right: 1px solid rgb(204, 204, 204);
+	padding: 10px;
+}
+#profile_back
+{
+	background: -webkit-linear-gradient(top, white, #ccc);
+	background: -moz-linear-gradient(top, white, #ccc);
+	background: linear-gradient(top, white, #ccc);
+	min-height : 150px;
+}
+#profile_title
+{
+	font-size: 2em;
+	font-weight: bold;
+	padding-top: 20px;
+	padding-bottom: 50px;
+	color: rgba(0,0,0,0.54);
+	text-align: center;
+}
+#profile_pic
+{
+	background: rgba(250, 250, 250, 1);
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    -moz-border-radius: 3px;
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+    border : 1px solid #aaa;
+    height : 160px;
+    width: 160px;
+    /*margin : 20px;*/
+    padding : 4px;
+    /*position : absolute;*/
+}
+.name_and_tabs
+{
+	width: 400px;
+}
+#tabs
+{
+	padding-top: 0px;
+}
+.sidebar
+{
+	padding: 10px;
+	height: 780px;
+}
+#edit,#save,#view
+{
+	font-size: 12px;
+	background-color: white;
+}
+#post_button
+{
+	color: white;
+	background-color:  #3b5998;
+	font:12px;
+}
+
+#rightbar
+{
+	position: relative;
+}
+.group_link_head
+{
+	color: #999;
+  font-size: 9px;
+  font-weight: bold;
+}
