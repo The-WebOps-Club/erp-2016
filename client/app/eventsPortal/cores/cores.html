@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-  <script src="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.css">
+  <!-- // <script src="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.js"></script> -->
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/alexk111/ngImgCrop/master/compile/minified/ng-img-crop.css"> -->
   <style>
     .cropArea {
       background: #E4E4E4;
@@ -22,7 +22,7 @@
       </md-toolbar>
 
       <md-content layout-padding>
-        <form name="form" ng-submit="newEventList(form)" enctype="multipart/form-data" novalidate>
+        <form name="newEventListForm" ng-submit="newEventList(newEventListForm)" novalidate>
 
           <md-input-container>
             <label>Category Name</label>
@@ -52,11 +52,10 @@
             Select an Image file: 
             <input class='btn' type="file" id="file" accept="image/*" required="" />
             <div class="cropArea">
-   			 <img-crop image="myImage" result-image="myCroppedImage" area-type="square" result-image-size="200"></img-crop>
-   			 <!-- <img image="myImage" ng-src="{{myImage}}"></img-crop> -->
-  			</div>
-  			 <div>Cropped Image:</div>
-  			 <div><img ng-src="{{myCroppedImage}}" /></div>
+              <img-crop image="myImage" result-image="myCroppedImage" area-type="square" result-image-size="200"></img-crop>
+            </div>
+            <div>Cropped Image:</div>
+            <div><img ng-src="{{myCroppedImage}}" /></div>
           </md-input-container>
 
           <md-button type="submit" class="md-raised md-primary">Create</md-button>
@@ -74,7 +73,7 @@
       </md-toolbar>
 
       <md-content layout-padding>
-        <form name="form2" ng-submit="" novalidate>
+        <form name="newEventForm" ng-submit="createEvent(newEventForm)" novalidate>
 
           <md-input-container>
             <label>Event Name</label>
@@ -95,8 +94,37 @@
             <span ng-show="form.info.$error.required && submitted">
               Info is required.
             </span>
-            <span>{{ errors.other }}</sapn>
+            <span>{{ errors.other }}</span>
           </div>
+
+          <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in coords"
+              md-item-text="item.name"
+              placeholder="Assign a team member">
+                <span md-highlight-text="searchText">{{ item.name }}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.name }}</strong>
+            </md-chip-template>
+          </md-chips>
+          <br>
+
+          <md-chips ng-model="selectedEventLists" md-autocomplete-snap md-require-match>
+            <md-autocomplete
+              md-selected-item="selectedItem"
+              md-search-text="searchText"
+              md-items="item in eventLists"
+              md-item-text="item.title"
+              placeholder="Assign an event list">
+                <span md-highlight-text="searchText">{{ item.title }}</span>
+            </md-autocomplete>
+            <md-chip-template>
+              <strong>{{ $chip.title }}</strong>
+            </md-chip-template>
+          </md-chips>
 
           <md-button type="submit" class="md-raised md-primary">Create</md-button>
         </form>
