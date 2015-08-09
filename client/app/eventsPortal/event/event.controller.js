@@ -76,7 +76,7 @@ angular.module('erp2015App')
 		$scope.showAdvanced = function(ev) {
 		    $mdDialog.show({
 		      controller: DialogController,
-		      templateUrl: 'dialog1.tmpl.html',
+		      templateUrl: '/app/eventsPortal/event/dialog1.tmpl.html',
 		      parent: angular.element(document.body),
 		      targetEvent: ev,
 		      resolve: {
@@ -223,7 +223,7 @@ angular.module('erp2015App')
 		$scope.reorderTabs = function(ev) {
 		    $mdDialog.show({
 		      controller: reorderController,
-		      templateUrl: 'dialog2.tmpl.html',
+		      templateUrl: '/app/eventsPortal/event/dialog2.tmpl.html',
 		      parent: angular.element(document.body),
 		      targetEvent: ev,
 		      resolve: {
@@ -244,7 +244,8 @@ angular.module('erp2015App')
  	});
 });
 
-function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString) {
+function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth) {
+	$scope.hasRoleCore = Auth.hasRoleCore;
 	$scope.event = event;
 	$scope.selectedEventLists = selectedEventLists;
 	$scope.buildCatString = buildCatString;
@@ -304,6 +305,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
 
       if(form.$valid) {
           EventsPortalService.updateEvent({
+          	_id: $scope.event._id,
             name: $scope.event.name,
             info: $scope.event.info,
             assignees: $scope.coordsIds,
