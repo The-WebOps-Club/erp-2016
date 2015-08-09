@@ -19,7 +19,16 @@ angular.module('erp2015App')
       // $location.url('/login');
     };
 
+
     $scope.isActive = function(route) {
       return route === $location.path();
+    };
+  });
+  app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+      $mdSidenav('right').close()
+        .then(function () {
+          $log.debug("close RIGHT is done");
+        });
     };
   });

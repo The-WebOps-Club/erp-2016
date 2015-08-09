@@ -7,6 +7,16 @@ angular.module('erp2015App')
     $scope.newPostTitle = '';
     $scope.posts = [];
     $scope.user = user.data;
+    // $scope.user={
+    //         name:"name",
+    //         image: "url_for_image",
+    //         date_of_birth: "00/00/0000",
+    //         email:"email",
+    //         college:"college",
+    //         rollNumber:"AA11A111",
+    //         room_no:"room no",
+    //         hostel:"Ganga",
+    //     }
     $scope.count=0;
     console.log($scope.user);
     $scope.load=function(){
@@ -24,8 +34,18 @@ angular.module('erp2015App')
         	});
     
     }
-    
 
+    $scope.edit = function()
+    {
+    $(".input").show();
+    $(".view").hide();      
+    }
+    $scope.view = function()
+    {
+    $(".input").hide();
+    $(".view").show();      
+    }
+    
     $scope.createPost = function() {
         postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
             .success(function(data) {
@@ -93,3 +113,4 @@ angular.module('erp2015App')
 
 
   });
+

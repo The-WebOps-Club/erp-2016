@@ -1,11 +1,15 @@
 <div layout="column" layout-fill ng-controller="NavbarCtrl">
   <md-toolbar>
     <div class="md-toolbar-tools" layout="row" layout-align="center center">
+      <!-- <md-button  ng-controller="RightCtrl" ng-click="toggleRight()" class="md-raised pull-right" hide-gt-md>
+      SIDE BAR
+      </md-button>     -->
       <md-button href="/">
         erp 2016
       </md-button>
+
       <!-- fill up the space between left and right area -->
-      <span flex></span>      
+      <span flex></span>
       <md-button ng-show="isLoggedIn()">
         Hello {{ getCurrentUser().name }}
       </md-button>

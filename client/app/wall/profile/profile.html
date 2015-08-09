@@ -18,53 +18,55 @@
 		<div flex="66" offset="10">
 		<div layout="column" class="main md-whiteframe-z3" flex="66" offset="5" >
 			<div layout="row" id="profile_back">
-			<div layout="column">
-				<div id="profile_pic">
-				<img ng-src="api/users/{{user.name}}/profilePic" alt="{{user.name}}" />
-				</div>
-			</div>	
 				<div layout="column" class="name_and_tabs">
+					<div layout="row">
+					<div id="profile_pic">
+						<img ng-src="api/users/{{user._id}}/profilePic" alt="{{user.name}}" />
+					</div>
 					<div id="profile_title">
-						{{user.name}}
-						<!-- <md-button  ng-controller="RightCtrl" ng-click="toggleRight()"
-	            				class="md-raised pull-right" hide-gt-md>
-	            				SIDE BAR
-	        		  		</md-button>    -->    				
+						{{user.name}}   				
+	        		</div>
 	        		</div>
 	        		<!-- <hr> -->
 					<div id="tabs">
-						<md-tabs md-dynamic-height md-border-bottom flex="55">
+						<md-tabs md-dynamic-height md-border-bottom flex="100">
 							<md-tab label="Profile">
 							<md-content>
-								<div layout="column">
+								<div layout="column" flex="100">
 									<md-toolbar class="md-primary">
 										<div layout="row">
 										<div>
 									        <h1 class="md-toolbar-tools">
 									          About
 									        </h1>
-									       </div> 
-									        <div offset="60">						
-												<md-button class="md-raised pull-right view" id="edit" ng-click="shift()">
+									    </div> 
+									        <div offset="70">						
+												<md-button class="md-raised pull-right view" id="edit" ng-click="edit()">
 												<div layout="row">
-												<ng-md-icon icon="mode_edit" style="fill: green;" size="24"></ng-md-icon>
+												<ng-md-icon icon="mode_edit" style="fill: green;" size="18"></ng-md-icon>
 													<span class="edit_text" ><b>Edit Profile</b></span>
 												</div>
 												</md-button>
+											</div>	
+											<div layout="row">
+												<div>
 												<md-button class="md-raised pull-right input" id="save" >
 												<div layout="row">
-												<ng-md-icon icon="save" style="fill: green;" size="24"></ng-md-icon>
-													<span class="save_text" ><b>Save Changes</b></span>
+												<ng-md-icon icon="save" style="fill: green;" size="18"></ng-md-icon>
+													<span class="save_text" ><b>Save</b></span>
 												</div>
 												</md-button>
-												<md-button class="md-raised pull-right input" id="view">
+												</div>
+												&nbsp&nbsp&nbsp&nbsp&nbsp
+												<div>
+												<md-button class="md-raised pull-right  input" id="view" ng-click="view()">
 												<div layout="row">
-												<ng-md-icon icon="person" style="fill: green;" size="24"></ng-md-icon>
-													<span class="view_text" ><b>View Profile</b></span>
+												<ng-md-icon icon="person" style="fill: green;" size="18"></ng-md-icon>
+													<span class="view_text" ><b>View</b></span>
 												</div>
 												</md-button>
-												
-											</div>
+												</div>
+											</div>										
 										</div>
 									</md-toolbar>
 									<div layout="column">
@@ -89,11 +91,11 @@
 											</div>
 											<md-input-container class="md-icon-float input " >
 									        	<label>Roll no</label>
-									       		<input ng-model="user.name" type="text">
+									       		<input ng-model="user.rollNumber" type="text">
 									    	</md-input-container>
 											<div layout="column" flex="55" class="view">
 										    	<label>Roll no</label>
-										    	{{user.roll_no}}
+										    	{{user.rollNumber}}
 										    </div>
 									    </div>
 									    <br>
@@ -103,11 +105,11 @@
 											</div>
 											<md-input-container class="md-icon-float input " >
 									        	<label>Phone</label>
-									       		<input ng-model="user.name" type="text">
+									       		<input ng-model="user.phoneNumber" type="text">
 									    	</md-input-container>
 											<div layout="column" flex="55" class="view">
 										    	<label>Phone</label>
-										   	 	{{user.phone}}
+										   	 	{{user.phoneNumber}}
 										    </div>
 									    </div>
 									    <br>
@@ -115,9 +117,9 @@
 											<div layout="column" style="padding-top:20px;padding-right:5px">
 												<ng-md-icon icon="email" style="fill: green" size="24"></ng-md-icon>
 											</div>
-											<md-input-container class="md-icon-float input " >
+											<md-input-container flex="30" class="md-icon-float input " >
 									        	<label>Email</label>
-									       		<input ng-model="user.name" type="text">
+									       		<input ng-model="user.email" type="text">
 									    	</md-input-container>
 											<div layout="column" flex="55" class="view">
 										    	<label>Email</label>
@@ -127,24 +129,10 @@
 									    <br>
 									    <div layout="row" >
 											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="event" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container class="md-icon-float input " >
-									        	<label>Date of birth</label>
-									       		<input ng-model="" type="date">
-									    	</md-input-container>
-											<div layout="column" flex="55" class="view">
-										    	<label>Date of birth</label>
-										    	{{user.name}}
-										    </div>
-									    </div>
-									    <br>
-									    <div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
 												<ng-md-icon icon="home" style="fill: green" size="24"></ng-md-icon>
 											</div>
 											<div>
-											<md-input-container  class="md-icon-float ">
+											<md-input-container  class="md-icon-float input">
 									       		<md-select placeholder="Hostel" ng-model="user.hostel">
 										        	 	<md-option value="Alakananda">Alakananda</md-option>
 													    <md-option value="Badra">Badra</md-option>
@@ -170,17 +158,25 @@
 										        </md-select>
 									    	</md-input-container>
 									    	</div>
-									    	<div>
-									    	<md-input-container class="md-icon-float ">
-									        	<label>Room no</label>
-									       		<input ng-model="user.name" type="text">
-									    	</md-input-container>
-									    	</div>
-											<div layout="column" flex="55" class="view input">
+											<div layout="column" flex="55" class="view">
 										    	<label>Hostel</label>
-										    	{{user.hostel}}
+										    	{{user.hostel}}{{user.room_no}}
 										   	</div>
 										</div>
+										<br>
+										<div layout="row" >
+											<div layout="column" style="padding-top:20px;padding-right:5px">
+												<ng-md-icon icon="location_on" style="fill: green" size="24"></ng-md-icon>
+											</div>
+											<md-input-container flex="20" class="md-icon-float input " >
+									        	<label>Room no</label>
+									       		<input ng-model="user.roomNumber" type="text">
+									    	</md-input-container>
+											<div layout="column" flex="55" class="view">
+										    	<label>Room no</label>
+										    	{{user.roomNumber}}
+										    </div>
+									    </div>
 									</div>
 								</div>	
 							</md-content>
