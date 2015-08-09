@@ -18,7 +18,7 @@ var EventSchema = new Schema({
   eventDate: Date,
   startReg: Date,
   endReg: Date,
-  requireTDP: Boolean
+  requireTDP: {type: Boolean, default: false },
 });
 
 module.exports = mongoose.model('Event', EventSchema);
