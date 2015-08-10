@@ -16,7 +16,6 @@ angular.module('erp2015App').controller('webEventCtrl', function ($state, $scope
       $scope.teamList=teams;
       $scope.selectedTeam=$scope.teamList[0]._id;
       $scope.teamList[0].teamName="Participate individually";
-      $http.put('/api/teams/leave/'+$scope.teamList[1]._id);
       console.log(teams);
       teams.filter(function(n) {
         if(n.eventsRegistered.indexOf(event._id) != -1)
@@ -104,10 +103,6 @@ angular.module('erp2015App').controller('webEventCtrl', function ($state, $scope
                 $mdToast.show($mdToast.simple().content(($scope.event.maxTeamMembers>1?'Team u':'U')+'nregistered from event.').hideDelay(5000));
                 $scope.registered=!$scope.registered;
               }
-              else if(data.status==403)
-                $mdToast.show($mdToast.simple().content('Only the team leader can unregister the team.').hideDelay(5000));
-              else
-                $mdToast.show($mdToast.simple().content('There was some error in unregistration.').hideDelay(5000));
             });
           });
       }

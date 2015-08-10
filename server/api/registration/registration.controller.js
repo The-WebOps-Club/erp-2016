@@ -90,35 +90,37 @@ exports.destroy = function(req, res) {
   Registration.findOne({'eventRegistered': req.params.id}, function (err, registration) {
     if(err) { return handleError(res, err); }
     if(!registration) { return res.send(404); }
+    var flag=true;
     Team.findById(registration.team, function(err, team) {
       if (err) { return handleError(res, err); }
       if(!team) { return res.send(404); }
-      console.log(team.teamLeader);
-      console.log(team.teamLeader != req.user.id);
-      var i=team.eventsRegistered.indexOf(registration.eventRegistered);
-      if(i > -1)
-        team.eventsRegistered.splice(i, 1);
-      var updated = _.assign(team, { eventsRegistered: team.eventsRegistered });
-      updated.save(function (err) {
-        if (err) { return handleError(res, err); }
-        return;
-      });
-    });
-    Event.findById(registration.eventRegistered, function(err, event) {
-      if (err) { return handleError(res, err); }
-      if(!event) { return res.send(404); }
-      var i=event.registrations.indexOf(registration._id);
-      if(i > -1)
-        event.registrations.splice(i, 1);
-      var updated = _.assign(event, { registrations: event.registrations });
-      updated.save(function (err) {
-        if (err) { return handleError(res, err); }
-        return;
-      });
-    });
-    registration.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
+      if(req.user._id.equals(team.teamLeader)) {
+        console.log(team.teamLeader);
+        var i=team.eventsRegistered.indexOf(registration.eventRegistered);
+        if(i > -1)
+          team.eventsRegistered.splice(i, 1);
+        var updated = _.assign(team, { eventsRegistered: team.eventsRegistered });
+        updated.save(function (err) {
+          if (err) { return handleError(res, err); }
+        });
+        Event.findById(registration.eventRegistered, function(err, event) {
+          if (err) { return handleError(res, err); }
+          if(!event) { return res.send(404); }
+          var i=event.registrations.indexOf(registration._id);
+          if(i > -1)
+            event.registrations.splice(i, 1);
+          var updated = _.assign(event, { registrations: event.registrations });
+          updated.save(function (err) {
+            if (err) { return handleError(res, err); }
+          });
+        });
+        registration.remove(function(err) {
+          if(err) { return handleError(res, err); }
+          return res.send(204);
+        });
+      }
+      else
+        return res.send(403);
     });
   });
 };
