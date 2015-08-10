@@ -18,7 +18,11 @@ var EventSchema = new Schema({
   eventDate: Date,
   startReg: Date,
   endReg: Date,
-  requireTDP: Boolean
+  requireTDP: Boolean,
+  maxTeamMembers: Number,
+  minTeamMembers: { type: Number, default: 1 },
+  registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
+  // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });
 
 module.exports = mongoose.model('Event', EventSchema);

@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <div class="tabsdemoDynamicTabs" layout="column" ng-app="MyApp" style="position: absolute; left: 15%; width: 70%;">
+    <md-card>
+      <md-card-content>
+        <h1>{{ event.name }}</h1>
+        <font color="#777777">{{ buildCatString() }}</font>
+        <br /><br />
+        {{ event.info }}
+      </md-card-content>
+        <div class="md-actions" layout="row" layout-align="end center">
+          <div ng-show="showList()">
+            <md-select ng-model="selectedTeam">
+              <md-option ng-repeat="team in teamList" value="{{ team._id }}">{{ team.teamName }}</md-option>
+            </md-select>
+          </div>
+          <md-button ng-click="toggleRegister($event)">{{ whatString() }}</md-button>
+        </div>
+    </md-card>
+    <div class="tabStuff">
+      <md-content class="md-padding">
+        <md-tabs md-dynamic-height="" md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-stretch-tabs="no">
+          <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
+            <div id='tab1'>
+           	  <div v-html="input | marked" ng-bind-html="xmark(markdown[currentTab])" style="padding: 16px"></div>
+            </div>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </div>
+  </div>

@@ -4,18 +4,17 @@ angular.module('erp2015App')
   .controller('EventsPortalEventCtrl', function ($state, $scope, $http, EventsPortalService, $mdDialog, $location, $mdToast, Auth) {
     
     var id = location.pathname.split('/')[3];
-   EventsPortalService.getEvent(id).then(function (event) {
-     var converter = new showdown.Converter();
-     $scope.event = event;
-     $scope.assignees=event.assignees;
-     var xdata;
+    EventsPortalService.getEvent(id).then(function (event) {
+    var converter = new showdown.Converter();
+    $scope.event = event;
+    $scope.assignees=event.assignees;
+    var xdata;
     $scope.currentTab="";
-     $scope.markdown=[];
-     $scope.inServer=[];
-     $scope.index=0;
-     $scope.tabMode=false;
-        $scope.selectedEventLists=event.eventCategory;
-        $(".leftButtons").hide();
+    $scope.markdown=[];
+    $scope.inServer=[];
+    $scope.index=0;
+    $scope.tabMode=false;
+    $scope.selectedEventLists=event.eventCategory;
 
     $http.get('/api/eventTabs/'+event._id).then(function (data) {
       $scope.eventTabs=data.data;
