@@ -28,7 +28,7 @@
 
 	          <md-input-container>
 	            <label>Title</label>
-                 <input type="text" name="newPosTitle" ng-model="newPost" >	            
+                 <input type="text" name="newPosTitle" ng-model="newPostTitle" >	            
 	          </md-input-container>
 
 	          <md-input-container>
@@ -78,7 +78,7 @@
 			  			<div flex>
 				  			<div layout="row">
 				  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
-				  				<div flex="20"><h6>{{ commnent.createdOn | date : 'medium'}}</h6></div>
+				  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
 				  			</div>
 				  			<h6>{{comment.info}}</h6>
 			  			</div>
@@ -90,7 +90,7 @@
 				  		<form  ng-submit="addComment(post)" name="commentPost">
 							<md-input-container flex >
        							 <label>Enter a new comment....</label>
-       							 <textarea ng-model="post.newComment" columns="1"></textarea>
+       							 <textarea ng-model="post.newComment" columns="1" required></textarea>
       						</md-input-container>
       						<div>
 	         					<md-button class="md-raised md-primary" type="submit">
