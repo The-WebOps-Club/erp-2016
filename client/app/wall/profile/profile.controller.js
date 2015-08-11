@@ -3,10 +3,21 @@
 angular.module('erp2015App')
   .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user) {
     console.log(user);
+    $scope.editMode = false;
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = [];
     $scope.user = user.data;
+    // $scope.user={
+    //         name:"name",
+    //         image: "url_for_image",
+    //         date_of_birth: "00/00/0000",
+    //         email:"email",
+    //         college:"college",
+    //         rollNumber:"AA11A111",
+    //         room_no:"room no",
+    //         hostel:"Ganga",
+    //     }
     $scope.count=0;
     console.log($scope.user);
     $scope.load=function(){
@@ -24,12 +35,18 @@ angular.module('erp2015App')
         	});
     
     }
-    
 
+    $scope.edit = function()
+    {
+        $scope.editMode = true; 
+    }
+    $scope.view = function()
+    {
+        $scope.editMode = false;
+    }
+    
     $scope.createPost = function() {
-        $scope.newPost = $scope.newPost.replace('\r', '\n');
-        console.log($scope.newPost);
-        postComment.createPost($scope.newPostTitle, $scope.newPost, $scope.user._id)
+        postComment.createPost('profile', $scope.newPostTitle, $scope.newPost, $scope.user.wall)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 /*
@@ -54,6 +71,7 @@ angular.module('erp2015App')
                 console.log(err);
             })
     }   
+
 
 
     // $scope.createPost = function() {
@@ -94,3 +112,4 @@ angular.module('erp2015App')
 
 
   });
+
