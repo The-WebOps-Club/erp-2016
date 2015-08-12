@@ -274,7 +274,18 @@
 								</div>
 							</md-content>
 							</md-tab>
-							<md-tab label="Docs"></md-tab>
+							<md-tab label="Docs">
+								<a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                    			<input class="btn" type="file" ng-file-select="" ng-model="file" name="file" >
+			                    <div>
+			                        <br>
+			                        <div layout="row" layout-sm="column" layout-align="space-around">
+								      <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
+								    </div>
+			                    </div>
+							</md-tab>
+
+                    
 							<!-- <md-tab label="Portal"></md-tab> -->
 						</md-tabs>
 					</div>

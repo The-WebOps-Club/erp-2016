@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user) {
+  .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user, $interval) {
     console.log(user);
     $scope.editMode = false;
     $scope.newPost = '';
@@ -72,6 +72,14 @@ angular.module('erp2015App')
             })
     }   
 
+    $scope.mode = 'query';
+      $scope.determinateValue = 0;
+      $interval(function() {
+        $scope.determinateValue += 1;
+        if ($scope.determinateValue > 100) {
+          $scope.determinateValue = 0;
+        }
+      }, 100, 0, true);
 
 
     // $scope.createPost = function() {
