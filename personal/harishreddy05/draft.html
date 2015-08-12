@@ -1,0 +1,746 @@
+ <!DOCTYPE html>
+<html lang="en" ng-app="StarterApp">
+  <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="erp-bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="icons-color.css">
+	<link href="daterangepicker.css" rel="stylesheet" media="screen">
+	<script src="jquery.min.js"></script>
+	<script type="text/javascript" src="moment.js"></script>
+	<script type="text/javascript" src="daterangepicker.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="saarang_erp_profile.js"></script>
+	<script src="textarea.js"></script>
+	<title>Profile</title>
+  </head>
+<body layout="column" ng-controller="AppCtrl">
+
+
+	<!-- DIV FOR TOOLBAR
+	<div layout="row"></div> -->
+
+	<!-- BODY -->
+	<div layout="row" class="body">
+		<!-- MAIN -->
+		<div flex="66" offset="10">
+		<div layout="column" class="main md-whiteframe-z1" flex="66" offset="5">
+			<div layout="row" id="profile_back">
+			<div layout="column">
+				<div id="profile_pic">
+				<img ng-src="{{image}}" />
+				</div>
+			</div>	
+				<div layout="column" class="name_and_tabs">
+					<div id="profile_title">
+						<a href="draft.html">{{user.first_name}} {{user.last_name}}</a>
+						<md-button  ng-controller="RightCtrl" ng-click="toggleRight()"
+	            				class="md-raised pull-right" hide-gt-md>
+	            				SIDE BAR
+	        		  	</md-button>       				
+	        		</div>
+	        		<!-- <hr> -->
+					<div id="tabs">
+						<md-tabs md-dynamic-height md-border-bottom>
+						<md-tab label="Wall"></md-tab>
+						<a href=""><md-tab label="Profile"></md-tab></a>
+						<md-tab label="Docs"></md-tab>
+						<md-tab label="Portal"></md-tab>
+						</md-tabs>
+					</div>
+	        	</div>	
+			</div>
+			<div>
+			<ng-md-icon icon="send" style="fill: green" size="20"></ng-md-icon>
+			<div id="content" class="content" flex="100" layout="column">
+				<div id="content_head" >
+					About
+					<md-button class="md-raised btn-1 pull-right view" id="edit" ng-click="shift()">
+					<i class="material-icons md-18">mode_edit</i>
+						<span class="edit_text"><b>Edit Profile</b></span>
+					</md-button>
+					<md-button class="md-raised btn-2 pull-right input" id="view">
+					<i class="icon-user"></i>
+						<span class="edit_text"><b>View Profile</b></span>
+					</md-button>
+					<md-button class="md-raised btn-3 pull-right input" id="save">
+					<i class="icon-save"></i>
+						<span class="edit_text"><b>Save Changes</b></span>
+					</md-button>
+				</div>
+				<div id="content_body" layout="row" flex>
+					<div class="side" layout="column"  flex="50" id="leftside">
+						<!-- Basic info -->
+						<div>
+						<div class="box" flex="100" id="basic">
+							<div class="headings" layout-padding flex="100"><b>Basic Info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels"  flex="33" for="name">Name:</label>
+								<div class="data view"  flex="50" id="name">{{user.first_name}}&nbsp&nbsp&nbsp{{user.last_name}}</div>
+								<md-input-container class="input" flex="25">
+						          <input class="form-control" ng-model="user.first_name">
+						        </md-input-container>
+						        <md-input-container class="input" flex="25">
+						          <input class="form-control" ng-model="user.last_name">
+						        </md-input-container>
+							</div>
+							<div class="info"   flex="100" layout="row">
+								<label class="labels"  flex="33" for="Nickname">Nickname:</label>
+								<div class="data view"  flex="50" id="Nickname">{{user.nickname}}</div>
+								<md-input-container class="input" flex="50">
+						         <input class="form-control" ng-model="user.nickname">
+						        </md-input-container>
+							</div>
+							<div class="info"   flex="100" layout="row"> 
+								<label class="labels"  flex="33" for="gender">Gender:</label>
+								<div class="data view"  flex="50"  id="gender">{{user.gender}}</div>
+								<md-radio-group layout="row" class="input" ng-model="user.gender">
+							      <md-radio-button value="M" class="md-primary">M</md-radio-button>
+							      <md-radio-button value="F"> F </md-radio-button>
+							    </md-radio-group>
+							</div>
+							<div class="info"   flex="100" layout="row">
+								<label class="labels"  flex="33" for="date_of_birth">Date of Birth:</label>
+								<div class="data view"  flex="50" id="date_of_birth">{{user.date_of_birth}}</div>
+								<md-input-container class="input" flex="50">
+						          <input type="date" class="form-control" class="date" ng-model="user.date_of_birth">
+						        </md-input-container>
+
+							</div>
+						</div>
+						</div>
+						<!-- Contact info-->
+						<div>
+						<div class="box" flex="100" id="contact">
+							<div class="headings" layout-padding flex="100"><b>Contact info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="mobile">Mobile number:</label>
+								<div class="data view"  flex="50" id="mobile">{{user.mobile_number}}</div>
+								<md-input-container class="input" type="number" flex="50"> 
+								<input  class="form-control" ng-model="user.mobile_number" maxlength="10" id="inputphonenumber">
+								</md-input-container>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="summer">Summer number:</label>
+								<div class="data view" flex="50" id="summer">{{user.summer_number}}</div>
+								<md-input-container class="input" type="number" flex="50"> 
+								<input  class="form-control" ng-model="user.summer_number" maxlength="10" id="inputphonenumber">
+								</md-input-container>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="email">Email address:</label>
+								<div class="data view" flex="50" id="email">{{user.email}}</div>
+								<md-input-container class="input" flex="50">
+								<input type="email" class="form-control" ng-model="user.email" class="email" id="inputEmail3">
+								</md-input-container>
+							</div>
+						</div>
+						</div>
+					</div>
+					<div class="side" layout="column" flex="50" id="rightside">	
+						<!-- College info -->
+						<div class="box" flex="100" id="college">
+							<div class="headings" layout-padding flex="100"><b>College info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="college_name">College:</label>
+								<div class="data view" flex="50" id="college_name">{{user.college}}</div>
+								<md-input-container class="input" flex="50">
+						           <input  class="form-control" ng-model="user.college" class="college" disabled>
+						         </md-input-container>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="roll">College roll:</label>
+								<div class="data view" flex="50" id="roll">{{user.college_roll}}</div>
+								<md-input-container class="input" flex="50">
+						           <input class="form-control" ng-model="user.college_roll" class="college_roll" maxlength="8">
+						         </md-input-container>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="branch">Branch:</label>
+								<div class="data view" flex="50" id="branch">{{user.branch}}</div>
+								<md-select class="input" ng-model="user.branch"  autocorrect="off" autocomplete="off" required>
+							      <md-option value="School">School</md-option>
+							      <md-option value="Arts">Arts</md-option>    
+							      <md-option value="Accounting">Accounting</md-option>
+							      <md-option value="Applied Mechanics">Applied Mechanics</md-option>
+							      <md-option value="v">Mechatronics</md-option>
+							      <md-option value="Aerospace Engineering">Aerospace Engineering</md-option>
+							      <md-option value="Automobile Engineering">Automobile Engineering</md-option>
+							      <md-option value="Biotech/Biochemical/Biomedical">Biotech/Biochemical/Biomedical</md-option>
+							      <md-option value="Biology">Biology</md-option>
+							      <md-option value="Ceramic Engineering">Ceramic Engineering</md-option>
+							      <md-option value="Chemical Engineering">Chemical Engineering</md-option>
+							      <md-option value="Chemisrtry">Chemisrtry</md-option>
+							      <md-option value="Design">Design</md-option>
+							      <md-option value="Engineering Design">Engineering Design</md-option>
+							      <md-option value="Civil Engineering">Civil Engineering</md-option>
+							      <md-option value="Computer Science and Engineering">Computer Science and Engineering</md-option>
+							      <md-option value="Electronics and Communications Engineering">Electronics and Communications Engineering</md-option>
+							      <md-option value="Electrical and Electronics Engineering">Electrical and Electronics Engineering</md-option>
+							      <md-option value="Electrical Engineering">Electrical Engineering</md-option>
+							      <md-option value="Electronics and Instrumentation Engineering">Electronics and Instrumentation Engineering</md-option>
+							      <md-option value="Engineering Physics">Engineering Physics</md-option>
+							      <md-option value="Economics">Economics</md-option>
+							      <md-option value="Fashion Technology">Fashion Technology</md-option>
+							      <md-option value="Humanities and Social Sciences">Humanities and Social Sciences</md-option>
+							      <md-option value="Industrial Production">Industrial Production</md-option>
+							      <md-option value="Production">Production</md-option>
+							      <md-option value="Information Technology and Sciences">Information Technology and Sciences</md-option>
+							      <md-option value="Management">Management</md-option>
+							      <md-option value="Manufacturing">Manufacturing</md-option>
+							      <md-option value="Mathematics">Mathematics</md-option>
+							      <md-option value="Metallurgy and Material Sciences">Metallurgy and Material Sciences</md-option>
+							      <md-option value="Mechanical Engineering">Mechanical Engineering</md-option>
+							      <md-option value="Ocean Engineering and Naval Architecture">Ocean Engineering and Naval Architecture</md-option>
+							      <md-option value="Telecom">Telecom</md-option>
+							      <md-option value="Textile Engineering">Textile Engineering</md-option>
+							      <md-option value="Others">Others</md-option>
+							    </md-select>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="room">Room no:</label>
+								<div class="data view" flex="50"  id="room">{{user.room_no}}</div>
+								<md-input-container  class="input" flex="50">
+						           <input class="form-control" ng-model="user.room_no" class="room_no" maxlength="5">
+						         </md-input-container>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="hostel">Hostel:</label>
+								<div class="data view" flex="50" id="hostel">{{user.hostel}}</div>
+								<md-select class="input" ng-model="user.hostel" class="hostel" autocorrect="off" autocomplete="off" required>
+								
+							      <md-option value="Alakananda">Alakananda</md-option>
+							      <md-option value="Badra">Badra</md-option>
+							      <md-option value="Brahmaputra">Brahmaputra</md-option>    
+							      <md-option value="Cauvery">Cauvery</md-option>
+							      <md-option value="Ganga">Ganga</md-option>
+							      <md-option value="Godavari">Godavari</md-option>
+							      <md-option value="Jamuna">Jamuna</md-option>
+							      <md-option value="Krishna">Krishna</md-option>
+							      <md-option value="Mahanadhi">Mahanadhi</md-option>
+							      <md-option value="Mandakini">Mandakini</md-option>
+							      <md-option value="Narmada">Narmada</md-option>
+							      <md-option value="Pampa">Pampa</md-option>
+							      <md-option value="Saraswathi">Saraswathi</md-option>
+							      <md-option value="Sarayu">Sarayu</md-option>
+							      <md-option value="Sarayu Extension">Sarayu Extension</md-option>
+							      <md-option value="Sharavati">Sharavati</md-option>
+							      <md-option value="Sindhu">Sindhu</md-option>
+							      <md-option value="Tamraparni">Tamraparni</md-option>
+							      <md-option value="Tapti">Tapti</md-option>
+							      <md-option value="Tunga">Tunga</md-option>
+							      <md-option value="Sabarmati">Sabarmati</md-option>
+							    </md-select>
+							</div>
+						</div>
+						<!-- Accomodation info -->
+						<div class="box" flex="100" id="accomodation">
+							<div class="headings" layout-padding flex="100"><b>Accomodation info</b></div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="summer_stay">Summer stay:</label>
+								<div layout="column">
+								<div class="data view" flex="50" id="summer_stay_1">{{user.summer_stay_1}}</div>
+								<div class="data view" flex="50" id="summer_stay_2">{{user.summer_stay_2}}</div>
+								<!-- </div>
+								<div layout="column"> -->
+								<md-input-container class="input">
+								<input  ng-model="user.summer_stay_1" maxlength="30" class="form-control date_range_picker">
+								</md-input-container>
+								<a href="" class="input summer">and</a>
+								<md-input-container class="input ">
+								<input  ng-model="user.summer_stay_2" maxlength="30" class="form-control date_range_picker summer_second">
+								</md-input-container>
+								</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="winter_stay">Winter stay:</label>
+								<div class="data view" flex="50" id="winter_stay_1">{{user.winter_stay_1}}</div>
+								<div class="data view" flex="50" id="winter_stay_2">{{user.winter_stay_2}}</div>
+								<div layout="column">
+								<md-input-container class="input">
+								<input  ng-model="user.winter_stay_1" maxlength="30" class="form-control date_range_picker">							
+								</md-input-container>
+								<a href="" class="input winter">and</a>
+								<md-input-container class="input ">
+								<input  ng-model="user.winter_stay_2" maxlength="30" class="form-control date_range_picker winter_second">
+								</md-input-container>
+								</div>
+							</div>
+							<div class="info" flex="100" layout="row">
+								<label class="labels" flex="33" for="want_accomodation">Want accomodation:</label>
+								<div class="data view" flex="50" id="want_accomodation">{{user.want_accomodation}}</div>
+								<md-radio-group class="input" layout="row" ng-model="user.want_accomodation">
+							      <md-radio-button value="Yes" class="md-primary">Yes</md-radio-button>
+							      <md-radio-button value="No">No</md-radio-button>
+							    </md-radio-group>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+		<!-- Gap -->
+		<div>&nbsp</div>
+		<!-- SIDEBAR -->
+			
+		<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+		<div id="rightbar">
+			<div>
+				<textarea flex="5" id="post_area" rows="4" placeholder="Quick Post">
+				</textarea>
+			</div>
+			<div>
+			<md-button class="md-raised primary " id="post_button">Quick Post</md-button>
+			</div>
+			<hr>
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul>
+					<li>
+						<a href="">
+							<i class="icon-folder"></i>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<i class="icon-folder"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="calendar_links" class="links">
+			<div class="group_link_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul>
+					<li>
+						<a href="">
+						<i class="icon-calendar"></i>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</md-sidenav>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
+<script type="text/javascript">
+    	var app = angular.module('StarterApp', ['ngMaterial']);
+
+app.controller('AppCtrl', ['$scope','$timeout', '$mdSidenav', '$mdUtil', '$log', function($scope, $timeout, $mdSidenav, $mdUtil, $log){
+
+	$scope.toggleRight = buildToggler('right');
+    $scope.toggleLeft = buildToggler('left');
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildToggler(navID) {
+      var debounceFn =  $mdUtil.debounce(function(){
+            $mdSidenav(navID)
+              .toggle()
+              .then(function () {
+                $log.debug("toggle " + navID + " is done");
+              });
+          },300);
+      return debounceFn;
+    }
+  // $scope.toggleSidenav = function(menuId) {
+  //   $mdSidenav(menuId).toggle();
+  // };
+  $scope.user={
+			first_name:"firstname",
+			last_name:"lastname",
+			image: "url_for_image",
+			nickname: "nickname",
+			gender: "M",
+			date_of_birth: "00/00/0000",
+			mobile_number:"0000000000",
+			summer_number:"0000000000",
+			email:"email",
+			college:"college",
+			college_roll:"AA11A111",
+			branch:"Arts",
+			room_no:"room no",
+			hostel:"Ganga",
+			summer_stay_1:"",
+			summer_stay_2:"",
+			winter_stay_1:"",
+			winter_stay_2:"",
+			want_accomodation:"No",
+		}
+}])
+app.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+      $mdSidenav('right').close()
+        .then(function () {
+          $log.debug("close RIGHT is done");
+        });
+    };
+  });
+    </script>
+  //   <script>
+    $(document).ready(function() {
+    $("#inputphonenumber").keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+             // Allow: Ctrl+A
+            (e.keyCode == 65 && e.ctrlKey === true) ||
+             // Allow: Ctrl+C
+            (e.keyCode == 67 && e.ctrlKey === true) ||
+             // Allow: Ctrl+X
+            (e.keyCode == 88 && e.ctrlKey === true) ||
+             // Allow: home, end, left, right
+            (e.keyCode >= 35 && e.keyCode <= 39)) {
+                 // let it happen, don't doa nything
+                 return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    });
+  </script>
+<style type="text/css">
+    .main
+    {
+    	border-left: 1px solid rgb(204, 204, 204);
+		border-right: 1px solid rgb(204, 204, 204);
+    	padding: 10px;
+    }
+    #profile_back
+    {
+    	background: -webkit-linear-gradient(top, white, #ccc);
+    	background: -moz-linear-gradient(top, white, #ccc);
+    	background: linear-gradient(top, white, #ccc);
+    	min-height : 150px;
+    	max-height: 500px;
+    }
+    #profile_title
+	{
+		font-size: 2em;
+		font-weight: bold;
+		padding-top: 20px;
+		padding-bottom: 50px;
+		color: red;
+		/*text-decoration: none;*/
+  text-align: center;
+  /*padding: 12px 24px;*/
+  cursor: pointer;
+  white-space: nowrap;
+  position: relative;
+  float: left;
+
+  font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	/*	background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    	background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+    	background: linear-gradient(top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));*/
+	}
+	#profile_pic
+	{
+		background: rgba(250, 250, 250, 1);
+	    -webkit-border-radius: 3px;
+	    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    -moz-border-radius: 3px;
+	    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    border-radius: 3px;
+	    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07);
+	    border : 1px solid #aaa;
+	    height : 160px;
+	    width: 160px;
+	    /*margin : 20px;*/
+	    padding : 4px;
+	    /*position : absolute;*/
+	}
+	.name_and_tabs
+	{
+		padding-left: 100px;
+		position: relative;
+		width: 490px;
+	}
+	#tabs
+	{
+		padding-top: 30px;
+	}
+	#banner_bar
+	{
+		border:1px solid #ddd;
+		height: 40px;
+	}
+	.banner_item
+	{
+		display : inline-block;
+		border-right: 1px solid #ddd;
+	    width : auto;
+	    height : 35px;
+	    font-size : 14px;
+	    font-weight : bold;
+	    padding : 10px 30px;
+	    vertical-align: middle;
+	}
+	a
+	{
+		color: #3b5998;
+	  	text-decoration: none;
+	  	line-height: inherit;
+	  	font-weight: inherit;
+	}
+	/*.selection_caret 
+	{
+	    background-image: url(/static/img/fb_icons_4.png);
+	    background-repeat: no-repeat;
+	    background-size: auto;
+	    background-position: -267px -239px;
+	    display: block;
+	    height: 6px;
+	    width: 9px;
+	}*/
+.btn-1,.btn-2,.btn-3
+{
+	font-size: 12px;
+}
+.content
+{
+	margin-top: 10px;
+	border:1px solid #ddd;
+}
+#content_head
+{
+	font-size: 25px;
+	line-height: 12px;
+	font-weight: bold;
+	background-color: #F6F7F8;	
+	padding-top: 20px;
+	padding-left: 20px; 
+	border-bottom: 1px solid #ddd; 
+}
+#content_body
+{
+	padding: 10px;
+}
+.small
+{
+	font-size: 10px;
+	font-weight: normal;
+	color: #999999;
+}
+.side
+{
+	padding: 10px;
+}
+.box
+{
+	padding: 10px;
+}
+.headings
+{
+	font-size: 15px; 
+}
+.info
+{
+	padding-bottom: 10px;
+	padding-top: 10px;
+	padding-left: 10px;
+}
+#rightside
+{
+	border-left:  1px solid #ddd;
+}
+#basic,
+#college 
+ {
+	border-bottom:  1px solid #ddd;
+}
+.sidebar
+{
+	padding: 10px;
+	height: 780px;
+}
+#post_button
+{
+	color: white;
+	background-color:  #3b5998;
+	font:12px;
+}
+#save
+{
+	color: white;
+	background-color:  #3b5998;
+	font:12px;
+}
+md-input-container
+{
+	padding-bottom: 0px;
+}
+.form-control
+{
+	height: 23px;
+}
+input
+{
+	height: 20px;
+	width: 80px;
+}
+.md-select-label
+{
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.email,.college
+{
+	width: 175px;
+}
+md-radio-button
+{
+	margin: 0px;
+}
+.date
+{
+	width: 125px;
+}
+#rightbar
+{
+	position: relative;
+}
+.group_link_head
+{
+	color: #999;
+  font-size: 9px;
+  font-weight: bold;
+}
+</style>
+	<!-- Script for sidebar scrolling -->
+<script>
+$(document).ready(function () {
+     var el = $('#rightbar');
+        var originalelpos = el.offset().top; // take it where it originally is on the page
+
+        //run on scroll
+        $(window).scroll(function () {
+            var el = $('#rightbar'); // important! (local)
+            var elpos = el.offset().top; // take current situation
+            var windowpos = $(window).scrollTop();
+            var finaldestination = windowpos + originalelpos;
+            el.stop().animate({ 'top': finaldestination }, 100);
+        });
+    });
+$(function() {
+   $('#post_area').autogrow();
+});
+</script>
+<!-- Email verification -->
+<script type="text/javascript">
+  function checkEmail() {
+
+    var email = document.getElementById('inputEmail3');
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    var myLength4 = $("#inputEmail3").val().length;
+    if (!filter.test(email.value)&&myLength4!==0) {
+      $("#em2").show();
+    // alert('Please provide a valid email address');
+    email.focus;
+    return false;
+ }else
+ {
+   $("#em2").hide();
+ }
+}
+</script>
+<!-- Script for daterangepicker -->
+<script type="text/javascript">
+$(".date_range_picker").dateRangePicker({
+		    startDate: false,
+		    endDate: false,
+		});
+		$(".date_picker").dateRangePicker({
+		    minDays: 1,
+		    maxDays: 1,
+		    singleDate: true,
+		});
+</script>
+  <!-- Script for Hostel -->
+  <script src="jquery-1.11.1.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+  <script src="jquery.select-to-autocomplete.js"></script>
+  <script>
+    (function($){
+      $(function(){
+        $('select').selectToAutocomplete();
+        $('form').submit(function(){
+          return false;
+        });
+      });
+    })(jQuery);
+  </script>
+  <link rel="stylesheet" href="jquery-ui.css">
+  <style>
+    .ui-autocomplete {
+      padding: 0;
+      list-style: none;
+      background-color: #fff;
+      width: 218px;
+      border: 1px solid #B0BECA;
+      max-height: 350px;
+      overflow-x: hidden;
+    }
+    .ui-autocomplete .ui-menu-item {
+      border-top: 1px solid #B0BECA;
+      display: block;
+      padding: 4px 6px;
+      color: #353D44;
+      cursor: pointer;
+    }
+    .ui-autocomplete .ui-menu-item:first-child {
+      border-top: none;
+    }
+    .ui-autocomplete .ui-menu-item.ui-state-focus {
+      background-color: #D5E5F4;
+      color: #161A1C;
+    }
+  </style>
+  <!-- Switching from view to edit --> 
+  <script type="text/javascript">
+  $(document).ready(function(){
+	$(".input").hide();
+	$(".summer_second").hide();
+	$(".winter_second").hide();
+	$("#edit").click(function(){
+	$(".input").show();
+	$(".view").hide();		
+})
+	$("#view").click(function(){
+		$(".input").hide();
+	$(".view").show();	
+	})
+	$("a.summer").click(function(){
+		$(".summer_second").show();
+		$(this).hide();
+	})
+	$("a.winter").click(function(){
+		$(".winter_second").show();
+		$(this).hide();
+	})
+});
+
+  </script>
+
+</body>
+</html>

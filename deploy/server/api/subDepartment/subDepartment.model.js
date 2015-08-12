@@ -8,6 +8,7 @@ var SubDepartmentSchema = new Schema({
   info: String,
   calendar: String,
   folder: String,
+  wall: { type: Schema.Types.ObjectId, ref: 'Wall' },
   department: { type: Schema.Types.ObjectId, ref: 'Department' },
   cores: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   superCoords: [{ type: Schema.Types.ObjectId, ref: 'User' }],
@@ -32,7 +33,6 @@ var SubDepartmentSchema = new Schema({
 SubDepartmentSchema
   .path('name')
   .validate(function(name) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
     return name.length;
   }, 'Sub-Department name cannot be blank');
 

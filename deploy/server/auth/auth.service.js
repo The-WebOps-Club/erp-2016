@@ -28,10 +28,9 @@ function isAuthenticated() {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
-
         user.lastSeen = Date.now();
         user.save(function(err) {
-          if(err) return res.send(err);
+          if(err) return next(err);
         });
         req.user = user;
         next();
@@ -83,7 +82,11 @@ function belongsTo() {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*5 });
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*2 });
+}
+
+function signMobileToken(id) {
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresInMinutes: 60*24*365 });
 }
 
 /**
@@ -99,5 +102,6 @@ function setTokenCookie(req, res) {
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;
+exports.signMobileToken = signMobileToken;
 exports.setTokenCookie = setTokenCookie;
 exports.belongsTo = belongsTo;
