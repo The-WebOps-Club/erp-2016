@@ -164,6 +164,32 @@ exports.listFolder = function (req, res){
   });
 }
 
+exports.listRootFolder = function (req, res){
+  authClient.authorize(function(err, tokens) {
+    if (err) {
+      console.log(err+ "is the error");
+      return;
+    }
+    else {
+      drive.children.list({
+        folderId:'root',
+        auth:authClient
+      },function (err,response){
+        if(response){
+          var files = response.items;
+          var i=0;
+          for(i=0;i<files.length;i++){
+            console.log(files[i]);  // only ids useful from this..
+          }
+        }
+        else {
+          console.log("no files in that folder");
+        }
+      });  
+    }
+  });
+}
+
 exports.createFolderInFolder = function (req, res){
   var parentId = req.params.parentId;
   authClient.authorize(function(err, tokens) {
@@ -185,9 +211,11 @@ exports.createFolderInFolder = function (req, res){
       },function (err,response){
         if(err){
           console.log("error");
+          return handleError(response,err);
         }
         else {
           console.log("folder successfully uploaded");
+          return res.json(response);
         }
       });
     }
