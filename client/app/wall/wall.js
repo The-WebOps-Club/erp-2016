@@ -25,6 +25,16 @@ angular.module('erp2015App')
         url: '/department/:deptId',
         templateUrl: 'app/wall/department/department.html',
         controller: 'DepartmentCtrl',
+        resolve: {
+          department: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/departments/' + $stateParams.deptId)
+                    .then(function(data) { return data; });
+          }],
+          users: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/users/')
+                    .then(function(data) { return data; });
+          }] 
+        },
         authenticate: true,
         data: {
           permissions: {
