@@ -1,0 +1,26 @@
+ <md-dialog aria-label="Mango (Fruit)">
+  <form>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>Mango (Fruit)</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="answer('not applicable')">
+        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content style="max-width:800px;max-height:810px; ">
+   <md-input-container>
+                     <label>Category Picture</label>
+                     <br> &nbsp;
+                     Select an Image file: 
+                     <input class='btn' type="file" id="file" accept="image/*" required="" />
+                     <div class="cropArea">
+                       <img-crop image="imageUploader.myImage" result-image="imageUploader.myCroppedImage" area-type="square" result-image-size="200"></img-crop>
+                     </div>
+                     <div>Cropped Image:</div>
+                     <div><img ng-src="{{imageUploader.myCroppedImage}}" /></div>
+                   </md-input-container> 
+   </md-content>
+  </form>
+</md-dialog>

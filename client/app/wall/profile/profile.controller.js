@@ -3,6 +3,57 @@
 angular.module('erp2015App')
   .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user, $interval) {
     console.log(user);
+
+
+$scope.showAdvanced = function(ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'dialog1.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose:true
+    })
+    .then(function(answer) {
+      $scope.status = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.status = 'You cancelled the dialog.';
+    });
+  };
+});
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+    $scope.imageUploader = {
+        myImage: '',
+        myCroppedImage: ''
+    };
+   // $scope.myImage = '';
+   // $scope.myCroppedImage = '';
+
+   var imageid = '';
+   var imagename = '';
+   var uploadfile = '';
+
+   var handleFileSelect = function(evt) {
+     var myfile = evt.currentTarget.files[0];
+     var reader = new FileReader();
+     reader.onload = function (evt) {
+       $scope.$apply(function ($scope) {
+         $scope.imageUploader.myImage = evt.target.result;
+       });
+       uploadfile = myfile;
+     };
+     reader.readAsDataURL(myfile);
+   };
+   angular.element(document.querySelector('#file')).on('change', handleFileSelect);
+
     $scope.editMode = false;
     $scope.newPost = '';
     $scope.newPostTitle = '';
@@ -116,8 +167,20 @@ angular.module('erp2015App')
     //             console.log(err);
     //         });
     // }  	
+    $scope.myImage='';
+        $scope.myCroppedImage='';
 
+        var handleFileSelect=function(evt) {
+          var file=evt.currentTarget.files[0];
+          var reader = new FileReader();
+          reader.onload = function (evt) {
+            $scope.$apply(function($scope){
+              $scope.myImage=evt.target.result;
+            });
+          };
+          reader.readAsDataURL(file);
+        };
+        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
 
 
   });
-

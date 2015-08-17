@@ -24,14 +24,15 @@
     "angular-material-icons": "~0.4.0",
     "angular-tags": "~0.2.10",
     "angular-messages": "~1.4.2",
-    "ngInfiniteScroll": "~1.2.1"
+    "ngInfiniteScroll": "~1.2.1",
+    "ngImgCrop": "~0.3.2"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
     "angular-scenario": ">=1.2.*"
   },
   "resolutions": {
-    "angular": ">=1.4.*",
+    "angular": ">=1.2.0",
     "font-awesome": ">=4.1.0"
   }
 }
