@@ -31,7 +31,7 @@
     "angular-scenario": ">=1.2.*"
   },
   "resolutions": {
-    "angular": ">=1.4.*",
+    "angular": "~1.4.4",
     "font-awesome": ">=4.1.0"
   }
 }
