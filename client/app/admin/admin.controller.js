@@ -7,7 +7,7 @@ angular.module('erp2015App')
       console.log('ok!')
     }
     else{
-      $state.go('coordPortalDashboardCtrl');
+      $state.go('newsfeed');
     }
 
     // Use the User $resource to fetch all users
