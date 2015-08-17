@@ -12,14 +12,14 @@ angular.module('erp2015App')
             // $http returns a promise for the url data
             return $http({method: 'GET', url: '/api/users/me'});
          },
+        },
+        authenticate: true,
+        data: {
+          permissions: {
+              only: ['admin'],
+              redirectTo: 'newsfeed'
+          }
         }
-        // authenticate: true,
-        // data: {
-        //   permissions: {
-        //       only: [],
-        //       redirectTo: 'coordPortalDashboard'
-        //   }
-        // }
       })
       .state('department', {
         url: '/department/:deptId',
