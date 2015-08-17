@@ -2,14 +2,6 @@
 
 angular.module('erp2015App')
   .controller('MainCtrl', function ($scope, $state, $http, socket, $mdDialog) {
-   
-
-    // $state.go('coordPortalDashboard');
-   // $scope.awesomeThings = [];
-
-    // $http.get('/api/posts/newsfeed/1').success(function (data) {
-    //   $scope.posts = data;
-    // })
 
 	$scope.showAdvanced = function(ev) {
 		console.log('yo');

@@ -2,6 +2,6 @@
 
 angular.module('erp2015App')
   .controller('TasksCtrl', function ($scope, $state) {
-  	$state.go('coordPortalDashboardCtrl');
+  	$state.go('newsfeed');
     $scope.message = 'Hello';
   });
