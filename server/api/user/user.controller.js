@@ -95,26 +95,7 @@ exports.profilePic = function (req, res) {
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
         if(!file){
-          gfs.findOne({ _id: "55d20f701661573e16c26133"}, function (err, _file) {
-            res.writeHead(200, {'Content-Type': _file.contentType});
-      
-            var readstream = gfs.createReadStream({
-                filename: _file.filename
-            });
-         
-            readstream.on('data', function(data) {
-                res.write(data);
-            });
-              
-            readstream.on('end', function() {
-                res.end();        
-            });
-         
-            readstream.on('error', function (err) {
-              console.log('An error occurred!', err);
-              throw err;
-            });
-          });
+          res.status(404).json({message: "Profile Pic not found"});
         }
       else{
         res.writeHead(200, {'Content-Type': file.contentType});

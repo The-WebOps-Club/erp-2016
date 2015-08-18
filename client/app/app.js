@@ -15,11 +15,12 @@ angular.module('erp2015App', [
   'ngMessages',
   'infinite-scroll',
   'ngMdIcons',
-  'ngImgCrop'
+  'ngImgCrop',
+  'dcbImgFallback'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/login');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -92,8 +93,8 @@ angular.module('erp2015App', [
       })
        .defineRole('anonymous', function (stateParams) {
          var deferred = $q.defer();
-         var currUser = Auth.getCurrentUser();
-            if(currUser) 
+         Auth.isLoggedInAsync(function (status) {
+            if(status === true) 
             {
               deferred.reject();
             }
@@ -101,6 +102,7 @@ angular.module('erp2015App', [
             {
               deferred.resolve(); 
             }
+         });
            return deferred.promise;
          })
        .defineRole('admin', function(stateParams) {
