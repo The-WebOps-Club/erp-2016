@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('DepartmentCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user) {
-    console.log(user);
+  .controller('DepartmentCtrl', function ($scope,$filter, $http, $stateParams, $state, socket, Auth, postComment, department, users) {
+    // console.log(user);
     $scope.editMode = false;
     $scope.newPost = '';
     $scope.newPostTitle = '';
     $scope.posts = [];
-    $scope.user = user.data;
+    $scope.user = department.data;
     // $scope.user={
     //         name:"name",
     //         image: "url_for_image",
@@ -19,7 +19,7 @@ angular.module('erp2015App')
     //         hostel:"Ganga",
     //     }
     $scope.count=0;
-    console.log($scope.user);
+    console.log(users.data);
     $scope.load=function(){
         $scope.count=$scope.count+1;
         $http.get('/api/posts/' + $scope.user.wall + '/'+$scope.count)
@@ -70,9 +70,29 @@ angular.module('erp2015App')
             .error(function(err) {
                 console.log(err);
             })
-    }   
+    }
 
+    
+    var self = this;
+    self.querySearch = $scope.querySearch;
+    // self.allContacts = users.data;
+    $scope.contacts = users.data;
+    // self.contacts = users.data;
+    $scope.filterSelected = true;
+    $scope.selectedContacts = [];
 
+    $scope.querySearch = function (input){
+        $scope.names = $filter('filter')($scope.contacts,{name:input}); 
+        $scope.inputName=input;
+        return $scope.names;
+   }
+     
+     $scope.submitted=function(){
+        for (var i = 0; i < $scope.selectedContacts.length; i++) {
+            console.log($scope.selectedContacts[i]._id)
+        };
+        $scope.selectedContacts=[];
+     }
 
     // $scope.createPost = function() {
     //  $http.post('/api/posts/createPost', { type: 'profile', title: $scope.newPostTitle, info: $scope.newPost, stateParams: $stateParams })

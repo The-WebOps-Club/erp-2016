@@ -251,16 +251,42 @@
 									</div>
 								</md-content>
 							</md-tab>
-							<!-- <md-tab label="Docs">
-								<a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
-                    			<input class="btn" type="file" ng-file-select="" ng-model="file" name="file" >
-			                    <div>
-			                        <br>
-			                        <div layout="row" layout-sm="column" layout-align="space-around">
-								      <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
-								    </div>
-			                    </div>
-							</md-tab> -->
+							<md-tab label="Docs">
+							<!--<div ng-app="app">
+								<div ng-controller="AppController">
+							
+									 <input type="file" nv-file-select uploader="{/uploadFile}"/>
+									 Name: <span ng-bind="item.file.name"></span><br>
+						             <button ng-click="item.upload()">upload</button>
+					        	     <input type=""
+					        	</div>
+					        </div>-->
+					        <md-input-container>
+					           <label>Category Picture</label>
+					           <br> &nbsp;
+					           Select an Image file: 
+					           <input class='btn' type="file" id="file" accept="image/*" required="" />
+					           <div class="cropArea">
+					             <img-crop image="imageUploader.myImage" result-image="imageUploader.myCroppedImage" area-type="square" result-image-size="200"></img-crop>
+					           </div>
+					           <div>Cropped Image:</div>
+					           <div><img ng-src="{{imageUploader.myCroppedImage}}" /></div>
+					         </md-input-container>
+					       <!-- <div>
+					        	<input type="text" ng-model="testInput	"></input>
+								<div>Select an image file: <input type="file" id="fileInput" ng-model="fileInput" /></div>
+										<div class="cropArea">
+								    <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+								  </div>
+								  <div>Cropped Image:</div>
+								  <div><img ng-src="{{myCroppedImage}}" /></div>
+							</div>-->
+												
+					            
+							    <!--<a ng-href="/api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+
+			                    </div> -->
+							</md-tab>
 
                     
 							<!-- <md-tab label="Portal"></md-tab> -->

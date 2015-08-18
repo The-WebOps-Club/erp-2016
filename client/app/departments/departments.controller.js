@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('DepartmentsCtrl', function ($scope, $http) {
+  .controller('DepartmentsCtrl', function ($scope, $http,$state) {
     //walling 'em out
 
     $scope.searchName = function (input) {

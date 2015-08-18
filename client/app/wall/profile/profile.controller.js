@@ -2,6 +2,32 @@
 
 angular.module('erp2015App')
   .controller('ProfileCtrl', function ($scope, $http, $stateParams, $state, socket, Auth, postComment, user, $interval) {
+    console.log(user);
+
+    $scope.imageUploader = {
+        myImage: '',
+        myCroppedImage: ''
+    };
+   // $scope.myImage = '';
+   // $scope.myCroppedImage = '';
+
+   var imageid = '';
+   var imagename = '';
+   var uploadfile = '';
+
+   var handleFileSelect = function(evt) {
+     var myfile = evt.currentTarget.files[0];
+     var reader = new FileReader();
+     reader.onload = function (evt) {
+       $scope.$apply(function ($scope) {
+         $scope.imageUploader.myImage = evt.target.result;
+       });
+       uploadfile = myfile;
+     };
+     reader.readAsDataURL(myfile);
+   };
+   angular.element(document.querySelector('#file')).on('change', handleFileSelect);
+
     $scope.newPost = {
         title: "",
         info: ""
@@ -87,43 +113,4 @@ angular.module('erp2015App')
         }
       }, 100, 0, true);
 
-
-    // $scope.createPost = function() {
-    // 	$http.post('/api/posts/createPost', { type: 'profile', title: $scope.newPostTitle, info: $scope.newPost, stateParams: $stateParams })
-    // 		.success(function(data) {
-    //             socket.syncUpdates('post', $scope.posts);
-    //             $scope.newPost = '';
-    //             $scope.newPostTitle = '';
-    // 		})
-    // 		.error(function(err) {
-    // 			/*
-    // 			Do some error handling here
-    // 			 */
-    // 			console.log(err);
-    // 		});
-    // }
-
-    // $scope.addComment = function(post) {
-    //     $http.post('/api/posts/addComment', { type: 'profile', postId: post._id, comment: post.newComment })
-    //         .success(function(data) {
-    //             post.newComment = '';
-    //             socket.syncUpdates('post', $scope.posts);
-    //             console.log(socket.syncUpdates('post', $scope.posts));
-    //             $scope.posts.sort(function(a, b) {
-    //                 a = new Date(a.updatedOn);
-    //                 b = new Date(b.updatedOn);
-    //                 return a>b ? -1 : a<b ? 1 : 0;
-    //             });
-    //         })
-    //         .error(function(err) {
-    //             /*
-    //             Do some error handling here
-    //              */
-    //             console.log(err);
-    //         });
-    // }  	
-
-
-
   });
-

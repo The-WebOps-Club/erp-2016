@@ -14,7 +14,8 @@ angular.module('erp2015App', [
   'ngMaterial',
   'ngMessages',
   'infinite-scroll',
-  'ngMdIcons'
+  'ngMdIcons',
+  'ngImgCrop'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
