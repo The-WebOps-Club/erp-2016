@@ -185,6 +185,7 @@ exports.updateProfile = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    req.body._id = undefined;
     req.body.role = undefined;
     req.body.hashedPassword = undefined;
     req.body.salt = undefined;

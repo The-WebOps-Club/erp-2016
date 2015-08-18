@@ -3,8 +3,20 @@
 angular.module('erp2015App')
   .controller('DepartmentsCtrl', function ($scope, $http) {
     //walling 'em out
-    $state.go('coordPortalDashboardCtrl');
 
+    $scope.searchName = function (input) {
+      $scope.names = $filter('filter')($scope.users,{name:input}); 
+      $scope.inputName=input;
+    }
+
+     $http.get('/api/users/').
+     success(function(data, status, headers, config){
+      $scope.users = data;
+     }).
+     error(function(data, status, headers, config){
+      console.log("error");
+     });
+   
     $http.get('/api/departments')
       .success(function(data) {
         $scope.departments = data;
