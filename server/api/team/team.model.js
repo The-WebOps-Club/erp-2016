@@ -8,7 +8,7 @@ var TeamSchema = new Schema({
   eventsRegistered: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   teamName: String,
   teamLeader: { type: Schema.Types.ObjectId, ref: 'User' },
-  selfTeam: {type: Boolean, default: false}
+  selfTeam: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Team', TeamSchema);

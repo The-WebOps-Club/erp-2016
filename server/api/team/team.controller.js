@@ -10,7 +10,7 @@ exports.index = function(req, res) {
   .populate('teams', 'teamMembers eventsRegistered teamName teamLeader selfTeam')
   .exec(function (err, user) {
     if(err) { return handleError(res, err); }
-    if(!user) { return res.send(404); }
+    if(!user) { return res.sendStatus(404); }
     var name = {
       path: 'teams.teamLeader teams.teamMembers',
       model: 'User',
@@ -27,13 +27,20 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   Team.findById(req.params.id, function (err, team) {
     if(err) { return handleError(res, err); }
-    if(!team) { return res.send(404); }
+    if(!team) { return res.sendStatus(404); }
     return res.json(team);
   });
 };
 
 // Creates a new team in the DB.
 exports.create = function(req, res) {
+  req.body.teamLeader = req.user._id;
+
+  // check if the req.body.teamMembers is an array or not
+  if(Object.prototype.toString.call(req.body.teamMembers) != '[object Array]')
+    req.body.teamMembers = [];
+
+  req.body.teamMembers.push(req.user._id);
   Team.create(req.body, function(err, team) {
     if(err) { return handleError(res, err); }
     return res.json(201, team);
@@ -56,14 +63,15 @@ exports.update = function(req, res) {
 
 exports.leave = function(req, res) {
   if(req.body._id) { delete req.body._id; }
+  console.log(req.params.id);
   Team.findById(req.params.id, function (err, team) {
     if (err) { return handleError(res, err); }
-    if(!team) { return res.send(404); }
-    if(team.selfTeam) { return res.send(400); }
-    var index=team.teamMembers.indexOf(req.user._id);
+    if(!team) { return res.sendStatus(404); }
+    if(team.selfTeam) { return res.sendStatus(400); }
+    var index = team.teamMembers.indexOf(req.user._id);
     if(index > -1)
       team.teamMembers.splice(index, 1);
-    var updated = _.merge(team, { teamMembers: team.teamMembers });
+    var updated = _.extend(team, { teamMembers: team.teamMembers });
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return;
@@ -71,14 +79,14 @@ exports.leave = function(req, res) {
   });
   User.findById(req.user._id, function(err, user) {
     if (err) { return handleError(res, err); }
-    if(!user) { return res.send(404); }
-    var index=user.teams.indexOf(req.params.id);
+    if(!user) { return res.sendStatus(404); }
+    var index = user.teams.indexOf(req.params.id);
     if(index > -1)
       user.teams.splice(index, 1);
-    var updated = _.merge(user, { teams: user.teams });
+    var updated = _.extend(user, { teams: user.teams });
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
-      return res.send(200);
+      return res.sendStatus(200);
     });
   });
 }
@@ -87,10 +95,10 @@ exports.leave = function(req, res) {
 exports.destroy = function(req, res) {
   Team.findById(req.params.id, function (err, team) {
     if(err) { return handleError(res, err); }
-    if(!team) { return res.send(404); }
-    team.remove(function(err) {
+    if(!team) { return res.sendStatus(404); }
+    team.remove(function (err) {
       if(err) { return handleError(res, err); }
-      return res.send(204);
+      return res.sendStatus(204);
     });
   });
 };
