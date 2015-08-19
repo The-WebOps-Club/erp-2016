@@ -94,9 +94,9 @@ exports.profilePic = function (req, res) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
-        if(!file){
-          res.status(404).json({message: "Profile Pic not found"});
-        }
+      if(!file){
+        res.status(404).json({message: "Profile Pic not found"});
+      }
       else{
         res.writeHead(200, {'Content-Type': file.contentType});
         

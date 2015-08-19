@@ -58,7 +58,7 @@
 										  		<div layout="column">
 											  		<div flex layout="row">
 											  			<div flex="10" layout-margin><br><br>
-											  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="../assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+											  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
 											  			</div>
 											  			<div flex >		  			
 											  				<h3>{{post.title}}</h3>
@@ -77,7 +77,7 @@
 											  		<div ng-repeat="comment in post.comments">
 												  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
 												  			<div flex="5"><br>
-												  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="../assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+												  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
 												  			</div>
 												  			<div flex>
 													  			<div layout="row">
