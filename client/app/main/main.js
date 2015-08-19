@@ -10,7 +10,7 @@ angular.module('erp2015App')
         authenticate: true,
 		    data: {
 	        permissions: {
-          	allow: [],
+          	only: [],
           	redirectTo: 'login'
           }
         }        
