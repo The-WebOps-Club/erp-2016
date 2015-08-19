@@ -1,7 +1,24 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('NavbarCtrl', function ($scope, $location, Auth, $state, $http, socket) {
+  .controller('NavbarCtrl', function ($scope, $location, Auth, $state, $http, socket, $mdSidenav, $mdUtil) {
+    $scope.toggleRight = buildToggler('left');
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildToggler(navID) {
+      var debounceFn =  $mdUtil.debounce(function(){
+            $mdSidenav(navID)
+              .toggle()
+              .then(function () {
+                // $log.debug("toggle " + navID + " is done");
+              });
+          },200);
+      return debounceFn;
+    }
+
+    $scope.user = Auth.getCurrentUser();
     $scope.notifPage = 1;
     $scope.notifications = [];
     $scope.menu = [{

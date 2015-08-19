@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('SubDepartmentCtrl', function ($scope,$filter, $http, $stateParams, $state, socket, Auth, postComment, subDepartment, users) {
+  .controller('GroupCtrl', function ($scope,$filter, $http, $stateParams, $state, socket, Auth, postComment, group, users) {
     // console.log(user);
     $scope.editMode = false;
     $scope.newPost = {
@@ -9,7 +9,7 @@ angular.module('erp2015App')
         info: ""
     };
     $scope.posts = [];
-    $scope.subDepartment = subDepartment.data;
+    $scope.group = group.data;
     // $scope.user={
     //         name:"name",
     //         image: "url_for_image",
@@ -24,7 +24,7 @@ angular.module('erp2015App')
     console.log(users.data);
     $scope.load=function(){
         $scope.count=$scope.count+1;
-        $http.get('/api/posts/' + $scope.subDepartment.wall + '/'+$scope.count)
+        $http.get('/api/posts/' + $scope.group.wall + '/'+$scope.count)
             .success(function(posts) {
                 $scope.posts=$scope.posts.concat(posts);
                 socket.syncUpdates('post', $scope.posts);
@@ -48,7 +48,7 @@ angular.module('erp2015App')
     }
     
     $scope.createPost = function() {
-        postComment.createPost($scope.newPost.title, $scope.newPost.info, $scope.subDepartment._id)
+        postComment.createPost($scope.newPost.title, $scope.newPost.info, $scope.group._id)
             .success(function(data) {
                 socket.syncUpdates('post', $scope.posts);
                 $scope.newPost.title = '';
@@ -88,7 +88,7 @@ angular.module('erp2015App')
      
      $scope.submitted=function(){
         for (var i = 0; i < $scope.selectedContacts.length; i++) {
-            $http.post('api/users/addSubDepartment/', {user: $scope.selectedContacts[i]._id, subDepartment: $scope.subDepartment._id, role: "coords"})
+            $http.post('api/users/addGroup/', {user: $scope.selectedContacts[i]._id, group: $scope.group._id, role: "coords"})
         };
         $scope.selectedContacts=[];
      }

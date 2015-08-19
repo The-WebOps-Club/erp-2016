@@ -47,6 +47,16 @@ angular.module('erp2015App')
         url: '/subDepartment/:subDeptId',
         templateUrl: 'app/wall/subDepartment/subDepartment.html',
         controller: 'SubDepartmentCtrl',
+        resolve: {
+          subDepartment: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/subDepartments/' + $stateParams.subDeptId)
+                    .then(function(data) { return data; });
+          }],
+          users: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/users/')
+                    .then(function(data) { return data; });
+          }] 
+        },
         authenticate: true,
         data: {
           permissions: {
@@ -54,5 +64,26 @@ angular.module('erp2015App')
               redirectTo: 'login'
           }
         }
-      });
+      }).state('group', {
+        url: '/group/:groupId',
+        templateUrl: 'app/wall/group/group.html',
+        controller: 'GroupCtrl',
+        resolve: {
+          group: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/groups/' + $stateParams.groupId)
+                    .then(function(data) { return data; });
+          }],
+          users: ['$http','$stateParams', function($http, $stateParams) {
+             return $http.get('/api/users/')
+                    .then(function(data) { return data; });
+          }] 
+        },
+        authenticate: true,
+        data: {
+          permissions: {
+              except: ['anonymous'],
+              redirectTo: 'login'
+          }
+        }
+      });;
   });
