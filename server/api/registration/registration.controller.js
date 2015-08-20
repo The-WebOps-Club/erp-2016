@@ -26,6 +26,7 @@ exports.show = function(req, res) {
 // Creates a new registration in the DB.
 exports.create = function(req, res) {
   // Check if user is in team
+  var flag = true;
   if(req.user.teams.indexOf(req.body.team)==-1) res.send(403);
 
   // Check if team is already registered
@@ -38,16 +39,19 @@ exports.create = function(req, res) {
     console.log(event.registrations);
     req.user.teams.filter(function(n) {
       event.registrations.filter(function (m) {
-        if(m.team == n)
+        if(m.team == n) {
+          flag = false;
           res.send(422);
+        }
       });
     });
   });
+  if(!flag)
 
   // Push in team.eventsRegistered
   Team.findById(req.body.team, function(err, team) {
     if (err) { return handleError(res, err); }
-    if(!team) { return res.send(404); }
+    if(!team) { flag = false; return res.send(404); }
     var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
@@ -67,7 +71,7 @@ exports.create = function(req, res) {
       });
     });
 
-      return res.json(200, registration);
+      if(flag) return res.json(200, registration);
   });
 };
 
