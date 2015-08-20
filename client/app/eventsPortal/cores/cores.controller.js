@@ -37,6 +37,22 @@ angular.module('erp2015App')
       return new Blob([new Uint8Array(array)], {type: mimeString});
     };
 
+    $scope.isTeamEvent = function () {
+      return !($scope.individualEvent);
+    }
+
+    $scope.maxTeamMembers = 1;
+    $scope.individualEvent = $scope.maxTeamMembers == 1;
+
+    $scope.toggleIndividuality = function() {
+      if($scope.individualEvent)
+        $scope.maxTeamMembers = 1;
+    }
+
+    $scope.fff = function(b) {
+      $scope.maxTeamMembers = b;
+    }
+
    
     var handleFileSelect = function(evt) {
       var myfile = evt.currentTarget.files[0];
@@ -156,12 +172,13 @@ angular.module('erp2015App')
       angular.forEach($scope.selectedEventLists, function (item) {
         $scope.eventListIds.push(item._id);
       });
-
       if(form.$valid) {
         EventsPortalService.createEvent({
           name: $scope.event.title,
           info: $scope.event.info,
           assignees: $scope.coordsIds,
+          maxTeamMembers: $scope.maxTeamMembers,
+          venue: $scope.venue,
           eventCategory: $scope.eventListIds
         })
         .then(function (data) {

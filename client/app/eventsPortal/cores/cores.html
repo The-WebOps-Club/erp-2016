@@ -97,6 +97,21 @@
             <span>{{ errors.other }}</span>
           </div>
 
+          <md-input-container>
+            <label>Venue</label>
+            <input name="title" ng-model="venue" ng-required="true" mongoose-error />
+          </md-input-container>
+
+          <table><tr><td>
+            <md-checkbox ng-model="individualEvent" ng-change="toggleIndividuality()" aria-label="Individual event">
+              Individual event
+            </md-checkbox></td><td>
+            <div ng-if="isTeamEvent()">
+            <md-input-container flex>
+              <label>Number of members per team</label>
+              <input type="number" step="any" ng-model="maxTeamMembers" ng-change="fff(maxTeamMembers)" min="2" max="100">
+            </md-input-container></div></td></tr></table>
+
           <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match>
             <md-autocomplete
               md-selected-item="selectedItem"
