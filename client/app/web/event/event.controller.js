@@ -14,6 +14,7 @@ angular.module('erp2015App').controller('webEventCtrl', function ($state, $scope
     $http.get('/api/teams').then(function (res) {
       var teams = res.data;
       $scope.teamList = teams;
+      console.log(teams);
       $scope.selectedTeam = $scope.teamList[0]._id;
       $scope.teamList[0].teamName = "Participate individually";
       console.log(teams);

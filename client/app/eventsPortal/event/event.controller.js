@@ -44,34 +44,34 @@ angular.module('erp2015App')
       console.log(err);
     });
 
-     $scope.buildCatString = function () {
-       var cat="";
-       for(var i=0; i<$scope.event.eventCategory.length; i++) {
-         cat+=$scope.event.eventCategory[i].title;
-         if(i != $scope.event.eventCategory.length-1)
-           cat+=", ";
-       }
-       return cat;
-     }
+    $scope.buildCatString = function () {
+      var cat="";
+      for(var i=0; i<$scope.event.eventCategory.length; i++) {
+        cat+=$scope.event.eventCategory[i].title;
+        if(i != $scope.event.eventCategory.length-1)
+          cat+=", ";
+      }
+      return cat;
+    }
 
-     $scope.getVisiblity = function () {
-       if($scope.event.acceptedByAdmin)
-         return "";
-       else
-         return "in";
-     }
+    $scope.getVisiblity = function () {
+      if($scope.event.acceptedByAdmin)
+        return "";
+      else
+        return "in";
+    }
 
-     $scope.toggleVisiblity = function () {
+    $scope.toggleVisiblity = function () {
       EventsPortalService.toggleEvent({
         acceptedByAdmin: $scope.event.acceptedByAdmin
       }, $scope.event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
       })
-          .catch(function (err) {
-        $mdToast.show($mdToast.simple().content('You are not authorized to do that.').hideDelay(5000));
-        $scope.event.acceptedByAdmin=!$scope.event.acceptedByAdmin;
-          });
-     }
+      .catch(function (err) {
+      $mdToast.show($mdToast.simple().content('You are not authorized to do that.').hideDelay(5000));
+      $scope.event.acceptedByAdmin=!$scope.event.acceptedByAdmin;
+        });
+    }
 
     $scope.showAdvanced = function (ev) {
       $mdDialog.show({
@@ -239,11 +239,22 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   $scope.event = event;
   $scope.selectedEventLists = selectedEventLists;
   $scope.buildCatString = buildCatString;
-    $scope.selectedCoords=event.assignees;
-    console.log(event);
-    $scope.eventDate=new Date(event.eventDate);
-    $scope.startReg=new Date(event.startReg);
-    $scope.endReg=new Date(event.endReg);
+  $scope.selectedCoords=event.assignees;
+  console.log(event);
+  $scope.eventDate=new Date(event.eventDate);
+  $scope.startReg=new Date(event.startReg);
+  $scope.endReg=new Date(event.endReg);
+
+  $scope.isTeamEvent = function () {
+    return !($scope.individualEvent);
+  }
+
+  $scope.individualEvent = $scope.event.maxTeamMembers == 1;
+
+  $scope.toggleIndividuality = function() {
+    if($scope.individualEvent)
+      $scope.event.maxTeamMembers = 1;
+  }
 
   EventsPortalService.getAllEventLists()
   .then(function (data) {
@@ -304,6 +315,8 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
             startReg: $scope.startReg.toDateString(),
             endReg: $scope.endReg.toDateString(),
             venue: $scope.event.venue,
+            maxTeamMembers: $scope.event.maxTeamMembers,
+            minTeamMembers: $scope.event.minTeamMembers,
             requireTDP: $scope.event.requireTDP
           }, event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));

@@ -19,7 +19,7 @@ var EventSchema = new Schema({
   startReg: Date,
   endReg: Date,
   requireTDP: Boolean,
-  maxTeamMembers: Number,
+  maxTeamMembers: { type: Number, default: 1 },
   minTeamMembers: { type: Number, default: 1 },
   registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
