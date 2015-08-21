@@ -38,7 +38,6 @@ exports.index = function (req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log('asdasdasdasd');
   console.log(req.body);
   var newUser = new User(req.body);
   newUser.role = 'user';
@@ -50,13 +49,13 @@ exports.create = function (req, res, next) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
-    newTeam.save(function(err, team) {
+    newTeam.save(function (err, team) {
       if(err) { return handleError(res, err); }
       User.findById(user._id, function (err, user) {
         if(err) return validationError(res, err);
         if(!user) return res.sendStatus(404);
-        user.teams=[team._id];
-        user.selfTeam=team._id;
+        user.teams = [team._id];
+        user.selfTeam = team._id;
         user.save(function (err) {
           if(err) return validationError(res, err);
           return;
