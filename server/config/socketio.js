@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/financePortal/financePortal.socket').register(socket);
 
   require('../api/mom/mom.socket').register(socket);
   require('../api/drive/drive.socket').register(socket);
