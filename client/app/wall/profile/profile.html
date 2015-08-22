@@ -70,7 +70,7 @@
 																		<h5>{{ post.createdOn | date : 'medium'}}</h5>
 																	</div>
 																</div>
-											  				<p style="white-space: pre;">{{post.info}}</p>
+											  				<p style="white-space: pre-wrap;">{{post.info}}</p>
 											  			</div>
 											  		</div>
 											  		<md-divider></md-divider><br>
@@ -84,7 +84,7 @@
 													  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
 													  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
 													  			</div>
-													  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+													  			<h6 style="white-space: pre-wrap;">{{comment.info}}</h6>
 												  			</div>
 												  		</div>
 											  		</div>
@@ -139,13 +139,14 @@
 												</md-button>
 											</div>										
 										</md-toolbar>
+										<br>
 										<div layout="column">
 											<div layout="row">
 												<div layout="column" style="padding-top:20px;padding-right:5px">
 													<ng-md-icon icon="perm_identity" style="fill: green" size="24"></ng-md-icon>
 												</div>
-												<md-input-container ng-show="editMode" class="md-icon-float input" >
-										        	<label>Name</label>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input" >
+										        	<label style="margin:0px;">Name</label>
 										       		<input ng-model="user.name" type="text">
 										    	</md-input-container>
 												<div layout="column" ng-hide="editMode" flex="55" class="view">
@@ -159,8 +160,8 @@
 												<div layout="column" style="padding-top:20px;padding-right:5px">
 													<ng-md-icon icon="format_list_numbered" style="fill: green" size="24"></ng-md-icon>
 												</div>
-												<md-input-container ng-show="editMode" class="md-icon-float input " >
-										        	<label>Roll no</label>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input " >
+										        	<label style="margin:0px;">Roll no</label>
 										       		<input ng-model="user.rollNumber" type="text">
 										    	</md-input-container>
 												<div layout="column" ng-hide="editMode" flex="55" class="view">
@@ -173,8 +174,8 @@
 												<div layout="column" style="padding-top:20px;padding-right:5px">
 													<ng-md-icon icon="phone" style="fill: green" size="24"></ng-md-icon>
 												</div>
-												<md-input-container ng-show="editMode" class="md-icon-float input " >
-										        	<label>Phone</label>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input " >
+										        	<label style="margin:0px;">Phone</label>
 										       		<input ng-model="user.phoneNumber" type="text">
 										    	</md-input-container>
 												<div layout="column" ng-hide="editMode" flex="55" class="view">
@@ -187,8 +188,8 @@
 												<div layout="column" style="padding-top:20px;padding-right:5px">
 													<ng-md-icon icon="email" style="fill: green" size="24"></ng-md-icon>
 												</div>
-												<md-input-container ng-show="editMode" flex="30" class="md-icon-float input " >
-										        	<label>Email</label>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" flex="30" class="md-icon-float input " >
+										        	<label style="margin:0px;">Email</label>
 										       		<input ng-model="user.email" type="text">
 										    	</md-input-container>
 												<div layout="column" ng-hide="editMode" flex="55" class="view">
@@ -202,8 +203,8 @@
 													<ng-md-icon icon="home" style="fill: green" size="24"></ng-md-icon>
 												</div>
 												<div>
-												<md-input-container ng-show="editMode" class="md-icon-float input">
-										       		<md-select placeholder="Hostel" ng-model="user.hostel">
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input">
+										       		<md-select placeholder="Hostel" style="padding-bottom:2px;"ng-model="user.hostel">
 											        	 	<md-option value="Alakananda">Alakananda</md-option>
 														    <md-option value="Badra">Badra</md-option>
 														    <md-option value="Brahmaputra">Brahmaputra</md-option>    
@@ -238,8 +239,8 @@
 												<div layout="column" style="padding-top:20px;padding-right:5px">
 													<ng-md-icon icon="location_on" style="fill: green" size="24"></ng-md-icon>
 												</div>
-												<md-input-container ng-show="editMode" flex="20" class="md-icon-float input " >
-										        	<label>Room no</label>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" flex="20" class="md-icon-float input " >
+										        	<label style="margin:0px;">Room no</label>
 										       		<input ng-model="user.roomNumber" type="text">
 										    	</md-input-container>
 												<div layout="column" ng-hide="editMode" flex="55" class="view">

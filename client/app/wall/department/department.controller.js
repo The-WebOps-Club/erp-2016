@@ -89,7 +89,11 @@ angular.module('erp2015App')
      $scope.submitted=function(){
         for (var i = 0; i < $scope.selectedContacts.length; i++) {
             $http.post('api/users/addDepartment/', {user: $scope.selectedContacts[i]._id, department: $scope.department._id, role: "coords"})
+                .success(function (data) {
+                    // body...
+                })
         };
+
         $scope.selectedContacts=[];
      }
   });

@@ -3,7 +3,7 @@
 	<div layout="row" class="body">
 		<!-- MAIN -->
 		<div flex="66" offset="10">
-		<div layout="column" class="main md-whiteframe-z3" flex="66" offset="5" >
+		<div layout="column" class="main md-whiteframe-z3" flex="70" offset="15" >
 			<div layout="row" id="profile_back">
 				<div layout="column" class="name_and_tabs">
 					<div layout="row">
@@ -16,6 +16,7 @@
 	        		</div>
 	        		<!-- <hr> -->
 					<div id="tabs">
+
 						<md-tabs md-dynamic-height md-border-bottom flex="100">
 							<md-tab label="Wall">
 								<md-content>
@@ -70,7 +71,7 @@
 										  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
 										  						</div>
 										  					</div>
-											  				<p style="white-space: pre;">{{post.info}}</p>
+											  				<p style="white-space: pre-wrap;">{{post.info}}</p>
 											  			</div>
 											  		</div>
 											  		<md-divider></md-divider><br>
@@ -84,7 +85,7 @@
 													  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
 													  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
 													  			</div>
-													  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+													  			<h6 style="white-space: pre-wrap;">{{comment.info}}</h6>
 												  			</div>
 												  		</div>
 											  		</div>

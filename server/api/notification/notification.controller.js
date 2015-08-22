@@ -9,7 +9,7 @@ var notifier = require('../../components/gcm');
 var gcm = require('node-gcm');
 var mailer=require('../../components/mailer');
 var getMembers = require('../wall/wall.controller').getMembers;
-
+var moment = require('moment');
 var NOTIFICATIONSPERPAGE = 10;
 
 // Get list of notifications
@@ -21,6 +21,28 @@ exports.index = function(req, res) {
     else {
       var populated = [];
       forEach(paginatedResults, function(notification, index, arr) {
+        var done = this.async();
+        notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
+          _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
+            populated.push(_notif);
+            done();
+          })
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
+    }
+  }, {sortBy: {updatedOn: 1}});
+};
+
+exports.viewAll = function(req, res) {
+  Notification.find({user: req.user._id}, function (err, notifications) {
+    if(err) {
+      return handleError(res, err);
+    }
+    else {
+      var populated = [];
+      forEach(notifications, function(notification, index, arr) {
         var done = this.async();
         notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
           _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
@@ -123,7 +145,9 @@ exports.bulkCreate = function(data, callback) {
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
     if (data.action=='post'){
+
       if((data.post.createdBy._id.toString() === member._id.toString())){
+
         done();
       }
       else {
@@ -142,7 +166,9 @@ exports.bulkCreate = function(data, callback) {
       }
     }
     else{
+
       if((data.post.comments.reverse()[0].createdBy._id.toString() === member._id.toString())){
+
         done();
       }
       else {
@@ -164,14 +190,20 @@ exports.bulkCreate = function(data, callback) {
   }, function allDone (notAborted, arr) {
     if(data.post.comments.length === 0){
       var message=data.post.createdBy.name +" posted on "+data.post.wall.name;
-      var emailText = message + ":\n" + data.post.info;
+      //var emailText = message + ":\n" + data.post.info;
+      console.log(data.post.wall);
+      
+      var emailText='<img src="http://saarang.org/2014/landing/assets/images/saarang_button.png" style="width:60px;height:60px;"><font size="4" color="blue">Saarang ERP -'+data.post.createdBy.name+ ' has posted on '+data.post.wall.name+
+      '</font><hr><br><br><font size="3">'+data.post.info+'</font><font size="2"><br><br>'+moment(data.post.updatedOn).format('MMMM Do YYYY, h:mm:ss a')+'<br><br><br><a href="http://localhost:9000/profile/'+data.post.wall.parentId+'">View Conversation</a><p>    Thank you,    <br />    Saarang Team  </p></font>';
       notifier(message, deviceIds);
       mailer('[Saarang ERP] ' + data.post.title, emailText, emails, data.post._id, false);
     } else {
       var myComment=data.post.comments.reverse()[0];
       var message=myComment.createdBy.name +" comment on a post by "+
       data.post.createdBy.name+ " on the " + data.post.wall.name+" wall";
-      var emailText = message + ":\n" + myComment.info;
+      //var emailText = message + ":\n" + myComment.info;
+      var emailText='<img src="http://saarang.org/2014/landing/assets/images/saarang_button.png" style="width:60px;height:60px;"><font size="4" color="blue">Saarang ERP -'+myComment.createdBy.name+ ' has commented on a post by '+data.post.createdBy.name+" on the " + data.post.wall.name+"'s wall"+
+      '</font><hr><br><br><font size="3">'+myComment.info+'</font><font size="2"><br><br>'+moment(myComment.updatedOn).format('MMMM Do YYYY, h:mm:ss a')+'<br><br><br><a href="http://localhost:9000/profile/'+data.post.wall.parentId+'">View Conversation</a><p>    Thank you,    <br />    Saarang Team  </p></font>';
       notifier(message, deviceIds);
       mailer('[Saarang ERP] ' + data.post.title , emailText, emails, data.post._id, true);
     }

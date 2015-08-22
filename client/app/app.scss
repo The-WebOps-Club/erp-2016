@@ -26,13 +26,16 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	color: #000;
 	border: 1px solid rgba(100, 100, 100, .4);
 	-webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
-	overflow: visible;
+	overflow: scroll;
 	position: absolute;
-	margin-left: -150px;
-	width: 400px;
-	z-index: -1;
+	margin-left: -200px;
+	width: 350px;
+	z-index: 1;
 	display: none; // Enable this after jquery implementation 
+
+
 }
+
 
 // Popup Arrow
 #notificationContainer:before {
@@ -45,7 +48,7 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	border: 10px solid black;
 	border-color: transparent transparent white;
 	margin-top: -20px;
-	margin-left: 188px;
+	margin-left: 156px;
 }
 #notificationTitle
 {
@@ -53,28 +56,47 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	padding: 8px;
 	font-size: 13px;
 	background-color: #ffffff;
-	position: fixed;
+	position: relative;
 	z-index: 1000;
-	width: 384px;
+	width: 350px;
 	border-bottom: 1px solid #dddddd;
 }
 #notificationsBody
 {
-	position: fixed;
-	padding: 33px 0px 0px 0px !important;
-	min-height:300px;
-	height: 600px;
-	overflow: scroll;
+	font-size:15px;
+	position: relative;
+	padding: 5px 5px 5px 5px !important;
+	min-height:200px;
+	max-height:600px;
+	
 }
-#notificationFooter
+#notification_count 
 {
-	position: fixed;
-	background-color: #e9eaed;
-	text-align: center;
+	padding: 3px 7px 3px 7px;
+	background: #cc0000;
+	color: #ffffff;
 	font-weight: bold;
-	padding: 8px;
-	font-size: 12px;
-	border-top: 1px solid #dddddd;
+	margin-left: 12px;
+	border-radius: 9px;
+	-moz-border-radius: 9px; 
+	-webkit-border-radius: 9px;
+	position: absolute;
+	margin-top: -11px;
+	font-size: 11px;
+}
+#notifMessage:hover
+{
+	background-color:#F5F5F0;
+}
+
+.notiffalse
+{
+	background-color:#EAEAE8;	
+}
+a:hover
+{
+	text-decoration:none;
+	color:black;
 }
 
 // Component styles are injected through grunt
@@ -86,7 +108,11 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'admin/admin.scss';
 @import 'coordPortal/editProfile/editProfile.scss';
 @import 'departments/departments.scss';
+@import 'financePortal/admin/admin.scss';
+@import 'financePortal/admin/clubs/clubs.scss';
+@import 'financePortal/saarang/saarang/saarang.scss';
 @import 'main/main.scss';
+@import 'mom/mom.scss';
 @import 'newsfeed/newsfeed.scss';
 @import 'tasks/tasks.scss';
 @import 'wall/department/department.scss';
