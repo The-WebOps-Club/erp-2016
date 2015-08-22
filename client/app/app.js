@@ -13,6 +13,7 @@ angular.module('erp2015App', [
   'ngFacebook',
   'ngMaterial',
   'ngMessages',
+  'infinite-scroll',
   'ngMdIcons'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -70,39 +71,116 @@ angular.module('erp2015App', [
         }
       });
     });
-  });
+  })
+  .run(function ($rootScope, Auth, Permission, User, $q) {
+      Permission
+        // Define user role calling back-end
+        .defineRole('user', function (stateParams) {
+          var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'user') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;     
+      })
+       .defineRole('anonymous', function (stateParams) {
+         var deferred = $q.defer();
+         var currUser = Auth.getCurrentUser();
+            if(currUser) 
+            {
+              deferred.reject();
+            }
+            else
+            {
+              deferred.resolve(); 
+            }
+           return deferred.promise;
+         })
+       .defineRole('admin', function(stateParams) {
+         var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'admin') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;
+       })
+       .defineRole('core', function(stateParams) {
+         var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'core') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;        
+       });
+     })
+        // A different example for admin
+        // .defineRole('admin', function (stateParams) {
+        //   var deferred = $q.defer();
+
+        //   User.getAccessLevel().then(function (data) {
+        //     if (data.accessLevel === 'admin') {
+        //       deferred.resolve();
+        //     } else {
+        //       deferred.reject();
+        //     }
+        //   }, function () {
+        //     // Error with request
+        //     deferred.reject();
+        //   });
+
+        //   return deferred.promise;
+        // });
+    //});
     /**
      * Defining all roles
      */
-  //   Permission
-  //     .defineRole('anonymous', function(stateParams) {
-  //       Auth.isLoggedInAsync(function(success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser) {
-  //           return true;
-  //         }
-  //         return false;
-  //       });
-  //     })
-  //     .defineRole('user', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'user') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('core', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'core') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('admin', function(stateParams) {
+    // Permission
+    //   .defineRole('anonymous', function(stateParams) {
+    //     Auth.isLoggedInAsync(function(success) {
+    //       var currUser = Auth.getCurrentUser();
+    //       if(currUser) {
+    //         return true;
+    //       }
+    //       return false;
+    //     });
+    //   })
+      // .defineRole('user', function(stateParams) {
+      //   Auth.isLoggedInAsync(function (success) {
+      //     var currUser = $rootScope.currentUser;
+      //     if(currUser.role === 'user') {
+      //       return true;
+      //     }
+      //   });
+      //   return false;        
+      // });
+      // .defineRole('core', function(stateParams) {
+      //   Auth.isLoggedInAsync(function (success) {
+      //     var currUser = Auth.getCurrentUser();
+      //     if(currUser.role === 'core') {
+      //       return true;
+      //     }
+      //   });
+      //   return false;        
+      // })
+  //    .defineRole('admin', function(stateParams) {
   //       return Auth.isAdmin();       
   //     })
   // });
