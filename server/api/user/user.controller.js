@@ -94,19 +94,19 @@ exports.profilePic = function (req, res) {
       }
       else{
         res.writeHead(200, {'Content-Type': file.contentType});
-        
+
         var readstream = gfs.createReadStream({
             filename: file.filename
         });
-     
+
           readstream.on('data', function(data) {
               res.write(data);
           });
-          
+
           readstream.on('end', function() {
-              res.end();        
+              res.end();
           });
-     
+
         readstream.on('error', function (err) {
           console.log('An error occurred!', err);
           throw err;
@@ -200,7 +200,7 @@ exports.me = function (req, res, next) {
  * Add any user to any department as a coord
  * @param {req.body.department} : Department ID
  * @param {req.body.user} : User ID
- * @param {Function} : User and Department IDs are sent 
+ * @param {Function} : User and Department IDs are sent
  *                     in the body of the request.
  *                     Using that we see if user already exists in department
  *                     or if Department already exists in the user
@@ -208,7 +208,7 @@ exports.me = function (req, res, next) {
 exports.addDepartment = function (req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Department.findById(req.body.department, function (err, department) {
-      if(err) { 
+      if(err) {
         return handleError(res, err);
       }
       if(!department) {
@@ -225,7 +225,7 @@ exports.addDepartment = function (req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.status(200).json({message: "Successful"});; 
+          res.status(200).json({message: "Successful"});;
         });
       }
       else res.status(200).json({message: "Successful"});;
@@ -237,7 +237,7 @@ exports.addDepartment = function (req, res, next) {
  * Add any user to a SubDepartment
  * @param {req.body.subDepartment}   req  SubDepartment ID
  * @param {req.body.user}   req  User ID
- * @param {Function} User and SubDepartment IDs are sent 
+ * @param {Function} User and SubDepartment IDs are sent
  *                   in the body of the request.
  *                   Using that we see if user already exists in subDepartment
  *                   or if SubDepartment already exists in the user
@@ -245,7 +245,7 @@ exports.addDepartment = function (req, res, next) {
 exports.addGroup = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Group.findById(req.body.group, function (err, group) {
-      if(err) { 
+      if(err) {
         return handleError(res, err);
       }
       if(!group) {
@@ -262,7 +262,7 @@ exports.addGroup = function(req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.status(200).json({message: "Successful"}); 
+          res.status(200).json({message: "Successful"});
         });
       }
       else res.status(200).json({message: "Successful"});
@@ -273,7 +273,7 @@ exports.addGroup = function(req, res, next) {
 exports.addSubDepartment = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
-      if(err) { 
+      if(err) {
         return handleError(res, err);
       }
       if(!subDepartment) {
@@ -290,7 +290,7 @@ exports.addSubDepartment = function(req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.status(200).json({message: "Successful"}); 
+          res.status(200).json({message: "Successful"});
         });
       }
       else res.status(200).json({message: "Successful"});
@@ -314,7 +314,7 @@ exports.gcmRegister = function(req, res) {
       user.updatedOn = Date.now();
       user.save(function (err) {
         if(err) { return handleError(res, err); }
-        res.status(200).json({message: "Successful"}); 
+        res.status(200).json({message: "Successful"});
       });
     }
   })
@@ -322,7 +322,7 @@ exports.gcmRegister = function(req, res) {
 
 /**
  * Sends a mail to the user to reset the password
- * 
+ *
  * @param  {[type]} req [description]
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
@@ -340,7 +340,7 @@ exports.forgotPassword = function(req, res, next) {
       User.findOne({ email: req.body.email }, function (err, user) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.status(404).json({message: "User does not exist"}); }
-        
+
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // one hour
 
@@ -349,7 +349,7 @@ exports.forgotPassword = function(req, res, next) {
         })
       })
     },
-    function (token, user, done) {   
+    function (token, user, done) {
       var mailOptions = {
         to: user.email,
         from: EMAIL,
@@ -361,7 +361,6 @@ exports.forgotPassword = function(req, res, next) {
       };
       mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
       res.status(200).json({message: "Successful"});
-      });      
     }
   ], function (err) {
     if(err) { return next(err); }
@@ -371,7 +370,7 @@ exports.forgotPassword = function(req, res, next) {
 
 /**
  * Resets the password of the user
- * 
+ *
  * @param  {[type]} req [description]
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
@@ -394,13 +393,12 @@ exports.resetPassword = function(req, res) {
       };
       mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
       res.status(200).json({message: "Successful"});
-      });      
     });
   });
 };
 
 /**
- * 
+ *
  * Authentication callback
  */
 exports.authCallback = function(req, res, next) {
