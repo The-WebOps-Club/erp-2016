@@ -6,8 +6,10 @@ var mongoose = require('mongoose'),
 var HostelSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean,
+
+ 
   rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
+
 });
 
 module.exports = mongoose.model('Hostel', HostelSchema);

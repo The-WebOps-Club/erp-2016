@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Hostel = require('./hostel.model');
 var Room = require('../room/room.model');
 var Checkin = require('../checkin/checkin.model');
+var User = require('../../user/user.model');
 var _u = require('underscore');
 
 // Get list of hostels
@@ -23,19 +24,22 @@ exports.indexRoomsForHostel = function(req, res) {
       $exists : false
     }}, function(err, checkins) {
 
+      //checkins = checkins.toJSON();
       var checkinsIndexUserId = _u.groupBy(checkins, function(checkin) {
         return checkin.user.toString();
       });
+      console.log(checkinsIndexUserId);
       var user_ids = _u.pluck(checkins, 'user');
 
       User.find({ _id : {
         $in : user_ids
       }}, function(err, _users) {
+        console.log(checkinsIndexUserId);
         var usersIndexUserId = _u.groupBy(_users, function(_user) {
           return _user._id.toString();
         });
         var usersIndexRoomId = _u.groupBy(_users, function(_user) {
-          return checkinsIndexUserId[_user._id.toString()].room.toString();
+          return checkinsIndexUserId[_user._id.toString()][0].room.toString();
         });
         Room.find({ _id : {
           $in : hostel.rooms
