@@ -6,6 +6,12 @@ angular.module('erp2015App')
       .state('addTeam', {
         url: '/addTeam',
         templateUrl: 'app/addTeam/addTeam.html',
-        controller: 'AddTeamCtrl'
+        controller: 'AddTeamCtrl',
+	    data: {
+          	permissions: {
+          		except: ['anonymous'],
+          		redirectTo: 'login'
+          	}
+        }
       });
   });

@@ -1,26 +1,97 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<div layout="row">
+	<div layout="column" flex="70" 	offset="15">
+		<!-- <div layout="row">
+		    <md-whiteframe class="md-whiteframe-z3" flex="100">
+				<md-toolbar class="md-primary">
+			        <h1 class="md-toolbar-tools">
+			          Create a new Post.....
+			        </h1>
+			      </md-toolbar>
 
-<div class="col-md-12">
-<!-- 	<div class="jumbotron">
-		<form  ng-submit="createPost()" name="wallPost">
-			<input class="form-control" type="text" ng-model="newPostTitle" placeholder="Title">
-			<textarea class="form-control" ng-model="newPost" rows="3" placeholder="Create a new Post..."></textarea>
-			<input class="btn btn-primary" type="submit" ng-diasbled="wallPost.$invalid" value="Create Post">
-		</form>
-	</div>
- -->
-	<div class="jumbotron" ng-repeat="post in posts">
-		<div>
-			<h3>{{post.title}}</h3>
-			{{post.info}}
+			      <md-content layout-padding>
+			        <form class="form" name="wallPost" ng-submit="createPost()" >
+
+			          <md-input-container>
+			            <label>Title</label>
+
+			            <input type="text" name="newPostTitle" ng-model="newPostTitle" >
+			          </md-input-container>
+
+			          <md-input-container>
+			            <label>Info</label>
+
+			            <input type="text" name="newPost" ng-model="newPost" >
+			          </md-input-container>          
+			          <div>
+			            <md-button class="md-raised md-primary" type="submit">
+			              Post
+			            </md-button>
+			          </div>
+			        </form>
+			      </md-content>
+		    </md-whiteframe>
+		</div> -->
+		<br><br>
+		<div infinite-scroll="load()">	
+			<div ng-repeat="post in posts">
+			  <div layout="row">
+			  	<md-whiteframe class="md-whiteframe-z4" flex="100"style="background-color : #F5F5F0">
+			  		<div layout="column">
+				  		<div flex layout="row">
+				  			<div flex="5" layout-margin><br><br>
+				  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+				  			</div>
+				  			<div flex="95" >		  			
+				  				<h3>{{post.title}}</h3>
+			  					<div layout="row">
+			  						<div flex>
+			  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: grey" size="15"></ng-md-icon>  {{post.wall.name}}</h4>
+			  						</div>
+			  						<div flex="20">
+			  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
+			  						</div>
+			  					</div>
+				  				<p style="white-space: pre;">{{post.info}}</p>
+				  			</div>
+				  		</div>
+				  		<md-divider></md-divider><br>
+				  		<div ng-repeat="comment in post.comments">
+					  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
+					  			<div flex="5"><br>
+					  				<img ng-src="api/users/{{comment.createdBy._id}}/profilePic" width="40px" height="40px" style="border-radius: 20px " alt="{{comment.cureatedBy.name}}">
+					  			</div>
+					  			<div flex="95">
+						  			<div layout="row">
+						  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
+						  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
+						  			</div>
+						  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+					  			</div>
+					  		</div>
+				  		</div>
+				  		<div flex offset="10">
+				  			<md-content>
+						  		<form  ng-submit="addComment(post)" name="commentPost">
+									<md-input-container flex >
+		       							 <label>Enter a new comment....</label>
+		       							 <textarea ng-model="post.newComment" columns="1" required></textarea>
+		      						</md-input-container>
+		      						<div>
+			         					<md-button class="md-raised md-primary" type="submit">
+			             					Comment
+			           					</md-button>
+			         			    </div>
+								</form>
+							</md-content>
+						</div>
+						<br>
+		            </div>
+			  	</md-whiteframe>
+			  </div>
+			  <br>
+			</div>
 		</div>
-		<br>
-		<div ng-repeat="comment in post.comments">
-			{{comment.info}}
-		</div>
-		<form  ng-submit="addComment(post)" name="commentPost">
-			<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..."></textarea>
-			<input class="btn btn-primary" type="submit" ng-diasbled="commentPost.$invalid" value="Comment">
-		</form>
 	</div>
+	<div flex></div>
 </div>

@@ -7,11 +7,12 @@ angular.module('erp2015App')
         url: '/',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl',
-		    // data: {
-	     //    permissions: {
-      //     	except: ['anonymous', 'admin', 'user', 'core'],
-      //     	redirectTo: 'coordPortalEditProfile'
-      //     }
-      //   }        
+        authenticate: true,
+		    data: {
+	        permissions: {
+          	only: [],
+          	redirectTo: 'login'
+          }
+        }        
       });
   });

@@ -1,26 +1,179 @@
-<div ng-include="'components/navbar/navbar.html'"></div>
+ <div ng-include="'components/navbar/navbar.html'"></div><br><br><br>
+	<!-- BODY -->
+	<div layout="row" class="body">
+		<!-- MAIN -->
+		<div flex="66" offset="10">
+		<div layout="column" class="main md-whiteframe-z3" flex="66" offset="5" >
+			<div layout="row" id="profile_back">
+				<div layout="column" class="name_and_tabs">
+					<div layout="row">
+					<!-- <div id="profile_pic">
+						<img ng-src="api/users/{{user._id}}/profilePic" alt="{{user.name}}" />
+					</div> -->
+					<div id="profile_title">
+						{{department.name}}   				
+	        		</div>
+	        		</div>
+	        		<!-- <hr> -->
+					<div id="tabs">
+						<md-tabs md-dynamic-height md-border-bottom flex="100">
+							<md-tab label="Wall">
+								<md-content>
+									<div layout="row">
+									    <md-whiteframe class="md-whiteframe-z3" flex="100">
+											<md-toolbar class="md-primary">
+										        <h1 class="md-toolbar-tools">
+										          Create a new Post.....
+										        </h1>
+										      </md-toolbar>
 
-<div class="col-md-12">
-	<div class="jumbotron">
-		<form  ng-submit="createPost()" name="wallPost">
-			<input class="form-control" type="text" ng-model="newPostTitle" placeholder="Title">
-			<textarea class="form-control" ng-model="newPost" rows="3" placeholder="Create a new Post..."></textarea>
-			<input class="btn btn-primary" type="submit" ng-diasbled="wallPost.$invalid" value="Create Post">
-		</form>
-	</div>
+										      <md-content layout-padding>
+										        <form class="form" name="wallPost" ng-submit="createPost()" >
 
-	<div class="jumbotron" ng-repeat="post in posts">
-		<div>
-			<h3>{{post.title}}</h3>
-			{{post.info}}
+										          <md-input-container>
+										            <label>Title</label>
+
+										            <input type="text" name="newPostTitle" ng-model="newPost.title" >
+										          </md-input-container>
+
+										          <md-input-container>
+										            <label>Info</label>
+
+										            <input type="text" name="newPost" ng-model="newPost.info" >
+										          </md-input-container>          
+										          <div>
+										            <md-button class="md-raised md-primary" type="submit">
+										              Post
+										            </md-button>
+										          </div>
+										        </form>
+										      </md-content>
+									    </md-whiteframe>
+									</div>
+									<br><br>
+									<div infinite-scroll="load()">	
+										<div ng-repeat="post in posts">
+										  <div layout="row">
+										  	<md-whiteframe class="md-whiteframe-z4" flex="100"style="background-color : #F5F5F0">
+										  		<div layout="column">
+											  		<div flex layout="row">
+											  			<div flex="10" layout-margin><br><br>
+											  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+											  			</div>
+											  			<div flex >		  			
+											  				<h3>{{post.title}}</h3>
+										  					<div layout="row">
+										  						<div flex>
+										  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: grey" size="15"></ng-md-icon>  {{post.wall.name}}</h4>
+										  						</div>
+										  						<div flex="20">
+										  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
+										  						</div>
+										  					</div>
+											  				<p style="white-space: pre;">{{post.info}}</p>
+											  			</div>
+											  		</div>
+											  		<md-divider></md-divider><br>
+											  		<div ng-repeat="comment in post.comments">
+												  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
+												  			<div flex="5"><br>
+												  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+												  			</div>
+												  			<div flex>
+													  			<div layout="row">
+													  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
+													  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
+													  			</div>
+													  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+												  			</div>
+												  		</div>
+											  		</div>
+											  		<div flex offset="10">
+											  			<md-content>
+													  		<form  ng-submit="addComment(post)" name="commentPost">
+																<md-input-container flex >
+									       							 <label>Enter a new comment....</label>
+									       							 <textarea ng-model="post.newComment" columns="1" required></textarea>
+									      						</md-input-container>
+									      						<div>
+										         					<md-button class="md-raised md-primary" type="submit">
+										             					Comment
+										           					</md-button>
+										         			    </div>
+															</form>
+														</md-content>
+													</div>
+													<br>
+									            </div>
+										  	</md-whiteframe>
+										  </div>
+										  <br>
+										</div>
+									</div>
+								</md-content>
+							</md-tab>
+							<!-- <md-tab label="Docs"></md-tab> -->
+							<md-tab label="Add User">
+							 <md-content class="md-padding autocomplete" layout="column">
+                               <md-contact-chips
+                                 ng-model="selectedContacts"
+                                 md-contacts="querySearch($query)"
+                                 md-contact-name="name"  
+                                 md-contact-image="profilePic"                             
+                                 md-contact-email="email"
+                                 md-require-match
+                                 filter-selected="filterSelected"
+                                 placeholder="Users">
+                               </md-contact-chips>
+                               
+                              </md-content>
+						    </md-tab>
+							<!-- <md-tab label="Portal"></md-tab> -->
+						</md-tabs>
+						 <md-button class="md-raised md-primary" ng-click="submitted()">SUBMIT</md-button>
+					</div>
+	       		</div>	
+			</div>
 		</div>
-		<br>
-		<div ng-repeat="comment in post.comments">
-			{{comment.info}}
+		</div>			
+<!-- 		<md-sidenav layout="column" class="sidebar" md-component-id="right" flex="15" md-is-locked-open="$mdMedia('gt-md')">
+		<div id="rightbar">
+			<div id="docs_links" class="links">
+			<div class="group_link_head">
+				DOCS
+			</div>
+			<div class="group_link vertical">
+				<ul style="padding:0px"> 
+					<li>
+						<a href="">
+						<ng-md-icon icon="folder" style="fill: green" size="24"></ng-md-icon>
+							<span>Frontend</span>
+						</a>
+					</li>
+					<li>
+						<a href="">
+						<ng-md-icon icon="folder" style="fill: green" size="24"></ng-md-icon>
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
-		<form  ng-submit="addComment(post)" name="commentPost">
-			<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..."></textarea>
-			<input class="btn btn-primary" type="submit" ng-diasbled="commentPost.$invalid" value="Comment">
-		</form>
+		<div id="calendar_links" class="links">
+			<div class="group_link_head">
+				CALENDAR
+			</div>
+			<div class="group_link vertical">	
+				<ul style="padding:0px">
+					<li>
+						<a href="">
+						<ng-md-icon icon="event_note" style="fill: green" size="24"></ng-md-icon>	
+						<span>Saarang 2016</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		</div>
+		</md-sidenav> -->
 	</div>
-</div>

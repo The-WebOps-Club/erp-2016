@@ -94,30 +94,29 @@ exports.profilePic = function (req, res) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
-        if(!file){
-          return res.status(400).send({
-            message: 'File not found'
-          });
-        }
-    
-      res.writeHead(200, {'Content-Type': file.contentType});
-      
-      var readstream = gfs.createReadStream({
-          filename: file.filename
-      });
-   
-        readstream.on('data', function(data) {
-            res.write(data);
-        });
+      if(!file){
+        res.status(404).json({message: "Profile Pic not found"});
+      }
+      else{
+        res.writeHead(200, {'Content-Type': file.contentType});
         
-        readstream.on('end', function() {
-            res.end();        
+        var readstream = gfs.createReadStream({
+            filename: file.filename
         });
-   
-      readstream.on('error', function (err) {
-        console.log('An error occurred!', err);
-        throw err;
-      });
+     
+          readstream.on('data', function(data) {
+              res.write(data);
+          });
+          
+          readstream.on('end', function() {
+              res.end();        
+          });
+     
+        readstream.on('error', function (err) {
+          console.log('An error occurred!', err);
+          throw err;
+        });
+      }
     });
   });
 };
@@ -167,6 +166,7 @@ exports.updateProfile = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    req.body._id = undefined;
     req.body.role = undefined;
     req.body.hashedPassword = undefined;
     req.body.salt = undefined;

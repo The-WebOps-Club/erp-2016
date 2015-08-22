@@ -6,7 +6,14 @@ angular.module('erp2015App')
       .state('login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        authenticate: true,
+        data: {
+          permissions: {
+              only: ['anonymous'],
+              redirectTo: 'newsfeed'
+          }
+        }
       })
       .state('signup', {
         url: '/signup',
@@ -33,11 +40,12 @@ angular.module('erp2015App')
         url: '/editProfile',
         templateUrl: 'app/account/editProfile/editProfile.html',
         controller: 'editProfileCtrl',
-        // data: {
-        //   permissions: {
-        //       except: ['anonymous'],
-        //       redirectTo: 'login'
-        //   }        
-        // }                
+        data: {
+          permissions: {
+              only: ['user','admin','core'],
+              except: ['anonymous'],
+              redirectTo: 'login'
+          }        
+        }                
       });                  
   });

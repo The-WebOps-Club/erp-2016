@@ -18,7 +18,9 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+
   require('../api/mom/mom.socket').register(socket);
+  require('../api/drive/drive.socket').register(socket);
   require('../api/group/group.socket').register(socket);
   require('../api/wall/wall.socket').register(socket);
   require('../api/notification/notification.socket').register(socket);

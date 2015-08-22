@@ -5,6 +5,7 @@ var Mom = require('./mom.model');
 var PDFDocument = require ('pdfkit');
 var fs = require ('fs');
 var blobStream = require ('blob-stream');
+var moment=require('moment');
 var i=0;
 var j=0;
 var options = {
@@ -70,7 +71,7 @@ exports.getPdf= function(req,res){
   var doc = new PDFDocument; 
   doc.pipe (fs.createWriteStream('output.pdf'));
   var stream = doc.pipe(blobStream());
-  
+  doc.pipe(res);
 
   //pdf formating
   doc.image('server/api/mom/saarang.jpg', 50, 15,{width:80});
@@ -92,7 +93,7 @@ exports.getPdf= function(req,res){
    .text(mom.title,240,90,{align:'justify'})
    .fontSize(8)
    .fillColor('black')
-   .text(mom.date.toUTCString().slice(0,26),{align: 'right'});
+   .text(moment(mom.date).format('MMMM Do YYYY, h:mm:ss a'),{align: 'right'});
   doc
    .fontSize(9)
    .fillColor('blue')
@@ -155,14 +156,14 @@ exports.getPdf= function(req,res){
 
   doc.end();
   stream.on('finish',function(){
-    console.log("hi");
-    //var blob = stream.toBlob('application/pdf');
-    var url = stream.toBlobURL('application/pdf');
-    console.log("hi2");
-
-    return res.status(200).send({
-        url: url
-      });
+   //var blob = stream.toBlob('application/pdf');
+   //var blob = stream.toBlob('application/pdf'); // pass a useful mime type here
+   //var url = URL.createObjectURL(blob);
+   //var url = this.toBlobURL('application/pdf');
+   return res.end(); 
+    // return res.status(200).send({
+    //     stream : stream
+    //   });
   });
   
  }).populate('attendedBy'); 

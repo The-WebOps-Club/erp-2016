@@ -14,11 +14,13 @@ angular.module('erp2015App', [
   'ngMaterial',
   'ngMessages',
   'infinite-scroll',
-  'ngMdIcons'
+  'ngMdIcons',
+  'ngImgCrop',
+  'dcbImgFallback'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
-      .otherwise('/');
+      .otherwise('/login');
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -71,39 +73,64 @@ angular.module('erp2015App', [
         }
       });
     });
-  });
-    /**
-     * Defining all roles
-     */
-  //   Permission
-  //     .defineRole('anonymous', function(stateParams) {
-  //       Auth.isLoggedInAsync(function(success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser) {
-  //           return true;
-  //         }
-  //         return false;
-  //       });
-  //     })
-  //     .defineRole('user', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'user') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('core', function(stateParams) {
-  //       Auth.isLoggedInAsync(function (success) {
-  //         var currUser = Auth.getCurrentUser();
-  //         if(currUser.role === 'core') {
-  //           return true;
-  //         }
-  //       });
-  //       return false;        
-  //     })
-  //     .defineRole('admin', function(stateParams) {
-  //       return Auth.isAdmin();       
-  //     })
-  // });
+  })
+  .run(function ($rootScope, Auth, Permission, User, $q) {
+      Permission
+        // Define user role calling back-end
+        .defineRole('user', function (stateParams) {
+          var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'user') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;     
+      })
+       .defineRole('anonymous', function (stateParams) {
+         var deferred = $q.defer();
+         Auth.isLoggedInAsync(function (status) {
+            if(status === true) 
+            {
+              deferred.reject();
+            }
+            else
+            {
+              deferred.resolve(); 
+            }
+         });
+           return deferred.promise;
+         })
+       .defineRole('admin', function(stateParams) {
+         var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'admin') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;
+       })
+       .defineRole('core', function(stateParams) {
+         var deferred = $q.defer();
+          Auth.isLoggedInAsync(function (success) {
+            var currUser = Auth.getCurrentUser();
+            if(currUser.role === 'core') {
+              deferred.resolve();
+            }
+            else {
+              deferred.reject();
+            }
+          });
+
+          return deferred.promise;        
+       });
+     });

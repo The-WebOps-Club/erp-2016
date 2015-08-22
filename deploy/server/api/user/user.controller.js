@@ -37,7 +37,17 @@ function handleError(res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  User.find({}, '-salt -hashedPassword', function (err, users) {
+  User.find({}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  })
+  .populate('department subDepartment groups', 'name');
+};
+
+exports.refresh = function (req, res) {
+  User.find({updatedOn:{
+        $gt: req.body.date
+      }}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
   })
@@ -84,30 +94,29 @@ exports.profilePic = function (req, res) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
-        if(!file){
-          return res.status(400).send({
-            message: 'File not found'
-          });
-        }
-    
-      res.writeHead(200, {'Content-Type': file.contentType});
-      
-      var readstream = gfs.createReadStream({
-          filename: file.filename
-      });
-   
-        readstream.on('data', function(data) {
-            res.write(data);
-        });
+      if(!file){
+        res.status(404).json({message: "Profile Pic not found"});
+      }
+      else{
+        res.writeHead(200, {'Content-Type': file.contentType});
         
-        readstream.on('end', function() {
-            res.end();        
+        var readstream = gfs.createReadStream({
+            filename: file.filename
         });
-   
-      readstream.on('error', function (err) {
-        console.log('An error occurred!', err);
-        throw err;
-      });
+     
+          readstream.on('data', function(data) {
+              res.write(data);
+          });
+          
+          readstream.on('end', function() {
+              res.end();        
+          });
+     
+        readstream.on('error', function (err) {
+          console.log('An error occurred!', err);
+          throw err;
+        });
+      }
     });
   });
 };
@@ -137,6 +146,7 @@ exports.changePassword = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(user.authenticate(oldPass)) {
       user.password = newPass;
+      user.updatedOn = Date.now();
       user.save(function (err) {
         if (err) return validationError(res, err);
         res.status(200).json({message: "Successful"});
@@ -152,11 +162,11 @@ exports.changePassword = function (req, res, next) {
  */
 exports.updateProfile = function (req, res, next) {
   var userId = req.user._id;
-
   // I'm no where using req.params.id here. Do a better algo
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    req.body._id = undefined;
     req.body.role = undefined;
     req.body.hashedPassword = undefined;
     req.body.salt = undefined;
@@ -167,8 +177,9 @@ exports.updateProfile = function (req, res, next) {
     req.body.deviceId = undefined;
     req.body.provider = undefined;
     var updated = _.merge(user, req.body);
-    user.updatedOn = Date.now();
-    user.save(function (err) {
+    console.log(updated);
+    updated.updatedOn = Date.now();
+    updated.save(function (err) {
       if(err) return validationError(res, err);
       res.status(200).json({message: "Successful"});
     });
@@ -304,7 +315,8 @@ exports.gcmRegister = function(req, res) {
           user.deviceId.splice(user.deviceId.indexOf(req.body.oldId), 1);
       }
       if( user.deviceId.indexOf(req.body.deviceId) === -1)
-        user.deviceId.push(req.body.deviceId);
+      user.deviceId.push(req.body.deviceId);
+      user.updatedOn = Date.now();
       user.save(function (err) {
         if(err) { return handleError(res, err); }
         res.status(200).json({message: "Successful"}); 
