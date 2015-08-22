@@ -17,7 +17,7 @@ angular.module('erp2015App')
     $scope.addComment = function(post) {
         postService.addComment(post._id,post.newComment).then(function(data){
             //add sockets for comments
-            $scope.updatePosts()
+            // $scope.updatePosts()
         })
     }
   });

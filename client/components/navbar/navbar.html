@@ -1,6 +1,7 @@
 <div layout="column" layout-fill ng-controller="NavbarCtrl">
   <md-toolbar md-scroll-shrink>
-    <div class="md-toolbar-tools" layout="row" layout-align="center center">
+    <div class="md-toolbar-tools" layout="row" layout-align="center center" style="z-index: 100">
+      <ng-md-icon icon="menu" style="fill: white" ng-click="toggleRight()" ng-show="isLoggedIn()"></ng-md-icon>
       <md-button ui-sref="newsfeed">
         erp 2016
       </md-button>
@@ -49,7 +50,7 @@
       </div>
 
       <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='profile({ userId: getCurrentUser()._id })'>
-        <img ng-src="/api/users/{{getCurrentUser()._id}}/profilePic" class="md-avatar" style="width:100%; height: 100%;"/>
+        <img ng-src="/api/users/{{getCurrentUser()._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" style="width:100%; height: 100%;"/>
       </md-button>
     <!--   Notificatons -->
       <!-- <md-button ng-show="isLoggedIn()"  id="notificationLink" ng-class="{active: notif}"><a ng-click="showNotification()"><span id="notificationCount">{{ notifications.length }}</span><span class="glyphicon glyphicon-bell"></span></a>
@@ -94,4 +95,26 @@
       </md-button>
     </div>
   </md-toolbar>
+
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+    <md-toolbar class="md-theme-light">
+      <h1 class="md-toolbar-tools">Quick Links</h1>
+    </md-toolbar>
+    <md-content layout-padding flex="10">
+    <md-list>
+      <md-subheader class="md-no-sticky">Departments</md-subheader>
+      <md-list-item ng-repeat="department in user.department">
+        <a ui-sref="department({ deptId: department._id })"> {{ department.name }} </a>
+      </md-list-item>
+      <md-subheader class="md-no-sticky">Sub Departments</md-subheader>
+      <md-list-item ng-repeat="subDepartment in user.subDepartment">
+        <a ui-sref="subDepartment({ subDeptId: subDepartment._id })"> {{ subDepartment.name }} </a>
+      </md-list-item>
+      <md-subheader class="md-no-sticky">Groups</md-subheader>
+      <md-list-item ng-repeat="group in user.groups">
+        <a ui-sref="group({ groupId: group._id })"> {{ group.name }} </a>
+      </md-list-item>
+    </md-list>
+    </md-content>
+  </md-sidenav>
 </div>

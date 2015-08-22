@@ -11,7 +11,7 @@ angular.module('erp2015App')
 
     $scope.register = function(form) {
       $scope.submitted = true;
-
+      console.log("does it reach here?");
       if(form.$valid) {
         Auth.createUser({
           name: $scope.user.name,
