@@ -361,7 +361,6 @@ exports.forgotPassword = function(req, res, next) {
       };
       mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
       res.status(200).json({message: "Successful"});
-      });      
     }
   ], function (err) {
     if(err) { return next(err); }
@@ -394,7 +393,6 @@ exports.resetPassword = function(req, res) {
       };
       mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
       res.status(200).json({message: "Successful"});
-      });      
     });
   });
 };

@@ -35,6 +35,28 @@ exports.index = function(req, res) {
   }, {sortBy: {updatedOn: 1}});
 };
 
+exports.viewAll = function(req, res) {
+  Notification.find({user: req.user._id}, function (err, notifications) {
+    if(err) {
+      return handleError(res, err);
+    }
+    else {
+      var populated = [];
+      forEach(notifications, function(notification, index, arr) {
+        var done = this.async();
+        notification.deepPopulate('postedBy commentedBy', 'name', function (err, _notification) {
+          _notification.deepPopulate('post', 'wall createdBy', function (err, _notif) {
+            populated.push(_notif);
+            done();
+          })
+        });
+      }, function allDone (notAborted, arr) {
+        res.status(200).send(populated);
+      });
+    }
+  }, {sortBy: {updatedOn: 1}});
+};
+
 exports.refresh = function(req, res) {
   Notification.find({
     user: req.user._id, 
