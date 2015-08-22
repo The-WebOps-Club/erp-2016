@@ -6,7 +6,7 @@ var controller = require('./hostel.controller');
 var router = express.Router();
 
 router.get('/', controller.index);
-router.get('/:id/rooms', controller.indexRoomsForHostel);
+router.get('/:id/rooms', controller.indexRoomAvailability);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);

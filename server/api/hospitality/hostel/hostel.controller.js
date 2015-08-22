@@ -15,26 +15,22 @@ exports.index = function(req, res) {
   });
 };
 
-// Get list of rooms for a particular hostel
-exports.indexRoomsForHostel = function(req, res) {
+// Get list of details about rooms for a particular hostel
+exports.indexRoomAvailability = function(req, res) {
   Hostel.findById(req.params.id, function(err, hostel) {
     Checkin.find({ room : {
       $in : hostel.rooms
     }, dateCheckout : {
       $exists : false
     }}, function(err, checkins) {
-
-      //checkins = checkins.toJSON();
       var checkinsIndexUserId = _u.groupBy(checkins, function(checkin) {
         return checkin.user.toString();
       });
-      console.log(checkinsIndexUserId);
       var user_ids = _u.pluck(checkins, 'user');
 
       User.find({ _id : {
         $in : user_ids
       }}, function(err, _users) {
-        console.log(checkinsIndexUserId);
         var usersIndexUserId = _u.groupBy(_users, function(_user) {
           return _user._id.toString();
         });
@@ -46,7 +42,7 @@ exports.indexRoomsForHostel = function(req, res) {
         }}, function(err, rooms) {
           for(var i=0; i<rooms.length; i++) {
             rooms[i] = rooms[i].toJSON();
-            rooms[i].occupants = usersIndexRoomId[rooms[i]._id.toString()];
+            rooms[i].occupants = usersIndexRoomId[rooms[i]._id.toString()] || [];
           }
           hostel = hostel.toJSON();
           hostel.rooms = rooms;
