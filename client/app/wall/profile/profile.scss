@@ -48,13 +48,6 @@
 {
 	padding-top: 0px;
 }
-label
-{
-	margin-left: 0px;
-}
-ng-md-icon{
-	padding-top:5px;
-}
 .sidebar
 {
 	padding: 10px;
@@ -62,7 +55,7 @@ ng-md-icon{
 }
 #edit,#save,#view
 {
-	font-size: 12px;
+	font-size: 0.65em;
 	background-color: white;
 }
 #post_button
@@ -70,10 +63,6 @@ ng-md-icon{
 	color: white;
 	background-color:  #3b5998;
 	font:12px;
-}
-md-select
-{
-	padding-bottom:0px;
 }
 #rightbar
 {
