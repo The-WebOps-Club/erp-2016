@@ -4,8 +4,8 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var CheckinSchema = new Schema({
-  user: Schema.ObjectId,
-  room: Schema.ObjectId,
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  room: { type: Schema.Types.ObjectId, ref: 'Room' },
   status: String,
   dateCheckIn: {
   	type: Date,
@@ -17,3 +17,6 @@ var CheckinSchema = new Schema({
 });
 
 module.exports = mongoose.model('Checkin', CheckinSchema);
+
+
+

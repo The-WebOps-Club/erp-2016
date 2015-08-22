@@ -22,11 +22,32 @@ exports.show = function(req, res) {
 
 // Creates a new checkin in the DB.
 exports.create = function(req, res) {
-  Checkin.create(req.body, function(err, checkin) {
-    if(err) { return handleError(res, err); }
-    return res.status(201).json(checkin);
-  });
+
+  Checkin.find({user : req.body.user}, function (err, checkin) {
+      if (err){
+        return handleError(res,err);
+      }
+      console.log(checkin.length);
+      console.log((checkin===null));
+      if (checkin.length){
+        
+       return res.status(201).json({'done': 'already'});
+      }
+      else{
+        Checkin.create(req.body, function(err, checkin) {
+        if(err) { return handleError(res, err); }
+        console.log('creating checkin');
+        return res.status(201).json(checkin);
+        });
+
+      }
+
+     
+    }).populate('user room');
+  
 };
+
+
 
 // Updates an existing checkin in the DB.
 exports.update = function(req, res) {
