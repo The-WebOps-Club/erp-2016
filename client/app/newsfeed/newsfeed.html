@@ -42,7 +42,7 @@
 				  			<div flex="5" layout-margin><br><br>
 				  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
 				  			</div>
-				  			<div flex="95" >		  			
+				  			<div flex="90" >		  			
 				  				<h3>{{post.title}}</h3>
 			  					<div layout="row">
 			  						<div flex>
@@ -52,7 +52,7 @@
 			  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
 			  						</div>
 			  					</div>
-				  				<p style="white-space: pre;">{{post.info}}</p>
+				  				<div flex="100"style="white-space: pre-wrap;">{{post.info}}</div>
 				  			</div>
 				  		</div>
 				  		<md-divider></md-divider><br>
@@ -66,7 +66,7 @@
 						  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
 						  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
 						  			</div>
-						  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+						  			<h6 style="white-space: pre-wrap;">{{comment.info}}</h6>
 					  			</div>
 					  		</div>
 				  		</div>
