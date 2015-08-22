@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var HostelSchema = new Schema({
   name: String,
   info: String,
-  active: Boolean
+  active: Boolean,
+  rooms: [Schema.ObjectId]
 });
 
 module.exports = mongoose.model('Hostel', HostelSchema);

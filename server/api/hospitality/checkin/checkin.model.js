@@ -4,9 +4,16 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var CheckinSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  user: Schema.ObjectId,
+  room: Schema.ObjectId,
+  status: String,
+  dateCheckIn: {
+  	type: Date,
+  	default: Date.now
+  },
+  dateCheckOut: {
+  	type: Date
+  }
 });
 
 module.exports = mongoose.model('Checkin', CheckinSchema);
