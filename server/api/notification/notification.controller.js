@@ -123,7 +123,7 @@ exports.bulkCreate = function(data, callback) {
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
     if (data.action=='post'){
-      if(!(data.post.createdBy._id.toString() == member._id.toString())){
+      if((data.post.createdBy._id.toString() === member._id.toString())){
         done();
       }
       else {
@@ -142,7 +142,7 @@ exports.bulkCreate = function(data, callback) {
       }
     }
     else{
-      if(!(data.post.comments.reverse()[0].createdBy._id.toString() == member._id.toString())){
+      if((data.post.comments.reverse()[0].createdBy._id.toString() === member._id.toString())){
         done();
       }
       else {
