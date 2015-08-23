@@ -117,23 +117,23 @@ exports.show = function(req, res) {
 
 // Creates a new hostel in the DB.
 exports.create = function(req, res) {
-  // req.body.rooms.foreach(function(roomId){
-  //   Room.findById(roomId,function(err,room){
-  //     if (err) {return res.handleError(err,res);}
-  //     req.body.rooms.forEach(function(curRoomId){
-  //       if (curRoomId==roomId){
+  req.body.rooms.foreach(function(roomId){
+    Room.findById(roomId,function(err,room){
+      if (err) {return res.handleError(err,res);}
+      req.body.rooms.forEach(function(curRoomId){
+        if (curRoomId==roomId){
 
-  //       }
-  //       else{
-  //         Room.findById(curRoomId,function(err,curRoom){
-  //           if(curRoom.number==room.number){
-  //             return res.status(404).send('Same room numbers cannot be added');
-  //           }
-  //         })
-  //       }
-  //     })
-  //   })
-  // })
+        }
+        else{
+          Room.findById(curRoomId,function(err,curRoom){
+            if(curRoom.number==room.number){
+              return res.status(404).send('Same room numbers cannot be added');
+            }
+          })
+        }
+      })
+    })
+  })
   console.log(req.body);
   Hostel.create(req.body, function(err, hostel) {
     if(err) { return handleError(res, err); }
