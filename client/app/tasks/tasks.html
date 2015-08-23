@@ -1,5 +1,15 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="col-md-12">
-This is the tasks view.
+	<div ng-repeat="task in tasks"
+		<div layout="row">
+			<div layout="column">
+				<h3>{{task.title}}</h3>
+			</div>
+			<div layout="column">
+				{{task.comments}}
+				{{task}}
+			</div>
+		</div>
+	</div>
 </div>
