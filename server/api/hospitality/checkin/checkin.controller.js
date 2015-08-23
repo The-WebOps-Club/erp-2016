@@ -7,7 +7,7 @@ var Checkin = require('./checkin.model');
 exports.index = function(req, res) {
   Checkin.find(function (err, checkins) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(checkins);
+    return res.status(200);
   });
 };
 

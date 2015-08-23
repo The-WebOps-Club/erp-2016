@@ -15,6 +15,55 @@ exports.index = function(req, res) {
   });
 };
 
+//adding rooms to already existing hostel
+exports.addRooms=function (req,res){
+  console.log(req.rooms);
+  Hostel.findById(req.params.id,function(err,hostel){
+    if (err){
+      return res.handleError(err,res);
+    }
+    else if(!hostel) { return res.status(404).send('Not Found'); }
+    else{
+      hostel.rooms.forEach(function(hostelRoom){
+        req.body.rooms.forEach(function(reqRoom){
+          Room.findById(reqRoom,function(err,room){
+            if(err){
+              return res.handleError(err,res);
+            } 
+
+            else{
+              if(room.number==hostelRoom.number){
+                
+              }
+              else { hostel.rooms.push[reqRoom];}
+
+            }
+
+          });
+        })
+
+      });
+    }
+    hostel.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.status(200).json(hostel);
+    });
+  }).populate('rooms');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Get list of rooms for a particular hostel
 exports.indexRoomsForHostel = function(req, res) {
   Hostel.findById(req.params.id, function(err, hostel) {
@@ -68,6 +117,24 @@ exports.show = function(req, res) {
 
 // Creates a new hostel in the DB.
 exports.create = function(req, res) {
+  // req.body.rooms.foreach(function(roomId){
+  //   Room.findById(roomId,function(err,room){
+  //     if (err) {return res.handleError(err,res);}
+  //     req.body.rooms.forEach(function(curRoomId){
+  //       if (curRoomId==roomId){
+
+  //       }
+  //       else{
+  //         Room.findById(curRoomId,function(err,curRoom){
+  //           if(curRoom.number==room.number){
+  //             return res.status(404).send('Same room numbers cannot be added');
+  //           }
+  //         })
+  //       }
+  //     })
+  //   })
+  // })
+  console.log(req.body);
   Hostel.create(req.body, function(err, hostel) {
     if(err) { return handleError(res, err); }
     return res.status(201).json(hostel);
