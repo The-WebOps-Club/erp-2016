@@ -9,11 +9,11 @@ angular.module('erp2015App')
         controller: 'FinanceAdminCtrl'
       }).state('financeClubs', {
         url: '/finance/clubs',
-        templateUrl: 'app/financePortal/clubs/clubs/clubs.html',
+        templateUrl: 'app/financePortal/clubs/clubs.html',
         controller: 'FinanceClubsCtrl'
       }).state('financeSaarang', {
         url: '/finance/saarang',
-        templateUrl: 'app/financePortal/saarang/saarang/saarang.html',
+        templateUrl: 'app/financePortal/saarang/saarang.html',
         controller: 'FinanceSaarangCtrl'
       });
   });

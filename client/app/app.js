@@ -15,6 +15,8 @@ angular.module('erp2015App', [
   'ngMessages',
   'infinite-scroll',
   'ngMdIcons',
+  'mdPickers',
+  'ngAnimate',
   'ngImgCrop',
   'dcbImgFallback'
 ])
