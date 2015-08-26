@@ -29,20 +29,31 @@
             <input name="title" ng-model="event.venue" ng-required="true" mongoose-error />
           </md-input-container>
           <table><tr>
-          <td><md-input-container flex>
-            <label>Event Date</label>
-            <input type='date' ng-model="eventDate">
-          </md-input-container></td>
+            <td width="25%"><md-input-container flex>
+              <label>Event Date</label>
+              <input type='date' ng-model="eventDate">
+            </md-input-container></td>
 
-          <td><md-input-container flex>
-            <label>Start Registration</label>
-            <input type='date' ng-model="startReg">
-          </md-input-container></td>
+            <td width="25%"><md-input-container flex>
+              <label>Start Registration</label>
+              <input type='date' ng-model="startReg">
+            </md-input-container></td>
 
-          <td><md-input-container flex>
-            <label>End Registration</label>
-            <input type='date' ng-model="endReg" min="{{startReg}}">
-          </md-input-container></td></tr></table><br />
+            <td width="25%"><md-input-container flex>
+              <label>End Registration</label>
+              <input type='date' ng-model="endReg" min="{{startReg}}">
+            </md-input-container></td>
+          </tr></table>
+          <table><tr><td>
+            <md-checkbox ng-model="individualEvent" ng-change="toggleIndividuality()" aria-label="Individual event">
+              Individual event
+            </md-checkbox></td><td>
+            <div ng-if="isTeamEvent()">
+            <md-input-container flex>
+              <label>Number of members per team</label>
+              <input type="number" step="any" ng-model="event.maxTeamMembers" min="2" max="100">
+            </md-input-container></div></td></tr></table>
+          <br />
 
           <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match ng-show='hasRoleCore()'>
             <md-autocomplete

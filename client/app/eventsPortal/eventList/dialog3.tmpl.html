@@ -1,0 +1,25 @@
+<style>
+  .cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width: 500px;
+    height: 250px;
+  }
+</style>
+
+<md-dialog aria-label="Update" flex="50">
+  <form name="newEventListForm" ng-submit="updateEventList(newEventListForm)" novalidate>
+    <md-input-container>
+      <label>Category Picture</label>
+      <br> &nbsp;
+      Select an Image file: 
+      <input class='btn' type="file" id="imgFile" accept="image/*" required="" />
+      <div class="cropArea">
+        <img-crop image="myImage2" result-image="myCroppedImage2" area-type="square" result-image-size="200"></img-crop>
+      </div>
+      <div>Cropped Image:</div>
+      <div><img ng-src="{{myCroppedImage2}}" /></div>
+    </md-input-container>
+    <md-button class="md-primary md-raised" type="submit">Update</md-button>
+  </form>
+</md-dialog>

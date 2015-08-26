@@ -55,7 +55,9 @@ var UserSchema = new Schema({
   resetPasswordExpires: Date,
   facebook: {},
   google: {},
-  github: {}
+  github: {},
+  selfTeam: { type: Schema.Types.ObjectId, ref: 'Team' },
+  teams: [{ type: Schema.Types.ObjectId, ref: 'Team' }]
 });
 
 /**

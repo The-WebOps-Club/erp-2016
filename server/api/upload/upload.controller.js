@@ -11,7 +11,7 @@ var gfs = new Grid(mongoose.connection.db);
 exports.create = function (req, res) {
   // console.log("its working");
   var part = req.files.file;
-  console.log(part);
+  console.log('file uploaded', part);
   console.log(part.mimetype);
   // if(part.mimetype != "application/zip"){
   //   res.send({
@@ -19,47 +19,49 @@ exports.create = function (req, res) {
   //   })
   // }
   // else{
-    var writeStream = gfs.createWriteStream({
-      filename: part.name,
-      mode: 'w',
-      content_type:part.mimetype
+  var addName = Date.now();
+
+  var writeStream = gfs.createWriteStream({
+    filename: part.name + addName.toString(),
+    mode: 'w',
+    content_type:part.mimetype
+  });
+
+
+  writeStream.on('close', function(file) {
+    return res.status(200).send({
+      fileId: file._id,
+      message: 'Success'
     });
+  });
+  
+  writeStream.write(part.data);
 
-
-    writeStream.on('close', function(file) {
-      return res.status(200).send({
-        fileId: file._id,
-        message: 'Success'
-      });
-    });
-    
-    writeStream.write(part.data);
-
-    writeStream.end();
-  // }
+  writeStream.end();
+// }
 }
 
 exports.serve = function(req, res) {
   gfs.findOne({ _id: req.params.id}, function (err, file) {
-      if(!file){
-        return res.status(400).send({
-          message: 'File not found'
-        });
-      }
+    if(!file){
+      return res.status(400).send({
+        message: 'File not found'
+      });
+    }
   
     res.writeHead(200, {'Content-Type': file.contentType});
     
     var readstream = gfs.createReadStream({
-        filename: file.filename
+      filename: file.filename
     });
  
-      readstream.on('data', function(data) {
-          res.write(data);
-      });
-      
-      readstream.on('end', function() {
-          res.end();        
-      });
+    readstream.on('data', function(data) {
+      res.write(data);
+    });
+    
+    readstream.on('end', function() {
+      res.end();        
+    });
  
     readstream.on('error', function (err) {
       console.log('An error occurred!', err);
@@ -91,5 +93,5 @@ exports.destroy = function (req, res) {
 // };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }

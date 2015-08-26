@@ -34,6 +34,7 @@ exports.create = function(req, res) {
 
 // Updates an existing eventList in the DB.
 exports.update = function(req, res) {
+  if(req.body._id) delete req.body._id;
   req.body.updatedOn = Date.now();
   req.body.lastEditedBy = req.user._id;
   if(req.body._id) { delete req.body._id; }

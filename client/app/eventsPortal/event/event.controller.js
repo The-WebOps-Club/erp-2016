@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('EventsPortalEventCtrl', function ($state, $stateParams, $scope, $http, EventsPortalService, $mdDialog, $mdToast, Auth) {
+  .controller('EventsPortalEventCtrl', function ($state, $stateParams, $scope, $http, EventsPortalService, $mdDialog, $location, $mdToast, Auth) {
     
-  var id = $stateParams.id;
-  EventsPortalService.getEvent(id).then(function (event) {
+    var id = $stateParams.id;
+    EventsPortalService.getEvent(id).then(function (event) {
     var converter = new showdown.Converter();
     $scope.event = event;
     $scope.assignees = event.assignees;
@@ -15,6 +15,7 @@ angular.module('erp2015App')
     $scope.index = 0;
     $scope.tabMode = false;
     $scope.selectedEventLists = event.eventCategory;
+
     $(".leftButtons").hide();
 
     EventsPortalService.getEventTabs(event._id)
@@ -30,11 +31,11 @@ angular.module('erp2015App')
 	          return 0;
       });
       $scope.eventTabs.forEach(function (tab) {
-        $scope.markdown[tab._id]=tab.info;
-        $scope.inServer[tab._id]=true;
+        $scope.markdown[tab._id] = tab.info;
+        $scope.inServer[tab._id] = true;
       });
-      if($scope.eventTabs.length>0)
-        $scope.currentTab=$scope.eventTabs[0]._id;
+      if($scope.eventTabs.length > 0)
+        $scope.currentTab = $scope.eventTabs[0]._id;
     });
 
     $scope.isAdmin = Auth.isAdmin;
@@ -42,7 +43,7 @@ angular.module('erp2015App')
     EventsPortalService.getCoords()
     .then(function (data) {
       $scope.coords = data;
-    },function (err) {
+    }, function (err) {
       console.log(err);
     });
 
@@ -113,21 +114,22 @@ angular.module('erp2015App')
       var promptName = prompt("Enter the name of the tab", "");
       if(promptName != null) {
         if (/\S/.test(promptName)) {
-          var num = Math.max.apply(Math, $scope.eventTabs.map(function (o){return o.tabNumber;}));
+          var num = Math.max.apply(Math, $scope.eventTabs.map(function (o){ return o.tabNumber; }));
           var tabData = { 
           	'name': promptName, 
           	'info': '', 
           	'tabNumber': num + 1, 
           	'eventID': $scope.event._id, 
-          	'_id': String($scope.eventTabs.length+1) 
+          	'_id': String($scope.eventTabs.length + 1) 
           };
           $scope.eventTabs.push(tabData);
-          $scope.markdown[$scope.eventTabs.length]="";
+          $scope.markdown[$scope.eventTabs.length] = "";
+
           $mdToast.show($mdToast.simple().content('Add content in \''+promptName+'\' to save to server').hideDelay(5000));
           $(".leftButtons").show();
           if($scope.eventTabs.length == 1)
-            $scope.currentTab="1";
-          $scope.eventTabs[$scope.eventTabs.length-1].active=true;
+            $scope.currentTab = "1";
+          $scope.eventTabs[$scope.eventTabs.length-1].active = true;
         }
         else
           $mdToast.show($mdToast.simple().content('Tab name cannot be empty').hideDelay(5000));
@@ -136,6 +138,7 @@ angular.module('erp2015App')
 
     $scope.setTab = function (b, c) {
       console.log("setTab(" +b+ ")");
+
       $scope.currentTab = b;
       $scope.index = c;
       $scope.oldIndex = $scope.selectedIndex;
@@ -196,6 +199,7 @@ angular.module('erp2015App')
       if($scope.currentTab == -1)
         return;
       if($scope.inServer[$scope.currentTab] != true) {
+
         var tab = $scope.eventTabs.filter(function (tab) {
           return tab._id == $scope.currentTab;
         })[0];
@@ -242,6 +246,7 @@ angular.module('erp2015App')
         resolve: {
 		      eventTabs: function () {
 		        return $scope.eventTabs;
+
           },
           EventsPortalService: function () {
             return EventsPortalService;
@@ -255,6 +260,23 @@ angular.module('erp2015App')
       });
     }
    });
+
+    $scope.editEventPhoto = function (ev) {
+      $mdDialog.show({
+        controller: photoEditController,
+        templateUrl: '/app/eventsPortal/event/dialog3.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        resolve: {
+          event: function () {
+            return $scope.event;
+          },
+          EventsPortalService: function () {
+            return EventsPortalService;
+          }
+        }
+      });
+    }
 });
 
 function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth) {
@@ -262,11 +284,23 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   $scope.event = event;
   $scope.selectedEventLists = selectedEventLists;
   $scope.buildCatString = buildCatString;
-  $scope.selectedCoords=event.assignees;
+
+  $scope.selectedCoords = event.assignees;
   console.log(event);
-  $scope.eventDate=new Date(event.eventDate);
-  $scope.startReg=new Date(event.startReg);
-  $scope.endReg=new Date(event.endReg);
+  $scope.eventDate = new Date(event.eventDate);
+  $scope.startReg = new Date(event.startReg);
+  $scope.endReg = new Date(event.endReg);
+
+  $scope.isTeamEvent = function () {
+    return !($scope.individualEvent);
+  }
+
+  $scope.individualEvent = $scope.event.maxTeamMembers == 1;
+
+  $scope.toggleIndividuality = function() {
+    if($scope.individualEvent)
+      $scope.event.maxTeamMembers = 1;
+  }
 
   EventsPortalService.getAllEventLists()
   .then(function (data) {
@@ -277,6 +311,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   EventsPortalService.getCoords()
   .then(function (data) {
     $scope.coords = data;
+    console.log(data);
   },function (err) {
     console.log(err);
   });
@@ -299,6 +334,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
       $scope.endReg = new Date(event.endReg);
       console.log(event.assignees);
     });
+
   };
 
   $scope.answer = function (answer) {
@@ -323,23 +359,88 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
         info: $scope.event.info,
         assignees: $scope.coordsIds,
         eventCategory: $scope.eventListIds,
-        eventDate: $scope.eventDate.toDateString(),
-        startReg: $scope.startReg.toDateString(),
-        endReg: $scope.endReg.toDateString(),
+
+        eventDate: $scope.eventDate,
+        startReg: $scope.startReg,
+        endReg: $scope.endReg,
         venue: $scope.event.venue,
+        maxTeamMembers: $scope.event.maxTeamMembers,
+        minTeamMembers: $scope.event.minTeamMembers,
         requireTDP: $scope.event.requireTDP
-      }, event._id)
-      .then(function () {
-      	$mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
-    	});
-    	$mdDialog.cancel();
+      }, event._id).then(function () {
+        $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
+      });
+      
+      $mdDialog.cancel();
     }
-  	else {
-	  	$mdToast.show($mdToast.simple().content('End of registration must be AFTER the start of registration.').hideDelay(5000));
-	  }
+    else {
+      $mdToast.show($mdToast.simple().content('End of registration must be AFTER the start of registration.').hideDelay(5000));
+    }
   };
 }
 
+function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdToast, Auth, $document, $upload) {
+  $scope.hasRoleCore = Auth.hasRoleCore;
+  $scope.event = event;
+  console.log(event);
+
+  $scope.myImage2 = '';
+  $scope.myCroppedImage2 = '';
+
+  var imageid = '';
+  var imagename = '';
+  var uploadfile = '';
+  
+  var handleFileSelect2 = function (evt) {
+    console.log(evt.currentTarget.files);
+    var myfile = evt.currentTarget.files[0];
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      $scope.$apply(function ($scope) {
+        $scope.myImage2 = evt.target.result;
+        console.log($scope.myImage2);
+      });
+      uploadfile = myfile;
+    };
+    reader.readAsDataURL(myfile);
+  };
+  setTimeout(function () {angular.element(document.querySelector("#imgFile")).on('change', handleFileSelect2)}, 2000);
+
+  var dataURItoBlob = function (dataURI) {
+    var binary = atob(dataURI.split(',')[1]);
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: mimeString});
+  };
+  
+
+  $scope.hide = function () {
+    $mdDialog.hide();
+  };
+
+  $scope.updateEvent = function (form) {
+    $scope.submitted = true;
+    if(form.$valid) {
+      $upload.upload({
+        url: 'api/uploads/',
+        file: dataURItoBlob($scope.myCroppedImage2)
+      })
+      .success(function (data, status, headers, config) {
+        imageid = data.fileId;
+        imagename = uploadfile.name;
+        EventsPortalService.updateEvent({
+          imageid: imageid
+        }, event._id).then(function (data) {
+          $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
+        });
+        $mdDialog.cancel();
+      });
+    }
+  };
+}
 
 function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $mdToast, $http) {
   $scope.xeventTabs = eventTabs;
@@ -353,17 +454,17 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
   });
 
   $scope.clog = function (s) {
-    var current=$scope.xeventTabs[s];
+    var current = $scope.xeventTabs[s];
     $scope.origNums.forEach(function (num, index) {
-      if(num == $scope.currentNums[s] && s != index) {
-        var other=$scope.xeventTabs[index];
-        $scope.currentNums[index]=$scope.origNums[s];
-        var temp=$scope.origNums[s];
-        $scope.origNums[s]=$scope.origNums[index];
-        $scope.origNums[index]=temp;
-        temp=current.tabNumber;
-        current.tabNumber=other.tabNumber;
-        other.tabNumber=temp;
+      if(num == $scope.currentNums[s] && s !=  index) {
+        var other = $scope.xeventTabs[index];
+        $scope.currentNums[index] = $scope.origNums[s];
+        var temp = $scope.origNums[s];
+        $scope.origNums[s] = $scope.origNums[index];
+        $scope.origNums[index] = temp;
+        temp = current.tabNumber;
+        current.tabNumber = other.tabNumber;
+        other.tabNumber = temp;
         $scope.xeventTabs.sort(function (a, b) {
           if(a.tabNumber<b.tabNumber)
             return -1;
@@ -380,7 +481,7 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
     $mdDialog.hide();
   };
 
-   $scope.eventEditModal = function (event) {
+  $scope.eventEditModal = function (event) {
     $mdDialog.show({
       controller: eventEditModalCtrl,
       templateUrl: '/app/eventsPortal/event/eventEditModal.tmpl.html',
@@ -396,8 +497,8 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
   };    
 
   function eventEditModalCtrl($scope, $mdDialog, eventPassed) {  
-     console.log(eventPassed);
-     $scope.editEvent = eventPassed;
+    console.log(eventPassed);
+    $scope.editEvent = eventPassed;
       
     $scope.cancel = function () {
       $mdDialog.cancel();
@@ -414,8 +515,8 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
       eventCategory: $scope.eventCat
     })
     .then(function (data) {
-      $mdDialog.hide();
-      location.reload();
+        $mdDialog.hide();
+        location.reload();
       });
     };      
   }
