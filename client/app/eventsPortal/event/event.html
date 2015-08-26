@@ -1,71 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div layout="row" layout-margin>
-  <style>
-    .sample {
-      width: 70%;
-      height: auto;
-      overflow-y: scroll;
-      float:left;
-      overflow-y: auto;
-      position: absolute;
-      left: 15%;
-    }
-
-    textarea, #summer div {
-      display: inline-block;
-      width: 100%;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      padding: 0 20px;
-    }
-
-    textarea, #summer div {
-      vertical-align: top;
-      border: none;
-      border-right: 1px solid #ccc;
-      outline: none;
-      background-color: #f6f6f6;
-      font-size: 14px;
-      padding: 20px;
-      vertical-align: top;
-    }
-
-    .code {
-      font-family: courier, monospace;
-    }
-
-    md-select {
-        display: inline-block;
-        margin-top: 2px;
-        width: 100%;
-    }
-
-    .eventImage {
-      position: relative;
-      width: 200px;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .eventImage:hover .edit {
-      display: block;
-    }
-
-    .edit {
-      position: absolute;
-      bottom: 0px;
-      height: 30px;
-      width: 100%;
-      display: none;
-      text-align: center;
-      background: rgba(0, 0, 0, 0.35);
-      color: white;
-      padding: 5px;
-    }
-  </style>
-  
   <div class="sample tabsdemoDynamicTabs" layout="column" ng-app="MyApp">
     <md-card>
       <md-card-content>
@@ -110,13 +45,13 @@
               <tr>
                 <td style="padding: 16px;" style="padding: 16px;"><b>Name</b></td>
                 <td style="padding: 16px;"><b>Mobile Number</b></td>
-              <tr ng-repeat="assignee in assignees">
+              <tr ng-repeat="assignee in assignees track by $index">
                 <td style="padding: 16px;">{{ assignee.name }}</td>
                 <td style="padding: 16px;">{{ assignee.phoneNumber }}</td>
               </tr>
             </table>
           </md-tab>
-          <md-tab ng-repeat="tab in eventTabs" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
+          <md-tab ng-repeat="tab in eventTabs track by $index" md-on-select="setTab(tab._id)" ng-disabled="tab.disabled" label="{{tab.name}}" active="tab.active">
             <div id='tab1'>
               <table width="100%">
                 <tr width="100%">

@@ -294,17 +294,17 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
 
   $scope.cancel = function () {
     $mdDialog.cancel();
-    EventsPortalService.getEvent($scope.event._id).then(function (gevent){
-       event.name = gevent.name;
-       event.eventCategory = gevent.eventCategory;
-       event._id = gevent._id;
-       event.info = gevent.info;
-       event.createdOn = gevent.createdOn;
-       event.updatedOn = gevent.updatedOn;
-       $scope.eventDate = new Date(event.eventDate);
-       $scope.startReg = new Date(event.startReg);
-       $scope.endReg = new Date(event.endReg);
-       console.log(event.assignees);
+    EventsPortalService.getEvent($scope.event._id).then(function (gevent) {
+      event.name = gevent.name;
+      event.eventCategory = gevent.eventCategory;
+      event._id = gevent._id;
+      event.info = gevent.info;
+      event.createdOn = gevent.createdOn;
+      event.updatedOn = gevent.updatedOn;
+      $scope.eventDate = new Date(event.eventDate);
+      $scope.startReg = new Date(event.startReg);
+      $scope.endReg = new Date(event.endReg);
+      console.log(event.assignees);
      });
   };
 
