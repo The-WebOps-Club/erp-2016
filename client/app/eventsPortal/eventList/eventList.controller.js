@@ -60,9 +60,89 @@ angular.module('erp2015App')
       $scope.eventsShow = true;
     };      
 
-  $scope.gotoEvent = function (eventID) {
-    console.log(eventID);
-    $state.go('event', { 'id': eventID });
-  };
+    $scope.gotoEvent = function (eventID) {
+      console.log(eventID);
+      $state.go('event', { 'id': eventID });
+    };
+
+    $scope.editEventListPhoto = function (index) {
+      $mdDialog.show({
+        controller: photoEditController,
+        templateUrl: '/app/eventsPortal/eventList/dialog3.tmpl.html',
+        parent: angular.element(document.body),
+        resolve: {
+          eventList: function () {
+            return $scope.allEventLists[index];
+          },
+          EventsPortalService: function () {
+            return EventsPortalService;
+          }
+        }
+      });
+    }
+
+  function photoEditController($scope, $mdDialog, eventList, EventsPortalService, $mdToast, Auth, $document, $upload) {
+    $scope.hasRoleCore = Auth.hasRoleCore;
+    $scope.eventList = eventList;
+    console.log(eventList);
+
+    $scope.myImage2 = '';
+    $scope.myCroppedImage2 = '';
+
+    var imageid = '';
+    var imagename = '';
+    var uploadfile = '';
+    
+    var handleFileSelect2 = function (evt) {
+      var myfile = evt.currentTarget.files[0];
+      console.log(evt.currentTarget.files);
+      var reader = new FileReader();
+      reader.onload = function (evt) {
+        $scope.$apply(function ($scope) {
+          $scope.myImage2 = evt.target.result;
+          console.log($scope.myImage2);
+        });
+        uploadfile = myfile;
+      };
+      reader.readAsDataURL(myfile);
+    };
+    setTimeout(function () {angular.element(document.querySelector("#imgFile")).on('change', handleFileSelect2)}, 2000);
+
+    var dataURItoBlob = function (dataURI) {
+      var binary = atob(dataURI.split(',')[1]);
+      var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+      var array = [];
+      for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+      }
+      return new Blob([new Uint8Array(array)], {type: mimeString});
+    };
+    
+    $scope.hide = function () {
+      $mdDialog.hide();
+    };
+
+    $scope.updateEventList = function (form) {
+      $scope.submitted = true;
+      if(form.$valid) {
+        $upload.upload({
+          url: 'api/uploads/',
+          file: dataURItoBlob($scope.myCroppedImage2)
+        })
+        .success(function (data, status, headers, config) {
+          imageid = data.fileId;
+          imagename = uploadfile.name;
+          EventsPortalService.editEventList({
+            _id: eventList._id,
+            imageid: imageid,
+            imagename: imagename
+          }).then(function (data) {
+            $mdToast.show($mdToast.simple().content('Picture updated successfully!').hideDelay(5000));
+          });
+          $mdDialog.cancel();
+        });
+      }
+    };
+  }
 
 });

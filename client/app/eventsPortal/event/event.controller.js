@@ -80,8 +80,8 @@ angular.module('erp2015App')
         parent: angular.element(document.body),
         targetEvent: ev,
         resolve: {
-      event: function () {
-        return event;
+          event: function () {
+            return event;
           },
           EventsPortalService: function () {
             return EventsPortalService;
@@ -90,13 +90,13 @@ angular.module('erp2015App')
             return $scope.selectedEventLists;
           },
           buildCatString: function () {
-          var cat = "";
-          for(var i = 0; i<$scope.event.eventCategory.length; i++) {
-            cat += $scope.event.eventCategory[i].title;
-            if(i !=  $scope.event.eventCategory.length-1)
-              cat += ", ";
-         }
-       }
+            var cat = "";
+            for(var i = 0; i<$scope.event.eventCategory.length; i++) {
+              cat += $scope.event.eventCategory[i].title;
+              if(i !=  $scope.event.eventCategory.length-1)
+                cat += ", ";
+            }
+          }
         }
       })
       .then(function (answer) {
@@ -312,49 +312,47 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
     $mdDialog.hide(answer);
   };
 
-    $scope.updateEvent = function (form) {
-      $scope.submitted = true;
-      $scope.coordsIds = [];
-      $scope.eventListIds = [];
-      angular.forEach($scope.selectedCoords, function (item) {
-        $scope.coordsIds.push(item._id);
-      });
-      angular.forEach($scope.selectedEventLists, function (item) {
-        $scope.eventListIds.push(item._id);
-      });
+  $scope.updateEvent = function (form) {
+    $scope.submitted = true;
+    $scope.coordsIds = [];
+    $scope.eventListIds = [];
+    angular.forEach($scope.selectedCoords, function (item) {
+      $scope.coordsIds.push(item._id);
+    });
+    angular.forEach($scope.selectedEventLists, function (item) {
+      $scope.eventListIds.push(item._id);
+    });
 
-      if(form.$valid) {
-        EventsPortalService.updateEvent({
-          _id: $scope.event._id,
-          name: $scope.event.name,
-          info: $scope.event.info,
-          assignees: $scope.coordsIds,
-          eventCategory: $scope.eventListIds,
-          eventDate: $scope.eventDate,
-          startReg: $scope.startReg,
-          endReg: $scope.endReg,
-          venue: $scope.event.venue,
-          maxTeamMembers: $scope.event.maxTeamMembers,
-          minTeamMembers: $scope.event.minTeamMembers,
-          requireTDP: $scope.event.requireTDP
-        }, event._id).then(function () {
-          $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
-        });
-        
-        $mdDialog.cancel();
-      }
-      else {
-        $mdToast.show($mdToast.simple().content('End of registration must be AFTER the start of registration.').hideDelay(5000));
-      }
-    };
+    if(form.$valid) {
+      EventsPortalService.updateEvent({
+        _id: $scope.event._id,
+        name: $scope.event.name,
+        info: $scope.event.info,
+        assignees: $scope.coordsIds,
+        eventCategory: $scope.eventListIds,
+        eventDate: $scope.eventDate,
+        startReg: $scope.startReg,
+        endReg: $scope.endReg,
+        venue: $scope.event.venue,
+        maxTeamMembers: $scope.event.maxTeamMembers,
+        minTeamMembers: $scope.event.minTeamMembers,
+        requireTDP: $scope.event.requireTDP
+      }, event._id).then(function () {
+        $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
+      });
+      
+      $mdDialog.cancel();
+    }
+    else {
+      $mdToast.show($mdToast.simple().content('End of registration must be AFTER the start of registration.').hideDelay(5000));
+    }
+  };
 }
 
 function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdToast, Auth, $document, $upload) {
   $scope.hasRoleCore = Auth.hasRoleCore;
   $scope.event = event;
-  console.log("!!!");
   console.log(event);
-  $scope.abcd = "dakjdnfudbfajhkdfsbhkaj";
 
   $scope.myImage2 = '';
   $scope.myCroppedImage2 = '';
