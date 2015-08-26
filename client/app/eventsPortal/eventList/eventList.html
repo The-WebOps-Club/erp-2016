@@ -10,31 +10,31 @@
       </md-toolbar>
 
       <md-content>
-        <md-list ng-repeat="eventList in allEventLists">
+        <md-list ng-repeat="eventList in allEventLists track by $index">
           <md-list-item>
             <!-- <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon> -->
             <!-- <img ng-src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"></ing> -->
-            <img ng-src="api/uploads/{{eventList.imageid}}/{{eventList.imagename}}" width=100 height=100></ing>
+            <img ng-src="api/uploads/{{eventList.imageid}}/{{eventList.imagename}}" width=100 height=100></img>
             <div layout="row"  layout-fill layout-padding>
               <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title">Title</h6>
-                    <p>{{ eventList.title | characters:20 :true }}</p>
-                  </div>
+                <div class="md-list-item-text">
+                  <h6 class="md-title">Title</h6>
+                  <p>{{ eventList.title | characters:20 :true }}</p>
+                </div>
               </div>
 
               <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title"> Created On </h6>
-                    <p>{{ eventList.createdOn | date: 'medium' }}</p>
-                  </div>
+                <div class="md-list-item-text">
+                  <h6 class="md-title"> Created On </h6>
+                  <p>{{ eventList.createdOn | date: 'medium' }}</p>
+                </div>
               </div>
 
               <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title"> Latest Activity </h6>
-                    <p>{{ eventList.updatedOn | date: 'medium' }}</p>
-                  </div>
+                <div class="md-list-item-text">
+                  <h6 class="md-title"> Latest Activity </h6>
+                  <p>{{ eventList.updatedOn | date: 'medium' }}</p>
+                </div>
               </div>
             </div>
           </md-list-item>
@@ -58,22 +58,23 @@
       </md-toolbar>
 
       <md-content>
-        <md-list ng-repeat="event in events">
-          <md-list-item>
-            <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon>
+        <md-list ng-repeat="event in events track by $index">
+          <md-list-item ng-click="gotoEvent(event._id)">
+            <img ng-src="api/uploads/{{event.imageid}}/{{event.imagename}}" width=100 height=100></img>
+            <!-- <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon> -->
             <div layout="row" layout-margin layout-fill layout-padding>
               <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title">Name</h6>
-                    <p>{{ event.name | characters:20 :false }}</h4>
-                  </div>
+                <div class="md-list-item-text">
+                  <h6 class="md-title">Name</h6>
+                  <p>{{ event.name | characters:20 :false }}</h4>
+                </div>
               </div>
 
               <div flex="33">
-                  <div class="md-list-item-text">
-                    <h6 class="md-title"> Info </h6>
-                    <p>{{ event.info | characters:80 :false }}</p>
-                  </div>
+                <div class="md-list-item-text">
+                  <h6 class="md-title"> Info </h6>
+                  <p>{{ event.info | characters:80 :false }}</p>
+                </div>
               </div>
             </div>
           </md-list-item>

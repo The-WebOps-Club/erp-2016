@@ -141,6 +141,18 @@
             </md-chip-template>
           </md-chips>
 
+          <md-input-container>
+            <label>Category Picture</label>
+            <br> &nbsp;
+            Select an Image file: 
+            <input class='btn' type="file" id="file2" accept="image/*" required="" />
+            <div class="cropArea">
+              <img-crop image="myImage2" result-image="myCroppedImage2" area-type="square" result-image-size="200"></img-crop>
+            </div>
+            <div>Cropped Image:</div>
+            <div><img ng-src="{{myCroppedImage2}}" /></div>
+          </md-input-container>
+
           <md-button type="submit" class="md-raised md-primary">Create</md-button>
         </form>
       </md-content>  

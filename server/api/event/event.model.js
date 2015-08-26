@@ -21,7 +21,9 @@ var EventSchema = new Schema({
   requireTDP: Boolean,
   maxTeamMembers: { type: Number, default: 1 },
   minTeamMembers: { type: Number, default: 1 },
-  registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }]
+  registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }],
+  imageid: String,
+  imagename: String
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });
 
