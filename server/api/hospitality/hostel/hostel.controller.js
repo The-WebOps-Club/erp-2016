@@ -17,37 +17,51 @@ exports.index = function(req, res) {
 
 //adding rooms to already existing hostel
 exports.addRooms=function (req,res){
-  console.log(req.rooms);
+ var i=0,k=0;
+  var data=req.body.rooms;
+  
   Hostel.findById(req.params.id,function(err,hostel){
     if (err){
       return res.handleError(err,res);
     }
     else if(!hostel) { return res.status(404).send('Not Found'); }
     else{
-      hostel.rooms.forEach(function(hostelRoom){
-        req.body.rooms.forEach(function(reqRoom){
+          var c=hostel.rooms.length;
+        
+        data.forEach(function(reqRoom){
           Room.findById(reqRoom,function(err,room){
             if(err){
               return res.handleError(err,res);
             } 
-
+               
             else{
+              i=0;
+              k=0;
+             
+              hostel.rooms.forEach(function(hostelRoom){
+              i++;
               if(room.number==hostelRoom.number){
-                
+                console.log(room.number+"danger"+reqRoom);
+                k=1;
               }
-              else { hostel.rooms.push[reqRoom];}
+              else {
+                 
 
+                 if( i==c && k==0){console.log(room.number+" no danger"+reqRoom); 
+                  
+              hostel.rooms.push(reqRoom); 
+              console.log(hostel.rooms.length);
+              
+            }}
+              });
             }
 
           });
         })
 
-      });
+      
     }
-    hostel.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.status(200).json(hostel);
-    });
+    
   }).populate('rooms');
 }
 
@@ -117,28 +131,43 @@ exports.show = function(req, res) {
 
 // Creates a new hostel in the DB.
 exports.create = function(req, res) {
-  req.body.rooms.foreach(function(roomId){
+  var i=0,j=0;
+  var data=req.body.rooms;
+  
+  data.forEach(function(roomId){
+    console.log(roomId);
     Room.findById(roomId,function(err,room){
-      if (err) {return res.handleError(err,res);}
-      req.body.rooms.forEach(function(curRoomId){
-        if (curRoomId==roomId){
+      if(err){return res.handleError(err,res);}
+      data.forEach(function(curRoomId){
+        console.log('hi'+curRoomId);
+      if(curRoomId==roomId){
+        i++; console.log(i);
+      }
+      else{
+        i++; console.log(i);
+        Room.findById(curRoomId,function(err,curRoom){
+        
+          if(curRoom.number==room.number){
+            console.log("danger");
+            res.statusCode = 404;
+            
+            res.end('Same Room Number');
 
-        }
-        else{
-          Room.findById(curRoomId,function(err,curRoom){
-            if(curRoom.number==room.number){
-              return res.status(404).send('Same room numbers cannot be added');
-            }
-          })
-        }
+          }
+          else{
+            // if(i==data.length*data.length) {console.log( "no danger");}
+
+          }
+        })
+      }
       })
     })
-  })
-  console.log(req.body);
-  Hostel.create(req.body, function(err, hostel) {
-    if(err) { return handleError(res, err); }
-    return res.status(201).json(hostel);
-  });
+   })
+  // Hostel.create(req.body, function(err, hostel) {
+  //   if(err) { return handleError(res, err); }
+  //   return res.status(201).json(hostel);
+  // });
+  
 };
 
 // Updates an existing hostel in the DB.
