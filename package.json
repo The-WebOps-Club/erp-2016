@@ -39,6 +39,7 @@
     "node-gcm": "^0.9.15",
     "node-uuid": "^1.4.3",
     "nodemailer": "^1.3.4",
+    "nodemailer-direct-transport": "^1.0.2",
     "nodemailer-dkim": "^1.0.3",
     "passport": "~0.2.0",
     "passport-facebook": "latest",
