@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
+ var autopopulate= require('mongoose-autopopulate');
 
 var HostelSchema = new Schema({
   name: String,
@@ -11,5 +12,6 @@ var HostelSchema = new Schema({
   rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
 
 });
+HostelSchema.plugin(autopopulate);
 
 module.exports = mongoose.model('Hostel', HostelSchema);

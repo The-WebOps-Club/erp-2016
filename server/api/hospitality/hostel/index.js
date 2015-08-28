@@ -6,14 +6,10 @@ var auth = require('../../../auth/auth.service');
 
 var router = express.Router();
 
-
 router.get('/', auth.hasRole('admin'),controller.index);
-router.get('/:id/rooms', auth.hasRole('admin'),controller.indexRoomsForHostel);
 router.get('/:id',auth.hasRole('admin'), controller.show);
-
 router.post('/',auth.hasRole('admin'), controller.create);
-router.post('/:id',auth.hasRole('admin'), controller.addRooms);
-
+router.get('/:id/rooms', controller.indexRoomAvailability);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', auth.hasRole('admin'),controller.destroy);
