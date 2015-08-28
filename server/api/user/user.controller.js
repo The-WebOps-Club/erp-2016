@@ -7,22 +7,18 @@ var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var crypto = require('crypto');
-var nodemailer = require('nodemailer');
-var smtpapi    = require('smtpapi');
+var mailer = require('../../components/mailer');
 var Grid = require('gridfs-stream');
 var mime = require('mime');
 var mongoose = require('mongoose');
 Grid.mongo = mongoose.mongo;
 
+var forEach = require('async-foreach').forEach;
 var gfs = new Grid(mongoose.connection.db);
 var Department = require('../department/department.model');
 var Group = require('../group/group.model');
 var SubDepartment = require('../subDepartment/subDepartment.model');
 var Wall = require('../wall/wall.model');
-
-
-var EMAIL = 'deepakpadamata@gmail.com'; // Put your fest mail id here
-var PASSWORD = ''; // Put your fest password here 
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -75,6 +71,25 @@ exports.create = function (req, res, next) {
   });
 };
 
+exports.makeWalls = function (req, res) {
+  User.find({}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
+    if(err) return res.json(500, err);
+    forEach(users, function(user, index, arr) {
+      var done = this.async();
+      var newWall = new Wall({ name: user.name, parentId: user._id});
+      newWall.save(function (err, wall) {
+        if (err) { console.log(err); return validationError(res, err); }
+        user.wall = wall._id;
+        user.save(function (err, user) {
+          if (err) { console.log(err); return validationError(res, err); }
+          done();
+        });
+      });
+    }, function allDone (notAborted, arr) {
+      res.status(200).json(users);
+    });
+  })
+}
 /**
  * Get a single user
  */
@@ -94,30 +109,29 @@ exports.profilePic = function (req, res) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
     gfs.findOne({ _id: user.profilePic}, function (err, file) {
-        if(!file){
-          return res.status(400).send({
-            message: 'File not found'
-          });
-        }
-    
-      res.writeHead(200, {'Content-Type': file.contentType});
-      
-      var readstream = gfs.createReadStream({
-          filename: file.filename
-      });
-   
-        readstream.on('data', function(data) {
-            res.write(data);
-        });
+      if(!file){
+        res.status(404).json({message: "Profile Pic not found"});
+      }
+      else{
+        res.writeHead(200, {'Content-Type': file.contentType});
         
-        readstream.on('end', function() {
-            res.end();        
+        var readstream = gfs.createReadStream({
+            filename: file.filename
         });
-   
-      readstream.on('error', function (err) {
-        console.log('An error occurred!', err);
-        throw err;
-      });
+     
+          readstream.on('data', function(data) {
+              res.write(data);
+          });
+          
+          readstream.on('end', function() {
+              res.end();        
+          });
+     
+        readstream.on('error', function (err) {
+          console.log('An error occurred!', err);
+          throw err;
+        });
+      }
     });
   });
 };
@@ -167,6 +181,7 @@ exports.updateProfile = function (req, res, next) {
   User.findById(userId, function (err, user) {
     if(err) return validationError(res, err);
     if(!user) return res.status(404).json({message: "User does not exist"});
+    req.body._id = undefined;
     req.body.role = undefined;
     req.body.hashedPassword = undefined;
     req.body.salt = undefined;
@@ -354,16 +369,7 @@ exports.forgotPassword = function(req, res, next) {
         })
       })
     },
-    function (token, user, done) {
-      var transporter = nodemailer.createTransport();
-      // var smtpTransport = nodemailer.createTransport({
-      //   service: 'Gmail',
-      //   auth: {
-      //     user: EMAIL,
-      //     pass: PASSWORD
-      //   }
-      // });
-      
+    function (token, user, done) {   
       var mailOptions = {
         to: user.email,
         from: EMAIL,
@@ -373,13 +379,8 @@ exports.forgotPassword = function(req, res, next) {
           'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err) {
-          return res.status(500);
-        } else {
-          res.status(200).json({message: "Successful"});
-        }
-      });      
+      mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
+      res.status(200).json({message: "Successful"});
     }
   ], function (err) {
     if(err) { return next(err); }
@@ -403,15 +404,6 @@ exports.resetPassword = function(req, res) {
     user.updatedOn = Date.now();
     user.save(function (err, user) {
       if(err) { return handleError(res, err); }
-      var transporter = nodemailer.createTransport();
-
-      // var smtpTransport = nodemailer.createTransport({
-      //   service: 'Gmail',
-      //   auth: {
-      //     user: EMAIL,
-      //     pass: PASSWORD
-      //   }
-      // });
       var mailOptions = {
         to: user.email,
         from: EMAIL,
@@ -419,13 +411,8 @@ exports.resetPassword = function(req, res) {
         text: 'Hello,\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
-      transporter.sendMail(mailOptions, function (err, info) {
-        if(err) {
-          return res.status(500);
-        } else {
-          res.status(200).json({message: "Successful"});
-        }
-      });      
+      mailer.sendEmail(mailOptions.subject, mailOptions.text, mailOptions.to, user._id, true);
+      res.status(200).json({message: "Successful"});
     });
   });
 };
