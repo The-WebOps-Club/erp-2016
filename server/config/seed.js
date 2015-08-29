@@ -61,7 +61,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
   },
   {
     provider: 'local',
@@ -78,7 +78,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
   },
   {
     provider: 'local',
@@ -95,7 +95,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
 },
 {
     provider: 'local',
@@ -112,7 +112,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
 },
 {
     provider: 'local',
@@ -129,7 +129,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
 },
 {
     provider: 'local',
@@ -146,7 +146,7 @@ User.find({}).remove(function() {
     hostel: {
               name : 'Narmada',
               value : 'narmada'
-            }
+            }    
 },
    function() {
       console.log('finished populating users');

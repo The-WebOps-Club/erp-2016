@@ -49,7 +49,6 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
-  festID:String,
   updatedOn: { type: Date },
   createdOn: { type: Date },
   resetPasswordToken: String,
