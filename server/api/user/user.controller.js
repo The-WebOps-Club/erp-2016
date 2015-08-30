@@ -19,6 +19,8 @@ var time = new Date().toLocaleTimeString();
 time = time.replace(':','');
 time = time.replace(':','');
 time = time.substring(4);
+var unique = "SHA16"+time+millis;
+return unique;
 }
 
 var validationError = function (res, err) {
