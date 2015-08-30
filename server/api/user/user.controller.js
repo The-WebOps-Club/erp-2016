@@ -13,6 +13,13 @@ var Team = require('../team/team.model');
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here 
+function uniqueID(){
+var millis = new Date().getUTCMilliseconds().toString();
+var time = new Date().toLocaleTimeString();
+time = time.replace(':','');
+time = time.replace(':','');
+time = time.substring(4);
+}
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -45,6 +52,7 @@ exports.create = function (req, res, next) {
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
   newUser.roomNumber="1234";
+  newUser.festID = uniqueID();
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
