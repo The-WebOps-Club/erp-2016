@@ -29,6 +29,7 @@ var UserSchema = new Schema({
   name: { type: String, default: '' },
   nick: String,
   profilePic: String,
+  festID:String,
   rollNumber: { type: String, default: '' },
   hostel: {},
   roomNumber: { type: String, default: '' },
