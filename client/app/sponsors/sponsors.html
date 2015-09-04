@@ -1,3 +1,11 @@
 <div class="col-md-12">
 This is the sponsors view.
+<form name='form'>
+	Title : <input type='text' name='title' ng-model='title'/>
+	Sponsor Linke : <input type='text' name='sponsor_link' ng-model='sponsor_link'/>
+	Priority : <input type='number' name='priority' ng-model='priority'/>
+	Row Layout : <input type='number' name='row_layout' ng-model='row_layout'/>
+	Logo : <input type='file' name='file' ngf-select ng-model='file' ngf-pattern = '.jp*g' accept='image/jp*g'/>
+	<button type='submit' ng-click='submit();'>Upload</button>
+</form>
 </div>
