@@ -16,9 +16,60 @@
       <md-button ng-hide="isLoggedIn()" ui-sref='login'>
         Login
       </md-button>
+      <!-- Notification -->
+      <div ng-click="read()" style="margin-right:10px; margin-top:5px;" id="notification_li">
+        <span id="notification_count"></span>
+        <a href="#" id="notificationLink"><ng-md-icon icon="notifications" style="fill: white"></ng-md-icon></a>
+          <div id="notificationContainer">
+            <md-whiteframe>
+                <div id="notificationTitle">Notifications</div>
+                <div id="notificationsBody" layout="column" class="notifications">
+                  <div class="notifDiv" ng-if="notification.action == 'comment'" ng-hide="show" ng-repeat="notification in notifications">
+                    <a href="">
+                    <md-whiteframe class="md-whiteframe-z3"layout layout-align="center center">
+                      <div id="notifMessage" class="notif{{notification.read}}">{{notification.commentedBy[0].name}} and {{notification.commentedBy.length - 1}} others {{notification.action}}ed on {{notification.post.wall.name}}'s post
+                      <br>
+                      <small> {{notification.updatedOn | date:mediumTime}}</small></div>
+                    </md-whiteframe>
+                    </a>
+                    <br>
+                  </div>
+                  <div class="notifDiv" ng-if="notification.action == 'post'" ng-hide="show" ng-repeat="notification in notifications">
+                    <a href="">
+                    <md-whiteframe class="md-whiteframe-z3" layout layout-align="center center">
+                      <div id="notifMessage" class="notif{{notification.read}}">{{notification.postedBy.name}} {{notification.action}}ed on {{notification.post.wall.name}}'s wall
+                      <br>
+                      <small> {{notification.updatedOn | date:mediumTime}}</small></div>
+                    </md-whiteframe>
+                    </a>
+                    <br>
+                  </div>
+                </div>
+            </md-whiteframe>
+          </div>
+      </div>
+
       <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='profile({ userId: getCurrentUser()._id })'>
         <img ng-src="/api/users/{{getCurrentUser()._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" style="width:100%; height: 100%;"/>
       </md-button>
+    <!--   Notificatons -->
+      <!-- <md-button ng-show="isLoggedIn()"  id="notificationLink" ng-class="{active: notif}"><a ng-click="showNotification()"><span id="notificationCount">{{ notifications.length }}</span><span class="glyphicon glyphicon-bell"></span></a>
+          <div id="notificationContainer" ng-if="notif" ng-mouseenter="scrollStop()" ng-mouseleave="scrollWork()">
+          <div id="notificationTitle">Notifications</div>
+          <div id="notificationsBody" class="notifications">
+            <md-whiteframe class="md-whiteframe-z2" layout layout-align="center center" ng-if="(notifications.length == 0)">
+            <span>No new notifications</span>
+            </md-whiteframe>
+            <md-whiteframe class="md-whiteframe-z2" layout layout-align="center center" ng-repeat="notification in notifications">
+            <div class="notifDiv">
+              <a id="closeButton" class="glyphicon glyphicon-remove-circle" ng-click="notifHide($index)"></a>
+              <div id="notifMessage">{{ notification }}</div>
+            </div>
+            </md-whiteframe>
+          </div>
+          <div id="notificationFooter"><a ng-click="hideAllNotif()">Mark all as read</a></div>
+          </div>
+        </md-button> -->
       <!-- <md-button id="notification_li">
         Notifications
         <div id="notificationContainer">
