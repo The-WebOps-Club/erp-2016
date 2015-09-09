@@ -77,20 +77,15 @@ exports.makeWalls = function (req, res) {
     if(err) return res.json(500, err);
     forEach(users, function(user, index, arr) {
       var done = this.async();
-      if (user.wall){
-        done();
-      }
-      else{
-        var newWall = new Wall({ name: username, parentId: user._id});
-        newWall.save(function (err, wall) {
+      var newWall = new Wall({ name: user.name, parentId: user._id});
+      newWall.save(function (err, wall) {
+        if (err) { console.log(err); return validationError(res, err); }
+        user.wall = wall._id;
+        user.save(function (err, user) {
           if (err) { console.log(err); return validationError(res, err); }
-          user.wall = wall._id;
-          user.save(function (err, user) {
-            if (err) { console.log(err); return validationError(res, err); }
-          });
         });
-        done();
-      }
+      });
+      done();
     }, function allDone (notAborted, arr) {
       res.status(200).json("{message: Successful}");
     });

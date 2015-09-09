@@ -4,7 +4,7 @@ var _ = require('lodash');
 var SubDepartment = require('./subDepartment.model');
 var Department = require('../department/department.model');
 var Wall = require('../wall/wall.model');
-
+var forEach = require('async-foreach').forEach;
 
 // Get list of subDepartments
 exports.index = function(req, res) {
@@ -23,6 +23,25 @@ exports.show = function(req, res) {
   });
 };
 
+exports.makeWalls = function (req, res) {
+  SubDepartment.find({}, function (err, subDepartments) {
+    if(err) return res.json(500, err);
+    forEach(subDepartments, function(subDepartment, index, arr) {
+      var done = this.async();
+      var newWall = new Wall({ name: subDepartment.name, parentId: subDepartment._id});
+      newWall.save(function (err, wall) {
+        if (err) { console.log(err); return validationError(res, err); }
+        subDepartment.wall = wall._id;
+        subDepartment.save(function (err, subDepartment) {
+          if (err) { console.log(err); return validationError(res, err); }
+        });
+      });
+      done();
+    }, function allDone (notAborted, arr) {
+      res.status(200).json("{message: Successful}");
+    });
+  })
+}
 // Creates a new subDepartment in the DB.
 exports.create = function(req, res) {
   Department.findById(req.body.department, function (err, department) {
