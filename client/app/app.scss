@@ -32,8 +32,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	width: 350px;
 	z-index: 1;
 	display: none; // Enable this after jquery implementation 
-
-
 }
 
 
@@ -97,6 +95,10 @@ a:hover
 {
 	text-decoration:none;
 	color:black;
+}
+
+.md-contact-suggestion img{
+	vertical-align: text-bottom;
 }
 
 // Component styles are injected through grunt

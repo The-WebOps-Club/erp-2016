@@ -103,15 +103,15 @@
     <md-content layout-padding flex="10">
     <md-list>
       <md-subheader class="md-no-sticky">Departments</md-subheader>
-      <md-list-item ng-repeat="department in user.department">
+      <md-list-item ng-repeat="department in user.department" offset="5" flex>
         <a ui-sref="department({ deptId: department._id })"> {{ department.name }} </a>
       </md-list-item>
       <md-subheader class="md-no-sticky">Sub Departments</md-subheader>
-      <md-list-item ng-repeat="subDepartment in user.subDepartment">
+      <md-list-item ng-repeat="subDepartment in user.subDepartment"  offset="5" flex>
         <a ui-sref="subDepartment({ subDeptId: subDepartment._id })"> {{ subDepartment.name }} </a>
       </md-list-item>
       <md-subheader class="md-no-sticky">Groups</md-subheader>
-      <md-list-item ng-repeat="group in user.groups">
+      <md-list-item ng-repeat="group in user.groups"  offset="5" flex>
         <a ui-sref="group({ groupId: group._id })"> {{ group.name }} </a>
       </md-list-item>
     </md-list>
