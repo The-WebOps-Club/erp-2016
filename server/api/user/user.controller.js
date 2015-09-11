@@ -12,7 +12,7 @@ var Department = require('../department/department.model');
 var Team = require('../team/team.model');
 
 var EMAIL = ''; // Put your fest mail id here
-var PASSWORD = ''; // Put your fest password here 
+var PASSWORD = ''; // Put your fest password here
 
 var validationError = function (res, err) {
   return res.status(422).json(err);
@@ -26,6 +26,21 @@ function handleError(res, err) {
  * Get list of users
  * restriction: 'admin'
  */
+
+ function festID(count){
+   var id;
+   if(count<10)
+   id = "SHA160000"+count.toString();
+   else if(count>9&&count<100)
+   id="SHA16000"+count.toString();
+   else if(count>99&&count<1000)
+   id="SHA1600"+count.toString();
+   else if(count>999&&count<10000)
+   id="SHA160"+count.toString();
+   else if(count>9999&&count<100000)
+   id = "SHA16"+count.toString();
+   return id;
+ }
 exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
     if(err) return res.json(500, err);
@@ -45,6 +60,9 @@ exports.create = function (req, res, next) {
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
   newUser.roomNumber="1234";
+  User.count({},function(err,count){
+    newUser.festID = festID(count+1);
+  })
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
@@ -160,7 +178,7 @@ exports.me = function (req, res, next) {
  * Add any user to any department as a coord
  * @param {req.body.department} : Department ID
  * @param {req.body.user} : User ID
- * @param {Function} : User and Department IDs are sent 
+ * @param {Function} : User and Department IDs are sent
  *                     in the body of the request.
  *                     Using that we see if user already exists in department
  *                     or if Department already exists in the user
@@ -168,7 +186,7 @@ exports.me = function (req, res, next) {
 exports.addDepartment = function (req, res, next) {
   User.findById(req.body.user, function (err, user) {
     Department.findById(req.body.department, function (err, department) {
-      if(err) { 
+      if(err) {
         return handleError(res, err);
       }
       if(!department) {
@@ -185,7 +203,7 @@ exports.addDepartment = function (req, res, next) {
         user.updatedOn = Date.now();
         user.save(function (err) {
           if(err) { return handleError(res, err); }
-          res.sendStatus(200); 
+          res.sendStatus(200);
         });
       }
       else res.sendStatus(200);
@@ -197,7 +215,7 @@ exports.addDepartment = function (req, res, next) {
  * Add any user to a SubDepartment
  * @param {req.body.subDepartment}   req  SubDepartment ID
  * @param {req.body.user}   req  User ID
- * @param {Function} User and SubDepartment IDs are sent 
+ * @param {Function} User and SubDepartment IDs are sent
  *                   in the body of the request.
  *                   Using that we see if user already exists in subDepartment
  *                   or if SubDepartment already exists in the user
@@ -205,7 +223,7 @@ exports.addDepartment = function (req, res, next) {
 exports.addSubDepartment = function(req, res, next) {
   User.findById(req.body.user, function (err, user) {
     SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
-      if(err) { 
+      if(err) {
         return handleError(res, err);
       }
       if(!subDepartment) {
@@ -220,7 +238,7 @@ exports.addSubDepartment = function(req, res, next) {
             user.updatedOn = Date.now();
             user.save(function (err) {
               if(err) { return handleError(res, err); }
-              res.sendStatus(200); 
+              res.sendStatus(200);
             });
           }
         });
@@ -232,7 +250,7 @@ exports.addSubDepartment = function(req, res, next) {
 
 /**
  * Sends a mail to the user to reset the password
- * 
+ *
  * @param  {[type]} req [description]
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
@@ -250,7 +268,7 @@ exports.forgotPassword = function(req, res, next) {
       User.findOne({ email: req.body.email }, function (err, user) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.sendStatus(404); }
-        
+
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // one hour
 
@@ -268,7 +286,7 @@ exports.forgotPassword = function(req, res, next) {
       //     pass: PASSWORD
       //   }
       // });
-      
+
       var mailOptions = {
         to: user.email,
         from: EMAIL,
@@ -287,7 +305,7 @@ exports.forgotPassword = function(req, res, next) {
           console.log(info);
           res.sendStatus(200);
         }
-      });      
+      });
     }
   ], function (err) {
     if(err) { return next(err); }
@@ -297,7 +315,7 @@ exports.forgotPassword = function(req, res, next) {
 
 /**
  * Resets the password of the user
- * 
+ *
  * @param  {[type]} req [description]
  * @param  {[type]} res [description]
  * @return {[type]}     [description]
@@ -337,13 +355,13 @@ exports.resetPassword = function(req, res) {
           console.log(info);
           res.sendStatus(200);
         }
-      });      
+      });
     });
   });
 };
 
 /**
- * 
+ *
  * Authentication callback
  */
 exports.authCallback = function(req, res, next) {

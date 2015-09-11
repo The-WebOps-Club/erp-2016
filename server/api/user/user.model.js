@@ -49,6 +49,7 @@ var UserSchema = new Schema({
   hashedPassword: String,
   provider: String,
   salt: String,
+  festID: String,
   updatedOn: { type: Date },
   createdOn: { type: Date },
   resetPasswordToken: String,
@@ -154,7 +155,7 @@ UserSchema
   .path('phoneNumber')
   .validate(function(phoneNumber) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
-    var regExpPhone = /^\d{10}$/; 
+    var regExpPhone = /^\d{10}$/;
     return (regExpPhone.test(phoneNumber));
   }, 'Phone Number must have 10 digits');
 
