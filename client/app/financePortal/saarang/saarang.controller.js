@@ -20,6 +20,7 @@ angular.module('erp2015App')
     $scope.cotherRed=1;
     $scope.invoiceRed=1;
     $scope.purposeRed=1;
+    $scope.fin={};
     
     $scope.fun=function(value){
     	console.log(value);
@@ -45,7 +46,16 @@ angular.module('erp2015App')
     } 
 
     $scope.sub=function(){
-    	console.log($scope.fin);
+    	
+        // $scope.fin.date=$scope.currentDate;
+        // if(!$scope.fin.type){ $scope.typeRed=0;}
+        // if(!$scope.fin.department){ $scope.departmentRed=0;}
+        // if($scope.fin.designation.$error.required){ $scope.designationRed=0}
+        // if(!$scope.fin.date){ $scope.dateRed=0;}
+        // if(!$scope.fin.category){ $scope.categoryRed=0;}
+        // if(!$scope.fin.invoice){ $scope.invoiceRed=0;}
+        // if(!$scope.fin.purpose){ $scope.purposeRed=0;}
+        // if($scope.fin.category=='Other' && !$scope.fin.categoryOther){ $scope.cotherRed=0;}
     	
     }
   });

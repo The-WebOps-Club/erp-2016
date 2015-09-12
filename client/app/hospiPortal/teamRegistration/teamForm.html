@@ -1,0 +1,37 @@
+<md-dialog flex=50>
+	<md-content>
+		<md-toolbar>
+			<div layout="row">
+				<div offset=40>
+					<h4> Add A New Team</h4>
+				</div>
+			</div>
+		</md-toolbar>
+		<md-divider></md-divider>
+		<form name="teamForm">
+			<md-input-container >
+		          <label>Name</label>
+		          <input ng-model="team.name" >
+		    </md-input-container>
+			<md-input-container >		
+				 <md-select ng-model="team.acc" label="name" >
+			    	<md-select-label>{{acc}}</md-select-label> 
+			   		<md-option ng-value="dept" ng-click="func(acc)" ng-repeat="acc in accs" >{{acc}}</md-option>
+			   	</md-select>	   
+			</md-input-container >
+			<md-input-container >
+		          <label>City</label>
+		          <input ng-model="team.city" >
+		    </md-input-container>
+		    <md-input-container >
+		          <label>Date Of Arrival</label>
+		          <input ng-model="team.city" disabled >
+		    </md-input-container>
+		    <md-button class="md-raised md-primary" ng-click="showPicker($event)" flex='5'>Date Of Arrival</md-button>
+		    
+				
+		    	
+			
+		</form>
+	</md-content>
+</md-dialog>

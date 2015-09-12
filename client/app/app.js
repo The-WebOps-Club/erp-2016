@@ -18,6 +18,7 @@ angular.module('erp2015App', [
   'mdPickers',
   'ngAnimate',
   'ngImgCrop',
+  'ngDialog',
   'dcbImgFallback'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

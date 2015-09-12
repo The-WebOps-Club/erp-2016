@@ -104,6 +104,7 @@ a:hover
 @import 'account/account.scss';
 @import 'account/editProfile/editProfile.scss';
 @import 'account/login/login.scss';
+@import 'addRoom/addRoom/addRoom.scss';
 @import 'addTeam/addTeam.scss';
 @import 'admin/admin.scss';
 @import 'coordPortal/editProfile/editProfile.scss';
@@ -111,6 +112,11 @@ a:hover
 @import 'financePortal/admin/admin.scss';
 @import 'financePortal/clubs/clubs.scss';
 @import 'financePortal/saarang/saarang.scss';
+@import 'hospiPortal/OHM/OHM.scss';
+@import 'hospiPortal/accStatus/accStatus.scss';
+@import 'hospiPortal/addRoom/addRoom.scss';
+@import 'hospiPortal/roomMap/roomMap.scss';
+@import 'hospiPortal/teamRegistration/teamRegistration.scss';
 @import 'main/main.scss';
 @import 'mom/mom.scss';
 @import 'newsfeed/newsfeed.scss';

@@ -14,8 +14,10 @@
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-      <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
       <link rel="stylesheet" href="bower_components/mdPickers/dist/mdPickers.min.css" />
+      <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
+      <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
+      <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -55,29 +57,31 @@
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
-      <script src="bower_components/angular-resource/angular-resource.js"></script>
-      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-      <script src="bower_components/angular-socket-io/socket.js"></script>
-      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
-      <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
-      <script src="bower_components/angular-permission/dist/angular-permission.js"></script>
-      <script src="bower_components/ng-facebook/ngFacebook.js"></script>
+      <script src="bower_components/angularjs/angular.js"></script>
       <script src="bower_components/angular-animate/angular-animate.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-img-fallback/angular.dcb-img-fallback.js"></script>
       <script src="bower_components/angular-aria/angular-aria.js"></script>
       <script src="bower_components/angular-material/angular-material.js"></script>
       <script src="bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+      <script src="bower_components/angular-messages/angular-messages.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/angular-permission/dist/angular-permission.js"></script>
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+      <script src="bower_components/angular-socket-io/socket.js"></script>
       <script src="bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/angular-tags/dist/angular-tags-0.2.10.js"></script>
-      <script src="bower_components/angular-messages/angular-messages.js"></script>
-      <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
-      <script src="bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
-      <script src="bower_components/angular-img-fallback/angular.dcb-img-fallback.js"></script>
+      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
       <script src="bower_components/moment/moment.js"></script>
       <script src="bower_components/mdPickers/dist/mdPickers.min.js"></script>
+      <script src="bower_components/ng-facebook/ngFacebook.js"></script>
+      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+      <script src="bower_components/ngDialog/js/ngDialog.js"></script>
+      <script src="bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
+      <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -92,6 +96,8 @@
           <script src="app/account/password/resetPassword.controller.js"></script>
           <script src="app/account/settings/settings.controller.js"></script>
           <script src="app/account/signup/signup.controller.js"></script>
+          <script src="app/addRoom/addRoom/addRoom.controller.js"></script>
+          <script src="app/addRoom/addRoom/addRoom.js"></script>
           <script src="app/addTeam/addTeam.controller.js"></script>
           <script src="app/addTeam/addTeam.js"></script>
           <script src="app/admin/admin.controller.js"></script>
@@ -119,6 +125,16 @@
           <script src="app/forms/formTemplates/field/field.directive.js"></script>
           <script src="app/forms/formTemplates/form/form.directive.js"></script>
           <script src="app/forms/formView/formView.controller.js"></script>
+          <script src="app/hospiPortal/OHM/OHM.controller.js"></script>
+          <script src="app/hospiPortal/OHM/OHM.js"></script>
+          <script src="app/hospiPortal/accStatus/accStatus.controller.js"></script>
+          <script src="app/hospiPortal/accStatus/accStatus.js"></script>
+          <script src="app/hospiPortal/addRoom/addRoom.controller.js"></script>
+          <script src="app/hospiPortal/addRoom/addRoom.js"></script>
+          <script src="app/hospiPortal/roomMap/roomMap.controller.js"></script>
+          <script src="app/hospiPortal/roomMap/roomMap.js"></script>
+          <script src="app/hospiPortal/teamRegistration/teamRegistration.controller.js"></script>
+          <script src="app/hospiPortal/teamRegistration/teamRegistration.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="app/mom/mom.controller.js"></script>
@@ -128,6 +144,7 @@
           <script src="app/postService/postService.service.js"></script>
           <script src="app/tasks/tasks.controller.js"></script>
           <script src="app/tasks/tasks.js"></script>
+          <script src="app/tasks/tasks.service.js"></script>
           <script src="app/wall/department/department.controller.js"></script>
           <script src="app/wall/group/group.controller.js"></script>
           <script src="app/wall/postComment/postComment.service.js"></script>

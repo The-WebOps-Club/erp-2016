@@ -1,0 +1,30 @@
+<md-toolbar md-scroll-shrink ng-if="true" >
+	<div class="md-toolbar-tools">
+	 <md-button ng-click="click('teamRegistration')">
+	 	Team Registrations
+	 </md-button>
+	 <md-button ng-click="click('accStatus')">
+	 	Accomodation Statistics
+	 </md-button>
+	 <md-button ng-click="click('addRoomHostel')">
+	 	Add a Room/Hostel
+	 </md-button>
+	 <md-button ng-click="click('roomMap')">
+	 	Room Map
+	 </md-button>
+	 <md-button ng-click="click('OHM')">
+	 	OHM
+	 </md-button>
+	</div>
+</md-toolbar>
+<div layout="row" style="background-color:#DAC8FF">
+	<div flex=80 offset=5>
+		<h4>Teams Registered</h4>
+	</div>
+	<div flex>
+		<md-button class="md-raised md-primary" ng-click="dialog($event)">
+ 		Add New Team
+ 		</md-button>
+	</div>
+
+</div>
