@@ -47,6 +47,7 @@ exports.create = function (req, res) {
   });
 }
 
+
 exports.serve = function(req, res) {
   gfs.findOne({ _id: req.params.id}, function (err, file) {
       if(!file){

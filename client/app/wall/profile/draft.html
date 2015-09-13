@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="StarterApp">
+<head>
+	<title>chips</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.css">
+	<script src="jquery.min.js"></script>
+	<script src="angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.9.4/angular-material.min.js"></script>
+</head>
+<body>
+<div ng-controller="ContactChipDemoCtrl as ctrl" layout="column">
+  <md-content class="md-padding autocomplete" layout="column">
+    <md-contact-chips
+        ng-model="ctrl.contacts"
+        md-contacts="ctrl.querySearch($query)"
+        md-contact-name="name"
+        md-contact-image="image"
+        md-contact-email="email"
+        md-require-match
+        filter-selected="ctrl.filterSelected"
+        placeholder="To">
+    </md-contact-chips>
+    <md-list class="fixedRows">
+      <md-subheader class="md-no-sticky">Contacts</md-subheader>
+      <md-list-item class="md-2-line contact-item" ng-repeat="(index, contact) in ctrl.allContacts"
+          ng-if="ctrl.contacts.indexOf(contact) < 0">
+        <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
+        <div class="md-list-item-text compact">
+          <h3>{{contact.name}}</h3>
+          <p>{{contact.email}}</p>
+        </div>
+      </md-list-item>
+      <md-list-item class="md-2-line contact-item selected" ng-repeat="(index, contact) in ctrl.contacts">
+        <img ng-src="{{contact.image}}" class="md-avatar" alt="{{contact.name}}" />
+        <div class="md-list-item-text compact">
+          <h3>{{contact.name}}</h3>
+          <p>{{contact.email}}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</div>
+
+
+
+</body>
+<script >
+  var app = angular.module('StarterApp', ['ngMaterial']);
+      .controller('ContactChipDemoCtrl', DemoCtrl);
+  function DemoCtrl ($timeout, $q) {
+    var self = this;
+    self.querySearch = querySearch;
+    self.allContacts = loadContacts();
+    self.contacts = [self.allContacts[0]];
+    self.filterSelected = true;
+    /**
+     * Search for contacts.
+     */
+    function querySearch (query) {
+      var results = query ?
+          self.allContacts.filter(createFilterFor(query)) : [];
+      return results;
+    }
+    /**
+     * Create filter function for a query string
+     */
+    function createFilterFor(query) {
+      var lowercaseQuery = angular.lowercase(query);
+      return function filterFn(contact) {
+        return (contact._lowername.indexOf(lowercaseQuery) != -1);;
+      };
+    }
+    function loadContacts() {
+      var contacts = [
+        'Marina Augustine',
+        'Oddr Sarno',
+        'Nick Giannopoulos',
+        'Narayana Garner',
+        'Anita Gros',
+        'Megan Smith',
+        'Tsvetko Metzger',
+        'Hector Simek',
+        'Some-guy withalongalastaname'
+      ];
+      return contacts.map(function (c, index) {
+        var cParts = c.split(' ');
+        var contact = {
+          name: c,
+          email: cParts[0][0].toLowerCase() + '.' + cParts[1].toLowerCase() + '@example.com',
+          image: 'http://lorempixel.com/50/50/people?' + index
+        };
+        contact._lowername = contact.name.toLowerCase();
+        return contact;
+      });
+    }
+  }
+});
+</script>
+<style type="text/css">
+.chipsdemoContactChips md-content.autocomplete {
+  min-height: 250px; }
+.chipsdemoContactChips .md-item-text.compact {
+  padding-top: 8px;
+  padding-bottom: 8px; }
+.chipsdemoContactChips .contact-item {
+  box-sizing: border-box; }
+  .chipsdemoContactChips .contact-item.selected {
+    opacity: 0.5; }
+    .chipsdemoContactChips .contact-item.selected h3 {
+      opacity: 0.5; }
+  .chipsdemoContactChips .contact-item .md-list-item-text {
+    padding: 14px 0; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3 {
+      margin: 0 !important;
+      padding: 0;
+      line-height: 1.2em !important; }
+    .chipsdemoContactChips .contact-item .md-list-item-text h3, .chipsdemoContactChips .contact-item .md-list-item-text p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+  @media (min-width: 900px) {
+    .chipsdemoContactChips .contact-item {
+      float: left;
+      width: 33%; } }
+.chipsdemoContactChips md-contact-chips {
+  margin-bottom: 10px; }
+.chipsdemoContactChips .md-chips {
+  padding: 5px 0 8px; }
+.chipsdemoContactChips .fixedRows {
+  height: 250px;
+  overflow: hidden; }
+</style>
+
+</html>

@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+    mongoosePaginate = require('mongoose-paginate'),
     Schema = mongoose.Schema,
     deepPopulate = require('mongoose-deep-populate');
 
@@ -20,6 +21,8 @@ var NotificationSchema = new Schema({
   active: {type: Boolean, default: true},
   updatedOn: Date
 });
+
+NotificationSchema.plugin(mongoosePaginate);
 
 NotificationSchema.plugin(deepPopulate, {
   populate: {

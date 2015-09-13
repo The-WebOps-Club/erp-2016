@@ -1,290 +1,287 @@
  <div ng-include="'components/navbar/navbar.html'"></div><br><br><br>
-
-
-<!-- <div infinite-scroll="load()">
-		<div  ng-repeat="post in posts" >
-			
-			<!-- <form  ng-submit="addComment(post)" name="commentPost">
-				<textarea class="form-control" ng-model="post.newComment" rows="3" placeholder="Enter a new comment..."></textarea>
-				<input class="btn btn-primary" type="submit" ng-diasbled="commentPost.$invalid" value="Comment">
-			</form>
-			
-			
-		</div>
-</div> -->
 	<!-- BODY -->
 	<div layout="row" class="body">
 		<!-- MAIN -->
 		<div flex="66" offset="10">
-		<div layout="column" class="main md-whiteframe-z3" flex="66" offset="5" >
+		<div layout="column" class="main md-whiteframe-z3" flex="70" offset="15" >
 			<div layout="row" id="profile_back">
 				<div layout="column" class="name_and_tabs">
 					<div layout="row">
 					<div id="profile_pic">
-						<img ng-src="api/users/{{user._id}}/profilePic" alt="{{user.name}}" />
+						<img ng-src="api/users/{{user._id}}/profilePic" alt="{{user.name}}" id="profileImage"/>
 					</div>
-					<div id="profile_title">
+					<div id="profile_title" offset="5">
 						{{user.name}}   				
 	        		</div>
 	        		</div>
 	        		<!-- <hr> -->
 					<div id="tabs">
-						<md-tabs md-dynamic-height md-border-bottom flex="100">
-							<md-tab label="Profile">
-							<md-content>
-								<div layout="column" flex="100">
-									<md-toolbar class="md-primary">
-										<div layout="row">
-											<div>
-										        <h1 class="md-toolbar-tools">
-										          About
-										        </h1>
-										    </div> 
-											<div layout="row" layout-align="end center">
-												<div>
-													<md-button ng-hide="editMode" class="md-raised pull-right" id="edit" ng-click="edit()">
-														<ng-md-icon icon="mode_edit" style="fill: green;" size="18"></ng-md-icon>
-														<span class="edit_text" ><b>Edit Profile</b></span>
-													</md-button>
-												</div>
-												<div>
-												<md-button ng-show="editMode" class="md-raised pull-right" id="save" >
-												<div layout="row">
-												<ng-md-icon icon="save" style="fill: green;" size="18"></ng-md-icon>
-													<span class="save_text" ><b>Save</b></span>
-												</div>
-												</md-button>
-												</div>
-												
-												<div>
-												<md-button ng-show="editMode" class="md-raised pull-right" id="view" ng-click="view()">
-												<div layout="row">
-												<ng-md-icon icon="person" style="fill: green;" size="18"></ng-md-icon>
-													<span class="view_text" ><b>View</b></span>
-												</div>
-												</md-button>
-												</div>
-											</div>										
-										</div>
-									</md-toolbar>
-									<div layout="column">
-										<div layout="row">
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="perm_identity" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container ng-show="editMode" class="md-icon-float input" >
-									        	<label>Name</label>
-									       		<input ng-model="user.name" type="text">
-									    	</md-input-container>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Name</label>
-										    	{{user.name}}
-										    </div>
-									    </div>
-									    
-									    <br>
-									    <div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="format_list_numbered" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container ng-show="editMode" class="md-icon-float input " >
-									        	<label>Roll no</label>
-									       		<input ng-model="user.rollNumber" type="text">
-									    	</md-input-container>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Roll no</label>
-										    	{{user.rollNumber}}
-										    </div>
-									    </div>
-									    <br>
-									    <div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="phone" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container ng-show="editMode" class="md-icon-float input " >
-									        	<label>Phone</label>
-									       		<input ng-model="user.phoneNumber" type="text">
-									    	</md-input-container>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Phone</label>
-										   	 	{{user.phoneNumber}}
-										    </div>
-									    </div>
-									    <br>
-									    <div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="email" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container ng-show="editMode" flex="30" class="md-icon-float input " >
-									        	<label>Email</label>
-									       		<input ng-model="user.email" type="text">
-									    	</md-input-container>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Email</label>
-										    	{{user.email}}
-										    </div>
-									    </div>
-									    <br>
-									    <div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="home" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<div>
-											<md-input-container ng-show="editMode" class="md-icon-float input">
-									       		<md-select placeholder="Hostel" ng-model="user.hostel">
-										        	 	<md-option value="Alakananda">Alakananda</md-option>
-													    <md-option value="Badra">Badra</md-option>
-													    <md-option value="Brahmaputra">Brahmaputra</md-option>    
-													    <md-option value="Cauvery">Cauvery</md-option>
-													    <md-option value="Ganga">Ganga</md-option>
-													    <md-option value="Godavari">Godavari</md-option>
-													    <md-option value="Jamuna">Jamuna</md-option>
-													    <md-option value="Krishna">Krishna</md-option>
-													    <md-option value="Mahanadhi">Mahanadhi</md-option>
-													    <md-option value="Mandakini">Mandakini</md-option>
-													    <md-option value="Narmada">Narmada</md-option>
-													    <md-option value="Pampa">Pampa</md-option>
-													    <md-option value="Saraswathi">Saraswathi</md-option>
-													    <md-option value="Sarayu">Sarayu</md-option>
-													    <md-option value="Sarayu Extension">Sarayu Extension</md-option>
-													    <md-option value="Sharavati">Sharavati</md-option>
-													    <md-option value="Sindhu">Sindhu</md-option>
-													    <md-option value="Tamraparni">Tamraparni</md-option>
-													    <md-option value="Tapti">Tapti</md-option>
-													    <md-option value="Tunga">Tunga</md-option>
-													    <md-option value="Sabarmati">Sabarmati</md-option>
-										        </md-select>
-									    	</md-input-container>
-									    	</div>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Hostel</label>
-										    	{{user.hostel}}{{user.room_no}}
-										   	</div>
-										</div>
-										<br>
-										<div layout="row" >
-											<div layout="column" style="padding-top:20px;padding-right:5px">
-												<ng-md-icon icon="location_on" style="fill: green" size="24"></ng-md-icon>
-											</div>
-											<md-input-container ng-show="editMode" flex="20" class="md-icon-float input " >
-									        	<label>Room no</label>
-									       		<input ng-model="user.roomNumber" type="text">
-									    	</md-input-container>
-											<div layout="column" ng-hide="editMode" flex="55" class="view">
-										    	<label>Room no</label>
-										    	{{user.roomNumber}}
-										    </div>
-									    </div>
-									</div>
-								</div>	
-							</md-content>
-							</md-tab>
+						<md-tabs md-dynamic-height md-border-bottom md-no-disconnect flex="100">
 							<md-tab label="Wall">
-							<md-content>
-								<div layout="row">
-								    <md-whiteframe class="md-whiteframe-z3" flex="100">
-										<md-toolbar class="md-primary">
-									        <h1 class="md-toolbar-tools">
-									          Create a new Post.....
-									        </h1>
-									      </md-toolbar>
+								<md-content>
+									<div layout="row">
+									    <md-whiteframe class="md-whiteframe-z3" flex="100">
+											<md-toolbar class="md-primary">
+										        <h1 class="md-toolbar-tools">
+										          Create a new Post..
+										        </h1>
+										      </md-toolbar>
 
-									      <md-content layout-padding>
-									        <form class="form" name="wallPost" ng-submit="createPost()" >
+										      <md-content layout-padding>
+										        <form class="form" name="wallPost" ng-submit="createPost()" >
 
-									          <md-input-container>
-									            <label>Title</label>
+										          <md-input-container>
+										            <label>Title</label>
 
-									            <input type="text" name="newPostTitle" ng-model="newPostTitle" >
-									          </md-input-container>
+										            <input type="text" name="newPostTitle" ng-model="newPost.title" >
+										          </md-input-container>
 
-									          <md-input-container>
-									            <label>Info</label>
+										          <md-input-container>
+										            <label>Info</label>
 
-									            <input type="text" name="newPost" ng-model="newPost" >
-									          </md-input-container>          
-									          <div>
-									            <md-button class="md-raised md-primary" type="submit">
-									              Post
-									            </md-button>
-									          </div>
-									        </form>
-									      </md-content>
-								    </md-whiteframe>
-								</div>
-								<br><br>
-								<div infinite-scroll="load()">	
-									<div ng-repeat="post in posts">
-									  <div layout="row">
-									  	<md-whiteframe class="md-whiteframe-z4" flex="100"style="background-color : #F5F5F0">
-									  		<div layout="column">
-										  		<div flex layout="row">
-										  			<div flex="10" layout-margin><br><br>
-										  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
-										  			</div>
-										  			<div flex >		  			
-										  				<h3>{{post.title}}</h3>
-									  					<div layout="row">
-									  						<div flex>
-									  							<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: grey" size="15"></ng-md-icon>  {{post.wall.name}}</h4>
-									  						</div>
-									  						<div flex="20">
-									  							<h5>{{ post.createdOn | date : 'medium'}}</h5>
-									  						</div>
-									  					</div>
-										  				<p style="white-space: pre;">{{post.info}}</p>
-										  			</div>
-										  		</div>
-										  		<md-divider></md-divider><br>
-										  		<div ng-repeat="comment in post.comments">
-											  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
-											  			<div flex="5"><br>
-											  				<img ng-src="api/users/{{comment.createdBy._id}}/profilePic" width="40px" height="40px" style="border-radius: 20px " alt="{{comment.cureatedBy.name}}">
+										            <input type="text" name="newPost" ng-model="newPost.info" >
+										          </md-input-container>          
+										          <div>
+										            <md-button class="md-raised md-primary" type="submit">
+										              Post
+										            </md-button>
+										          </div>
+										        </form>
+										      </md-content>
+									    </md-whiteframe>
+									</div>
+									<br><br>
+									<div infinite-scroll="load()">	
+										<div ng-repeat="post in posts">
+											<div layout="row">
+												<md-whiteframe class="md-whiteframe-z4" flex="100"style="background-color : #F5F5F0">
+													<div layout="column">
+											  		<div flex layout="row">
+											  			<div flex="5"><br><br>
+											  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
 											  			</div>
-											  			<div flex>
-												  			<div layout="row">
-												  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
-												  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
-												  			</div>
-												  			<h6 style="white-space: pre;">{{comment.info}}</h6>
+											  			<div flex="90" offset="5" >		  			
+											  				<h3>{{post.title}}</h3>
+																<div layout="row">
+																	<div flex>
+																		<h4>{{post.createdBy.name}} <ng-md-icon icon="send" style="fill: grey" size="15"></ng-md-icon>  {{post.wall.name}}</h4>
+																	</div>
+																	<div flex="20">
+																		<h5>{{ post.createdOn | date : 'medium'}}</h5>
+																	</div>
+																</div>
+											  				<p style="white-space: pre-wrap;">{{post.info}}</p>
 											  			</div>
 											  		</div>
-										  		</div>
-										  		<div flex offset="10">
-										  			<md-content>
-												  		<form  ng-submit="addComment(post)" name="commentPost">
-															<md-input-container flex >
-								       							 <label>Enter a new comment....</label>
-								       							 <textarea ng-model="post.newComment" columns="1" required></textarea>
-								      						</md-input-container>
-								      						<div>
-									         					<md-button class="md-raised md-primary" type="submit">
-									             					Comment
-									           					</md-button>
-									         			    </div>
-														</form>
-													</md-content>
-												</div>
-												<br>
-								            </div>
-									  	</md-whiteframe>
-									  </div>
-									  <br>
+											  		<md-divider></md-divider><br>
+											  		<div ng-repeat="comment in post.comments">
+												  		<div flex offset="10" style="background-color : #EAEAE8" layout-margin layout="row">
+												  			<div flex="5"><br>
+												  				<img ng-src="api/users/{{post.createdBy._id}}/profilePic" fallback-src="client/assets/images/slogo.png" class="md-avatar" alt="{{post.createdBy.name}}" width="60px" height="60px" style="border-radius: 30px ">
+												  			</div>
+												  			<div flex="95">
+													  			<div layout="row">
+													  				<div flex><h5>{{comment.createdBy.name}}</h5></div>
+													  				<div flex="20"><h6>{{ comment.createdOn | date : 'medium'}}</h6></div>
+													  			</div>
+													  			<h6 style="white-space: pre-wrap;">{{comment.info}}</h6>
+												  			</div>
+												  		</div>
+											  		</div>
+											  		<div flex offset="10">
+											  			<md-content>
+													  		<form  ng-submit="addComment(post)" name="commentPost">
+																<md-input-container flex >
+																		 <label>Enter a new comment....</label>
+																		 <textarea ng-model="post.newComment" columns="1" required></textarea>
+																	</md-input-container>
+																	<div>
+											     					<md-button class="md-raised md-primary" type="submit">
+											         					Comment
+											       					</md-button>
+											     			    </div>
+															</form>
+														</md-content>
+													</div>
+													<br>
+											    </div>
+												</md-whiteframe>
+											</div>
+											<br>
+											</div>
 									</div>
-								</div>
-							</md-content>
+								</md-content>
 							</md-tab>
-							<md-tab label="Docs">
-								<a ng-href="api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
-                    			<input class="btn" type="file" ng-file-select="" ng-model="file" name="file" >
-			                    <div>
-			                        <br>
-			                        <div layout="row" layout-sm="column" layout-align="space-around">
-								      <md-progress-circular md-mode="determinate" value="{{determinateValue}}"></md-progress-circular>
-								    </div>
-			                    </div>
-							</md-tab>
+							<md-tab label="Profile">
+								<md-content>
+									<div layout="column" flex="100">
+										<md-toolbar class="md-primary md-toolbar-tools" layout="row" align="center center">
+											<div>
+										        <h3>
+										          About
+										        </h3>
+										    </div>
+	  										<span flex></span>      
+											<div>
+												<md-button ng-hide="editMode" class="md-raised" id="edit" ng-click="edit()">
+													<ng-md-icon icon="mode_edit" style="fill: green;" size="18"></ng-md-icon>
+													<span class="edit_text" ><b>Edit Profile</b></span>
+												</md-button>
 
+												<md-button ng-show="editMode" class="md-raised" id="save" ng-click="saveProfile()">
+													<ng-md-icon icon="save" style="fill: green;" size="18"></ng-md-icon>
+													<span class="save_text" ><b>Save</b></span>
+												</md-button>
+												
+												<md-button ng-show="editMode" class="md-raised" id="view" ng-click="view()">
+													<ng-md-icon icon="person" style="fill: green;" size="18"></ng-md-icon>
+													<span class="view_text" ><b>View</b></span>
+												</md-button>
+											</div>										
+										</md-toolbar>
+										<br>
+										<div layout="column">
+											<div layout="row">
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="perm_identity" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input" >
+										        	<label style="margin:0px;">Name</label>
+										       		<input ng-model="user.name" type="text">
+										    	</md-input-container>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Name</label>
+											    	{{user.name}}
+											    </div>
+										    </div>
+										    
+										    <br>
+										    <div layout="row" >
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="format_list_numbered" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input " >
+										        	<label style="margin:0px;">Roll no</label>
+										       		<input ng-model="user.rollNumber" type="text">
+										    	</md-input-container>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Roll no</label>
+											    	{{user.rollNumber}}
+											    </div>
+										    </div>
+										    <br>
+										    <div layout="row" >
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="phone" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input " >
+										        	<label style="margin:0px;">Phone</label>
+										       		<input ng-model="user.phoneNumber" type="text">
+										    	</md-input-container>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Phone</label>
+											   	 	{{user.phoneNumber}}
+											    </div>
+										    </div>
+										    <br>
+										    <div layout="row" >
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="email" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" flex="30" class="md-icon-float input " >
+										        	<label style="margin:0px;">Email</label>
+										       		<input ng-model="user.email" type="text">
+										    	</md-input-container>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Email</label>
+											    	{{user.email}}
+											    </div>
+										    </div>
+										    <br>
+										    <div layout="row" >
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="home" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" class="md-icon-float input">
+										       		<md-select placeholder="Hostel" style="padding-bottom:2px;"ng-model="user.hostel">
+											        	 	<md-option value="Alakananda">Alakananda</md-option>
+														    <md-option value="Badra">Badra</md-option>
+														    <md-option value="Brahmaputra">Brahmaputra</md-option>    
+														    <md-option value="Cauvery">Cauvery</md-option>
+														    <md-option value="Ganga">Ganga</md-option>
+														    <md-option value="Godavari">Godavari</md-option>
+														    <md-option value="Jamuna">Jamuna</md-option>
+														    <md-option value="Krishna">Krishna</md-option>
+														    <md-option value="Mahanadhi">Mahanadhi</md-option>
+														    <md-option value="Mandakini">Mandakini</md-option>
+														    <md-option value="Narmada">Narmada</md-option>
+														    <md-option value="Pampa">Pampa</md-option>
+														    <md-option value="Saraswathi">Saraswathi</md-option>
+														    <md-option value="Sarayu">Sarayu</md-option>
+														    <md-option value="Sarayu Extension">Sarayu Extension</md-option>
+														    <md-option value="Sharavati">Sharavati</md-option>
+														    <md-option value="Sindhu">Sindhu</md-option>
+														    <md-option value="Tamraparni">Tamraparni</md-option>
+														    <md-option value="Tapti">Tapti</md-option>
+														    <md-option value="Tunga">Tunga</md-option>
+														    <md-option value="Sabarmati">Sabarmati</md-option>
+											        </md-select>
+										    	</md-input-container>
+										    	</div>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Hostel</label>
+											    	{{user.hostel}}{{user.room_no}}
+											   	</div>
+											</div>
+											<br>
+											<div layout="row" >
+												<div layout="column" style="padding-top:20px;padding-right:5px">
+													<ng-md-icon icon="location_on" style="fill: green" size="24"></ng-md-icon>
+												</div>
+												<md-input-container ng-show="editMode" style="padding-bottom: 2px;" flex="20" class="md-icon-float input " >
+										        	<label style="margin:0px;">Room no</label>
+										       		<input ng-model="user.roomNumber" type="text">
+										    	</md-input-container>
+												<div layout="column" ng-hide="editMode" flex="55" class="view">
+											    	<label>Room no</label>
+											    	{{user.roomNumber}}
+											    </div>
+										    </div>
+										</div>
+									</div>	
+								</md-content>
+							</md-tab>
+							
+							<!-- <md-tab label="Docs">
+							
+						        <md-input-container>
+						           <label>Category Picture</label>
+						           <br> &nbsp;
+						           Select an Image file: 
+						           <input class='btn' type="file" id="file" accept="image/*" required="" />
+						           <div class="cropArea">
+						             <img-crop image="imageUploader.myImage" result-image="imageUploader.myCroppedImage" area-type="square" result-image-size="200"></img-crop>
+						           </div>
+						           <div>Cropped Image:</div>
+						           <div><img ng-src="{{imageUploader.myCroppedImage}}" /></div>
+						         </md-input-container>
+						       <!-- <div>
+						        	<input type="text" ng-model="testInput	"></input>
+									<div>Select an image file: <input type="file" id="fileInput" ng-model="fileInput" /></div>
+											<div class="cropArea">
+									    <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+									  </div>
+									  <div>Cropped Image:</div>
+									  <div><img ng-src="{{myCroppedImage}}" /></div>
+								</div>-->
+													
+						            
+								    <!--<a ng-href="/api/uploads/{{form.fileId}}" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+
+				                    </div> -->
+							</md-tab>
+ -->
                     
 							<!-- <md-tab label="Portal"></md-tab> -->
 						</md-tabs>

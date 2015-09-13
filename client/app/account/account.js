@@ -6,7 +6,14 @@ angular.module('erp2015App')
       .state('login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
-        controller: 'LoginCtrl'
+        controller: 'LoginCtrl',
+        authenticate: true,
+        data: {
+          permissions: {
+              only: ['anonymous'],
+              redirectTo: 'newsfeed'
+          }
+        }
       })
       .state('signup', {
         url: '/signup',

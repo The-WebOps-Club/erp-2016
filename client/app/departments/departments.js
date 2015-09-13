@@ -7,11 +7,11 @@ angular.module('erp2015App')
         url: '/departments',
         templateUrl: 'app/departments/departments.html',
         controller: 'DepartmentsCtrl',
-		  // data: {
-      //    permissions: {
-      //     		except: ['anonymous', 'admin', 'user', 'core'],
-      //     		redirectTo: 'coordPortalDashboard'
-      //     }
-      //   }                
+		    data: {
+          permissions: {
+          		except: ['anonymous'],
+          		redirectTo: 'login'
+          }
+        }                
       });
   });

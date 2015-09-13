@@ -12,6 +12,7 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.get('/:id/profilePic', controller.profilePic);
 
+router.post('/refresh', auth.isAuthenticated(), controller.refresh);
 router.post('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.post('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfile);
 router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
