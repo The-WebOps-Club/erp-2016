@@ -1,0 +1,246 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/home/han/.nvm/v0.10.35/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'angular-date-picker-polyfill',
+1 verbose cli   '--save' ]
+2 info using npm@2.13.0
+3 info using node@v0.10.35
+4 verbose install initial load of /home/han/erp-2016/package.json
+5 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/async/package.json
+6 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/async-foreach/package.json
+7 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/bcrypt-nodejs/package.json
+8 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/blob-stream/package.json
+9 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/body-parser/package.json
+10 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/busboy-body-parser/package.json
+11 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/composable-middleware/package.json
+12 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/compression/package.json
+13 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/connect-livereload/package.json
+14 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/connect-mongo/package.json
+15 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/cookie-parser/package.json
+16 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/crypto/package.json
+17 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/dotenv/package.json
+18 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/ejs/package.json
+19 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/errorhandler/package.json
+20 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/express/package.json
+21 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/express-jwt/package.json
+22 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/express-session/package.json
+23 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/googleapis/package.json
+24 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/gridfs-stream/package.json
+25 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt/package.json
+26 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-angular-templates/package.json
+27 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-asset-injector/package.json
+28 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-autoprefixer/package.json
+29 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-build-control/package.json
+30 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-concurrent/package.json
+31 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-clean/package.json
+32 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-concat/package.json
+33 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-copy/package.json
+34 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-cssmin/package.json
+35 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-htmlmin/package.json
+36 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-imagemin/package.json
+37 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-jshint/package.json
+38 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-sass/package.json
+39 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-uglify/package.json
+40 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-contrib-watch/package.json
+41 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-dom-munger/package.json
+42 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-env/package.json
+43 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-express-server/package.json
+44 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-google-cdn/package.json
+45 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-karma/package.json
+46 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-mocha-test/package.json
+47 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-newer/package.json
+48 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-ng-annotate/package.json
+49 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-node-inspector/package.json
+50 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-nodemon/package.json
+51 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-open/package.json
+52 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-protractor-runner/package.json
+53 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-rev/package.json
+54 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-svgmin/package.json
+55 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-usemin/package.json
+56 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/grunt-wiredep/package.json
+57 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/jit-grunt/package.json
+58 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/jshint-stylish/package.json
+59 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/jsonwebtoken/package.json
+60 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma/package.json
+61 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-chrome-launcher/package.json
+62 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-coffee-preprocessor/package.json
+63 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-firefox-launcher/package.json
+64 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-html2js-preprocessor/package.json
+65 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-jade-preprocessor/package.json
+66 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-jasmine/package.json
+67 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-ng-html2js-preprocessor/package.json
+68 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-ng-jade2js-preprocessor/package.json
+69 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-ng-scenario/package.json
+70 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-phantomjs-launcher/package.json
+71 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-requirejs/package.json
+72 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/karma-script-launcher/package.json
+73 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/lodash/package.json
+74 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/material-date-picker/package.json
+75 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/material-design-icons/package.json
+76 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/method-override/package.json
+77 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/mime/package.json
+78 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/moment/package.json
+79 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/mongoose/package.json
+80 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/mongoose-autopopulate/package.json
+81 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/mongoose-deep-populate/package.json
+82 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/mongoose-paginate/package.json
+83 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/morgan/package.json
+84 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/multiparty/package.json
+85 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/ng-facebook/package.json
+86 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/node-gcm/package.json
+87 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/node-uuid/package.json
+88 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/nodemailer/package.json
+89 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/nodemailer-dkim/package.json
+90 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/open/package.json
+91 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/passport/package.json
+92 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/passport-facebook/package.json
+93 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/passport-google-oauth/package.json
+94 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/passport-local/package.json
+95 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/path/package.json
+96 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/pdfkit/package.json
+97 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/request/package.json
+98 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/requirejs/package.json
+99 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/serve-favicon/package.json
+100 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/should/package.json
+101 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/smtpapi/package.json
+102 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/socket.io/package.json
+103 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/socket.io-client/package.json
+104 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/socketio-jwt/package.json
+105 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/supertest/package.json
+106 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/time-grunt/package.json
+107 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/underscore/package.json
+108 verbose installManyTop reading scoped package data from /home/han/erp-2016/node_modules/url/package.json
+109 info package.json async-foreach@0.1.3 No license field.
+110 info package.json composable-middleware@0.3.0 No license field.
+111 info package.json connect-livereload@0.4.1 No license field.
+112 info package.json cookie-parser@1.0.1 No license field.
+113 info package.json bcrypt-nodejs@0.0.3 No license field.
+114 info package.json ejs@0.8.8 No license field.
+115 info package.json express-jwt@3.0.1 No license field.
+116 info package.json connect-mongo@0.4.2 No license field.
+117 info package.json gridfs-stream@1.1.1 No license field.
+118 info package.json grunt@0.4.5 No license field.
+119 info package.json crypto@0.0.3 crypto is also the name of a node core module.
+120 info package.json crypto@0.0.3 No license field.
+121 info package.json grunt-angular-templates@0.5.7 No license field.
+122 info package.json grunt-asset-injector@0.1.0 No license field.
+123 info package.json grunt-build-control@0.1.3 No license field.
+124 info package.json grunt-concurrent@0.5.0 No license field.
+125 info package.json grunt-contrib-clean@0.5.0 No license field.
+126 info package.json grunt-contrib-concat@0.4.0 No license field.
+127 info package.json grunt-contrib-copy@0.5.0 No license field.
+128 info package.json grunt-contrib-cssmin@0.9.0 No license field.
+129 info package.json grunt-contrib-sass@0.7.4 No license field.
+130 info package.json grunt-contrib-htmlmin@0.2.0 No license field.
+131 info package.json grunt-contrib-imagemin@0.7.2 No license field.
+132 info package.json grunt-contrib-jshint@0.10.0 No license field.
+133 info package.json grunt-contrib-uglify@0.4.1 No license field.
+134 info package.json grunt-contrib-watch@0.6.1 No license field.
+135 info package.json grunt-dom-munger@3.4.0 No license field.
+136 info package.json grunt-env@0.4.4 No license field.
+137 info package.json grunt-express-server@0.4.19 No license field.
+138 info package.json grunt-google-cdn@0.4.3 license should be a valid SPDX license expression
+139 info package.json grunt-mocha-test@0.10.2 No license field.
+140 info package.json grunt-newer@0.7.0 No license field.
+141 info package.json grunt-ng-annotate@0.2.3 No license field.
+142 info package.json grunt-open@0.2.3 No license field.
+143 info package.json grunt-protractor-runner@1.2.1 No license field.
+144 info package.json grunt-rev@0.1.0 No license field.
+145 info package.json grunt-svgmin@0.4.0 No license field.
+146 info package.json grunt-usemin@2.1.1 license should be a valid SPDX license expression
+147 info package.json grunt-wiredep@1.8.0 No license field.
+148 info package.json mime@1.3.4 No license field.
+149 info package.json mongoose-autopopulate@0.2.0 license should be a valid SPDX license expression
+150 info package.json mongoose-paginate@3.1.3 No license field.
+151 info package.json node-gcm@0.9.15 No license field.
+152 info package.json node-uuid@1.4.3 No license field.
+153 info package.json passport-facebook@2.0.0 No license field.
+154 info package.json passport-google-oauth@0.2.0 No license field.
+155 info package.json passport-local@0.1.6 No license field.
+156 info package.json ng-facebook@0.1.6 license should be a valid SPDX license expression
+157 info package.json path@0.11.14 path is also the name of a node core module.
+158 info package.json socket.io@1.3.6 No license field.
+159 info package.json requirejs@2.1.19 No license field.
+160 info package.json should@3.3.2 No license field.
+161 info package.json smtpapi@1.1.0 license should be a valid SPDX license expression
+162 info package.json pdfkit@0.7.1 No license field.
+163 info package.json url@0.10.3 url is also the name of a node core module.
+164 verbose readDependencies loading dependencies from /home/han/erp-2016/package.json
+165 silly cache add args [ 'angular-date-picker-polyfill', null ]
+166 verbose cache add spec angular-date-picker-polyfill
+167 silly cache add parsed spec { raw: 'angular-date-picker-polyfill',
+167 silly cache add   scope: null,
+167 silly cache add   name: 'angular-date-picker-polyfill',
+167 silly cache add   rawSpec: '',
+167 silly cache add   spec: '*',
+167 silly cache add   type: 'range' }
+168 silly addNamed angular-date-picker-polyfill@*
+169 verbose addNamed "*" is a valid semver range for angular-date-picker-polyfill
+170 silly addNameRange { name: 'angular-date-picker-polyfill',
+170 silly addNameRange   range: '*',
+170 silly addNameRange   hasData: false }
+171 silly mapToRegistry name angular-date-picker-polyfill
+172 silly mapToRegistry using default registry
+173 silly mapToRegistry registry https://registry.npmjs.org/
+174 silly mapToRegistry uri https://registry.npmjs.org/angular-date-picker-polyfill
+175 verbose addNameRange registry:https://registry.npmjs.org/angular-date-picker-polyfill not in flight; fetching
+176 verbose request uri https://registry.npmjs.org/angular-date-picker-polyfill
+177 verbose request no auth needed
+178 info attempt registry request try #1 at 14:24:33
+179 verbose request id 94fde660c29cec61
+180 http request GET https://registry.npmjs.org/angular-date-picker-polyfill
+181 http 404 https://registry.npmjs.org/angular-date-picker-polyfill
+182 verbose headers { 'content-type': 'application/json',
+182 verbose headers   'cache-control': 'max-age=0',
+182 verbose headers   'content-length': '2',
+182 verbose headers   'accept-ranges': 'bytes',
+182 verbose headers   date: 'Sat, 12 Sep 2015 08:54:35 GMT',
+182 verbose headers   via: '1.1 varnish',
+182 verbose headers   age: '0',
+182 verbose headers   connection: 'keep-alive',
+182 verbose headers   'x-served-by': 'cache-sin6921-SIN',
+182 verbose headers   'x-cache': 'MISS',
+182 verbose headers   'x-cache-hits': '0',
+182 verbose headers   'x-timer': 'S1442048074.132172,VS0,VE977' }
+183 silly get cb [ 404,
+183 silly get   { 'content-type': 'application/json',
+183 silly get     'cache-control': 'max-age=0',
+183 silly get     'content-length': '2',
+183 silly get     'accept-ranges': 'bytes',
+183 silly get     date: 'Sat, 12 Sep 2015 08:54:35 GMT',
+183 silly get     via: '1.1 varnish',
+183 silly get     age: '0',
+183 silly get     connection: 'keep-alive',
+183 silly get     'x-served-by': 'cache-sin6921-SIN',
+183 silly get     'x-cache': 'MISS',
+183 silly get     'x-cache-hits': '0',
+183 silly get     'x-timer': 'S1442048074.132172,VS0,VE977' } ]
+184 verbose stack Error: Registry returned 404 for GET on https://registry.npmjs.org/angular-date-picker-polyfill
+184 verbose stack     at CachingRegistryClient.<anonymous> (/home/han/.nvm/v0.10.35/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:239:14)
+184 verbose stack     at Request._callback (/home/han/.nvm/v0.10.35/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+184 verbose stack     at Request.self.callback (/home/han/.nvm/v0.10.35/lib/node_modules/npm/node_modules/request/request.js:197:22)
+184 verbose stack     at Request.emit (events.js:98:17)
+184 verbose stack     at Request.<anonymous> (/home/han/.nvm/v0.10.35/lib/node_modules/npm/node_modules/request/request.js:1050:14)
+184 verbose stack     at Request.emit (events.js:117:20)
+184 verbose stack     at IncomingMessage.<anonymous> (/home/han/.nvm/v0.10.35/lib/node_modules/npm/node_modules/request/request.js:996:12)
+184 verbose stack     at IncomingMessage.emit (events.js:117:20)
+184 verbose stack     at _stream_readable.js:944:16
+184 verbose stack     at process._tickCallback (node.js:442:13)
+185 verbose statusCode 404
+186 verbose pkgid angular-date-picker-polyfill
+187 verbose cwd /home/han/erp-2016
+188 error Linux 3.19.0-25-generic
+189 error argv "node" "/home/han/.nvm/v0.10.35/bin/npm" "install" "angular-date-picker-polyfill" "--save"
+190 error node v0.10.35
+191 error npm  v2.13.0
+192 error code E404
+193 error 404 Registry returned 404 for GET on https://registry.npmjs.org/angular-date-picker-polyfill
+193 error 404
+193 error 404 'angular-date-picker-polyfill' is not in the npm registry.
+193 error 404 You should bug the author to publish it (or use the name yourself!)
+193 error 404 It was specified as a dependency of 'erp2015'
+193 error 404
+193 error 404 Note that you can also install from a
+193 error 404 tarball, folder, http url, or git url.
+194 verbose exit [ 1, true ]

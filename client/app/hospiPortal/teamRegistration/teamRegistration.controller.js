@@ -4,6 +4,7 @@ angular.module('erp2015App')
   .controller('TeamRegistrationCtrl', function ($scope,$state,$mdDialog,$mdDatePicker) {
     $scope.message = 'Hello';
     $scope.team={};
+    $scope.team.acc='Select Accomodation Status';
     $scope.click=function(value){
     	$state.go(value);
     }
@@ -18,17 +19,12 @@ angular.module('erp2015App')
 
 
     }
-    $scope.acc="Select Accomodation Status";
+    
     $scope.accs=['Accomodation Not Required', 'Accomodation Requested','Request Confirmed','Rejected','Wait Listed','Added To Hospi Portal'];
-    $scope.func=function(value){
-    	$scope.acc=value;
-    };
+    
 
-    $scope.myDate=new Date();
-    $scope.showPicker = function(ev) {
-	$mdDatePicker(ev, $scope.currentDate).then(function(selectedDate) {
-	$scope.team.dateOfArrival = selectedDate;
-      });;
-    } 
+    $scope.minDate=new Date(2016,0,6);
+    $scope.maxDate=new Date(2016,0,11);
+    
 
   });
