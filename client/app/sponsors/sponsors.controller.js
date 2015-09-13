@@ -3,7 +3,10 @@
 angular.module('erp2015App')
   .controller('SponsorsCtrl',function (Upload,$scope,$http) {
     $scope.file=null
+    $scope.priority=10
+    $scope.row_layout=1
     $scope.submit = function(){
+      $scope.submitted = true;
       if($scope.file && $scope.form.file.$valid && !$scope.file.$error){
         $scope.upload($scope.file,function(err,data){
           console.log(data)
