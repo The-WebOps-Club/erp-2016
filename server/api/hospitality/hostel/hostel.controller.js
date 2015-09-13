@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Hostel = require('./hostel.model');
 var Room = require('../room/room.model');
 var Checkin = require('../checkin/checkin.model');
-var User = require('../../user/user.model');
+var Visitor = require('../../visitor/visitor.model');
 var _u = require('underscore');
 
 // Get list of hostels
@@ -25,26 +25,26 @@ exports.indexRoomAvailability = function(req, res) {
     }, dateCheckout : {
       $exists : false
     }}, function(err, checkins) {
-      var checkinsIndexUserId = _u.groupBy(checkins, function(checkin) {
-        return checkin.user.toString();
+      var checkinsIndexVisitorId = _u.groupBy(checkins, function(checkin) {
+        return checkin.visitor.toString();
       });
-      var user_ids = _u.pluck(checkins, 'user');
+      var visitor_ids = _u.pluck(checkins, 'visitor');
 
-      User.find({ _id : {
-        $in : user_ids
-      }}, function(err, _users) {
-        var usersIndexUserId = _u.groupBy(_users, function(_user) {
-          return _user._id.toString();
+      Visitor.find({ _id : {
+        $in : visitor_ids
+      }}, function(err, _visitors) {
+        var visitorsIndexVisitorId = _u.groupBy(_visitors, function(_visitor) {
+          return _visitor._id.toString();
         });
-        var usersIndexRoomId = _u.groupBy(_users, function(_user) {
-          return checkinsIndexUserId[_user._id.toString()][0].room.toString();
+        var visitorsIndexRoomId = _u.groupBy(_visitors, function(_visitor) {
+          return checkinsIndexVisitorId[_visitor._id.toString()][0].room.toString();
         });
         Room.find({ _id : {
           $in : hostel.rooms
         }}, function(err, rooms) {
           for(var i=0; i<rooms.length; i++) {
             rooms[i] = rooms[i].toJSON();
-            rooms[i].occupants = usersIndexRoomId[rooms[i]._id.toString()] || [];
+            rooms[i].occupants = visitorsIndexRoomId[rooms[i]._id.toString()] || [];
           }
           hostel = hostel.toJSON();
           hostel.rooms = rooms;

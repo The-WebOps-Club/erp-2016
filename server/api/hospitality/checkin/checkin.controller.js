@@ -22,32 +22,29 @@ exports.show = function(req, res) {
 
 // Creates a new checkin in the DB.
 exports.create = function(req, res) {
-
-  Checkin.find({user : req.body.user}, function (err, checkin) {
-      if (err){
-        return handleError(res,err);
-      }
-      console.log(checkin.length);
-      console.log((checkin===null));
-      if (checkin.length){
-        
-       return res.status(201).json({'done': 'already'});
-      }
-      else{
-        Checkin.create(req.body, function(err, checkin) {
+  Checkin.find({visitor : req.body.visitor}, function (err, checkin) {
+    if (err) {
+      return handleError(res,err);
+    }
+    console.log(checkin.length);
+    console.log((checkin===null));
+    if (checkin.length) {
+     return res.status(201).json({'done': 'already'});
+   }
+   Hostel.findById(req.body.hostel, function(err, hostel) {
+    if(hostel.gender != visitor.gender) {
+      return res.status(201).send('Not permitted');
+    }
+    else {
+      Checkin.create(req.body, function(err, checkin) {
         if(err) { return handleError(res, err); }
         console.log('creating checkin');
         return res.status(201).json(checkin);
-        });
-
-      }
-
-     
-    }).populate('user room');
-  
+      }).populate('visitor room');
+    }    
+  }); 
+ });
 };
-
-
 
 // Updates an existing checkin in the DB.
 exports.update = function(req, res) {

@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 var autopopulate= require('mongoose-autopopulate');
 
 var CheckinSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  visitor: { type: Schema.Types.ObjectId, ref: 'Visitor' },
   room: { type: Schema.Types.ObjectId, ref: 'Room' },
   status: String,
   dateCheckIn: {
@@ -18,6 +18,3 @@ var CheckinSchema = new Schema({
 });
 CheckinSchema.plugin(autopopulate);
 module.exports = mongoose.model('Checkin', CheckinSchema);
-
-
-

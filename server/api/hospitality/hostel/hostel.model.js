@@ -6,11 +6,9 @@ var mongoose = require('mongoose'),
 
 var HostelSchema = new Schema({
   name: String,
-  info: String,
-
- 
-  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }]
-
+  info: String, 
+  rooms: [{ type: Schema.Types.ObjectId, ref: 'Room' }],
+  gender: String
 });
 HostelSchema.plugin(autopopulate);
 

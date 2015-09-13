@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Room = require('./room.model');
 var Hostel = require('../hostel/hostel.model');
 var Checkin = require('../checkin/checkin.model');
-var User = require('../../user/user.model');
+var Visitor = require('../../visitor/visitor.model');
 var _u = require('underscore');
 
 // Get list of rooms
@@ -17,31 +17,30 @@ exports.index = function(req, res) {
 
 // Get list of details about all rooms
 exports.indexRoomAvailibility = function(req, res) {
-
   Room.find(function(err, rooms) {
     Checkin.find({ room : {
       $in : rooms
     }, dateCheckout : {
       $exists : false
     }}, function(err, checkins) {
-      var checkinsIndexUserId = _u.groupBy(checkins, function(checkin) {
-        return checkin.user.toString();
+      var checkinsIndexVisitorId = _u.groupBy(checkins, function(checkin) {
+        return checkin.visitor.toString();
       });
-      var user_ids = _u.pluck(checkins, 'user');
+      var visitor_ids = _u.pluck(checkins, 'visitor');
 
-      User.find({ _id : {
-        $in : user_ids
-      }}, function(err, _users) {
-        var usersIndexUserId = _u.groupBy(_users, function(_user) {
-          return _user._id.toString();
+      Visitor.find({ _id : {
+        $in : visitor_ids
+      }}, function(err, _visitors) {
+        var visitorsIndexVisitorId = _u.groupBy(_visitors, function(_visitor) {
+          return _visitor._id.toString();
         });
-        var usersIndexRoomId = _u.groupBy(_users, function(_user) {
-          return checkinsIndexUserId[_user._id.toString()][0].room.toString();
+        var visitorsIndexRoomId = _u.groupBy(_visitors, function(_visitor) {
+          return checkinsIndexVisitorId[_visitor._id.toString()][0].room.toString();
         });
 
         for(var i=0; i<rooms.length; i++) {
           rooms[i] = rooms[i].toJSON();
-          rooms[i].occupants = usersIndexRoomId[rooms[i]._id.toString()] || [];
+          rooms[i].occupants = visitorsIndexRoomId[rooms[i]._id.toString()] || [];
         }
         return res.status(200).json(rooms);
       });
@@ -59,11 +58,11 @@ exports.show = function(req, res) {
 };
 
 // Creates a new room in the DB.
-exports.create = function(req, res) {
-
-    
+exports.create = function(req, res) { 
   Hostel.findById(req.body.hostel,function(err,hostel){
-    if (err) { return res.handleError(err,res);}
+    if (err) { 
+      return res.handleError(err,res);
+    }
     if(!hostel){
       return res.send('Hostel Not Found');
     }
@@ -75,22 +74,9 @@ exports.create = function(req, res) {
           if (err) { return handleError(res, err); }
           return res.status(200).json(room);
         });
-
-      })
-     
+      });
     }
-  })
-
-
-
-
-
-
-
-
-
-
-  
+  });
 };
 
 // Updates an existing room in the DB.
