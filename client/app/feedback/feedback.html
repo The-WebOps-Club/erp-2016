@@ -1,0 +1,57 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+
+  <div class="feedback" flex flex-order="1">
+    <div class="md-whiteframe-z1">
+      <md-toolbar class="md-primary">
+        <h1 class="md-toolbar-tools">
+          Please Submit Your Feedback:
+        </h1>
+      </md-toolbar>
+
+      <md-content layout-padding>
+        <form name="newFeedbackForm" ng-submit="newFeedback(newFeedbackForm)" novalidate>
+        
+        <!-- <md-chips ng-model="events" md-autocomplete-snap md-require-match> -->
+            <md-autocomplete
+              md-selected-item="selectedItemEvent"
+              md-search-text="searchTextEvent"
+              md-items="event in events"
+              md-item-text="event.name"
+              placeholder="Enter Event Name"
+              md-autofocus
+              md-search-text-change=null
+              md-selected-item-change=null
+              >
+                <span md-highlight-text="searchTextEvent">{{ event.name }}</span>
+            </md-autocomplete>
+        <!-- </md-chips> -->
+          <br>
+
+            <md-autocomplete
+              md-selected-item="selectedItemUser"
+              md-search-text="searchText"
+              md-items="item in users"
+              md-item-text="item.name"
+              placeholder="Enter Your Name">
+                <span md-highlight-text="searchText">{{ item.name }}</span>
+            </md-autocomplete>
+          <br>
+
+          <md-input-container>
+            <label>Feedback, Comments and Suggestions:</label>
+            <textarea required name="feedback" ng-model="feedback.feedback" mongoose-error></textarea>
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="form.info.$error.required && submitted">
+              Feedback is required.
+            </span>
+            <span>{{ errors.other }}</sapn>
+          </div>
+          <md-button type="submit" class="md-raised md-primary">Create</md-button>
+        </form>
+      </md-content>  
+    </div>
+  </div>
+</div>
