@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/milan/milan.socket').register(socket);
 
   require('../api/sponsor/sponsor.socket').register(socket);
   require('../api/financePortal/financePortal.socket').register(socket);
