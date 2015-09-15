@@ -1,0 +1,7 @@
+This is the sponsors view
+<div ng-repeat="sponsor in all_sponsors">
+	Title : {{sponsor.title}}
+	Sponsor Link : {{sponsor.sponsor_link}}
+	Priority : {{sponsor.priority}}
+	row_layout : {{sponsor.row_layout}}
+	logo : <img src='{{img_uri(sponsor.logo)}}'>

@@ -9,6 +9,7 @@ var async = require('async');
 var crypto = require('crypto');
 var mailer = require('../../components/mailer');
 var Grid = require('gridfs-stream');
+var forEach = require('async-foreach').forEach;
 var mime = require('mime');
 var mongoose = require('mongoose');
 Grid.mongo = mongoose.mongo;
@@ -70,6 +71,26 @@ exports.create = function (req, res, next) {
   });
 };
 
+
+exports.makeWalls = function (req, res) {
+  User.find({}, '-salt -hashedPassword -deviceId -createdOn', function (err, users) {
+    if(err) return res.json(500, err);
+    forEach(users, function(user, index, arr) {
+      var done = this.async();
+      var newWall = new Wall({ name: user.name, parentId: user._id});
+      newWall.save(function (err, wall) {
+        if (err) { console.log(err); return validationError(res, err); }
+        user.wall = wall._id;
+        user.save(function (err, user) {
+          if (err) { console.log(err); return validationError(res, err); }
+        });
+      });
+      done();
+    }, function allDone (notAborted, arr) {
+      res.status(200).json("{message: Successful}");
+    });
+  })
+}
 /**
  * Get a single user
  */

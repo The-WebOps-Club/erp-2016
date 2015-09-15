@@ -145,9 +145,7 @@ exports.bulkCreate = function(data, callback) {
   forEach(data.members, function(member, index, arr) {
     var done = this.async();
     if (data.action=='post'){
-
       if((data.post.createdBy._id.toString() === member._id.toString())){
-
         done();
       }
       else {
@@ -166,23 +164,42 @@ exports.bulkCreate = function(data, callback) {
       }
     }
     else{
-
       if((data.post.comments.reverse()[0].createdBy._id.toString() === member._id.toString())){
-
         done();
       }
       else {
-        Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id, updatedOn: Date.now()} , function (err, notification) {
-         if(err) { return handleError(res, err); }
-         Notification.findById(notification._id)
-         .deepPopulate('user post.wall postedBy.name commentedBy.name')
-         .exec( function (err, notification) {
-           if(notification.user.deviceId){
-            deviceIds = deviceIds.concat(notification.user.deviceId);
+        Notification.find({post: data.post._id, user: member._id, action: data.action}, function (err, notification) {
+          if (notification.length != 0){
+            notification = notification[0]
+            notification.commentedBy.push(data.post.comments.reverse()[0].createdBy._id);
+            notification.updatedOn = Date.now();
+            notification.save(function (err, notification) {
+              if (err) { console.log(err); return validationError(res, err); }
+            });
+            Notification.findById(notification._id)
+              .deepPopulate('user post.wall postedBy.name commentedBy.name')
+              .exec( function (err, notification) {
+                if(notification.user.deviceId){
+                  deviceIds = deviceIds.concat(notification.user.deviceId);
+                }
+                emails.push(notification.user.email);
+                done();
+              });
           }
-          emails.push(notification.user.email);
-          done();
-        });
+          else{
+            Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id, updatedOn: Date.now()} , function (err, notification) {
+             if(err) { return handleError(res, err); }
+             Notification.findById(notification._id)
+             .deepPopulate('user post.wall postedBy.name commentedBy.name')
+             .exec( function (err, notification) {
+               if(notification.user.deviceId){
+                deviceIds = deviceIds.concat(notification.user.deviceId);
+              }
+              emails.push(notification.user.email);
+              done();
+            });
+          });
+        }
        });
       }
     }

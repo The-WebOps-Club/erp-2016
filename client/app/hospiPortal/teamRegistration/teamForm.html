@@ -9,26 +9,93 @@
 		</md-toolbar>
 		<md-divider></md-divider>
 		<form name="teamForm">
+			<md-autocomplete
+		         md-selected-item="selectedItem"
+		         md-search-text-change="searchTextChange(searchText)"
+		         md-search-text="searchText"
+		         md-selected-item-change="selectedItemChange(item)"
+		         md-items="item in querySearch(searchText)"
+		         md-item-text="item"
+		         md-min-length="4"
+		         placeholder="Team Leader's ID">
+			       <md-item-template>
+			         <span md-highlight-text="searchText" md-highlight-flags="^i">{{item}}</span>
+			       </md-item-template>
+			       <md-not-found>
+			         No matches found for "{{searchText}}".
+			       </md-not-found>
+			 </md-autocomplete>			
+
+
 			<md-input-container >
 		          <label>Name</label>
-		          <input ng-model="team.name" >
+		          <input ng-model="team.name" required>
 		    </md-input-container>
 			
-			<md-input-container >		
+			<md-input-container style="width:400px">		
 				 <label>Select Accomodation Status</label>
-				 <md-select ng-model="team.acc" >			    	
+				 <md-select ng-model="team.acc" required>			    	
 			   		<md-option ng-value="acc"  ng-repeat="acc in accs" >{{acc}}</md-option>
 			   	</md-select>	   
-			</md-input-container >			
+			</md-input-container>			
 			<md-input-container >
 		          <label>City</label>
-		          <input ng-model="team.city" >
+		          <input ng-model="team.city" required>
 		    </md-input-container>
-		     
-		    <md-datepicker ng-model="team.dateOfArrival" placeholder="Enter date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>		   
-		    <p style="color:#B4B4A9 ;font-weight:bold">Date Of Arrival </p>
-		    <md-datepicker ng-model="team.dateOfDeparture" placeholder="Enter date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
-		    <p style="color:#B4B4A9 ;font-weight:bold">Date Of Departure </p>
+		    
+		    
+		    <div layout="row">
+		        <div flex=30>
+		        <p style="color:#B4B4A9 ;font-weight:bold">Date  and Time Of Arrival </p>
+		        <md-datepicker ng-model="team.dateOfArrival" placeholder="Enter date" md-min-date="minDate" md-max-date="maxDate"></md-datepicker>		   
+		    	
+		    	</div>
+		    	<div flex=15 offset=5>
+					<md-input-container>
+						<label>Hours</label>
+						<md-select ng-model="team.timeOfArrivalHour" >			    	
+						   		<md-option ng-value="hour"  ng-repeat="hour in hours" >{{hour}}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>
+				<div flex=15  offset=5>
+		    	    <md-input-container >
+		    	    	<label>minutes</label>
+					    <md-select ng-model="team.timeOfArrivalMin" >			    	
+						   		<md-option ng-value="min"  ng-repeat="min in mins" >{{min}}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>	
+
+			</div>
+			
+			   <div layout="row">
+			    <div flex=30>
+				    <p style="color:#B4B4A9 ;font-weight:bold">Date and Time Of Departure </p>
+				    <md-datepicker ng-model="team.dateOfDeparture" placeholder="Enter date"  md-min-date="minDate" md-max-date="maxDate"></md-datepicker>
+				   
+				</div>
+		    	<div flex=15 offset=5>
+					 
+					<md-input-container>
+						<label>Hours</label>
+						<md-select ng-model="team.timeOfDepartureHour" >			    	
+						   		<md-option ng-value="hour"  ng-repeat="hour in hours" >{{hour}}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>
+				<div flex=15  offset=5>
+		    	    <md-input-container >
+		    	    	<label>minutes</label>
+					    <md-select ng-model="team.timeOfDepartureMin" >			    	
+						   		<md-option ng-value="min"  ng-repeat="min in mins" >{{min}}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>	
+
+			</div>
+			
+
 		</form>
 	</md-content>
 </md-dialog>

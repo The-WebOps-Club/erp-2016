@@ -1,0 +1,75 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="jumbotron col-sm-offset-3 col-sm-6">
+  <div class="row">
+    <div class="col-sm-offset-2 col-sm-8">
+      <h2 class="text-center">Add Sponsor</h2>
+    </div>
+    <div class="col-sm-offset-2 col-sm-8">
+      <form class="form" name="form" ng-submit="submit()" >
+
+        <div class="form-group" ng-class="{ 'has-success': form.title.$valid && submitted,
+                                            'has-error': form.title.$invalid && submitted }">
+          <label>Title</label>
+
+          <input type="text" name="title" class="form-control" ng-model="title"
+                 required/>
+          <span class="help-block" ng-show="form.title.$error.required && submitted">
+            A title is required
+          </span>
+        </div>
+				<div class="form-group" ng-class="{ 'has-success': form.sponsor_link.$valid && submitted,
+                                            'has-error': form.sponsor_link.$invalid && submitted }">
+          <label>Sponsor Link</label>
+
+          <input type="text" name="sponsor_link" class="form-control" ng-model="sponsor_link"
+                 required/>
+          <span class="help-block" ng-show="form.sponsor_link.$error.required && submitted">
+            A sponsor link is required
+          </span>
+        </div>
+				<div class="form-group" ng-class="{ 'has-success': form.priority.$valid && submitted,
+                                            'has-error': form.priority.$invalid && submitted }">
+          <label>Priority</label>
+
+          <input type="number" name="priority" class="form-control" ng-model="priority"/>
+        </div>
+				<div class="form-group" ng-class="{ 'has-success': form.row_layout.$valid && submitted,
+                                            'has-error': form.row_layout.$invalid && submitted }">
+          <label>Row Layout</label>
+
+          <input type="number" name="row_layout" class="form-control" ng-model="row_layout"/>
+        </div>
+				<div class="form-group" ng-class="{ 'has-success': form.file.$valid && submitted,
+                                            'has-error': form.file.$invalid && submitted }">
+          <label>Logo</label>
+
+          <input type="file" name="file" ngf-select ngf-pattern = '.jp*g' accept='image/jp*g' class="form-control" ng-model="file"
+                 required/>
+          <span class="help-block" ng-show="form.file.$error.required && submitted">
+            A logo is required
+          </span>
+					<span class="help-block" ng-show="form.file.$error.pattern && submitted">
+            The logo must be *.jpg or *.jpeg
+          </span>
+        </div>
+        <div>
+          <button class="btn btn-primary btn-login" type="submit">
+            Add
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
+<div class="col-sm-offset-2 col-sm-8">
+	<form class ='form' name='form'>
+		Title : <input type='text' name='title' ng-model='title'/>
+		Sponsor Linke : <input type='text' name='sponsor_link' ng-model='sponsor_link'/>
+		Priority : <input type='number' name='priority' ng-model='priority'/>
+		Row Layout : <input type='number' name='row_layout' ng-model='row_layout'/>
+		Logo : <input type='file' name='file' ngf-select ng-model='file' ngf-pattern = '.jp*g' accept='image/jp*g'/>
+		<button type='submit' ng-click='submit();'>Upload</button>
+	</form>
+</div>

@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Group = require('./group.model');
 var Wall = require('../wall/wall.model');
+var forEach = require('async-foreach').forEach;
 
 // Get list of groups
 exports.index = function(req, res) {
@@ -23,6 +24,25 @@ exports.show = function(req, res) {
   .populate('cores coords superCoords qms');
 };
 
+exports.makeWalls = function (req, res) {
+  Group.find({}, function (err, groups) {
+    if(err) return res.json(500, err);
+    forEach(groups, function(group, index, arr) {
+      var done = this.async();
+      var newWall = new Wall({ name: group.name, parentId: group._id});
+      newWall.save(function (err, wall) {
+        if (err) { console.log(err); return validationError(res, err); }
+        group.wall = wall._id;
+        group.save(function (err, user) {
+          if (err) { console.log(err); return validationError(res, err); }
+        });
+      });
+      done();
+    }, function allDone (notAborted, arr) {
+      res.status(200).json("{message: Successful}");
+    });
+  })
+}
 // Creates a new group in the DB.
 exports.create = function(req, res) {
   var newGroup = new Group(req.body);

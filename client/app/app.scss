@@ -32,8 +32,6 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 	width: 350px;
 	z-index: 1;
 	display: none; // Enable this after jquery implementation 
-
-
 }
 
 
@@ -99,6 +97,10 @@ a:hover
 	color:black;
 }
 
+.md-contact-suggestion img{
+	vertical-align: text-bottom;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'account/account.scss';
@@ -120,6 +122,7 @@ a:hover
 @import 'main/main.scss';
 @import 'mom/mom.scss';
 @import 'newsfeed/newsfeed.scss';
+@import 'sponsors/sponsors.scss';
 @import 'tasks/tasks.scss';
 @import 'wall/department/department.scss';
 @import 'wall/group/group.scss';

@@ -18,9 +18,13 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+
   require('../api/team/team.socket').register(socket);
   require('../api/financePortal/financePortal.socket').register(socket);
 
+
+  require('../api/sponsor/sponsor.socket').register(socket);
+  require('../api/financePortal/financePortal.socket').register(socket);
   require('../api/mom/mom.socket').register(socket);
   require('../api/drive/drive.socket').register(socket);
   require('../api/group/group.socket').register(socket);

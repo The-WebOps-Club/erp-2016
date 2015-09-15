@@ -83,6 +83,9 @@ angular.module('erp2015App')
     $scope.querySearch = function (input){
         $scope.names = $filter('filter')($scope.contacts,{name:input}); 
         $scope.inputName=input;
+        for (var i = 0; i < $scope.names.length; i++){
+            $scope.names[i].profilePic = "/api/users/" + $scope.names[i]._id + "/profilePic";
+        }
         return $scope.names;
    }
      

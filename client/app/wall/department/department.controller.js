@@ -2,7 +2,6 @@
 
 angular.module('erp2015App')
   .controller('DepartmentCtrl', function ($scope,$filter, $http, $stateParams, $state, socket, Auth, postComment, department, users) {
-    // console.log(user);
     $scope.editMode = false;
     $scope.newPost = {
         title: "",
@@ -10,16 +9,6 @@ angular.module('erp2015App')
     };
     $scope.posts = [];
     $scope.department = department.data;
-    // $scope.user={
-    //         name:"name",
-    //         image: "url_for_image",
-    //         date_of_birth: "00/00/0000",
-    //         email:"email",
-    //         college:"college",
-    //         rollNumber:"AA11A111",
-    //         room_no:"room no",
-    //         hostel:"Ganga",
-    //     }
     $scope.count=0;
     console.log(users.data);
     $scope.load=function(){
@@ -30,12 +19,8 @@ angular.module('erp2015App')
                 socket.syncUpdates('post', $scope.posts);
             })
             .error(function(err) {
-                /*
-                Do some error handling here
-                 */
                 console.log(err);
             });
-    
     }
 
     $scope.edit = function()
@@ -74,15 +59,17 @@ angular.module('erp2015App')
     
     var self = this;
     self.querySearch = $scope.querySearch;
-    // self.allContacts = users.data;
+    self.profilePicConsstructor = $scope.profilePicConsstructor;
     $scope.contacts = users.data;
-    // self.contacts = users.data;
     $scope.filterSelected = true;
     $scope.selectedContacts = [];
 
     $scope.querySearch = function (input){
-        $scope.names = $filter('filter')($scope.contacts,{name:input}); 
+        $scope.names = $filter('filter')($scope.contacts,{name:input});
         $scope.inputName=input;
+        for (var i = 0; i < $scope.names.length; i++){
+            $scope.names[i].profilePic = "/api/users/" + $scope.names[i]._id + "/profilePic";
+        }
         return $scope.names;
    }
      

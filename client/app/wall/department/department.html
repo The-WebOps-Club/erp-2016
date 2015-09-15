@@ -10,13 +10,12 @@
 					<!-- <div id="profile_pic">
 						<img ng-src="api/users/{{user._id}}/profilePic" alt="{{user.name}}" />
 					</div> -->
-					<div id="profile_title">
-						{{department.name}}   				
+					<div id="profile_title" flex>
+						{{department.name}}		
 	        		</div>
 	        		</div>
 	        		<!-- <hr> -->
 					<div id="tabs">
-
 						<md-tabs md-dynamic-height md-border-bottom flex="100">
 							<md-tab label="Wall">
 								<md-content>
@@ -120,7 +119,7 @@
                                  ng-model="selectedContacts"
                                  md-contacts="querySearch($query)"
                                  md-contact-name="name"  
-                                 md-contact-image="profilePic"                             
+                                 md-contact-image="profilePic"
                                  md-contact-email="email"
                                  md-require-match
                                  filter-selected="filterSelected"
