@@ -1,6 +1,9 @@
 'use strict';
 
-var User = require('./user.model');
+var _ = require('lodash');
+var WebsiteUsers = require('./websiteUsers.model');
+
+//copy from user.controller.js
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -8,6 +11,7 @@ var async = require('async');
 var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
+var Department = require('../department/department.model');
 var Team = require('../team/team.model');
 
 var EMAIL = ''; // Put your fest mail id here
@@ -40,36 +44,41 @@ function handleError(res, err) {
    id = "SHA16"+count.toString();
    return id;
  }
-exports.index = function (req, res) {
-  User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
+//end copy
+
+// Get list of website-users
+exports.index = function(req, res) {
+
+  WebsiteUsers.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
     if(err) return res.json(500, err);
     res.status(200).json(users);
-  })
-  .populate('department', 'name');
+  }).populate('interestedFields', 'eventsApplied', 'teams', 'selfTeam');
 };
 
-/**
- * Creates a new user
- */
-exports.create = function (req, res, next) {
-  console.log(req.body);
-  var newUser = new User(req.body);
-  newUser.role = 'user';
+// Get a single website-users
+exports.show = function(req, res) {
+  WebsiteUsers.findById(req.params.id, function (err, websiteUsers) {
+    if(err) { return handleError(res, err); }
+    if(!websiteUsers) { return res.status(404).send('Not Found'); }
+    return res.json(websiteUsers);
+  });
+};
+
+// Creates a new website-users in the DB.
+exports.create = function(req, res) {
+  var newUser = new WebsiteUsers(req.body);
   newUser.provider = 'local';
-  newUser.createdOn = Date.now();
-  newUser.updatedOn = Date.now();
-  newUser.roomNumber = "1234";
-  User.count({}, function(err, count) {
+  WebsiteUsers.count({}, function(err, count) {
     newUser.festID = festID(count+1);
   });
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*10 });
     
     var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
     newTeam.save(function (err, team) {
       if(err) { return handleError(res, err); }
-      User.findById(user._id, function (err, user) {
+      WebsiteUsers.findById(user._id, function (err, user) {
         if(err) return validationError(res, err);
         if(!user) return res.sendStatus(404);
         user.teams = [team._id];
@@ -82,30 +91,6 @@ exports.create = function (req, res, next) {
       return;
     });
     res.json({ token: token });
-  });
-};
-
-/**
- * Get a single user
- */
-exports.show = function (req, res, next) {
-  var userId = req.params.id;
-
-  User.findById(userId, function (err, user) {
-    if (err) return next(err);
-    if (!user) return res.sendStatus(401);
-    res.json(user.profile);
-  });
-};
-
-/**
- * Deletes a user
- * restriction: 'admin'
- */
-exports.destroy = function (req, res) {
-  User.findByIdAndRemove(req.params.id, function(err, user) {
-    if(err) return res.status(500).json(err);
-    return res.sendStatus(204);
   });
 };
 
@@ -134,33 +119,6 @@ exports.changePassword = function (req, res, next) {
 };
 
 /**
- * Updates a users profile details
- */
-exports.updateProfile = function (req, res, next) {
-  var userId = req.user._id;
-  var userUpdate = req.body.userUpdate;
-
-  // I'm no where using req.params.id here. Do a better algo
-  User.findById(userId, function (err, user) {
-    if(err) return validationError(res, err);
-    if(!user) return res.sendStatus(404);
-    user.name = userUpdate.name;
-    user.nick = userUpdate.nick;
-    user.profilePic = userUpdate.profilePic;
-    user.city = userUpdate.city;
-    user.summerLocation = userUpdate.summerLocation;
-    user.cgpa = userUpdate.cgpa;
-    user.phoneNumber = userUpdate.phoneNumber;
-    user.hostel = userUpdate.hostel;
-    user.updatedOn = Date.now();
-    user.save(function (err) {
-      if(err) return validationError(res, err);
-      res.sendStatus(200);
-    });
-  });
-};
-
-/**
  * Get my info
  */
 exports.me = function (req, res, next) {
@@ -171,80 +129,6 @@ exports.me = function (req, res, next) {
     if (err) return next(err);
     if (!user) return res.sendStatus(401);
     res.json(user);
-  });
-};
-
-/**
- * Add any user to any department as a coord
- * @param {req.body.department} : Department ID
- * @param {req.body.user} : User ID
- * @param {Function} : User and Department IDs are sent
- *                     in the body of the request.
- *                     Using that we see if user already exists in department
- *                     or if Department already exists in the user
- */
-exports.addDepartment = function (req, res, next) {
-  User.findById(req.body.user, function (err, user) {
-    Department.findById(req.body.department, function (err, department) {
-      if(err) {
-        return handleError(res, err);
-      }
-      if(!department) {
-        return res.sendStatus(404);
-      }
-      if (department[req.body.role].indexOf(user._id) == -1){
-        department[req.body.role].push(user._id);
-        department.save(function (err) {
-          if(err) { return handleError(res, err); }
-        });
-      }
-      if(user.department.indexOf(department._id) == -1){
-        user.department.push(req.body.department);
-        user.updatedOn = Date.now();
-        user.save(function (err) {
-          if(err) { return handleError(res, err); }
-          res.sendStatus(200);
-        });
-      }
-      else res.sendStatus(200);
-    });
-  });
-};
-
-/**
- * Add any user to a SubDepartment
- * @param {req.body.subDepartment}   req  SubDepartment ID
- * @param {req.body.user}   req  User ID
- * @param {Function} User and SubDepartment IDs are sent
- *                   in the body of the request.
- *                   Using that we see if user already exists in subDepartment
- *                   or if SubDepartment already exists in the user
- */
-exports.addSubDepartment = function(req, res, next) {
-  User.findById(req.body.user, function (err, user) {
-    SubDepartment.findById(req.body.subDepartment, function (err, subDepartment) {
-      if(err) {
-        return handleError(res, err);
-      }
-      if(!subDepartment) {
-        return res.sendStatus(404);
-      }
-      if (subDepartment[req.body.role].indexOf(user._id) == -1){
-        subDepartment[req.body.role].push(user._id);
-        subDepartment.save(function (err) {
-          if(err) { return handleError(res, err); }
-          if(user.subDepartment(subDepartment._id) == -1){
-            user.subDepartment.push(req.body.subDepartment);
-            user.updatedOn = Date.now();
-            user.save(function (err) {
-              if(err) { return handleError(res, err); }
-              res.sendStatus(200);
-            });
-          }
-        });
-      }
-      else res.sendStatus(200);
-    });
   });
 };
 
@@ -290,7 +174,7 @@ exports.forgotPassword = function(req, res, next) {
       var mailOptions = {
         to: user.email,
         from: EMAIL,
-        subject: '[Shaastra-erp2016] Account Password Reset',
+        subject: '[Shaastra-2016] Account Password Reset',
         text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
@@ -325,7 +209,7 @@ exports.resetPassword = function(req, res) {
   console.log(req.body);
   User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
     if(err) { return handleError(res, err); }
-    if(!user) { return res.sendStatus(404); }
+    if(!user) {  return res.sendStatus(404); }
     user.password = req.body.newPassword;
     user.token = '';
     user.updatedOn = Date.now();
@@ -342,8 +226,8 @@ exports.resetPassword = function(req, res) {
       var mailOptions = {
         to: user.email,
         from: EMAIL,
-        subject: '[Shaastra-erp2016] Your password has been changed',
-        text: 'Hello,\n\n' +
+        subject: '[Shaastra-2016] Your password has been changed',
+        text: 'Hello ' + user.name + ',\n\n' +
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
       smtpTransport.sendMail(mailOptions, function (err, info) {
@@ -367,9 +251,32 @@ exports.authCallback = function(req, res, next) {
   res.redirect('/');
 };
 
-exports.getCoords = function (req, res, next) {
-  User.find({ role:'coord' }, 'name _id phoneNumber', function (err, result) {
+// Updates an existing website-users in the DB.
+exports.updateProfile = function(req, res) {
+  if(req.body._id) { delete req.body._id; }
+  WebsiteUsers.findById(req.user._id, function (err, websiteUsers) {
     if (err) { return handleError(res, err); }
-    return res.json(result);
+    if(!websiteUsers) { return res.status(404).send('Not Found'); }
+    var updated = _.extend(websiteUsers, req.body);
+    updated.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.status(200).json(websiteUsers);
+    });
   });
 };
+
+// Deletes a website-users from the DB.
+exports.destroy = function(req, res) {
+  WebsiteUsers.findById(req.params.id, function (err, websiteUsers) {
+    if(err) { return handleError(res, err); }
+    if(!websiteUsers) { return res.status(404).send('Not Found'); }
+    websiteUsers.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.status(204).send('No Content');
+    });
+  });
+};
+
+function handleError(res, err) {
+  return res.status(500).send(err);
+}
