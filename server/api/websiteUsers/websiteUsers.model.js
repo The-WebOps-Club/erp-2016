@@ -10,7 +10,7 @@ var WebsiteUsersSchema = new Schema({
   gender: Boolean,
   dob: Date,
   age: Number,
-  phoneNumber: Number,
+  phoneNumber: String,
 
   branch: String,
   college: String,
@@ -25,7 +25,7 @@ var WebsiteUsersSchema = new Schema({
   keyExpires: Date,
   sendEmails: Boolean,
 
-  dateCreated: {type: Date, default: Date.now},
+  dateCreated: { type: Date, default: Date.now },
 
   interestedFields: [{ type: Schema.Types.ObjectId, ref: 'Field' }] ,
   eventsApplied: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
