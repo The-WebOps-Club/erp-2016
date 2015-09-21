@@ -9,10 +9,10 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/:id', controller.show);
 router.get('/getMultiple/:id', controller.getMultiple);
-router.post('/', auth.hasRole('core'), controller.create);
+router.post('/', auth.hasRole('superCoord'), controller.create);
 router.put('/:id', auth.hasRole('coord'), controller.update);
 router.patch('/:id', auth.hasRole('coord'), controller.update);
 router.patch('/toggleVisiblity/:id', auth.hasRole('admin'), controller.update);
-router.delete('/:id', auth.hasRole('core'), controller.destroy);
+router.delete('/:id', auth.hasRole('superCoord'), controller.destroy);
 
 module.exports = router;

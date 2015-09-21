@@ -2,14 +2,15 @@
 
 var express = require('express');
 var controller = require('./eventTab.controller');
+var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.post('/', auth.hasRole('superCoord'), controller.create);
+router.put('/:id', auth.hasRole('coord'), controller.update);
+router.patch('/:id', auth.hasRole('coord'), controller.update);
+router.delete('/:id', auth.hasRole('coord'), controller.destroy);
 
 module.exports = router;
