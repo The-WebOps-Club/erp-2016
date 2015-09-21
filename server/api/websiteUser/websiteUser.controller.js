@@ -71,6 +71,7 @@ exports.create = function(req, res) {
   WebsiteUsers.count({}, function(err, count) {
     newUser.festID = festID(count+1);
   });
+  newUser.da = 'asd';
   newUser.save(function (err, user) {
     if (err) { return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*10 });

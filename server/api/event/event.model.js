@@ -23,7 +23,10 @@ var EventSchema = new Schema({
   minTeamMembers: { type: Number, default: 1 },
   registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }],
   imageid: String,
-  imagename: String
+  imagename: String,
+  paidEvent: { type: Boolean, default: false },
+  points: [{ type: Number }],
+  winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }]
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });
 

@@ -2,7 +2,7 @@
 
 var _ = require('lodash');
 var Registration = require('./registration.model');
-var User = require('../user/user.model');
+var User = require('../websiteUser/websiteUser.model');
 var Team = require('../team/team.model');
 var Event = require('../event/event.model');
 

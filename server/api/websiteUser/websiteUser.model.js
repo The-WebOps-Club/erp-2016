@@ -13,7 +13,7 @@ var WebsiteUsersSchema = new Schema({
   gender: Boolean,
   
   email: String,
-  
+
   // dob: Date,
   age: Number,
   phoneNumber: String,
@@ -221,4 +221,4 @@ WebsiteUsersSchema.methods = {
   }
 };
 
-module.exports = mongoose.model('WebsiteUsers', WebsiteUsersSchema);
+module.exports = mongoose.model('WebsiteUser', WebsiteUsersSchema);
