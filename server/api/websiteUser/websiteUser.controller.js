@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var WebsiteUsers = require('./websiteUsers.model');
+var WebsiteUsers = require('./websiteUser.model');
 
 //copy from user.controller.js
 var passport = require('passport');
@@ -72,7 +72,7 @@ exports.create = function(req, res) {
     newUser.festID = festID(count+1);
   });
   newUser.save(function (err, user) {
-    if (err) { console.log(err); return validationError(res, err); }
+    if (err) { return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*10 });
     
     var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
@@ -123,7 +123,7 @@ exports.changePassword = function (req, res, next) {
  */
 exports.me = function (req, res, next) {
   var userId = req.user._id;
-  User.findOne({
+  WebsiteUsers.findOne({
     _id: userId
   }, '-salt -hashedPassword', function (err, user) { // don't ever give out the password or salt
     if (err) return next(err);
@@ -149,7 +149,7 @@ exports.forgotPassword = function(req, res, next) {
       });
     },
     function (token, done) {
-      User.findOne({ email: req.body.email }, function (err, user) {
+      WebsiteUsers.findOne({ email: req.body.email }, function (err, user) {
         if(err) { return handleError(res, err); }
         if(!user) { return res.sendStatus(404); }
 
@@ -207,7 +207,7 @@ exports.forgotPassword = function(req, res, next) {
 exports.resetPassword = function(req, res) {
   console.log(req.params);
   console.log(req.body);
-  User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
+  WebsiteUsers.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function (err, user) {
     if(err) { return handleError(res, err); }
     if(!user) {  return res.sendStatus(404); }
     user.password = req.body.newPassword;

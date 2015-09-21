@@ -11,7 +11,7 @@ module.exports = function(app) {
   // Insert routes below
   app.use('/api/feedbacks', require('./api/feedback'));
   app.use('/api/fields', require('./api/field'));
-  app.use('/api/website-users', require('./api/websiteUsers'));
+  app.use('/api/website-users', require('./api/websiteUser'));
   app.use('/api/teams', require('./api/team'));
   app.use('/api/registrations', require('./api/registration'));
   app.use('/api/eventTabs', require('./api/eventTab'));
@@ -29,6 +29,7 @@ module.exports = function(app) {
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
+  app.use('/authWebsite', require('./authWebsite'));
   
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')

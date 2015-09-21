@@ -4,7 +4,7 @@
 
 'use strict';
 
-var WebsiteUsers = require('./websiteUsers.model');
+var WebsiteUsers = require('./websiteUser.model');
 
 exports.register = function(socket) {
   WebsiteUsers.schema.post('save', function (doc) {
@@ -16,9 +16,9 @@ exports.register = function(socket) {
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('websiteUsers:save', doc);
+  socket.emit('websiteUser:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('websiteUsers:remove', doc);
+  socket.emit('websiteUser:remove', doc);
 }
