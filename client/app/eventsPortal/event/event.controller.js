@@ -106,6 +106,15 @@ angular.module('erp2015App')
       });
     }
 
+    $scope.markdownTutorial = function (ev) {
+      $mdDialog.show({
+        controller: TutController,
+        templateUrl: '/app/eventsPortal/event/dialog4.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: ev
+      })
+    }
+
     $scope.newTab = function () {
       var promptName = prompt("Enter the name of the tab", "");
       if(promptName !=  null) {
@@ -251,6 +260,16 @@ angular.module('erp2015App')
       });
     }
 });
+
+function TutController($scope, $mdDialog) {
+  $scope.hide = function () {
+    $mdDialog.hide();
+  };
+
+  $scope.cancel = function () {
+    $mdDialog.cancel();
+  };
+}
 
 function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth) {
   $scope.hasRoleCore = Auth.hasRoleCore;
