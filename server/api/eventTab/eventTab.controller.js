@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var Event = require('../event/event.model');
 var EventTab = require('./eventTab.model');
 
 // Get list of eventTabs
@@ -22,9 +23,18 @@ exports.show = function(req, res) {
 
 // Creates a new eventTab in the DB.
 exports.create = function(req, res) {
-  EventTab.create(req.body, function(err, eventTab) {
+  EventTab.create(req.body, function (err, eventTab) {
     if(err) { return handleError(res, err); }
-    return res.status(201).json(eventTab);
+    if(!err) {
+      Event.findById(eventTab.eventID, function (err2, event) {
+        if(!err2) {
+          event.eventTabs.push(eventTab._id);
+          event.save(function (err3) {
+            return res.status(201).json(eventTab);
+          });
+        }
+      });
+    }
   });
 };
 

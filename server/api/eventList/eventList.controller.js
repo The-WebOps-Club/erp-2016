@@ -13,9 +13,11 @@ exports.index = function(req, res) {
 
 // Get a single eventList
 exports.show = function(req, res) {
-  EventList.findById(req.params.id, function (err, eventList) {
+  EventList.findById(req.params.id)
+  .populate('events')
+  .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
-    if(!eventList) { return res.send(404); }
+    if(!eventList) { return res.sendStatus(404); }
     return res.json(eventList);
   });
 };
@@ -26,7 +28,7 @@ exports.create = function(req, res) {
   req.body.updatedOn = Date.now();
   req.body.createdBy = req.user._id;
   req.body.lastUpdatedBy = req.user._id;
-  EventList.create(req.body, function(err, eventList) {
+  EventList.create(req.body, function (err, eventList) {
     if(err) { return handleError(res, err); }
     return res.json(201, eventList);
   });

@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var EventList = require('../eventList/eventList.model');
 var Event = require('./event.model');
 
 // Get list of events
@@ -18,6 +19,17 @@ exports.show = function(req, res) {
   .populate('lastUpdatedBy', 'name')
   .populate('assignees', 'name phoneNumber')
   .populate('eventCategory', 'title')
+  .exec(function (err, event) {
+    if(err) { return handleError(res, err); }
+    if(!event) { return res.sendStatus(404); }
+    return res.json(event);
+  });
+};
+
+// Get a single event
+exports.showWeb = function(req, res) {
+  Event.findById(req.params.id)
+  .populate('eventTabs')
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
@@ -43,7 +55,16 @@ exports.create = function(req, res) {
   req.body.lastUpdatedBy = req.user._id;
   Event.create(req.body, function (err, event) {
     if(err) { return handleError(res, err); }
-    return res.status(201).json(event);
+    if(!err) {
+      EventList.findById(event.eventCategory, function (err2, eventList) {
+        if(!err2) { 
+          eventList.events.push(event._id);
+          eventList.save(function (err3) {
+            return res.status(201).json(event);
+          });
+        }
+      });
+    }
   });
 };
 
