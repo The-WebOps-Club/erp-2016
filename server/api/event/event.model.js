@@ -8,6 +8,7 @@ var EventSchema = new Schema({
   info: String,
   venue: String,
   eventTabs: [{ type: Schema.Types.ObjectId, ref: 'EventTab' }],
+  core: { type: Schema.Types.ObjectId, ref: 'User' },
   assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   eventCategory: [{ type: Schema.Types.ObjectId, ref: 'EventList' }],
   createdOn: Date,
@@ -26,8 +27,9 @@ var EventSchema = new Schema({
   imagename: String,
   paidEvent: { type: Boolean, default: false },
   points: [{ type: Number }],
-  winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }]
-  // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
+  winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+  selectedTeams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' }
 });
 
 module.exports = mongoose.model('Event', EventSchema);
