@@ -2,47 +2,64 @@
 
 angular.module('erp2015App')
   .controller('EventsPortalEventCtrl', function ($state, $stateParams, $scope, $http, EventsPortalService, $mdDialog, $location, $mdToast, Auth) {
-    
+    $scope.showButton = false;    
+
     var id = $stateParams.id;
     EventsPortalService.getEvent(id).then(function (event) {
-    var converter = new showdown.Converter();
-    $scope.event = event;
-    $scope.assignees = event.assignees;
-    var xdata;
-    $scope.currentTab = "";
-    $scope.markdown = [];
-    $scope.inServer = [];
-    $scope.index = 0;
-    $scope.tabMode = false;
-    $scope.selectedEventLists = event.eventCategory;
+      var converter = new showdown.Converter();
+      $scope.event = event;
+      $scope.assignees = event.assignees;
+      var xdata;
+      $scope.currentTab = "";
+      $scope.markdown = [];
+      $scope.inServer = [];
+      $scope.index = 0;
+      $scope.tabMode = false;
+      $scope.selectedEventLists = event.eventCategory;
 
-    $http.get('/api/eventTabs/' + event._id).then(function (data) {
-      $scope.eventTabs = data.data;
-      // console.log($scope.eventTabs);
-      $scope.eventTabs.sort(function (a, b) {
-        if(a.tabNumber<b.tabNumber)
-          return -1;
-        else if(a.tabNumber>b.tabNumber)
-          return 1;
-        else
-          return 0;
+      // showing editDeal, createUpdate, editUpdate button only to permitted users
+      Auth.isLoggedInAsync(function (loggedIn) {
+        if(Auth.getCurrentUser().role === 'admin' || Auth.getCurrentUser().role === 'core' || Auth.getCurrentUser().role === 'superCoord') {
+          $scope.showButton = true;                    
+        } else if (Auth.getCurrentUser().role === 'coord') {
+          var len = event.assignees.length;
+          for (var i=0; i<len; i++) {
+            if(Auth.getCurrentUser()._id === event.assignees[i]._id)
+              $scope.showButton = true;                    
+          }
+        } else {
+          $scope.showButton = false;                    
+        }
       });
-      $scope.eventTabs.forEach(function (tab) {
-        $scope.markdown[tab._id] = tab.info;
-        $scope.inServer[tab._id] = true;
+
+      $http.get('/api/eventTabs/' + event._id).then(function (data) {
+        $scope.eventTabs = data.data;
+        // console.log($scope.eventTabs);
+        $scope.eventTabs.sort(function (a, b) {
+          if(a.tabNumber<b.tabNumber)
+            return -1;
+          else if(a.tabNumber>b.tabNumber)
+            return 1;
+          else
+            return 0;
+        });
+        $scope.eventTabs.forEach(function (tab) {
+          $scope.markdown[tab._id] = tab.info;
+          $scope.inServer[tab._id] = true;
+        });
+        if($scope.eventTabs.length > 0)
+          $scope.currentTab = $scope.eventTabs[0]._id;
       });
-      if($scope.eventTabs.length > 0)
-        $scope.currentTab = $scope.eventTabs[0]._id;
-    });
+    
 
     $scope.isAdmin = Auth.isAdmin;
 
     EventsPortalService.getCoords()
-    .then(function (data) {
-      $scope.coords = data;
-    }, function (err) {
-      console.log(err);
-    });
+      .then(function (data) {
+        $scope.coords = data;
+      }, function (err) {
+        console.log(err);
+      });
 
     $scope.buildCatString = function () {
       var cat = "";
@@ -52,14 +69,14 @@ angular.module('erp2015App')
           cat += ", ";
       }
       return cat;
-    }
+    };
 
     $scope.getVisiblity = function () {
       if($scope.event.acceptedByAdmin)
         return "";
       else
         return "in";
-    }
+    };
 
     $scope.toggleVisiblity = function () {
       EventsPortalService.toggleEvent({
@@ -68,10 +85,10 @@ angular.module('erp2015App')
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
       })
       .catch(function (err) {
-      $mdToast.show($mdToast.simple().content('You are not authorized to do that.').hideDelay(5000));
-      $scope.event.acceptedByAdmin = !$scope.event.acceptedByAdmin;
-        });
-    }
+        $mdToast.show($mdToast.simple().content('You are not authorized to do that.').hideDelay(5000));
+        $scope.event.acceptedByAdmin = !$scope.event.acceptedByAdmin;
+      });
+    };
 
     $scope.showAdvanced = function (ev) {
       $mdDialog.show({
@@ -104,7 +121,7 @@ angular.module('erp2015App')
       }, function () {
         $scope.alert = 'You cancelled the dialog.';
       });
-    }
+    };
 
     $scope.markdownTutorial = function (ev) {
       $mdDialog.show({
@@ -113,7 +130,7 @@ angular.module('erp2015App')
         parent: angular.element(document.body),
         targetEvent: ev
       })
-    }
+    };
 
     $scope.newTab = function () {
       var promptName = prompt("Enter the name of the tab", "");
@@ -139,7 +156,7 @@ angular.module('erp2015App')
       $scope.currentTab = b;
       $scope.index = c;
       $scope.oldIndex = $scope.selectedIndex;
-    }
+    };
 
     $scope.removeTab = function () {
       if(confirm("Delete this tab?")) {
@@ -164,7 +181,7 @@ angular.module('erp2015App')
 
     $scope.xmark = function (b) {
       return converter.makeHtml(b);
-    }
+    };
 
     $scope.publishChange = function () {
       var tab = $scope.eventTabs.filter(function (tab) {
@@ -178,7 +195,7 @@ angular.module('erp2015App')
       $http.put("/api/eventTabs/"+tab._id, {'name': tab.name, 'info': $scope.markdown[$scope.currentTab], 'tabNumber': tab.tabNumber, 'eventID': $scope.event._id}).then(function () {
         $mdToast.show($mdToast.simple().content('Tab changes successfully saved!').hideDelay(5000));
       });
-    }
+    };
 
     $scope.saveChanges = function () {
       if($scope.currentTab == -1)
@@ -240,25 +257,25 @@ angular.module('erp2015App')
       }, function () {
         $scope.alert = 'You cancelled the dialog.';
       });
-    }
-   });
+    };
+  });
 
-    $scope.editEventPhoto = function (ev) {
-      $mdDialog.show({
-        controller: photoEditController,
-        templateUrl: '/app/eventsPortal/event/dialog3.tmpl.html',
-        parent: angular.element(document.body),
-        targetEvent: ev,
-        resolve: {
-          event: function () {
-            return $scope.event;
-          },
-          EventsPortalService: function () {
-            return EventsPortalService;
-          }
+  $scope.editEventPhoto = function (ev) {
+    $mdDialog.show({
+      controller: photoEditController,
+      templateUrl: '/app/eventsPortal/event/dialog3.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      resolve: {
+        event: function () {
+          return $scope.event;
+        },
+        EventsPortalService: function () {
+          return EventsPortalService;
         }
-      });
-    }
+      }
+    });
+  }
 });
 
 function TutController($scope, $mdDialog) {
@@ -325,7 +342,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
       $scope.startReg = new Date(event.startReg);
       $scope.endReg = new Date(event.endReg);
       // console.log(event.assignees);
-     });
+    });
   };
 
   $scope.answer = function (answer) {
@@ -522,4 +539,6 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
     $mdDialog.cancel();
     $mdToast.show($mdToast.simple().content('Tab order changed successfully!').hideDelay(5000));
   };
+
+
 }

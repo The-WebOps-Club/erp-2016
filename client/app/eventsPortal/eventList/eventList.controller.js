@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('EventsPortalEventListCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog) {
+  .controller('EventsPortalEventListCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog, Auth) {
+    $scope.showButton= false;
+
     EventsPortalService.getAllEventLists()
       .then(function (allEventLists) {
         $scope.allEventLists = allEventLists;
@@ -144,5 +146,12 @@ angular.module('erp2015App')
       }
     };
   }
+
+  // showing editDeal, createUpdate, editUpdate button only to permitted users
+  Auth.isLoggedInAsync(function (loggedIn) {
+    if(Auth.getCurrentUser().role === 'admin' || Auth.getCurrentUser().role === 'core' || Auth.getCurrentUser().role === 'superCoord') {
+      $scope.showButton = true;                    
+    }
+  });
 
 });
