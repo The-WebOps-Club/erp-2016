@@ -6,26 +6,31 @@ angular.module('erp2015App')
       .state('eventsPortalCores', {
         url: '/eventsPortal/cores',
         templateUrl: 'app/eventsPortal/cores/cores.html',
-        controller: 'EventsPortalCoresCtrl'
+        controller: 'EventsPortalCoresCtrl',
+        authenticate: true
       })
       .state('eventsPortalDashboard', {
         url: '/eventsPortal/dashboard',
         templateUrl: 'app/eventsPortal/dashboard/dashboard.html',
-        controller: 'EventsPortalDashboardCtrl'
+        controller: 'EventsPortalDashboardCtrl',
+        authenticate: true
       })
       .state('event', {
         url: '/eventsPortal/event/:id',
         templateUrl: 'app/eventsPortal/event/event.html',
-        controller: 'EventsPortalEventCtrl'
+        controller: 'EventsPortalEventCtrl',
+        authenticate: true
       })
       .state('allEvents', {
         url: '/eventsPortal/allEvents',
         templateUrl: 'app/eventsPortal/allEvents/allEvents.html',
-        controller: 'EventsPortalAllEventsCtrl'
+        controller: 'EventsPortalAllEventsCtrl',
+        authenticate: true
       })
       .state('eventList', {
         url: '/eventsPortal/eventList',
         templateUrl: 'app/eventsPortal/eventList/eventList.html',
-        controller: 'EventsPortalEventListCtrl'
+        controller: 'EventsPortalEventListCtrl',
+        authenticate: true
       });
   });

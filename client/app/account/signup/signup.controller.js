@@ -4,7 +4,7 @@ angular.module('erp2015App')
   .controller('SignupCtrl', function ($scope, Auth, $state, $location, $window) {
     $scope.getCurrentUser = Auth.getCurrentUser;
     if (Auth.isLoggedIn())
-      $state.go('coordPortalDashboard');
+      $state.go('eventsPortalDashboard');
 
     $scope.user = {};
     $scope.errors = {};
@@ -25,7 +25,7 @@ angular.module('erp2015App')
         })
         .then( function() {
           // Account created, redirect to dashboard
-          $location.url('/coordPortal/dashboard');
+          $state.go('eventsPortalDashboard');
         })
         .catch( function(err) {
           err = err.data;

@@ -71,16 +71,22 @@ exports.create = function(req, res) {
 // Updates an existing event in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  if(req.user.role != 'core' && req.user.role != 'admin') delete req.body.assignees;
+  if(req.user.role != 'superCoord' && req.user.role != 'core' && req.user.role != 'admin') delete req.body.assignees;
   Event.findById(req.params.id, function (err, event) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
-    req.body.updatedOn = Date.now();
-    var updated = _.assign(event, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.status(200).json(event);
-    });
+    else {
+      if(event.assignees.indexOf(req.user._id)>=0) {
+        req.body.updatedOn = Date.now();
+        var updated = _.assign(event, req.body);
+        updated.save(function (err) {
+          if (err) { return handleError(res, err); }
+          return res.status(200).json(event);
+        });
+      } else {
+        return res.sendStatus(401);
+      }
+    }
   });
 };
 
