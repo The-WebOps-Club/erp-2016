@@ -6,15 +6,15 @@ var mongoose = require('mongoose'),
 var TaskSchema = new Schema({
   title: String,
   info: String,
-  assignedToDepartments: {},
-  assignedToCoords: {},
-  reportTo: {},
+  assignedToDepartments: {type:Schema.ObjectId,ref:'Department'},
+  assignedToCoords: [{type:Schema.Types.ObjectId,ref:'User'}],
+  reportTo: {type:Schema.ObjectId,ref:'User'},
   deadline: {
   	type: Date
   },
   status: Boolean,
-  comments: {},
-  createdBy: {},
+  comments: {type:String},
+  createdBy: {type:Schema.ObjectId,ref:'User'},
   createdOn: {
   	type: Date,
   	default: Date.now
@@ -24,5 +24,4 @@ var TaskSchema = new Schema({
   	deafult: Date.now
   }
 });
-
 module.exports = mongoose.model('Task', TaskSchema);

@@ -18,7 +18,16 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/drive/drive.socket').register(socket);
+  require('../api/milan/milan.socket').register(socket);
+
+  require('../api/sponsor/sponsor.socket').register(socket);
+  require('../api/financePortal/financePortal.socket').register(socket);
+  require('../api/mom/mom.socket').register(socket);
+  require('../api/drive/drive.socket').register(socket)
+  require('../api/visitor/visitor.socket').register(socket);
+  require('../api/hospitality/checkin/checkin.socket').register(socket);
+  require('../api/hospitality/room/room.socket').register(socket);
+  require('../api/hospitality/hostel/hostel.socket').register(socket);
   require('../api/group/group.socket').register(socket);
   require('../api/wall/wall.socket').register(socket);
   require('../api/notification/notification.socket').register(socket);

@@ -5,7 +5,11 @@ var Task = require('./task.model');
 
 // Get list of tasks
 exports.index = function(req, res) {
-  Task.find(function (err, tasks) {
+  Task.find()
+  .populate('assignedToCoords','_id name')
+  .populate('assignedToDepartments','_id name')
+  .exec(function (err, tasks) {
+    console.log(tasks)
     if(err) { return handleError(res, err); }
     return res.json(200, tasks);
   });
@@ -17,7 +21,7 @@ exports.show = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!task) { return res.send(404); }
     return res.json(task);
-  });
+  }).populate('assignedToCoords','assignedToDepartments');
 };
 
 // Creates a new task in the DB.
