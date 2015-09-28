@@ -60,7 +60,7 @@ angular.module('erp2015App')
     }
 
     var handleFileSelect = function(evt) {
-      console.log(evt.currentTarget.files);
+      // console.log(evt.currentTarget.files);
       var myfile = evt.currentTarget.files[0];
       var reader = new FileReader();
       reader.onload = function (evt) {
@@ -73,7 +73,7 @@ angular.module('erp2015App')
     };
 
     var handleFileSelect2 = function(evt) {
-      console.log(evt.currentTarget.files);
+      // console.log(evt.currentTarget.files);
       var myfile = evt.currentTarget.files[0];
       var reader = new FileReader();
       reader.onload = function (evt) {

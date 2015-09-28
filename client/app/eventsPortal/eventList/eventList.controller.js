@@ -5,7 +5,7 @@ angular.module('erp2015App')
     EventsPortalService.getAllEventLists()
       .then(function (allEventLists) {
         $scope.allEventLists = allEventLists;
-        console.log(allEventLists);
+        // console.log(allEventLists);
       });
     $scope.eventsShow = false;
 
@@ -18,14 +18,14 @@ angular.module('erp2015App')
         }
       })
       .then(function (response) {
-        console.log(response);
+        // console.log(response);
       }, function () {
         console.log('Cancel editing deal');
       });
     };      
 
     function eventListEditModalCtrl($scope, $mdDialog, eventListPassed) {   
-      console.log(eventListPassed);
+      // console.log(eventListPassed);
       $scope.editEventList = eventListPassed;
       
       $scope.cancel = function() {
@@ -56,12 +56,12 @@ angular.module('erp2015App')
         $scope.events = data;
       });
       //$scope.events = eventList.events;
-      console.log(eventList);
+      // console.log(eventList);
       $scope.eventsShow = true;
     };      
 
     $scope.gotoEvent = function (eventID) {
-      console.log(eventID);
+      // console.log(eventID);
       $state.go('event', { 'id': eventID });
     };
 
@@ -95,12 +95,12 @@ angular.module('erp2015App')
     
     var handleFileSelect2 = function (evt) {
       var myfile = evt.currentTarget.files[0];
-      console.log(evt.currentTarget.files);
+      // console.log(evt.currentTarget.files);
       var reader = new FileReader();
       reader.onload = function (evt) {
         $scope.$apply(function ($scope) {
           $scope.myImage2 = evt.target.result;
-          console.log($scope.myImage2);
+          // console.log($scope.myImage2);
         });
         uploadfile = myfile;
       };

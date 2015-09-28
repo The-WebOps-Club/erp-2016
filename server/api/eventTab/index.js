@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);
-router.post('/', auth.hasRole('superCoord'), controller.create);
+router.post('/', auth.hasRole('coord'), controller.create);
 router.put('/:id', auth.hasRole('coord'), controller.update);
 router.patch('/:id', auth.hasRole('coord'), controller.update);
 router.delete('/:id', auth.hasRole('coord'), controller.destroy);

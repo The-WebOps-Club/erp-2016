@@ -18,7 +18,7 @@ angular.module('erp2015App')
 
     $http.get('/api/eventTabs/' + event._id).then(function (data) {
       $scope.eventTabs = data.data;
-      console.log($scope.eventTabs);
+      // console.log($scope.eventTabs);
       $scope.eventTabs.sort(function (a, b) {
         if(a.tabNumber<b.tabNumber)
           return -1;
@@ -135,7 +135,7 @@ angular.module('erp2015App')
     };
 
     $scope.setTab = function (b, c) {
-      console.log("setTab("+b+")");
+      // console.log("setTab("+b+")");
       $scope.currentTab = b;
       $scope.index = c;
       $scope.oldIndex = $scope.selectedIndex;
@@ -168,7 +168,7 @@ angular.module('erp2015App')
 
     $scope.publishChange = function () {
       var tab = $scope.eventTabs.filter(function (tab) {
-        console.log(tab);
+        // console.log(tab);
         return tab._id == $scope.currentTab;
       })[0];
       if($scope.markdown[$scope.currentTab] == "") {
@@ -191,11 +191,11 @@ angular.module('erp2015App')
           $mdToast.show($mdToast.simple().content('Tab content cannot be empty').hideDelay(5000));
           return;
         }
-        console.log($scope.currentTab);
+        // console.log($scope.currentTab);
         $scope.old_id = tab._id;
         delete tab._id;
         $http.post("/api/eventTabs", tab).then(function (resp) {
-          console.log(resp);
+          // console.log(resp);
           var data = resp.data;
           $scope.new_id = data._id;
           $scope.inServer[$scope.currentTab] = true;
@@ -277,7 +277,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   $scope.selectedEventLists = selectedEventLists;
   $scope.buildCatString = buildCatString;
   $scope.selectedCoords = event.assignees;
-  console.log(event);
+  // console.log(event);
   $scope.eventDate = new Date(event.eventDate);
   $scope.startReg = new Date(event.startReg);
   $scope.endReg = new Date(event.endReg);
@@ -303,7 +303,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   EventsPortalService.getCoords()
     .then(function (data) {
       $scope.coords = data;
-      console.log(data);
+      // console.log(data);
     },function (err) {
       console.log(err);
   });
@@ -324,7 +324,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
       $scope.eventDate = new Date(event.eventDate);
       $scope.startReg = new Date(event.startReg);
       $scope.endReg = new Date(event.endReg);
-      console.log(event.assignees);
+      // console.log(event.assignees);
      });
   };
 
@@ -372,7 +372,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
 function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdToast, Auth, $document, $upload) {
   $scope.hasRoleCore = Auth.hasRoleCore;
   $scope.event = event;
-  console.log(event);
+  // console.log(event);
 
   $scope.myImage2 = '';
   $scope.myCroppedImage2 = '';
@@ -382,13 +382,13 @@ function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdT
   var uploadfile = '';
   
   var handleFileSelect2 = function (evt) {
-    console.log(evt.currentTarget.files);
+    // console.log(evt.currentTarget.files);
     var myfile = evt.currentTarget.files[0];
     var reader = new FileReader();
     reader.onload = function (evt) {
       $scope.$apply(function ($scope) {
         $scope.myImage2 = evt.target.result;
-        console.log($scope.myImage2);
+        // console.log($scope.myImage2);
       });
       uploadfile = myfile;
     };
@@ -480,14 +480,14 @@ function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $m
       }
     })
     .then(function (response) {
-      console.log(response);
+      // console.log(response);
     }, function () {
       // console.log('Cancel editing deal');
     });
   };    
 
   function eventEditModalCtrl($scope, $mdDialog, eventPassed) {  
-    console.log(eventPassed);
+    // console.log(eventPassed);
     $scope.editEvent = eventPassed;
       
     $scope.cancel = function () {
