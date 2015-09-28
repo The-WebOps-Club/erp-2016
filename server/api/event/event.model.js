@@ -15,6 +15,8 @@ var EventSchema = new Schema({
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   acceptedByAdmin: { type: Boolean, default: false },
+  isEvent: { type: Boolean, default: true },
+  isWorkshop: { type: Boolean, default: false },
   eventDate: Date,
   startReg: Date,
   endReg: Date,

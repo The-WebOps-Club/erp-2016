@@ -37,12 +37,25 @@ exports.showWeb = function(req, res) {
   });
 };
 
-//Get multiple events
+// Get multiple events
 exports.getMultiple = function(req, res) {
   Event.find({ 'eventCategory': req.params.id }, function (err, events) {
     if(err) { return handleError(res, err); }
     if(!events) { return res.sendStatus(404); }
     // console.log(events);
+    return res.json(events);
+  });
+};
+
+// Get events assigned
+exports.myEvents = function(req, res) {
+  Event.find({ assignees: { "$in" : [req.user._id] } })
+  .populate('assignees', '-salt -hashedPassword -lastSeen -provider')
+  .populate('createdBy', '-salt -hashedPassword -lastSeen -provider')
+  .populate('lastUpdatedBy', '-salt -hashedPassword -lastSeen -provider')
+  .exec(function (err, events) {
+    if(err) { return handleError(res, err); }
+    if(!events) { return res.sendStatus(404); }
     return res.json(events);
   });
 };

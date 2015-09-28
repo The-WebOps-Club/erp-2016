@@ -1,3 +1,48 @@
-<div class="col-md-12">
-This is the dashboard view.
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+  <div class="eventsPortal" flex flex-order="1">
+  	<div class="left right">
+	    <div class="md-whiteframe-z1">
+	      <md-toolbar class="md-theme-light">
+	        <h2 class="md-toolbar-tools">
+	          <span>List of all the Event Lists</span>
+	        </h2>
+	      </md-toolbar>
+	      
+	      <md-content>
+	        <md-list ng-repeat="event in eventsAssigned track by $index">
+	          <md-list-item ng-click="gotoEvent(event._id)">
+	            <!-- <ng-md-icon icon="dns" style="fill:#00A2FF" size="32" class="md-avatar" alt="event-list-img"></ng-md-icon> -->
+	            <!-- <img ng-src="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg"></ing> -->
+
+	            <img ng-src="api/uploads/{{event.imageid}}/{{event.imagename}}" width="100" height="100" />
+	            <div layout="row" layout-fill layout-padding>
+	              <div flex>
+	                <div class="md-list-item-text">
+	                  <h6 class="md-title">Title</h6>
+	                  <p>{{ event.name | characters:20 :true }}</p>
+	                </div>
+	              </div>
+
+	              <div flex>
+	                <div class="md-list-item-text">
+	                  <h6 class="md-title"> Created On </h6>
+	                  <p>{{ event.createdOn | date: 'medium' }}</p>
+	                </div>
+	              </div>
+
+	              <div flex>
+	                <div class="md-list-item-text">
+	                  <h6 class="md-title"> Latest Activity </h6>
+	                  <p>{{ event.updatedOn | date: 'medium' }}</p>
+	                </div>
+	              </div>
+	            </div>
+	          </md-list-item>
+	        </md-list>
+	      </md-content>
+	    </div>
+  	</div>
+  </div>
 </div>
