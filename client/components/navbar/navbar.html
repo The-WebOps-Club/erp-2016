@@ -1,30 +1,50 @@
-<div layout="column" layout-fill ng-controller="NavbarCtrl">
-  <md-toolbar>
-    <div class="md-toolbar-tools" layout="row" layout-align="center center">
-      <md-button href="/">
-        erp 2016
-      </md-button>
-      <!-- fill up the space between left and right area -->
-      <span flex></span>      
-      <p ng-show="isLoggedIn()">
-        Hello {{ getCurrentUser().name }}
-      </p>
-      <md-button ng-hide="isLoggedIn()" ui-sref='signup'>
-        Sign up
-      </md-button>
-      <md-button ng-hide="isLoggedIn()" ui-sref='login'>
-        Login
-      </md-button>
-      <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='profile({ userId: getCurrentUser()._id })'>
-        <ng-md-icon icon="person" style="fill: white" size="24"></ng-md-icon>
-      </md-button>
-      <img ng-src="{{profilePic}}" class="md-avatar" />
-      <md-button ng-show="isLoggedIn()" class="md-icon-button launch" ui-sref='settings'>
-        <ng-md-icon icon="settings" style="fill: white" size="24"></ng-md-icon>
-      </md-button>
-      <md-button ng-show="isLoggedIn()" ng-click="logout()">
-        Logout
-      </md-button>
+<div class="navbar navbar-inverse navbar-static-top" ng-controller="NavbarCtrl">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div>
+        <a href="/" class="navbar-brand" height="60px"><img src="../../assets/images/shaastra-logo.png" height="30px">Events Portal Shaastra 2016</a>
+      </div>
     </div>
-  </md-toolbar>
+    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li ng-show="isSuperCoord()" ng-class="{active: isActive('/eventsPortal/cores')}"><a ui-sref="eventsPortalCores"><span class="glyphicon glyphicon-th-large"></span> Admin Panel</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p></li>
+
+        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><a href="/login">Login</a></li>
+        
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/eventsPortal/dashboard')}"><a ui-sref="eventsPortalDashboard"><span class="glyphicon glyphicon-dashboard"></span> Your Events</a></li>
+        
+<!--
+        <li ng-show="isLoggedIn()" id="notificationLink" ng-class="{active: notif}"><a ng-click="showNotification()"><span id="notificationCount">{{ notifications.length }}</span><span class="glyphicon glyphicon-bell"></span></a>
+          <div id="notificationContainer" ng-if="notif" ng-mouseenter="scrollStop()" ng-mouseleave="scrollWork()">
+          <div id="notificationTitle">Notifications</div>
+          <div id="notificationsBody" class="notifications">
+            <md-whiteframe class="md-whiteframe-z2" layout layout-align="center center" ng-if="(notifications.length == 0)">
+            <span>No new notifications</span>
+            </md-whiteframe>
+            <md-whiteframe class="md-whiteframe-z2" layout layout-align="center center" ng-repeat="notification in notifications">
+            <div class="notifDiv" ng-click="notifClick($index)">
+              <ng-md-icon layout layout-align="end start" icon="close" id="closeButton" size="18" alt="close-notification-img" ng-click="notifDelete($index)"></ng-md-icon>
+              <div id="notifMessage" ui-sref="deal({id: notification.deal})">{{ notification.info }}</div>
+            </div>
+            </md-whiteframe>
+          </div>
+          <div id="notificationFooter"><a ng-click="hideAllNotif()">Mark all as read</a></div>
+          </div>
+        </li>
+ -->        
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/eventsPortal/eventList')}"><a ui-sref="eventList"><span class="glyphicon glyphicon-tasks"></span> All Events</a></li> 
+        <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
 </div>

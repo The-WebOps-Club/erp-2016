@@ -158,10 +158,15 @@ angular.module('erp2015App')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return currentUser.role == 'admin';
+        return currentUser.role === 'admin';
       },
-      hasRoleCore: function() {
-        return currentUser.role == 'core' || currentUser.role == 'admin';
+
+      isCore: function() {
+        return (currentUser.role === 'core' || currentUser.role === 'admin');
+      },
+
+      isSuperCoord: function() {
+        return (currentUser.role === 'superCoord' || currentUser.role === 'core' || currentUser.role === 'admin');
       },
 
       /**
