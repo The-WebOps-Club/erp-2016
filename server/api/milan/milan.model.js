@@ -7,9 +7,13 @@ var MilanSchema = new Schema({
 	name: String,
 	city: String,
 	milanLocation: String,
-	phoneNumber: String,
+	genre: String,
 	emailId: String,
-	members: [Schema.Types.Mixed]
+	members: [{
+		name: String,
+		emailId: String,
+		phoneNumber: String
+	}],
 	performances: [String]
 });
 
