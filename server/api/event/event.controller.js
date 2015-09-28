@@ -76,7 +76,7 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
     else {
-      if(event.assignees.indexOf(req.user._id)>=0) {
+      if(event.assignees.indexOf(req.user._id)>=0 || req.user.role === 'superCoord' || req.user.role === 'core' || req.user.role === 'admin') {
         req.body.updatedOn = Date.now();
         var updated = _.assign(event, req.body);
         updated.save(function (err) {
