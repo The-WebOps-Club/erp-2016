@@ -28,7 +28,10 @@ var all = {
   secrets: {
     session: 'erp2015-secret'
   },
-
+  
+  // List of user roles
+  userRoles: ['user', 'coord', 'superCoord', 'core', 'admin'],
+  
   // MongoDB connection options
   mongo: {
     options: {
