@@ -55,6 +55,14 @@
             </md-input-container></div></td></tr></table>
           <br />
 
+            <md-checkbox ng-model="isEvent" aria-label="is event">
+              Add it as an Event
+            </md-checkbox>
+            <md-checkbox ng-model="isWorkshop" aria-label="is workshop">
+              Add it as a Workshop
+            </md-checkbox>
+
+
           <md-chips ng-model="selectedCoords" md-autocomplete-snap md-require-match ng-show='hasRoleCore()'>
             <md-autocomplete
               md-selected-item="selectedItem"

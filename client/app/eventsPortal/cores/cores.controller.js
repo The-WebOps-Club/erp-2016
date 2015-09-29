@@ -157,6 +157,9 @@ angular.module('erp2015App')
     	}
   	};
 
+    $scope.isEvent = true;
+    $scope.isWorkshop = true;
+
     $scope.createEvent = function (form) {
       $scope.submitted = true;
       if(form.$valid) {
@@ -184,7 +187,9 @@ angular.module('erp2015App')
               venue: $scope.venue,
               imageid: imageIdEvent,
               imagename: imageNameEvent,
-              eventCategory: $scope.eventListIds
+              eventCategory: $scope.eventListIds,
+              isEvent: $scope.isEvent,
+              isWorkshop: $scope.isWorkshop
             })
             .then(function (data) {
               $state.go('eventList');

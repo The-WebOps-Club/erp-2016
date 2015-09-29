@@ -299,6 +299,9 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   $scope.startReg = new Date(event.startReg);
   $scope.endReg = new Date(event.endReg);
 
+  $scope.isEvent = event.isEvent;
+  $scope.isWorkshop = event.isWorkshop;
+
   $scope.isTeamEvent = function () {
     return !($scope.individualEvent);
   }
@@ -373,6 +376,8 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
         venue: $scope.event.venue,
         maxTeamMembers: $scope.event.maxTeamMembers,
         minTeamMembers: $scope.event.minTeamMembers,
+        isEvent: $scope.isEvent,
+        isWorkshop: $scope.isWorkshop,
         requireTDP: $scope.event.requireTDP
       }, event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));

@@ -27,6 +27,23 @@ var allHostels = ['alakananda',
 
 var UserSchema = new Schema({
   name: { type: String, default: '' },
+  secondName: { type: String, default: '' },
+  // 1 for Male, 0 for female 
+  gender: { type: Boolean, default: true },
+  age: Number,
+  branch: { type: String, default: '' },
+  college: { type: String, default: '' },
+  //1 for school student, 0 for false
+  schoolStudent: { type: Boolean, default: false },
+  collegeRoll: { type: String, default: '' },
+  wantAccomodation: { type: Boolean, default: false },
+  emailVerified: { type: Boolean, default: false },
+  activationKey: String,
+  keyExpires: Date,
+  sendEmails: { type: Boolean, default: true },
+  dateCreated: { type: Date, default: Date.now },
+  interestedFields: [{ type: Schema.Types.ObjectId, ref: 'Field' }],
+  eventsApplied: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   nick: String,
   profilePic: String,
   rollNumber: { type: String, default: '' },
@@ -118,38 +135,38 @@ UserSchema
 
 // Validate hostel
 // WARNING - validating only the value name can be corrupted. There is a bug
-UserSchema
-  .path('hostel')
-  .validate(function(hostel) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (allHostels.indexOf(hostel.value) !== -1);
-  }, 'This is not a valid hostel');
+// UserSchema
+//   .path('hostel')
+//   .validate(function(hostel) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (allHostels.indexOf(hostel.value) !== -1);
+//   }, 'This is not a valid hostel');
 
 // Validate empty roomNumber
-UserSchema
-  .path('roomNumber')
-  .validate(function(roomNumber) {
-    var regExpRoom = /\d+/;
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (regExpRoom.test(roomNumber));
-  }, 'Room Number cannot be blank');
+// UserSchema
+//   .path('roomNumber')
+//   .validate(function(roomNumber) {
+//     var regExpRoom = /\d+/;
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (regExpRoom.test(roomNumber));
+//   }, 'Room Number cannot be blank');
 
 // Validate empty summerLocation
-UserSchema
-  .path('summerLocation')
-  .validate(function(summerLocation) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return summerLocation.length;
-  }, 'Summer Location cannot be blank');
+// UserSchema
+//   .path('summerLocation')
+//   .validate(function(summerLocation) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return summerLocation.length;
+//   }, 'Summer Location cannot be blank');
 
 // Validate cgpa
-UserSchema
-  .path('cgpa')
-  .validate(function(cgpa) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    var regExpCgpa = /^(10|\d)(\.\d{1,2})?$/;
-    return (regExpCgpa.test(cgpa));
-  }, 'CGPA cannot be blank');
+// UserSchema
+//   .path('cgpa')
+//   .validate(function(cgpa) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     var regExpCgpa = /^(10|\d)(\.\d{1,2})?$/;
+//     return (regExpCgpa.test(cgpa));
+//   }, 'CGPA cannot be blank');
 
 // Validate phoneNumber
 UserSchema
@@ -161,12 +178,12 @@ UserSchema
   }, 'Phone Number must have 10 digits');
 
 // Validate rollNumber
-UserSchema
-  .path('rollNumber')
-  .validate(function(rollNumber) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return (rollNumber.length == 8);
-  }, 'Roll Number must be of 8 characters');
+// UserSchema
+//   .path('rollNumber')
+//   .validate(function(rollNumber) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return (rollNumber.length == 8);
+//   }, 'Roll Number must be of 8 characters');
 
 // Validate empty email
 UserSchema
@@ -195,7 +212,6 @@ UserSchema
         return respond(false);
       }
       respond(true);
-      console.log(value);
     });
 }, 'The specified email address is already in use.');
 

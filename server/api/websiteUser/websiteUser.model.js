@@ -41,7 +41,7 @@ var WebsiteUsersSchema = new Schema({
     default: 'user'
   },
 
-  interestedFields: [{ type: Schema.Types.ObjectId, ref: 'Field' }] ,
+  interestedFields: [{ type: Schema.Types.ObjectId, ref: 'Field' }],
   eventsApplied: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   teams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
   selfTeam: { type: Schema.Types.ObjectId, ref: 'Team' },

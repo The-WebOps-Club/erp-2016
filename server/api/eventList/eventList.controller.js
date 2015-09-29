@@ -11,10 +11,53 @@ exports.index = function(req, res) {
   });
 };
 
+// Get list of eventLists
+exports.indexEvents = function(req, res) {
+  EventList.find(function (err, eventLists) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, eventLists);
+  });
+};
+
+// Get list of eventLists
+exports.indexWorkshops = function(req, res) {
+  EventList.find(function (err, eventLists) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, eventLists);
+  });
+};
+
 // Get a single eventList
 exports.show = function(req, res) {
   EventList.findById(req.params.id)
-  .populate('events')
+  .exec(function (err, eventList) {
+    if(err) { return handleError(res, err); }
+    if(!eventList) { return res.sendStatus(404); }
+    return res.json(eventList);
+  });
+};
+
+// Get a single eventList
+exports.showEvents = function(req, res) {
+  EventList.findById(req.params.id)
+  .populate({
+    path: 'events',
+    match: { isEvent: true }
+  })
+  .exec(function (err, eventList) {
+    if(err) { return handleError(res, err); }
+    if(!eventList) { return res.sendStatus(404); }
+    return res.json(eventList);
+  });
+};
+
+// Get a single eventList
+exports.showWorkshops = function(req, res) {
+  EventList.findById(req.params.id)
+  .populate({
+    path: 'events',
+    match: { isWorkshop: true }
+  })
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
