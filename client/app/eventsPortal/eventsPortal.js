@@ -7,30 +7,40 @@ angular.module('erp2015App')
         url: '/eventsPortal/cores',
         templateUrl: 'app/eventsPortal/cores/cores.html',
         controller: 'EventsPortalCoresCtrl',
-        authenticate: true
+        access: {
+          allow: ['superCoord', 'core', 'admin']
+        }                
       })
       .state('eventsPortalDashboard', {
         url: '/eventsPortal/dashboard',
         templateUrl: 'app/eventsPortal/dashboard/dashboard.html',
         controller: 'EventsPortalDashboardCtrl',
-        authenticate: true
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
       })
       .state('event', {
         url: '/eventsPortal/event/:id',
         templateUrl: 'app/eventsPortal/event/event.html',
         controller: 'EventsPortalEventCtrl',
-        authenticate: true
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
       })
       .state('allEvents', {
         url: '/eventsPortal/allEvents',
         templateUrl: 'app/eventsPortal/allEvents/allEvents.html',
         controller: 'EventsPortalAllEventsCtrl',
-        authenticate: true
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
       })
       .state('eventList', {
         url: '/eventsPortal/eventList',
         templateUrl: 'app/eventsPortal/eventList/eventList.html',
         controller: 'EventsPortalEventListCtrl',
-        authenticate: true
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
       });
   });
