@@ -1,0 +1,56 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+  <div class="sample tabsdemoDynamicTabs" layout="column" ng-app="MyApp">
+
+    <md-card>
+      <md-card-content>
+        <table width="100%">
+          <td class="eventImage" width="1%">
+            <img src='/api/uploads/{{event.imageid}}/{{event.imagename}}'>
+            <div class="edit"><b>Change Photo</b></div>
+          </td>
+          <td width="45%" style="vertical-align: top; padding-left: 10px;">
+            <table>
+              <tr>
+                <td>
+                  <h1>{{ event.name }}</h1>
+                  <font color="#777777"> {{ buildCatString() }}</font>
+                </td>
+              </tr>
+              <tr><td rowspan="2"><br />{{event.info}}</td></tr>
+            </table>
+          </td>
+          <td width="35%" style="text-align: right; vertical-align: top;">
+            <br /><font color="#777777">
+              Created on {{ event.createdOn| date: 'medium' }}<br />
+              Last updated on {{ event.updatedOn| date: 'medium' }}<br />
+            </font>
+          </td>
+        </table>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+      </div>
+    </md-card>	
+  	<div style="position: fixed; left: 10px; bottom: 10px; font-size: 26px;">
+  		<b title="Number of TDP submissions selected">{{ numSelected }}/{{ numResponses }}</b>
+  	</div>
+  	<md-content class="md-padding">
+  		<md-card ng-repeat="response in list2 track by $index">
+  			<div style="padding-left: 16px">
+  				<table width="100%"><tr>
+					<td><h3>{{ response.team.teamName }}</h3></td>
+					<td><div style="position: absolute; right: 30px; top: 25px;">
+        				<table><tr><td><md-button ng-click="goto($index)">Download file</md-button></td><td>
+						<md-switch class="md-primary" ng-model="response.isSelected" aria-label="Switch 1" ng-change="toggleSelection($index)">Team {{ selected($index) }} selected</md-switch></td></tr></table>
+					</div></td>
+  				</tr></table>
+  				<div ng-repeat="l in list.questions track by $index">	
+  					<b>{{l.question}}</b><br />
+  					{{response.response[$index].answer}}<br /><br />
+  				</div>
+  			</div>
+  		</md-card>
+  	</md-content>
+  </div>
+</div>

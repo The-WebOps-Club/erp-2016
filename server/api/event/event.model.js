@@ -8,6 +8,7 @@ var EventSchema = new Schema({
   info: String,
   venue: String,
   eventTabs: [{ type: Schema.Types.ObjectId, ref: 'EventTab' }],
+  core: { type: Schema.Types.ObjectId, ref: 'User' },
   assignees: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   eventCategory: [{ type: Schema.Types.ObjectId, ref: 'EventList' }],
   createdOn: Date,
@@ -28,7 +29,9 @@ var EventSchema = new Schema({
   imagename: String,
   paidEvent: { type: Boolean, default: false },
   points: [{ type: Number }],
-  winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }]
+  winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+  selectedTeams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
+  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' }
   // sponsoredBy: [{ type: Schema.Types.ObjectId, ref: 'SponsoredBy' }]
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });

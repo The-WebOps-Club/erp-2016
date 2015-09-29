@@ -18,6 +18,8 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/tdpresponse/tdpresponse.socket').register(socket);
+  require('../api/tdpform/tdpform.socket').register(socket);
   require('../api/feedback/feedback.socket').register(socket);
   require('../api/field/field.socket').register(socket);
   require('../api/websiteUser/websiteUser.socket').register(socket);

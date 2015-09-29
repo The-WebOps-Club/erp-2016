@@ -19,6 +19,7 @@ exports.show = function(req, res) {
   .populate('lastUpdatedBy', 'name')
   .populate('assignees', 'name phoneNumber')
   .populate('eventCategory', 'title')
+  .populate('tdpform', '_id')
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }

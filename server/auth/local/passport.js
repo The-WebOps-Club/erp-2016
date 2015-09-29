@@ -10,6 +10,7 @@ exports.setup = function (User, config) {
       User.findOne({
         email: email.toLowerCase()
       }, function(err, user) {
+        console.log(user);
         if (err) return done(err);
 
         if (!user) {
