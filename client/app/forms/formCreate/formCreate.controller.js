@@ -26,7 +26,7 @@ angular.module('erp2015App')
     
     $http.get('/api/departments/').then(function (response) {
         $scope.departments = response.data;
-    })
+    });
     // new form
     $scope.form = {};
     $scope.form.name = '';
@@ -38,7 +38,7 @@ angular.module('erp2015App')
     $scope.change = function() {
         $scope.subs = $filter('filter')($scope.departments, function (d) {return d._id === $scope.form.department;})[0];
         $scope.subs = $scope.subs.subDepartments;
-    }
+    };
     $scope.form.subDepartment = $scope.subs[0];
 
     // previewForm - for preview purposes, form will be copied into this
@@ -54,7 +54,7 @@ angular.module('erp2015App')
 
     // create new field button click
     $scope.addNewField = function() {
-        $scope.addField.new = 'textfield'
+        $scope.addField.new = 'textfield';
 
         // incr field_id counter
         $scope.addField.lastAddedID++;

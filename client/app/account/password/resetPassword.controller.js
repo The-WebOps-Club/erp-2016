@@ -2,14 +2,13 @@
 
 angular.module('erp2015App')
   .controller('ResetPasswordCtrl', function ($scope, $http, $stateParams, $window, $location) {
-    $scope.message = '';
     $scope.newPassword = '';
     $scope.confirmNewPassword = '';
     $scope.submitted = false;
 
     $scope.reset = function() {
         $scope.submitted = true;
-        $scope.message = 'Working...'
+        $scope.message = 'Working...';
 
         $http.post('/api/users/resetPassword/' + $stateParams.token, { newPassword: $scope.newPassword })
         .success(function (message) {

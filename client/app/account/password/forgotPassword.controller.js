@@ -2,11 +2,10 @@
 
 angular.module('erp2015App')
   .controller('ForgotPasswordCtrl', function ($scope, $http) {
-    $scope.message = '';
 
     $scope.forgotPassword = function(form) {
     	$scope.submitted = true;
-        $scope.message = 'Working...'
+        $scope.message = 'Working...';
 
     	if(form.$valid) {
     		$http.post('/api/users/forgotPassword', { email: $scope.reset.email })

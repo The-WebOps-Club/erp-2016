@@ -64,7 +64,6 @@ angular.module('erp2015App')
           function (data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get(function () {
-              console.log('User.save(), user role: ' + currentUser.role);
               deferred.resolve(data);
               return cb(currentUser);
             });

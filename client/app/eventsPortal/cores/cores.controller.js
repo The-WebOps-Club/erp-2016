@@ -45,7 +45,7 @@ angular.module('erp2015App')
 
     $scope.isTeamEvent = function () {
       return !($scope.individualEvent);
-    }
+    };
 
     $scope.maxTeamMembers = 1;
     $scope.individualEvent = $scope.maxTeamMembers == 1;
@@ -53,11 +53,11 @@ angular.module('erp2015App')
     $scope.toggleIndividuality = function() {
       if($scope.individualEvent)
         $scope.maxTeamMembers = 1;
-    }
+    };
 
     $scope.fff = function(b) {
       $scope.maxTeamMembers = b;
-    }
+    };
 
     var handleFileSelect = function(evt) {
       // console.log(evt.currentTarget.files);
@@ -210,5 +210,5 @@ angular.module('erp2015App')
           console.log('File upload error');
         });
       }
-    }
+    };
 });

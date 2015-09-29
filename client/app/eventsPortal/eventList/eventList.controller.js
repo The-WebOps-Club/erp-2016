@@ -81,7 +81,7 @@ angular.module('erp2015App')
           }
         }
       });
-    }
+    };
 
   function photoEditController($scope, $mdDialog, eventList, EventsPortalService, $mdToast, Auth, $document, $upload) {
     $scope.hasRoleCore = Auth.hasRoleCore;
@@ -108,7 +108,7 @@ angular.module('erp2015App')
       };
       reader.readAsDataURL(myfile);
     };
-    setTimeout(function () {angular.element(document.querySelector("#imgFile")).on('change', handleFileSelect2)}, 2000);
+    setTimeout(function () {angular.element(document.querySelector("#imgFile")).on('change', handleFileSelect2);}, 2000);
 
     var dataURItoBlob = function (dataURI) {
       var binary = atob(dataURI.split(',')[1]);

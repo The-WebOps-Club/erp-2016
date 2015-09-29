@@ -26,20 +26,26 @@ function handleError(res, err) {
  * restriction: 'admin'
  */
 
- function festID(count){
-   var id;
-   if(count<10)
-   id = "SHA160000"+count.toString();
-   else if(count>9&&count<100)
-   id="SHA16000"+count.toString();
-   else if(count>99&&count<1000)
-   id="SHA1600"+count.toString();
-   else if(count>999&&count<10000)
-   id="SHA160"+count.toString();
-   else if(count>9999&&count<100000)
-   id = "SHA16"+count.toString();
-   return id;
- }
+function festID (count) {
+  var id;
+  if(count<10) {
+    id = "SHA160000" + count.toString();
+  }
+  else if(count>9 && count<100) {
+    id="SHA16000" + count.toString();
+  }
+  else if(count>99 && count<1000) {
+    id="SHA1600" + count.toString();
+  }
+  else if(count>999 && count<10000) {
+    id="SHA160" + count.toString();
+  }
+  else if(count>9999 && count<100000) {
+    id = "SHA16" + count.toString();
+  }
+  return id;
+}
+
 exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
     if(err) return res.json(500, err);
@@ -52,14 +58,12 @@ exports.index = function (req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log(req.body);
   var newUser = new User(req.body);
-  newUser.role = 'user';
+  newUser.role = 'coord';
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();
-  newUser.roomNumber = "1234";
-  User.count({}, function(err, count) {
+  User.count({}, function (err, count) {
     newUser.festID = festID(count+1);
   });
   newUser.save(function (err, user) {

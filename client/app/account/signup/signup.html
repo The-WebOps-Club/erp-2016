@@ -10,16 +10,31 @@
 
         <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
                                             'has-error': form.name.$invalid && submitted }">
-          <label>Name</label>
+          <label>First Name</label>
 
           <input type="text" name="name" class="form-control" ng-model="user.name"
                  required
                  mongoose-error/>
           <span class="help-block" ng-show="form.name.$error.required && submitted">
-            A name is required
+            First name is required
           </span>
           <span class="help-block" ng-show="form.name.$error.mongoose">
             {{ errors.name }}
+          </span>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.secondName.$valid && submitted,
+                                            'has-error': form.secondName.$invalid && submitted }">
+          <label>Second Name</label>
+
+          <input type="text" name="secondName" class="form-control" ng-model="user.secondName"
+                 required
+                 mongoose-error/>
+          <span class="help-block" ng-show="form.secondName.$error.required && submitted">
+            Second name is required
+          </span>
+          <span class="help-block" ng-show="form.secondName.$error.mongoose">
+            {{ errors.secondName }}
           </span>
         </div>
 
@@ -90,22 +105,6 @@
           </span>
           <span class="help-block" ng-show="form.city.$error.mongoose">
             {{ errors.city }}
-          </span>          
-        </div>
-
-        <div class="form-group" ng-class="{ 'has-success': form.summerLocation.$valid && submitted,
-                                            'has-error': form.summerLocation.$invalid && submitted }">
-          <label>Summer Location</label>
-
-          <input type="text" name="summerLocation" class="form-control" ng-model="user.summerLocation"
-                 required
-                 mongoose-error/>
-          <span class="help-block">Where are you staying during summer vacation ?</span>       
-          <span class="help-block" ng-show="form.summerLocation.$error.required && submitted">
-            Summer location is required
-          </span>
-          <span class="help-block" ng-show="form.summerLocation.$error.mongoose">
-            {{ errors.summerLocation }}
           </span>          
         </div>
 
