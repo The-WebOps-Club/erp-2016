@@ -30,6 +30,7 @@ exports.show = function(req, res) {
 exports.showWeb = function(req, res) {
   Event.findById(req.params.id)
   .populate('eventTabs')
+  .populate('assignees', 'name phoneNumber')
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }

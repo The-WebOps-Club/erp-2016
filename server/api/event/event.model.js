@@ -29,6 +29,7 @@ var EventSchema = new Schema({
   paidEvent: { type: Boolean, default: false },
   points: [{ type: Number }],
   winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }]
+  // sponsoredBy: [{ type: Schema.Types.ObjectId, ref: 'SponsoredBy' }]
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });
 
