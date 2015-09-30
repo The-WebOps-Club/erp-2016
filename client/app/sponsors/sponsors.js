@@ -8,7 +8,7 @@ angular.module('erp2015App')
         templateUrl: 'app/sponsors/sponsors.html',
         controller: 'SponsorsCtrl'
       })
-      .state('sponsor_add',{
+      .state('sponsorAdd',{
         url:'/sponsors/add',
         templateUrl: 'app/sponsors/sponsor_add.html',
         controller: 'SponsorAddCtrl'
