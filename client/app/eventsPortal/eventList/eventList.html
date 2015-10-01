@@ -19,22 +19,22 @@
             <div layout="row" layout-fill layout-padding>
               <div flex>
                 <div class="md-list-item-text">
-                  <h6 class="md-title">Title</h6>
-                  <p>{{ eventList.title | characters:20 :true }}</p>
+                  <h5>Title</h5>
+                  <p class="md-title">{{ eventList.title | characters:20 :true }}</p>
                 </div>
               </div>
 
               <div flex>
                 <div class="md-list-item-text">
-                  <h6 class="md-title"> Created On </h6>
-                  <p>{{ eventList.createdOn | date: 'medium' }}</p>
+                  <h5> Created On </h5>
+                  <p class="md-title">{{ eventList.createdOn | date: 'medium' }}</p>
                 </div>
               </div>
 
               <div flex>
                 <div class="md-list-item-text">
-                  <h6 class="md-title"> Latest Activity </h6>
-                  <p>{{ eventList.updatedOn | date: 'medium' }}</p>
+                  <h5> Latest Activity </h5>
+                  <p class="md-title">{{ eventList.updatedOn | date: 'medium' }}</p>
                 </div>
               </div>
             </div>
@@ -67,15 +67,15 @@
             <div layout="row" layout-fill layout-padding>
               <div flex offset="15">
                 <div class="md-list-item-text">
-                  <h6 class="md-title">Name</h6>
-                  <p>{{ event.name | characters:20 :false }}</h4>
+                  <h5>Name</h5>
+                  <p class="md-title">{{ event.name | characters:20 :false }}</h4>
                 </div>
               </div>
 
               <div flex>
                 <div class="md-list-item-text">
-                  <h6 class="md-title"> Info </h6>
-                  <p>{{ event.info | characters:80 :false }}</p>
+                  <h5> Info </h5>
+                  <p class="md-title">{{ event.info | characters:80 :false }}</p>
                 </div>
               </div>
             </div>
