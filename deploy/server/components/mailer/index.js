@@ -3,19 +3,11 @@
   for sending mails
 */
 var nodemailer = require('nodemailer');
-//var directTransport = require('nodemailer-direct-transport');
+var directTransport = require('nodemailer-direct-transport');
 
 'use strict';
 module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
-// var transporter = nodemailer.createTransport(directTransport());
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'amkvijay@gmail.com',
-        pass: 'muruga1997'
-    }
-});  
-
+var transporter = nodemailer.createTransport(directTransport());
       if(!(initial)){
       	var mailOptions = {
         to: emailTo,

@@ -10,9 +10,6 @@
       <md-button ng-show="isLoggedIn()" ui-sref='profile({ userId: getCurrentUser()._id })'>
         Hello {{ getCurrentUser().name }}
       </md-button>
-      <md-button ng-hide="isLoggedIn()" ui-sref='signup'>
-        Sign up
-      </md-button>
       <md-button ng-hide="isLoggedIn()" ui-sref='login'>
         Login
       </md-button>

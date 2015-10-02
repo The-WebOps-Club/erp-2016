@@ -32,7 +32,7 @@ exports.create = function (req, res) {
     // writeStream.end();
   // }
   var partname=part.name+Math.random().toString(36).slice(2);
-  var filename=path.join('/Library/WebServer/Documents/pics','spons_images',partname);
+  var filename=path.join('/home/saarango/public_html/2016_sponsors/',partname);
 
   console.log(filename);
   fs.writeFile(filename,part.data,function(err,written,buffer){
