@@ -8,11 +8,11 @@ angular.module('erp2015App')
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginCtrl'
       })
-      .state('signup', {
-        url: '/signup',
-        templateUrl: 'app/account/signup/signup.html',
-        controller: 'SignupCtrl'
-      })
+      // .state('signup', {
+      //   url: '/signup',
+      //   templateUrl: 'app/account/signup/signup.html',
+      //   controller: 'SignupCtrl'
+      // })
       .state('settings', {
         url: '/settings',
         templateUrl: 'app/account/settings/settings.html',
