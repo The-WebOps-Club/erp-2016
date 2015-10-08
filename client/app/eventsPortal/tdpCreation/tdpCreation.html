@@ -1,0 +1,60 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>angular-form-builder</title>
+    <link type="text/css" rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="dist/angular-form-builder.css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://code.angularjs.org/1.2.20/angular.min.js"></script>
+    <script type="text/javascript" src="dist/angular-form-builder.js"></script>
+    <script type="text/javascript" src="dist/angular-form-builder-components.js"></script>
+    <script type="text/javascript" src="http://kelp404.github.io/angular-validator/dist/angular-validator.min.js"></script>
+    <script type="text/javascript" src="http://kelp404.github.io/angular-validator/dist/angular-validator-rules.min.js"></script>
+    <script type="text/javascript" src="dist/demo.js"></script>
+</head>
+<body class="container" ng-controller="DemoController">
+    <div class="row">
+        <h1>angular-form-builder</h1>
+        <hr/>
+
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Builder</h3>
+                </div>
+                <div fb-builder="default"></div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div fb-components></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h2>Form</h2>
+        <hr/>
+        <form class="form-horizontal">
+            <div ng-model="input" fb-form="default" fb-default="defaultValue"></div>
+            <div class="form-group">
+                <select ng-model = "selectedEvent">
+                    <option ng-repeat = "myEvent in myEvents" value = "myEvent._id">
+                            {{myEvent.name}}
+                    </option>
+                </select>
+                <div class="col-md-8 col-md-offset-4">
+                    <input type="submit" ng-click="saveJson()" class="btn btn-default"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 footer"></div>
+    </div>
+</body>
+</html>
+	
