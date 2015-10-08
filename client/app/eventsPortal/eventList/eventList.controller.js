@@ -129,7 +129,7 @@ angular.module('erp2015App')
       if(form.$valid) {
         $upload.upload({
           url: 'api/uploads/',
-          file: dataURItoBlob($scope.myCroppedImage2)
+          file: dataURItoBlob($scope.myImage2)
         })
         .success(function (data, status, headers, config) {
           imageid = data.fileId;
