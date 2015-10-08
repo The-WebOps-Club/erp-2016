@@ -289,7 +289,7 @@ function TutController($scope, $mdDialog) {
 }
 
 function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth) {
-  $scope.hasRoleCore = Auth.hasRoleCore;
+  $scope.hasRoleSuperCoord = Auth.isSuperCoord;
   $scope.event = event;
   $scope.selectedEventLists = selectedEventLists;
   $scope.buildCatString = buildCatString;
