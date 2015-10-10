@@ -444,7 +444,8 @@ function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdT
         imageid = data.fileId;
         imagename = uploadfile.name;
         EventsPortalService.updateEvent({
-          imageid: imageid
+          imageid: imageid, 
+          imagename: imagename
         }, event._id).then(function (data) {
           $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
         });
