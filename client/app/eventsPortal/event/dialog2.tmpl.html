@@ -1,16 +1,31 @@
+<!-- 
+<md-dialog aria-label="Mango (Fruit)" flex="50">
+  <div style="padding: 25px;">
+    <table>
+      <tr>
+        <td ng-repeat="tab in xeventTabs" style="padding: 16px;">
+          <md-select class="order_{{tab._id}}" style="width: 100%" ng-model="currentNums[$index]" ng-change="clog($index)">
+            <md-option ng-repeat="xtab in xeventTabs" value="{{xtab.tabNumber}}">{{xtab.name}}</md-option>
+          </md-select>
+        </td>
+      </tr>
+    </table>
+    <md-button class="md-primary md-raised" type="button" ng-click="doReorder()">Update</md-button>
+    <md-button ng-click='cancel()' type="button">Close window</md-button>
+  </div>
+</md-dialog>
+-->
 
-    <md-dialog aria-label="Mango (Fruit)" flex="50">
-      <div style="padding: 25px;">
-        <table>
-          <tr>
-            <td ng-repeat="tab in xeventTabs" style="padding: 16px;">
-              <md-select class="order_{{tab._id}}" style="width: 100%" ng-model="currentNums[$index]" ng-change="clog($index)">
-                <md-option ng-repeat="xtab in xeventTabs" value="{{xtab.tabNumber}}">{{xtab.name}}</md-option>
-              </md-select>
-            </td>
-          </tr>
-        </table>
-        <md-button class="md-primary md-raised" type="button" ng-click="doReorder()">Update</md-button>
-        <md-button ng-click='cancel()' type="button">Close window</md-button>
-      </div>
-    </md-dialog>
+<md-dialog aria-label="Mango (Fruit)" flex="100">
+  <div style="padding: 25px;">
+    <table>
+      <tr>
+        <td ng-repeat="tab in xeventTabs" style="padding: 16px;">
+          {{tab.name}} - <md-input-container aria-label="Mango (Fruit)"><input aria-label="Mango (Fruit)" ng-model="tab.tabNumber" ng-required="true" mongoose-error /></md-input-container>
+        </td>
+      </tr>
+    </table>
+    <md-button class="md-primary md-raised" type="button" ng-click="doReorder()">Update</md-button>
+    <md-button ng-click='cancel()' type="button">Close window</md-button>
+  </div>
+</md-dialog>

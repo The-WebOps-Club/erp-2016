@@ -456,14 +456,16 @@ function photoEditController($scope, $mdDialog, event, EventsPortalService, $mdT
 
 function reorderController($scope, $mdDialog, eventTabs, EventsPortalService, $mdToast, $http) {
   $scope.xeventTabs = eventTabs;
-    $scope.origNums = [];
-    $scope.currentNums = [];
-    $scope.flag = 0;
+  $scope.origNums = [];
+  $scope.currentNums = [];
+  $scope.flag = 0;
 
-    $scope.xeventTabs.forEach(function (tab, index) {
-      $scope.origNums[index] = tab.tabNumber;
-      $scope.currentNums[index] = tab.tabNumber;
-    });
+  console.log($scope.xeventTabs);
+
+  $scope.xeventTabs.forEach(function (tab, index) {
+    $scope.origNums[index] = tab.tabNumber;
+    $scope.currentNums[index] = tab.tabNumber;
+  });
 
   $scope.clog = function (s) {
     var current = $scope.xeventTabs[s];
