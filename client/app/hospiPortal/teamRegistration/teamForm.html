@@ -91,11 +91,20 @@
 						   		<md-option ng-value="min"  ng-repeat="min in mins" >{{min}}</md-option>
 						</md-select>
 					</md-input-container>
-				</div>	
-
+				</div>					
 			</div>
+			<div layout="row">
+			 	<div flex=10 offset=70>
+					<md-button class="md-raised md-primary">Add</md-button>
+				</div>
+		</form>
+				<div flex=10 offset=5>
+					<md-button class="md-raised md-warn" ng-click="close()">Close</md-button>
+				</div>
+			</div>
+
 			
 
-		</form>
+		
 	</md-content>
 </md-dialog>

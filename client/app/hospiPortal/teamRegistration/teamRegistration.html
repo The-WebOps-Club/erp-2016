@@ -6,7 +6,7 @@
 	 <md-button ng-click="click('accStatus')">
 	 	Accomodation Statistics
 	 </md-button>
-	 <md-button ng-click="click('addRoomHostel')">
+	 <md-button ng-click="click('addRoom')">
 	 	Add a Room/Hostel
 	 </md-button>
 	 <md-button ng-click="click('roomMap')">
@@ -17,7 +17,7 @@
 	 </md-button>
 	</div>
 </md-toolbar>
-<div layout="row" style="background-color:#DAC8FF">
+<div layout="row" style="background-color:#C4B4E6">
 	<div flex=80 offset=5>
 		<h4>Teams Registered</h4>
 	</div>
@@ -27,4 +27,67 @@
  		</md-button>
 	</div>
 
+</div>
+<div style="background-color:#DAC8FF">
+<br>
+<div layout="row" >
+	
+	<div flex=35 offset="60">
+		<md-autocomplete
+          
+          md-selected-item="selectedTeam"
+          md-search-text-change="searchedTextChange(searchedText)"
+          md-search-text="searchedText"
+          md-selected-item-change="selectedTeamChange(team)"
+          md-items="team in querySearched(searchedText)"
+          md-item-text="team.teamId"
+          md-min-length="0"
+          placeholder="Search for Teams">
+        <md-item-template ng-show=0>
+          <span md-highlight-text="searchedText" md-highlight-flags="^i">{{team.teamId}} - {{team.name}}</span>
+        </md-item-template>
+        <md-not-found>
+          No matches found for "{{searchedText}}".
+        </md-not-found>
+      </md-autocomplete>
+	</div>
+
+</div>
+<br>
+</div>
+<div class="table-responsive-vertical ">
+	<table id="table" class="table table-hover table-striped table-bordered table-mc-pink">
+		<thead>
+	        <tr layout="row">
+	          <th flex=5>I/C</th>
+	          <th flex=10 ng-click="sortI()"><div layout="row"><div flex>ID  </div><div flex offset=80><i class="material-icons">more_vert</i></div></div></th>
+	          <th flex=20 ng-click="sort()"> <div layout="row"><div flex>Name</div> <div flex offset=85> <i class="material-icons">more_vert</i></div></div></th>
+	          <th flex=15>Checkin</th>
+	          <th flex=15>Checkout</th>
+	          <th flex=10>Mobile</th>
+	          <th flex=5 ng-click="sortn()"><div layout="row"><div flex>No.  </div><div flex><i class="material-icons">more_vert</i></div></div></th>
+	          <th flex=5 ng-click="sortm()"><div layout="row"><div flex>M </div> <div flex> <i class="material-icons">more_vert</i></div></div></th>
+			  <th flex=5 ng-click="sortf()"><div layout="row"><div flex>F </div> <div flex> <i class="material-icons">more_vert</i></div></div></th>
+	          <th flex=10 ng-click="sorts()"><div layout="row"><div flex>Status </div> <div flex offset=75> <i class="material-icons">more_vert</i></div></div></th>
+	        </tr>
+      </thead>
+      <tbody>
+      	<tr ng-repeat="team in querySearched(searchedText) "  layout="row">
+          <td data-title="I/C" flex=5>I</td>
+          <td data-title="I/C" flex=10>{{team.teamId}}</td>
+          <td data-title="Name" flex=20>{{team.name}}</td>
+          <td data-title="Checkin" flex=15>{{team.checkin | date:'MM/dd/yyyy  --  h:mma'}}</td>
+          <td data-title="Checkout" flex=15>{{team.checkout | date:'MM/dd/yyyy --    h:mma'}}</td>
+          <td data-title="Mobile" flex=10>{{team.mobile}}</td>
+          <td data-title="No." flex=5>{{team.number}}</td>
+          <td data-title="M" flex=5>{{team.male}}</td>         
+          <td data-title="F" flex=5>{{team.female}}</td>
+          <td data-title="Status" flex=10><div style="color:green" ng-show="func(team.accStatus)">{{team.accStatus}}</div>
+          			<div style="color:red" ng-show="funcr(team.accStatus)">{{team.accStatus}}</div>
+          			<div style="color:blue" ng-show="funcb(team.accStatus)">{{team.accStatus}}</div>
+          			<div style="color:grey" ng-show="funcg(team.accStatus)">{{team.accStatus}}</div>
+          			<div style="color:orange" ng-show="funca(team.accStatus)">{{team.accStatus}}</div></td>
+        </tr>
+      </tbody>
+	</table>
 </div>

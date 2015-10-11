@@ -9,7 +9,14 @@ var TeamSchema = new Schema({
   city: String,
   dateOfArrival: Date,
   dateOfDeparture: Date,
-  romHistory: String
+  roomHistory: String,
+  checkin: Date,
+  checkout: Date,
+  mobile: String,
+  number: Number,
+  male: Number,
+  female: Number,
+  teamId: String
 });
 
 module.exports = mongoose.model('Team', TeamSchema);
