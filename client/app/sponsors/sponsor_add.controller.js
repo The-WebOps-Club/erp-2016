@@ -43,7 +43,7 @@ angular.module('erp2015App')
     $scope.upload = function(file,cb){
         Upload.upload({
           url:'/api/uploads',
-          file:$scope.file
+          file:$scope.file,
         }).success(function(data){
           cb(null,data)
         }).error(function(err){

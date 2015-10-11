@@ -22,6 +22,7 @@ router.post('/gcmRegister', auth.isAuthenticated(), controller.gcmRegister);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);
+router.post('/makeWalls', auth.hasRole('admin'), controller.makeWalls);
 
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 

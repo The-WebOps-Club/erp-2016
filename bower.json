@@ -17,6 +17,7 @@
     "angular-socket-io": "~0.6.0",
     "angular-tags": "~0.2.10",
     "angular-ui-router": "*",
+<<<<<<< HEAD
     "bootstrap": "~3.1.1",
     "bootstrap-sass-official": "~3.1.1",
     "es5-shim": "~3.0.1",
@@ -26,6 +27,11 @@
     "lodash": "~2.4.1",
     "material-design-icons": "~2.0.0",
     "mdPickers": "~0.3.0",
+=======
+    "ng-file-upload": "8.0.4",
+    "angular-smart-table": "~2.0.2",
+    "angular-permission": "~0.2.0",
+>>>>>>> 4130e94dce9f45d549d6a4d4b84666bdf3a7f6c2
     "ng-facebook": "~0.1.6",
     "ng-file-upload": "8.0.4",
     "ngDialog": "~0.5.1",

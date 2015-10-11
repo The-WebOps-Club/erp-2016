@@ -9,7 +9,7 @@ var notifier = require('../../components/gcm');
 var gcm = require('node-gcm');
 var mailer=require('../../components/mailer');
 var getMembers = require('../wall/wall.controller').getMembers;
-
+var moment = require('moment');
 var NOTIFICATIONSPERPAGE = 10;
 
 // Get list of notifications
@@ -168,17 +168,38 @@ exports.bulkCreate = function(data, callback) {
         done();
       }
       else {
-        Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id, updatedOn: Date.now()} , function (err, notification) {
-         if(err) { return handleError(res, err); }
-         Notification.findById(notification._id)
-         .deepPopulate('user post.wall postedBy.name commentedBy.name')
-         .exec( function (err, notification) {
-           if(notification.user.deviceId){
-            deviceIds = deviceIds.concat(notification.user.deviceId);
+        Notification.find({post: data.post._id, user: member._id, action: data.action}, function (err, notification) {
+          if (notification.length != 0){
+            notification = notification[0]
+            notification.commentedBy.push(data.post.comments.reverse()[0].createdBy._id);
+            notification.updatedOn = Date.now();
+            notification.save(function (err, notification) {
+              if (err) { console.log(err); return validationError(res, err); }
+            });
+            Notification.findById(notification._id)
+              .deepPopulate('user post.wall postedBy.name commentedBy.name')
+              .exec( function (err, notification) {
+                if(notification.user.deviceId){
+                  deviceIds = deviceIds.concat(notification.user.deviceId);
+                }
+                emails.push(notification.user.email);
+                done();
+              });
           }
-          emails.push(notification.user.email);
-          done();
-        });
+          else{
+            Notification.create({post: data.post._id, user: member._id, action: data.action, commentedBy: data.post.comments.reverse()[0].createdBy._id, updatedOn: Date.now()} , function (err, notification) {
+             if(err) { return handleError(res, err); }
+             Notification.findById(notification._id)
+             .deepPopulate('user post.wall postedBy.name commentedBy.name')
+             .exec( function (err, notification) {
+               if(notification.user.deviceId){
+                deviceIds = deviceIds.concat(notification.user.deviceId);
+              }
+              emails.push(notification.user.email);
+              done();
+            });
+          });
+        }
        });
       }
     }
@@ -186,14 +207,20 @@ exports.bulkCreate = function(data, callback) {
   }, function allDone (notAborted, arr) {
     if(data.post.comments.length === 0){
       var message=data.post.createdBy.name +" posted on "+data.post.wall.name;
-      var emailText = message + ":\n" + data.post.info;
+      //var emailText = message + ":\n" + data.post.info;
+      console.log(data.post.wall);
+      
+      var emailText='<img src="http://saarang.org/2014/landing/assets/images/saarang_button.png" style="width:60px;height:60px;"><font size="4" color="blue">Saarang ERP -'+data.post.createdBy.name+ ' has posted on '+data.post.wall.name+
+      '</font><hr><br><br><font size="3">'+data.post.info+'</font><font size="2"><br><br>'+moment(data.post.updatedOn).format('MMMM Do YYYY, h:mm:ss a')+'<br><br><br><a href="http://localhost:9000/profile/'+data.post.wall.parentId+'">View Conversation</a><p>    Thank you,    <br />    Saarang Team  </p></font>';
       notifier(message, deviceIds);
       mailer('[Saarang ERP] ' + data.post.title, emailText, emails, data.post._id, false);
     } else {
       var myComment=data.post.comments.reverse()[0];
       var message=myComment.createdBy.name +" comment on a post by "+
       data.post.createdBy.name+ " on the " + data.post.wall.name+" wall";
-      var emailText = message + ":\n" + myComment.info;
+      //var emailText = message + ":\n" + myComment.info;
+      var emailText='<img src="http://saarang.org/2014/landing/assets/images/saarang_button.png" style="width:60px;height:60px;"><font size="4" color="blue">Saarang ERP -'+myComment.createdBy.name+ ' has commented on a post by '+data.post.createdBy.name+" on the " + data.post.wall.name+"'s wall"+
+      '</font><hr><br><br><font size="3">'+myComment.info+'</font><font size="2"><br><br>'+moment(myComment.updatedOn).format('MMMM Do YYYY, h:mm:ss a')+'<br><br><br><a href="http://localhost:9000/profile/'+data.post.wall.parentId+'">View Conversation</a><p>    Thank you,    <br />    Saarang Team  </p></font>';
       notifier(message, deviceIds);
       mailer('[Saarang ERP] ' + data.post.title , emailText, emails, data.post._id, true);
     }

@@ -9,7 +9,15 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/milans', require('./api/milan'));
+  app.use('/api/sponsors', require('./api/sponsor'));
+  app.use('/api/financePortals', require('./api/financePortal'));
+  app.use('/api/moms', require('./api/mom'));
   app.use('/api/drive', require('./api/drive'));
+  app.use('/api/visitors', require('./api/visitor'));
+  app.use('/api/hospitality/checkins', require('./api/hospitality/checkin'));
+  app.use('/api/hospitality/rooms', require('./api/hospitality/room'));
+  app.use('/api/hospitality/hostels', require('./api/hospitality/hostel'));
   app.use('/api/groups', require('./api/group'));
   app.use('/api/walls', require('./api/wall'));
   app.use('/api/notifications', require('./api/notification'));
@@ -25,6 +33,7 @@ module.exports = function(app) {
   app.use('/api/users', require('./api/user'));
 
   app.use('/auth', require('./auth'));
+  app.use('/auth_visitor', require('./authVisitor'));
   
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
