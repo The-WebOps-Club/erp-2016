@@ -20,6 +20,7 @@ exports.show = function(req, res) {
   .populate('assignees', 'name phoneNumber')
   .populate('eventCategory', 'title')
   .populate('tdpform', '_id')
+  .populate('marqueeNotifs')
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
@@ -32,6 +33,7 @@ exports.showWeb = function(req, res) {
   Event.findById(req.params.id)
   .populate('eventTabs')
   .populate('assignees', 'name phoneNumber')
+  .populate('marqueeNotifs')
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
@@ -55,6 +57,7 @@ exports.myEvents = function(req, res) {
   .populate('assignees', '-salt -hashedPassword -lastSeen -provider')
   .populate('createdBy', '-salt -hashedPassword -lastSeen -provider')
   .populate('lastUpdatedBy', '-salt -hashedPassword -lastSeen -provider')
+  .populate('marqueeNotifs')
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
     if(!events) { return res.sendStatus(404); }

@@ -2,7 +2,8 @@
 
 angular.module('erp2015App')
   .controller('EventsPortalEventCtrl', function ($state, $stateParams, $scope, $http, EventsPortalService, $mdDialog, $location, $mdToast, Auth) {
-    $scope.showButton = false;    
+    $scope.showButton = false;
+    $scope.eventIdFromURL = $stateParams.id;
 
     var id = $stateParams.id;
     EventsPortalService.getEvent(id).then(function (event) {

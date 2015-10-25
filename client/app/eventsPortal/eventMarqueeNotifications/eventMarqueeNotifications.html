@@ -1,0 +1,74 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="md-whiteframe-z1">
+  <md-toolbar class="md-warn">
+    <h1 class="md-toolbar-tools">
+      Please note that both the forms are different and don't combine them. You shouldn't fill both the forms the same time
+    </h1>
+  </md-toolbar>
+</div>
+
+<div layout="row" layout-margin>
+
+  <div class="eventsPortal" flex flex-order="1">
+    <div class="md-whiteframe-z1">
+      <md-toolbar class="md-primary">
+        <h1 class="md-toolbar-tools">
+          Edit existing notifications ( Form-1 )
+        </h1>
+      </md-toolbar>
+
+      <div ng-repeat="notif in notifs track by $index">
+        <md-content layout-padding>
+          <md-input-container>
+            <label>Edit existing notification</label>
+            <input name="title" ng-model="notifs[$index].info" ng-required="true" mongoose-error />
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="form.title.$error.required && submitted">
+              Title is required.
+            </span>
+            <span>{{ errors.other }}</sapn>
+          </div>
+          <md-button ng-click="editNotif($index, notifs[$index].info)" class="md-raised md-primary">Save</md-button>
+          <md-button ng-click="deleteNotif($index)" class="md-raised md-warn">Delete</md-button>
+          
+        </md-content>  
+        <md-divider></md-divider>
+        <md-divider></md-divider>
+        <md-divider></md-divider>
+        <md-divider></md-divider>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="eventsPortal" flex flex-order="2">
+    <div class="md-whiteframe-z1">
+      <md-toolbar class="md-primary">
+        <h1 class="md-toolbar-tools">
+          Create new notifications ( Form-2 )
+        </h1>
+      </md-toolbar>
+
+      <md-content layout-padding>
+        <form name="newNotifForm" novalidate>
+
+          <md-input-container>
+            <label>New notification</label>
+            <input name="title" ng-model="newNotif" ng-required="true" mongoose-error />
+          </md-input-container>
+          <div style="color:red">
+            <span ng-show="newNotifForm.title.$error.required && submitted">
+              Notif is required.
+            </span>
+            <span>{{ errors.other }}</sapn>
+          </div>
+
+          <md-button ng-click="createNotif(newNotif)" class="md-raised md-primary">Create</md-button>
+        </form>
+      </md-content>  
+    </div>
+  </div>
+
+</div>

@@ -42,5 +42,13 @@ angular.module('erp2015App')
         access: {
           allow: ['coord', 'superCoord', 'core', 'admin']
         }                
-      });
+      })
+      .state('eventMarqueeNotifications', {
+        url: '/eventsPortal/eventMarqueeNotifications/:eventId',
+        templateUrl: 'app/eventsPortal/eventMarqueeNotifications/eventMarqueeNotifications.html',
+        controller: 'EventMarqueeNotificationsCtrl',
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
+      });      
   });

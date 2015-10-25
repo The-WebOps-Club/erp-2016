@@ -31,7 +31,8 @@ var EventSchema = new Schema({
   points: [{ type: Number }],
   winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
   selectedTeams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
-  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' }
+  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' },
+  marqueeNotifs: [{ type: Schema.Types.ObjectId, ref: 'MarqueeNotif' }]
   // sponsoredBy: [{ type: Schema.Types.ObjectId, ref: 'SponsoredBy' }]
   // TODO: tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdp' }
 });
