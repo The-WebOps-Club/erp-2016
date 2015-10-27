@@ -35,22 +35,24 @@ exports.show = function(req, res) {
 // Creates a new team in the DB.
 exports.create = function(req, res) {
   req.body.teamLeader = req.user._id;
-  User.find({ festID: {$in: req.body.teamMembers}}, '_id', function(err, results){
-    if(err){
-      console.log(err);
-    }
+  User.find({ festID: {$in: req.body.teamMembers}}, '_id', function (err, results) {
+    if(err) { console.log(err);return handleError(res, err); }
     req.body.teamMembers = results;
-    console.log(req.body.teamMembers);
     // check if the req.body.teamMembers is an array or not
-    if(Object.prototype.toString.call(req.body.teamMembers) != '[object Array]')
+    if(Object.prototype.toString.call(req.body.teamMembers) != '[object Array]') {
       req.body.teamMembers = [];
+    }
 
     req.body.teamMembers.push(req.user._id);
-    console.log(req.body.teamMembers);
-    Team.create(req.body, function(err, team) {
-      if(err) { return handleError(res, err); }
-      return res.json(201, team);
-    });
+
+    if(req.body.teamMembers.length > 1) {
+      Team.create(req.body, function (err, team) {
+        if(err) { return handleError(res, err); }
+        return res.status(201).json(team);
+      });
+    } else {
+      res.sendStatus(400);
+    }
   });
 };
 
