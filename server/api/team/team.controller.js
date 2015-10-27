@@ -111,7 +111,7 @@ exports.leave = function(req, res) {
       });
     }  
   });
-}
+};
 
 // Deletes a team from the DB.
 exports.destroy = function(req, res) {
