@@ -6,7 +6,8 @@ var Event = require('./event.model');
 
 // Get list of events
 exports.index = function(req, res) {
-  Event.find()
+  var currDate = Date.now();
+  Event.find({'startReg': {$lt: currDate}, 'endReg': {$gt: currDate}})
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(events);
