@@ -37,8 +37,13 @@ exports.show = function(req, res) {
 // Creates a new team in the DB.
 exports.create = function(req, res) {
   req.body.teamLeader = req.user._id;
+  var numMembers = req.body.teamMembers.length;
+  for(var i=0; i<numMembers; i++) {
+    req.body.teamMembers[i] = req.body.teamMembers[i].toUpperCase();
+  }
+
   User.find({ festID: {$in: req.body.teamMembers}}, '_id', function (err, results) {
-    if(err) { console.log(err);return handleError(res, err); }
+    if(err) { return handleError(res, err); }
     req.body.teamMembers = results;
     // check if the req.body.teamMembers is an array or not
     if(Object.prototype.toString.call(req.body.teamMembers) != '[object Array]') {
