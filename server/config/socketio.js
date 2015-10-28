@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/college/college.socket').register(socket);
   require('../api/marqueeNotif/marqueeNotif.socket').register(socket);
   require('../api/tdpresponse/tdpresponse.socket').register(socket);
   require('../api/tdpform/tdpform.socket').register(socket);
