@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var CollegeSchema = new Schema({
   collegeName: String,
-  createdOn: { type: Date, default: Date.now(); }
+  createdOn: { type: Date, default: Date.now() }
 });
 
 module.exports = mongoose.model('College', CollegeSchema);
