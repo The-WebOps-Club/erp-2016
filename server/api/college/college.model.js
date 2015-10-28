@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var CollegeSchema = new Schema({
-  name: String,
+  collegeName: String,
   createdOn: { type: Date, default: Date.now(); }
 });
 
