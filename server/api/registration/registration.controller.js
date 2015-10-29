@@ -101,18 +101,24 @@ exports.create = function(req, res) {
                     else
                     {
                       console.log(registration._id);
-                      CurrUser.findById(req.user._id, function (err, user){
-                      console.log(registration._id);
-                        console.log("6 ");
+                      var updated = _.assign(team, { registrations: team.registrations.concat(registration._id) });
+                      updated.save(function (err) {
+                        console.log("7 ");
                         if (err) { return handleError(res, err); }
-                        if(!user) { return res.send(404); }
-                        var updated = _.assign(user, { registrations: user.registrations.concat(registration._id) });
-                        updated.save(function (err) {
-                          console.log("7 ");
-                          if (err) { return handleError(res, err); }
-                          return res.sendStatus(204);
-                        });
+                        return res.sendStatus(204);
                       });
+                      // CurrUser.findById(req.user._id, function (err, user){
+                      // console.log(registration._id);
+                      //   console.log("6 ");
+                      //   if (err) { return handleError(res, err); }
+                      //   if(!user) { return res.send(404); }
+                      //   var updated = _.assign(user, { registrations: user.registrations.concat(registration._id) });
+                      //   updated.save(function (err) {
+                      //     console.log("7 ");
+                      //     if (err) { return handleError(res, err); }
+                      //     return res.sendStatus(204);
+                      //   });
+                      // });
                     }
                   });
                 });
@@ -158,8 +164,11 @@ exports.destroy = function(req, res) {
             if(req.user._id.equals(team.teamLeader)) {
               console.log(team.teamLeader);
               var i=team.eventsRegistered.indexOf(registration.eventRegistered);
+              var j=team.registrations.indexOf(registration.eventRegistered);
               if(i > -1)
                 team.eventsRegistered.splice(i, 1);
+              if(j > -1)
+                team.registrations.splice(j, 1);
               var updated = _.assign(team, { eventsRegistered: team.eventsRegistered });
               updated.save(function (err) {
                 if (err) { return handleError(res, err); }

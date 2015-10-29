@@ -80,7 +80,7 @@ angular.module('erp2015App')
             };
 
     $scope.unregister = function() {
-                    $http.delete('/api/registrations/56325c8c783419141fd67e84', { 
+                    $http.delete('/api/registrations/563267abff5870572149735b', { 
                         
                     })
                     .then(function (message) {
