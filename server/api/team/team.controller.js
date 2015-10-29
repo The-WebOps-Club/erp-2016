@@ -70,7 +70,7 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!team) { return res.send(404); }
     else {
-      if(team.teamLeader.equals(req.user._id)) {
+      if(team.teamLeader.equals(req.user._id) && !team.selfTeam) {
         var updated = _.extend(team, req.body);
         updated.save(function (err) {
           if (err) { return handleError(res, err); }
