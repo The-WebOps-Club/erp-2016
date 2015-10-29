@@ -27,6 +27,7 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   // Check if user is in team
   var flag = true;
+  console.log("zzzz");
   if(req.user.teams.indexOf(req.body.team)==-1) res.send(403);
 
   // Check if team is already registered
@@ -71,7 +72,7 @@ exports.create = function(req, res) {
         });
       });
 
-        if(flag) return res.json(200, registration);
+        //if(flag) return res.json(200, registration);
     });
   });
 };
@@ -99,6 +100,8 @@ exports.destroy = function(req, res) {
     Team.findById(registration.team, function(err, team) {
       if (err) { return handleError(res, err); }
       if(!team) { return res.send(404); }
+      console.log(req.user._id);
+      console.log(team.teamLeader);
       if(req.user._id.equals(team.teamLeader)) {
         console.log(team.teamLeader);
         var i=team.eventsRegistered.indexOf(registration.eventRegistered);

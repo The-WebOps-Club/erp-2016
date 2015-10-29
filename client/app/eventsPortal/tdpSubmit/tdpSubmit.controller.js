@@ -9,7 +9,7 @@ angular.module('erp2015App')
     TDPSubmitService.getRegObject(regID)
       .then(function (regobject) {
         var regstatus = regobject.isSelected;
-        $scope.regStatus = regstatus;
+        //$scope.regStatus = true;
 
       });
 
@@ -41,8 +41,7 @@ angular.module('erp2015App')
                     }).success(function (data, status, headers, config) {
                         console.log(data.fileId);
                         $http.put('/api/registrations' + regID, {
-                            response: data, 
-                            fileExtension: ".pdf",
+                            fileName: file.name,
                             fileId: data.fileId,
                         })
                         .then(function (message) {
@@ -66,7 +65,10 @@ angular.module('erp2015App')
 
     $scope.validate = function() {
                     $http.post('/api/registrations', { 
-                        isSelected: true,
+                        eventRegistered: "56321cce097564520fcb7e47" ,
+                        team: "5630ea7d011ad43337baaedd" ,
+                        registrationTime: Date.now() , 
+                        isSelected: false,
                         fileId: null,
                         fileName: null
                     })
