@@ -62,8 +62,8 @@ exports.create = function(req, res) {
     }
 
     req.body.teamMembers.push(req.user._id);
-
-    if(req.body.teamMembers.length > 1) {
+    var teamLength = req.body.teamMembers.length;
+    if(teamLength > 1) {
       Team.create(req.body, function (err, team) {
         if(err) { return handleError(res, err); }
         else {
