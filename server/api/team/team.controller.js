@@ -100,7 +100,8 @@ exports.leave = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!team) { return res.sendStatus(404); }
     else {
-      if(team.selfTeam) { return res.sendStatus(400); }
+      if(team.selfTeam) { return res.sendStatus(403); }
+      if(team.teamLeader.equals(req.user._id)) { return res.sendStatus(403); }
       var index = team.teamMembers.indexOf(req.user._id);
       if(index > -1) {
         team.teamMembers.splice(index, 1);
