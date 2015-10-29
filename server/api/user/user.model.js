@@ -42,6 +42,7 @@ var UserSchema = new Schema({
   sendEmails: { type: Boolean, default: true },
   dateCreated: { type: Date, default: Date.now },
   interestedFields: [{ type: Schema.Types.ObjectId, ref: 'Field' }],
+  registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }],
   eventsApplied: [{ type: Schema.Types.ObjectId, ref: 'Event' }],
   nick: String,
   profilePic: String,
