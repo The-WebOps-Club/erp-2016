@@ -29,7 +29,9 @@ exports.create = function(req, res) {
   // Check if user is in team
   var flag = true;
   console.log("zzzz");
-  if(req.user.teams.indexOf(req.body.team)==-1) res.send(403);
+  if(req.user.teams.indexOf(req.body.team)==-1) {
+    res.sendStatus(403);
+  }
   // Check if team is already registered
   // Push in event.registrations
   Event.findById(req.body.eventRegistered)
@@ -39,13 +41,13 @@ exports.create = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
     console.log(event.registrations);
-    Team.findById(req.body.team, function(err, team) {
+    Team.findById(req.body.team, function (err, team) {
       console.log("2 ");
       if (err) { return handleError(res, err); }
       else {
-          if(!team) { flag = false; return res.send(404); }
+          if(!team) { flag = false; return res.sendStatus(404); }
           else {
-              req.user.teams.filter(function(n) {
+            req.user.teams.filter(function (n) {
               event.registrations.filter(function (m) {
                 console.log(m.team);
                 console.log(n);
@@ -67,7 +69,7 @@ exports.create = function(req, res) {
               });
             });
            if(flag==false)
-            res.send(422); 
+            res.sendStatus(422); 
           }
       }
     });
@@ -75,10 +77,10 @@ exports.create = function(req, res) {
   }).then(function(){
     if(flag) {
       // Push in team.eventsRegistered
-      Team.findById(req.body.team, function(err, team) {
+      Team.findById(req.body.team, function (err, team) {
         console.log("2 ");
         if (err) { return handleError(res, err); }
-        if(!team) { flag = false; return res.send(404); }
+        if(!team) { flag = false; return res.sendStatus(404); }
         var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
         updated.save(function (err) {
           console.log("3 ");
@@ -87,11 +89,11 @@ exports.create = function(req, res) {
           {
             if(flag) {
               // Push in registration
-              req.body.registrationTime=Date.now();
-              Registration.create(req.body, function(err, registration) {
+              req.body.registrationTime = Date.now();
+              Registration.create(req.body, function (err, registration) {
                 console.log("4 ");
                 if(err) { return handleError(res, err); }
-                Event.findById(req.body.eventRegistered, function(err, event) {
+                Event.findById(req.body.eventRegistered, function (err, event) {
                   var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
                   updated.save(function (err) {
                     console.log("5 ");
@@ -149,22 +151,21 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
   Registration.findOne({'_id': req.params.regId}, function (err, registration) {
     if(err) { return handleError(res, err); }
-    if(!registration) { return res.send(404); }
+    if(!registration) { return res.sendStatus(404); }
     else
     {
       var flag=true;
-      Team.findById(registration.team, function(err, team) {
+      Team.findById(registration.team, function (err, team) {
         if (err) { return handleError(res, err); }
         else {
-          if(!team) { return res.send(404); }
-          else
-          {
+          if(!team) { return res.sendStatus(404); }
+          else {
             console.log(req.user._id);
             console.log(team.teamLeader);
             if(req.user._id.equals(team.teamLeader)) {
               console.log(team.teamLeader);
-              var i=team.eventsRegistered.indexOf(registration.eventRegistered);
-              var j=team.registrations.indexOf(registration.eventRegistered);
+              var i = team.eventsRegistered.indexOf(registration.eventRegistered);
+              var j = team.registrations.indexOf(registration.eventRegistered);
               if(i > -1)
                 team.eventsRegistered.splice(i, 1);
               if(j > -1)
@@ -173,12 +174,13 @@ exports.destroy = function(req, res) {
               updated.save(function (err) {
                 if (err) { return handleError(res, err); }
               });
-              Event.findById(registration.eventRegistered, function(err, event) {
+              Event.findById(registration.eventRegistered, function (err, event) {
                 if (err) { return handleError(res, err); }
-                if(!event) { return res.send(404); }
-                var i=event.registrations.indexOf(registration._id);
-                if(i > -1)
+                if(!event) { return res.sendStatus(404); }
+                var i = event.registrations.indexOf(registration._id);
+                if(i > -1) {
                   event.registrations.splice(i, 1);
+                }
                 var updated = _.assign(event, { registrations: event.registrations });
                 updated.save(function (err) {
                   if (err) { return handleError(res, err); }
@@ -186,11 +188,11 @@ exports.destroy = function(req, res) {
               });
               registration.remove(function(err) {
                 if(err) { return handleError(res, err); }
-                return res.send(204);
+                return res.sendStatus(204);
               });
             }
             else
-              return res.send(403);
+              return res.sendStatus(403);
           }
         }
         
@@ -200,5 +202,5 @@ exports.destroy = function(req, res) {
 };
 
 function handleError(res, err) {
-  return res.send(500, err);
+  return res.status(500).json(err);
 }
