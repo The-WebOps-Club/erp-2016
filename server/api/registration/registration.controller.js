@@ -35,63 +35,71 @@ exports.create = function(req, res) {
   Event.findById(req.body.eventRegistered)
   .populate('registrations', 'team')
   .exec(function (err, event) {
+    console.log("1 ");
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
     console.log(event.registrations);
     req.user.teams.filter(function(n) {
       event.registrations.filter(function (m) {
-        if(m.team == n) {
+        console.log(m.team);
+        console.log(n);
+        if(m.team.equals(n)) {
+          console.log("False");
           flag = false;
           res.send(422);
         }
       });
     });
   }).then(function(){
-    if(!flag)
-
-    // Push in team.eventsRegistered
-    Team.findById(req.body.team, function(err, team) {
-      if (err) { return handleError(res, err); }
-      if(!team) { flag = false; return res.send(404); }
-      var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
-      updated.save(function (err) {
+    if(flag) {
+      // Push in team.eventsRegistered
+      Team.findById(req.body.team, function(err, team) {
+        console.log("2 ");
         if (err) { return handleError(res, err); }
-        return;
-      });
-    });
-  }).then(function(){
-    // Push in registration
-    req.body.registrationTime=Date.now();
-    Registration.create(req.body, function(err, registration) {
-      if(err) { return handleError(res, err); }
-      Event.findById(req.body.eventRegistered, function(err, event) {
-        var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+        if(!team) { flag = false; return res.send(404); }
+        var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
         updated.save(function (err) {
+          console.log("3 ");
           if (err) { return handleError(res, err); }
-          return;
+          else
+          {
+            if(flag) {
+              // Push in registration
+              req.body.registrationTime=Date.now();
+              Registration.create(req.body, function(err, registration) {
+                console.log("4 ");
+                if(err) { return handleError(res, err); }
+                Event.findById(req.body.eventRegistered, function(err, event) {
+                  var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+                  updated.save(function (err) {
+                    console.log("5 ");
+                    console.log(registration._id);
+                    if (err) { return handleError(res, err); }
+
+                    else
+                    {
+                      console.log(registration._id);
+                      CurrUser.findById(req.user._id, function (err, user){
+                      console.log(registration._id);
+                        console.log("6 ");
+                        if (err) { return handleError(res, err); }
+                        if(!user) { return res.send(404); }
+                        var updated = _.assign(user, { registrations: user.registrations.concat(registration._id) });
+                        updated.save(function (err) {
+                          console.log("7 ");
+                          if (err) { return handleError(res, err); }
+                          return res.sendStatus(204);
+                        });
+                      });
+                    }
+                  });
+                });
+              });
+            }
+          }
         });
       });
-
-        //if(flag) return res.json(200, registration);
-    });
-  }).then(function(){
-    //Add registration id to user
-    CurrUser.findById(req.user._id, function (err, user){
-      if (err) { return handleError(res, err); }
-      if(!user) { return res.send(404); }
-      var updated = _.assign(user, { eventsRegistered: user.eventsApplied.push(req.body.eventRegistered) });
-      updated.save(function (err) {
-        if (err) { return handleError(res, err); }
-        return;
-      });
-      var updated2 = _.assign(user, { registrations: user.registrations.push(registration._id) });
-      updated.save(function (err) {
-        if (err) { return handleError(res, err); }
-        return;
-      });
-    });
-    //req.user.registrations.push(registration._id);
-    //req.user.eventsApplied.push(req.body.eventsRegistered);
+    }
   });
 };
 

@@ -65,12 +65,23 @@ angular.module('erp2015App')
 
     $scope.validate = function() {
                     $http.post('/api/registrations', { 
-                        eventRegistered: "56321cce097564520fcb7e47" ,
+                        eventRegistered: "56321d3f097564520fcb7e58" ,
                         team: "5630ea7d011ad43337baaedd" ,
                         registrationTime: Date.now() , 
                         isSelected: false,
                         fileId: null,
                         fileName: null
+                    })
+                    .then(function (message) {
+                        $scope.regStatus = true;
+                        
+                        window.alert(message);
+                    });
+            };
+
+    $scope.unregister = function() {
+                    $http.delete('/api/registrations/', { 
+                        
                     })
                     .then(function (message) {
                         $scope.regStatus = true;
