@@ -79,7 +79,7 @@ exports.create = function(req, res) {
         }
       });
     } else {
-      res.sendStatus(400);
+      return res.sendStatus(400);
     }
   });
 };
