@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Team = require('./team.model');
 var User = require('../user/user.model');
+var Event = require('../event/event.model');
 
 // Get list of teams of a user
 exports.index = function(req, res) {
@@ -17,9 +18,19 @@ exports.index = function(req, res) {
         model: 'User',
         select: 'name'
       };
+      var events = {
+        path: 'teams.eventsRegistered',
+        model: 'Event',
+        select: 'name'
+      };
       User.populate(user, name, function (err, teams) {
-        console.log(teams.teams);
-        return res.json(teams.teams);
+        // console.log(teams.teams);
+        Event.populate(user, events, function (err, teams) {
+          console.log('err', err);
+          console.log(teams.teams);
+          return res.json(teams.teams);
+        });
+        // return res.json(teams.teams);
       });
     }
   });
