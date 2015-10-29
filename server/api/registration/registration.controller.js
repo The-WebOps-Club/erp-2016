@@ -5,6 +5,7 @@ var Registration = require('./registration.model');
 var User = require('../websiteUser/websiteUser.model');
 var Team = require('../team/team.model');
 var Event = require('../event/event.model');
+var CurrUser = require('../user/user.model');
 
 // Get list of registrations
 exports.index = function(req, res) {
@@ -29,7 +30,6 @@ exports.create = function(req, res) {
   var flag = true;
   console.log("zzzz");
   if(req.user.teams.indexOf(req.body.team)==-1) res.send(403);
-
   // Check if team is already registered
   // Push in event.registrations
   Event.findById(req.body.eventRegistered)
@@ -74,6 +74,24 @@ exports.create = function(req, res) {
 
         //if(flag) return res.json(200, registration);
     });
+  }).then(function(){
+    //Add registration id to user
+    CurrUser.findById(req.user._id, function (err, user){
+      if (err) { return handleError(res, err); }
+      if(!user) { return res.send(404); }
+      var updated = _.assign(user, { eventsRegistered: user.eventsApplied.push(req.body.eventRegistered) });
+      updated.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return;
+      });
+      var updated2 = _.assign(user, { registrations: user.registrations.push(registration._id) });
+      updated.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return;
+      });
+    });
+    //req.user.registrations.push(registration._id);
+    //req.user.eventsApplied.push(req.body.eventsRegistered);
   });
 };
 
