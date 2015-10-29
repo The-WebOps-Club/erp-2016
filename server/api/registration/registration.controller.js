@@ -45,33 +45,34 @@ exports.create = function(req, res) {
         }
       });
     });
-  });
-  if(!flag)
+  }).then(function(){
+    if(!flag)
 
-  // Push in team.eventsRegistered
-  Team.findById(req.body.team, function(err, team) {
-    if (err) { return handleError(res, err); }
-    if(!team) { flag = false; return res.send(404); }
-    var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
-    updated.save(function (err) {
+    // Push in team.eventsRegistered
+    Team.findById(req.body.team, function(err, team) {
       if (err) { return handleError(res, err); }
-      return;
-    });
-  });
-
-  // Push in registration
-  req.body.registrationTime=Date.now();
-  Registration.create(req.body, function(err, registration) {
-    if(err) { return handleError(res, err); }
-    Event.findById(req.body.eventRegistered, function(err, event) {
-      var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+      if(!team) { flag = false; return res.send(404); }
+      var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
       updated.save(function (err) {
         if (err) { return handleError(res, err); }
         return;
       });
     });
+  }).then(function(){
+    // Push in registration
+    req.body.registrationTime=Date.now();
+    Registration.create(req.body, function(err, registration) {
+      if(err) { return handleError(res, err); }
+      Event.findById(req.body.eventRegistered, function(err, event) {
+        var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+        updated.save(function (err) {
+          if (err) { return handleError(res, err); }
+          return;
+        });
+      });
 
-      if(flag) return res.json(200, registration);
+        if(flag) return res.json(200, registration);
+    });
   });
 };
 

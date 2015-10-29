@@ -1,8 +1,18 @@
 'use strict';
 
 angular.module('erp2015App')
-  .controller('tdpSubmitCtrl',function ($scope,$resource, $state, $http, $upload) {
+  .controller('tdpSubmitCtrl',function ($scope,$resource, TDPSubmitService, $state, $http, $upload) {
     console.log("Working....");
+
+    var regID="";
+    //Checking registration status
+    TDPSubmitService.getRegObject(regID)
+      .then(function (regobject) {
+        var regstatus = regobject.isSelected;
+        $scope.regStatus = regstatus;
+
+      });
+
     var handleFileSelect = function(evt) {
       // console.log(evt.currentTarget.files);
       var myfile = evt.currentTarget.files[0];
@@ -30,7 +40,7 @@ angular.module('erp2015App')
                         console.log('progress: ' + $scope.progressPercentage + '% ' + evt.config.file.name);
                     }).success(function (data, status, headers, config) {
                         console.log(data.fileId);
-                        $http.post('/api/tdpresponses', {
+                        $http.put('/api/registrations' + regID, {
                             response: data, 
                             fileExtension: ".pdf",
                             fileId: data.fileId,
@@ -42,7 +52,7 @@ angular.module('erp2015App')
                     });
                 }
                 else{
-                    $http.post('/api/tdpresponses', { 
+                    $http.put('/api/registrations' + regID , { 
                         formValues: null,
                         formId: null,
                     })
@@ -52,6 +62,19 @@ angular.module('erp2015App')
                         window.alert(message);
                     });
                 }
+            };
+
+    $scope.validate = function() {
+                    $http.post('/api/registrations', { 
+                        isSelected: true,
+                        fileId: null,
+                        fileName: null
+                    })
+                    .then(function (message) {
+                        $scope.regStatus = true;
+                        
+                        window.alert(message);
+                    });
             };
     // var sponsors=$resource('/api/sponsors');
     // $scope.all_sponsors = sponsors.query();

@@ -2,9 +2,9 @@
 
 <div class="jumbotron col-sm-offset-3 col-sm-6">
 
-    <div class="row" ng-hide="regStatus">
+    <div class="row">
         <div class="col-sm-12">
-            <h2 class="text-center">Register for an event</h2>
+            <h2 class="text-center">Submit a TDP form</h2>
         </div>
 
         <div class="col-sm-12">
@@ -18,13 +18,20 @@
                 </div> -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <a ng-href = "/api/users" target="_blank"><h4 class="text-center">Event name</h4></a>
+                        <a ng-href = "/api/users" target="_blank"><h4 class="text-center"> Download the app questionnaire </h4></a>
                         <fieldset ng-show="true" class="col-sm-12">
+                            <p>TDP File: </p>
+                            <div class="alert alert-warning">Only one pdf file per application allowed. Warning: Submitting a second pdf file will replace your original submission.</div>
+                            <a ng-href="api/uploads/{{form.fileId}}/{{form.form.name}}.zip" target="_blank" ng-if="form.fileId">Download your previous submission</a>
+                            <input class="btn" type="file" ng-file-select="" ng-model="file" name="file" accept="application/pdf" required="">
                             <div>
                             <div class="alert alert-info">
-                                Event Details
+                                Note that if you upload a file, you have automatically applied for that position. 
                             </div>
                                 <br>
+                                <progressbar class="progress-striped active" max="100" value="progressPercentage">
+                                    <i>{{progressPercentage}}%</i>
+                                </progressbar>
                             </div>
                         </fieldset>
                     </div>
@@ -33,22 +40,20 @@
             <br>
             <div>
                 <p class="text-center">
-                    <button class="btn btn-primary" type="button" ng-click="validate()"><span class="glyphicon glyphicon-floppy"></span>Register for event</button>
+                    <button class="btn btn-primary" type="button" ng-click="save()"><span class="glyphicon glyphicon-floppy"></span> Save</button>
                 </p>
                 <div class="text-center">
                     <a ng-href="/coordPortal/dashboard">Return to dashboard</a>
                 </div>
             </div>
         </div>
-        <br>
         <div class="col-sm-12">
             <form name="myForm">
                
                 <br>
             </form>
         </div>
-        </div>
-    <div class="row" ng-show="regStatus">
+    <div class="row">
         <div class="col-sm-12">
             <h2 class="text-center">Submit a TDP form</h2>
         </div>
