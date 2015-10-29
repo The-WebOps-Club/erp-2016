@@ -39,7 +39,7 @@ exports.create = function(req, res) {
   .exec(function (err, event) {
     console.log("1 ");
     if (err) { return handleError(res, err); }
-    if(!event) { return res.send(404); }
+    if(!event) { return res.sendStatus(404); }
     console.log(event.registrations);
     Team.findById(req.body.team, function (err, team) {
       console.log("2 ");
@@ -47,6 +47,7 @@ exports.create = function(req, res) {
       else {
           if(!team) { flag = false; return res.sendStatus(404); }
           else {
+            // check if user has already registered for the event or not
             req.user.teams.filter(function (n) {
               event.registrations.filter(function (m) {
                 console.log(m.team);
