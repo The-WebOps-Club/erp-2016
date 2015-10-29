@@ -39,17 +39,39 @@ exports.create = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
     console.log(event.registrations);
-    req.user.teams.filter(function(n) {
-      event.registrations.filter(function (m) {
-        console.log(m.team);
-        console.log(n);
-        if(m.team.equals(n)) {
-          console.log("False");
-          flag = false;
-          res.send(422);
-        }
-      });
+    Team.findById(req.body.team, function(err, team) {
+      console.log("2 ");
+      if (err) { return handleError(res, err); }
+      else {
+          if(!team) { flag = false; return res.send(404); }
+          else {
+              req.user.teams.filter(function(n) {
+              event.registrations.filter(function (m) {
+                console.log(m.team);
+                console.log(n);
+                if(team.teamMembers>event.maxTeamMembers || team.teamMembers<event.minTeamMembers)
+                {
+                  flag = false;
+                  // res.send(422);
+                }
+                if(Date.now()<event.startReg || Date.now()>event.endReg)
+                {
+                  flag = false;
+                  // res.send(422);
+                }
+                if(m.team.equals(n)) {
+                  console.log("False");
+                  flag = false;
+                  // res.send(422);
+                }
+              });
+            });
+           if(flag==false)
+            res.send(422); 
+          }
+      }
     });
+      
   }).then(function(){
     if(flag) {
       // Push in team.eventsRegistered

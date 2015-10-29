@@ -9,7 +9,7 @@ angular.module('erp2015App')
     TDPSubmitService.getRegObject(regID)
       .then(function (regobject) {
         var regstatus = regobject.isSelected;
-        $scope.regStatus = true;
+        //$scope.regStatus = true;
 
       });
 
