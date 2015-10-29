@@ -67,15 +67,28 @@ exports.create = function(req, res) {
       Team.create(req.body, function (err, team) {
         if(err) { return handleError(res, err); }
         else {
-          User.findById(req.user._id, function (err, currUser) {
-            currUser.teams.push(team._id);
-            currUser.save(function (err) {
-              if(err) { return handleError(res, err); }
-              else {
+          User.find({'_id': {$in: req.body.teamMembers} }, function (err, users) {
+            var userLength = users.length;
+            for(var i=0; i<userLength; i++) {
+              users[i].teams.push(team._id);
+              users[i].save(function (err) {
+                if (err) { return handleError(res, err); }
+              }).then(function () {
                 return res.status(201).json(team);
-              }
-            });
+              });
+            }
           });
+
+          // User.findById(req.user._id, function (err, currUser) {
+          //   currUser.teams.push(team._id);
+          //   currUser.save(function (err) {
+          //     if(err) { return handleError(res, err); }
+          //     else {
+          //       return res.status(201).json(team);
+          //     }
+          //   });
+          // });
+
         }
       });
     } else {
