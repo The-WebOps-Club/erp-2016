@@ -55,7 +55,17 @@ exports.create = function(req, res) {
     if(req.body.teamMembers.length > 1) {
       Team.create(req.body, function (err, team) {
         if(err) { return handleError(res, err); }
-        return res.status(201).json(team);
+        else {
+          User.findById(req.user._id, function (err, currUser) {
+            currUser.teams.push(team._id);
+            currUser.save(function (err) {
+              if(err) { return handleError(res, err); }
+              else {
+                return res.status(201).json(team);
+              }
+            });
+          });
+        }
       });
     } else {
       res.sendStatus(400);
