@@ -26,8 +26,8 @@ exports.index = function(req, res) {
       User.populate(user, name, function (err, teams) {
         // console.log(teams.teams);
         Event.populate(user, events, function (err, teams) {
-          console.log('err', err);
-          console.log(teams.teams);
+          // console.log('err', err);
+          // console.log(teams.teams);
           return res.json(teams.teams);
         });
         // return res.json(teams.teams);

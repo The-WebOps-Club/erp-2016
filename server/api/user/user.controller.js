@@ -59,7 +59,7 @@ exports.index = function (req, res) {
  */
 exports.create = function (req, res, next) {
   var newUser = new User(req.body);
-  newUser.role = 'coord';
+  newUser.role = 'user';
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
   newUser.updatedOn = Date.now();

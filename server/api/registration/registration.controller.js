@@ -150,7 +150,7 @@ exports.update = function(req, res) {
 
 // Deletes a registration from the DB.
 exports.destroy = function(req, res) {
-  Registration.findOne({'_id': req.params.regId}, function (err, registration) {
+  Registration.findOne({'team': req.body.teamId, 'eventRegistered': req.body.eventId}, function (err, registration) {
     if(err) { return handleError(res, err); }
     if(!registration) { return res.sendStatus(404); }
     else
