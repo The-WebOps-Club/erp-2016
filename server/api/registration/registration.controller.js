@@ -105,7 +105,9 @@ exports.create = function(req, res) {
                             updated.save(function (err) {
                               console.log("7 ");
                               if (err) { return handleError(res, err); }
-                              return res.status(204).json(team);
+                              // console.log(err);
+                              // console.log(updated);
+                              res.status(204).json(updated);
                             });
                             // CurrUser.findById(req.user._id, function (err, user){
                             // console.log(registration._id);
