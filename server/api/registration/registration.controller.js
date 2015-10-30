@@ -69,14 +69,10 @@ exports.create = function(req, res) {
                 }
               });
             });
-           if(flag==false)
-            res.sendStatus(422); 
-          }
-      }
-    });
-      
-  }).then(function(){
-    if(flag) {
+            if(flag===false) {
+              res.sendStatus(422); 
+            } else {
+
       // Push in team.eventsRegistered
       Team.findById(req.body.team, function (err, team) {
         console.log("2 ");
@@ -130,8 +126,72 @@ exports.create = function(req, res) {
           }
         });
       });
-    }
+
+
+            }
+          }
+      }
+    });
+      
   });
+
+  // .then(function(){
+  //   if(flag) {
+  //     // Push in team.eventsRegistered
+  //     Team.findById(req.body.team, function (err, team) {
+  //       console.log("2 ");
+  //       if (err) { return handleError(res, err); }
+  //       if(!team) { flag = false; return res.sendStatus(404); }
+  //       var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
+  //       updated.save(function (err) {
+  //         console.log("3 ");
+  //         if (err) { return handleError(res, err); }
+  //         else
+  //         {
+  //           if(flag) {
+  //             // Push in registration
+  //             req.body.registrationTime = Date.now();
+  //             Registration.create(req.body, function (err, registration) {
+  //               console.log("4 ");
+  //               if(err) { return handleError(res, err); }
+  //               Event.findById(req.body.eventRegistered, function (err, event) {
+  //                 var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+  //                 updated.save(function (err) {
+  //                   console.log("5 ");
+  //                   console.log(registration._id);
+  //                   if (err) { return handleError(res, err); }
+
+  //                   else
+  //                   {
+  //                     console.log(registration._id);
+  //                     var updated = _.assign(team, { registrations: team.registrations.concat(registration._id) });
+  //                     updated.save(function (err) {
+  //                       console.log("7 ");
+  //                       if (err) { return handleError(res, err); }
+  //                       return res.sendStatus(204);
+  //                     });
+  //                     // CurrUser.findById(req.user._id, function (err, user){
+  //                     // console.log(registration._id);
+  //                     //   console.log("6 ");
+  //                     //   if (err) { return handleError(res, err); }
+  //                     //   if(!user) { return res.send(404); }
+  //                     //   var updated = _.assign(user, { registrations: user.registrations.concat(registration._id) });
+  //                     //   updated.save(function (err) {
+  //                     //     console.log("7 ");
+  //                     //     if (err) { return handleError(res, err); }
+  //                     //     return res.sendStatus(204);
+  //                     //   });
+  //                     // });
+  //                   }
+  //                 });
+  //               });
+  //             });
+  //           }
+  //         }
+  //       });
+  //     });
+  //   }
+  // });
 };
 
 // Updates an existing registration in the DB.
