@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Team = require('./team.model');
 var User = require('../user/user.model');
 var Event = require('../event/event.model');
+var Registration = require('../registration/registration.model');
 
 // Get list of teams of a user
 exports.index = function(req, res) {
@@ -162,7 +163,11 @@ exports.destroy = function(req, res) {
       if(team.teamLeader.equals(req.user._id)) {
         team.remove(function (err) {
           if(err) { return handleError(res, err); }
-          return res.sendStatus(204);
+          else {
+            Registration.find({ team: req.params.id }).remove(function () {
+              return res.sendStatus(204);
+            });
+          }
         });
       } else {
         return res.send(403).json('Only team leader can delete the team');

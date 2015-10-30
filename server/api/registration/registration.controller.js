@@ -5,7 +5,7 @@ var Registration = require('./registration.model');
 var User = require('../websiteUser/websiteUser.model');
 var Team = require('../team/team.model');
 var Event = require('../event/event.model');
-var CurrUser = require('../user/user.model');
+// var CurrUser = require('../user/user.model');
 
 // Get list of registrations
 exports.index = function(req, res) {
