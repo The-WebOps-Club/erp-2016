@@ -105,7 +105,7 @@ exports.create = function(req, res) {
                             updated.save(function (err) {
                               console.log("7 ");
                               if (err) { return handleError(res, err); }
-                              return res.sendStatus(204);
+                              return res.status(204).json(team);
                             });
                             // CurrUser.findById(req.user._id, function (err, user){
                             // console.log(registration._id);
@@ -211,7 +211,7 @@ exports.update = function(req, res) {
 
 // Deletes a registration from the DB.
 exports.destroy = function(req, res) {
-  Registration.findOne({'team': req.body.teamId, 'eventRegistered': req.body.eventId}, function (err, registration) {
+  Registration.findOne({'team': req.params.teamId, 'eventRegistered': req.params.eventId}, function (err, registration) {
     if(err) { return handleError(res, err); }
     if(!registration) { return res.sendStatus(404); }
     else
@@ -227,7 +227,7 @@ exports.destroy = function(req, res) {
             if(req.user._id.equals(team.teamLeader)) {
               console.log(team.teamLeader);
               var i = team.eventsRegistered.indexOf(registration.eventRegistered);
-              var j = team.registrations.indexOf(registration.eventRegistered);
+              var j = team.registrations.indexOf(registration._id);
               if(i > -1)
                 team.eventsRegistered.splice(i, 1);
               if(j > -1)
