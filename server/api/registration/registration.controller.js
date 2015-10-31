@@ -47,21 +47,19 @@ exports.create = function(req, res) {
       else {
         if(!team) { flag = false; return res.sendStatus(404); }
         else {
+          if(team.teamMembers>event.maxTeamMembers || team.teamMembers<event.minTeamMembers) {
+            flag = false;
+            // res.send(422);
+          }
+          if(Date.now()<event.startReg || Date.now()>event.endReg) {
+            flag = false;
+            // res.send(422);
+          }
           // check if user has already registered for the event or not
           req.user.teams.filter(function (n) {
             event.registrations.filter(function (m) {
               console.log(m.team);
               console.log(n);
-              if(team.teamMembers>event.maxTeamMembers || team.teamMembers<event.minTeamMembers)
-              {
-                flag = false;
-                // res.send(422);
-              }
-              if(Date.now()<event.startReg || Date.now()>event.endReg)
-              {
-                flag = false;
-                // res.send(422);
-              }
               if(m.team.equals(n)) {
                 console.log("False");
                 flag = false;
