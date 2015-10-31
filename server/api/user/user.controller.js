@@ -9,6 +9,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Team = require('../team/team.model');
+var College = require('../college/college.model');
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
@@ -66,26 +67,34 @@ exports.create = function (req, res, next) {
   User.count({}, function (err, count) {
     newUser.festID = festID(count+1);
   });
-  newUser.save(function (err, user) {
-    if (err) { console.log(err); return validationError(res, err); }
-    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    
-    var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
-    newTeam.save(function (err, team) {
-      if(err) { return handleError(res, err); }
-      User.findById(user._id, function (err, user) {
-        if(err) return validationError(res, err);
-        if(!user) return res.sendStatus(404);
-        user.teams = [team._id];
-        user.selfTeam = team._id;
-        user.save(function (err) {
-          if(err) return validationError(res, err);
+  College.findById(req.body.college, function (err, college) {
+    if (err) { return handleError(res, err); }
+    if(!college) { return res.sendStatus(400); }
+    else {
+
+      newUser.save(function (err, user) {
+        if (err) { console.log(err); return validationError(res, err); }
+        var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+        
+        var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
+        newTeam.save(function (err, team) {
+          if(err) { return handleError(res, err); }
+          User.findById(user._id, function (err, user) {
+            if(err) return validationError(res, err);
+            if(!user) return res.sendStatus(404);
+            user.teams = [team._id];
+            user.selfTeam = team._id;
+            user.save(function (err) {
+              if(err) return validationError(res, err);
+              return;
+            });
+          });
           return;
         });
+        res.json({ token: token });
       });
-      return;
-    });
-    res.json({ token: token });
+      
+    }
   });
 };
 
