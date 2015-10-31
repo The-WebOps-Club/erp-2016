@@ -28,11 +28,6 @@ function isAuthenticated() {
       User.findById(req.user._id, function (err, user) {
         if (err) return next(err);
         if (!user) return res.send(401);
-
-        user.lastSeen = Date.now();
-        user.save(function(err) {
-          if(err) return res.send(err);
-        });
         req.user = user;
         next();
       });
