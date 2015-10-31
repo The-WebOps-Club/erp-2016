@@ -80,6 +80,15 @@ exports.create = function(req, res) {
                 if (err) { return handleError(res, err); }
               }).then(function () {
                 return res.status(201).json(team);
+                // team
+                //   .populate('teamLeader', 'name _id')
+                //   .populate('teamMembers', 'name _id', function (err, updatedTeam) {
+                //     if(err) {
+                //       return res.status(201).json(team);
+                //     } else {
+                //       return res.status(201).json(updatedTeam);
+                //     }
+                //   });
               });
             }
           });
