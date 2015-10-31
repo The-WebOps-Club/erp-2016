@@ -52,6 +52,10 @@ exports.create = function(req, res) {
   var numMembers = req.body.teamMembers.length;
   for(var i=0; i<numMembers; i++) {
     req.body.teamMembers[i] = req.body.teamMembers[i].toUpperCase();
+    if(req.user.festID === req.body.teamMembers[i]) {
+      // check if user is entering his own shaastra id
+      req.body.teamMembers.splice(i, 1);
+    }
   }
 
   User.find({ festID: {$in: req.body.teamMembers}}, '_id', function (err, results) {
