@@ -176,7 +176,7 @@ exports.me = function (req, res, next) {
     if (!user) return res.sendStatus(401);
     res.json(user);
   })
-  .populate('selfTeam');
+  .populate('selfTeam', 'teamName _id');
 };
 
 /**
