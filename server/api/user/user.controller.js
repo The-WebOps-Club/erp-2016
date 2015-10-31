@@ -89,6 +89,20 @@ exports.create = function (req, res, next) {
   });
 };
 
+exports.addIITM = function (req, res) {
+  User.find({}, function (err, users) {
+    var numUsers = users.length;
+    for(var i=0; i<numUsers; i++) {
+      users[i].college = "5630db6a7abd35b1054fe91b";
+      users[i].save(function (err) {
+        if (err) { return handleError(res, err); }
+      }).then(function () {
+        return res.sendStatus(204);
+      });
+    }
+  });
+};
+
 /**
  * Get a single user
  */

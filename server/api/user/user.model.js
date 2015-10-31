@@ -32,7 +32,7 @@ var UserSchema = new Schema({
   gender: { type: Boolean, default: true },
   age: Number,
   branch: { type: String, default: '' },
-  college: { type: String, default: '' },
+  college: { type: Schema.Types.ObjectId, ref: 'College' },
   //1 for school student, 0 for false
   schoolStudent: { type: Boolean, default: false },
   wantAccomodation: { type: Boolean, default: false },
