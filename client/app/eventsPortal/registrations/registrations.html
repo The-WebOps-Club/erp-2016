@@ -54,6 +54,10 @@
       </h2>
     </md-toolbar>
     
+    <button class="btn btn-link" ng-click="exportToExcel('#table1')">
+      <span class="glyphicon glyphicon-share"></span> Export to Excel
+    </button>
+
     <table border="1" style="width:100%" id="table1">
     <thead>
         <tr>
@@ -75,9 +79,6 @@
       </tbody>
     </table>
 
-    <button class="btn btn-link" ng-click="exportToExcel('#table1')">
-            <span class="glyphicon glyphicon-share"></span> Export to Excel
-        </button>
   </div>
 
 </div>
