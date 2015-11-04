@@ -15,6 +15,35 @@ exports.index = function(req, res) {
   });
 };
 
+// Get list of registrations for a particular event
+exports.showforevent = function(req, res) {
+  Registration.find({'eventRegistered': req.params.eventId}, function (err, registrations) {
+    if(err) { return handleError(res, err); }
+  })
+  .populate('team', 'teamMembers teamName teamLeader')
+  .exec(function (err, user) {
+    if(err) { return handleError(res, err); }
+    if(!user) { return res.sendStatus(404); }
+    else {
+      var teammembers = {
+        path: 'team.teamMembers',
+        model: 'User',
+        select: 'name festID'
+      };
+      User.populate(user, teammembers, function (err, users) {
+        // console.log(teams.teams);
+          // console.log('err', err);
+          // console.log(teams.teams);
+          console.log('zzzzz');
+          console.log(user); 
+          return res.json(users);
+          return res.json(200, registrations);
+        // return res.json(teams.teams);
+      });
+    }
+  });
+};
+
 // Get a single registration
 exports.show = function(req, res) {
   Registration.findById(req.params.id, function (err, registration) {

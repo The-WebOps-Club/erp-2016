@@ -50,5 +50,13 @@ angular.module('erp2015App')
         access: {
           allow: ['coord', 'superCoord', 'core', 'admin']
         }                
-      });      
+      })
+      .state('registrations', {
+        url: '/eventsPortal/registrations/:eventId',
+        templateUrl: 'app/eventsPortal/registrations/registrations.html',
+        controller: 'RegistrationsCtrl',
+        access: {
+          allow: ['coord', 'superCoord', 'core', 'admin']
+        }                
+      });     
   });
