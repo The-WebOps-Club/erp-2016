@@ -10,6 +10,8 @@ var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Team = require('../team/team.model');
 var College = require('../college/college.model');
+var api_key = '';
+var sendgrid = require('sendgrid')(api_key);
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
@@ -46,6 +48,25 @@ function festID (count) {
   }
   return id;
 }
+
+// exports.sendMail = function (req, res) {
+//   var text_body = "Hello,\n\nWe are delighted to have you as a registered member.\n\nYou can create your teams and register to events or workshops in your Dashboard(http://shaastra.org/#/dashboard)\n\nStay tuned to our pages for regular updates,\nFacebook: https://www.facebook.com/Shaastra/\nTwitter: https://twitter.com/ShaastraIITM\nYouTube: https://www.youtube.com/user/iitmshaastra\n\nBest,\nShaastra 2016 team";
+//   var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\"> <tr> <td> <h2>Hello,</h2> <p>We are delighted to have you as a registered member.</p> <p>You can create your teams and register to events or workshops in your <a target='_blank' href='http://shaastra.org/#/dashboard'>Dashboard</a></p> <p>Stay tuned to our pages for regular updates,</p> <p> <a target='_blank' href='https://www.facebook.com/Shaastra/'>Facebook</a>, <a target='_blank' href='https://twitter.com/ShaastraIITM'>Twitter</a>, <a target='_blank' href='https://www.youtube.com/user/iitmshaastra'>YouTube</a> </p> Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
+//   var params = {
+//     to: 'mku1990@gmail.com',
+//     from: 'noreply@shaastra.org',
+//     fromname: 'Shaastra WebOps',
+//     subject: 'Welcome to Shaastra 2016',
+//     replyto: 'webops@shaastra.org',
+//     text: text_body,
+//     html: html_body
+//   };
+//   var email = new sendgrid.Email(params);
+//   sendgrid.send(email, function (err, json) {
+//     if (err) { console.log('err', err); return handleError(res, err); }
+//     console.log(json);
+//   });
+// };
 
 exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {
@@ -91,7 +112,26 @@ exports.create = function (req, res, next) {
           });
           return;
         });
+
+        var text_body = "Hello " + user.name + " " + user.secondName + ",\n\nWe are delighted to have you as a registered member.\n\nYou can create your teams and register to events or workshops in your Dashboard(http://shaastra.org/#/dashboard)\n\nStay tuned to our pages for regular updates,\nFacebook: https://www.facebook.com/Shaastra/\nTwitter: https://twitter.com/ShaastraIITM\nYouTube: https://www.youtube.com/user/iitmshaastra\n\nBest,\nShaastra 2016 team";
+        var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\"> <tr> <td> <h2>Hello " + user.name + " " + user.secondName + ",</h2> <p>We are delighted to have you as a registered member.</p> <p>You can create your teams and register to events or workshops in your <a target='_blank' href='http://shaastra.org/#/dashboard'>Dashboard</a></p> <p>Stay tuned to our pages for regular updates,</p> <p> <a target='_blank' href='https://www.facebook.com/Shaastra/'>Facebook</a>, <a target='_blank' href='https://twitter.com/ShaastraIITM'>Twitter</a>, <a target='_blank' href='https://www.youtube.com/user/iitmshaastra'>YouTube</a> </p> Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
+        var params = {
+          to: user.email,
+          from: 'noreply@shaastra.org',
+          fromname: 'Shaastra WebOps',
+          subject: 'Welcome to Shaastra 2016',
+          replyto: 'webops@shaastra.org',
+          text: text_body,
+          html: html_body
+        };
+        var email = new sendgrid.Email(params);
+        sendgrid.send(email, function (err, json) {
+          console.log('Error sending mail - ', err);
+          console.log('Success sending mail - ', json);
+        });
+        
         res.json({ token: token });
+
       });
       
     }
