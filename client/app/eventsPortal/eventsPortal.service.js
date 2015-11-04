@@ -82,6 +82,11 @@ angular.module('erp2015App')
           return response.data;
         });
       },
+      getAllRegistrations: function (eventId) {
+        return $http.get('/api/registrations/event/' + eventId).then(function (response) {
+          return response.data;
+        });
+      },
       updateTab: function (tabId, updatedTab) {
         return $http.put("/api/eventTabs/" + tabId, updatedTab).then(function (response) {
           return response;
