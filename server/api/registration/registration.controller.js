@@ -5,6 +5,7 @@ var Registration = require('./registration.model');
 var User = require('../websiteUser/websiteUser.model');
 var Team = require('../team/team.model');
 var Event = require('../event/event.model');
+var College = require('../college/college.model');
 // var CurrUser = require('../user/user.model');
 
 // Get list of registrations
@@ -28,16 +29,16 @@ exports.showforevent = function(req, res) {
       var teammembers = {
         path: 'team.teamMembers',
         model: 'User',
-        select: 'name festID'
+        select: 'name festID email'
       };
-      User.populate(user, teammembers, function (err, users) {
+      User.populate(user, teammembers, function (err, newRegistrations) {
         // console.log(teams.teams);
           // console.log('err', err);
           // console.log(teams.teams);
           console.log('zzzzz');
           console.log(user); 
-          return res.json(users);
-          return res.json(200, registrations);
+          
+          return res.json(newRegistrations);
         // return res.json(teams.teams);
       });
     }
