@@ -7,6 +7,7 @@
 
 var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
+var Place = require('../api/place/place.model');
 
 Thing.find({}).remove(function() {
   Thing.create({
@@ -27,6 +28,16 @@ Thing.find({}).remove(function() {
   },{
     name : 'Deployment Ready',
     info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
+  });
+});
+
+Place.find({}).remove(function() {
+  Place.create({
+    name : 'CRC',
+    info : 'Classroom Complex, near Gajendra Circle',
+    // 12.990374, 80.230265
+    latitude: 12.990374,
+    longitude: 80.230265
   });
 });
 

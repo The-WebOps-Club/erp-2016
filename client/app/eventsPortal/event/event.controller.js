@@ -35,6 +35,10 @@ angular.module('erp2015App')
         $scope.currentTab = $scope.eventTabs[0]._id;
     });
 
+    $http.get('/api/users/suggestEvent/563f503d7ddbb03d053bc35d').then(function(data) {
+      console.log(data);
+    });
+
     $scope.isAdmin = Auth.isAdmin;
 
     EventsPortalService.getCoords()
@@ -271,7 +275,7 @@ function TutController($scope, $mdDialog) {
   };
 }
 
-function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth) {
+function DialogController($scope, $mdDialog, event, EventsPortalService, selectedEventLists, $mdToast, buildCatString, Auth, $http) {
   $scope.hasRoleCore = Auth.hasRoleCore;
   $scope.event = event;
   $scope.selectedEventLists = selectedEventLists;
@@ -279,6 +283,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   $scope.selectedCoords = event.assignees;
   console.log(event);
   $scope.eventDate = new Date(event.eventDate);
+  $scope.eventEndDate = new Date(event.eventEndDate);
   $scope.startReg = new Date(event.startReg);
   $scope.endReg = new Date(event.endReg);
 
@@ -303,9 +308,14 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
   EventsPortalService.getCoords()
     .then(function (data) {
       $scope.coords = data;
-      console.log(data);
     },function (err) {
       console.log(err);
+  });
+
+  $scope.chosenLandmark = event.place;
+  $http.get('/api/places').then(function (response) {
+    $scope.landmarks = response.data;
+    console.log($scope.landmark);
   });
 
   $scope.hide = function () {
@@ -322,6 +332,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
       event.createdOn = gevent.createdOn;
       event.updatedOn = gevent.updatedOn;
       $scope.eventDate = new Date(event.eventDate);
+      $scope.eventEndDate = new Date(event.eventEndDate);
       $scope.startReg = new Date(event.startReg);
       $scope.endReg = new Date(event.endReg);
       console.log(event.assignees);
@@ -351,12 +362,14 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
         assignees: $scope.coordsIds,
         eventCategory: $scope.eventListIds,
         eventDate: $scope.eventDate,
-        startReg: $scope.startReg,
+        eventEndDate: $scope.eventEndDate
+,        startReg: $scope.startReg,
         endReg: $scope.endReg,
         venue: $scope.event.venue,
         maxTeamMembers: $scope.event.maxTeamMembers,
         minTeamMembers: $scope.event.minTeamMembers,
-        requireTDP: $scope.event.requireTDP
+        requireTDP: $scope.event.requireTDP,
+        place: $scope.chosenLandmark
       }, event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
       });

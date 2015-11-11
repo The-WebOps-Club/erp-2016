@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/place/place.socket').register(socket);
   require('../api/tdpresponse/tdpresponse.socket').register(socket);
   require('../api/tdpform/tdpform.socket').register(socket);
   require('../api/feedback/feedback.socket').register(socket);

@@ -36,7 +36,6 @@ exports.create = function(req, res) {
   .exec(function (err, event) {
     if (err) { return handleError(res, err); }
     if(!event) { return res.send(404); }
-    console.log(event.registrations);
     req.user.teams.filter(function(n) {
       event.registrations.filter(function (m) {
         if(m.team == n) {
@@ -46,13 +45,16 @@ exports.create = function(req, res) {
       });
     });
   });
-  if(!flag)
 
   // Push in team.eventsRegistered
   Team.findById(req.body.team, function(err, team) {
     if (err) { return handleError(res, err); }
-    if(!team) { flag = false; return res.send(404); }
-    var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
+    if(!team) { flag = false; return; }
+    var tmp=team.eventsRegistered;
+    tmp.push(req.body.eventRegistered);
+    console.log(req.body);
+    console.log(tmp);
+    var updated = _.assign(team, { eventsRegistered: tmp });
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return;
@@ -60,19 +62,21 @@ exports.create = function(req, res) {
   });
 
   // Push in registration
-  req.body.registrationTime=Date.now();
-  Registration.create(req.body, function(err, registration) {
-    if(err) { return handleError(res, err); }
-    Event.findById(req.body.eventRegistered, function(err, event) {
-      var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
-      updated.save(function (err) {
-        if (err) { return handleError(res, err); }
-        return;
+  if(flag) {
+    req.body.registrationTime=Date.now();
+    Registration.create(req.body, function(err, registration) {
+      if(err) { return handleError(res, err); }
+      Event.findById(req.body.eventRegistered, function(err, event) {
+        var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+        updated.save(function (err) {
+          if (err) { return handleError(res, err); }
+          return;
+        });
       });
-    });
 
-      if(flag) return res.json(200, registration);
-  });
+        if(flag) return res.json(200, registration);
+    });
+  }
 };
 
 // Updates an existing registration in the DB.

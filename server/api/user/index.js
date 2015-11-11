@@ -8,6 +8,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', auth.isAuthenticated(), controller.index);
+router.get('/suggestEvent/:id', auth.isAuthenticated(), controller.suggest);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/getCoords', controller.getCoords);
 router.get('/me', auth.isAuthenticated(), controller.me);

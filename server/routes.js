@@ -9,6 +9,7 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/places', require('./api/place'));
   app.use('/api/tdpresponses', require('./api/tdpresponse'));
   app.use('/api/tdpforms', require('./api/tdpform'));
   app.use('/api/feedbacks', require('./api/feedback'));

@@ -17,6 +17,7 @@ var EventSchema = new Schema({
   lastUpdatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   acceptedByAdmin: { type: Boolean, default: false },
   eventDate: Date,
+  eventEndDate: Date,
   startReg: Date,
   endReg: Date,
   requireTDP: {type: Boolean, default: false },
@@ -29,7 +30,8 @@ var EventSchema = new Schema({
   points: [{ type: Number }],
   winners: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
   selectedTeams: [{ type: Schema.Types.ObjectId, ref: 'Team' }],
-  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' }
+  tdpForm: { type: Schema.Types.ObjectId, ref: 'Tdpform' },
+  place: { type: Schema.Types.ObjectId, ref: 'Place' }
 });
 
 module.exports = mongoose.model('Event', EventSchema);

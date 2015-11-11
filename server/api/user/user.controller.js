@@ -9,6 +9,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var smtpapi    = require('smtpapi');
 var Team = require('../team/team.model');
+var Event = require('../event/event.model');
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
@@ -46,6 +47,37 @@ exports.index = function (req, res) {
     res.status(200).json(users);
   })
   .populate('department', 'name');
+};
+exports.suggest = function (req, res) {
+  var user = req.user;
+  var list = [];
+  var tmp=user.teams.concat(user.selfTeam);
+  Event.find({}).exec(function(err, events) {
+    Team.findById(req.params.id)
+    .populate('eventsRegistered')
+    .exec(function(err, tval) {
+      events.forEach(function(event) {
+        var flag=true;
+        tval.eventsRegistered.forEach(function(myEvent) {
+          var a=event._id+'';
+          var b=myEvent._id+'';
+          if(a!=b) {
+            console.log(myEvent.eventDate);
+            console.log(myEvent.eventEndDate);
+            console.log(event.eventDate);
+            console.log(event.eventEndDate);
+            if(!(myEvent.eventDate>event.eventEndDate || myEvent.eventEndDate<event.eventDate))
+              flag=false;
+          }
+          else
+            flag=false;
+        });
+        if(flag)
+          list.push(event);
+      });
+      res.json(list);
+    });
+  });
 };
 
 /**

@@ -12,4 +12,4 @@ var TeamSchema = new Schema({
   selectedEvents: [{ type: Schema.Types.ObjectId, ref: 'Event' }]
 });
 
-module.exports = mongoose.model('Team', TeamSchema);
+module.exports = mongoose.model('Team', TeamSchema, 'teams');
