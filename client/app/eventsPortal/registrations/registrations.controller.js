@@ -26,6 +26,14 @@ angular.module('erp2015App')
 
     $http.get('/api/registrations/event/' + $stateParams.eventId)
       .then(function (data) {
+        var maxTeamLength = 0;
+        var numRegistartions = data.data.length;
+        for(var i=0; i<numRegistartions; i++) {
+          var numTeamMembers = data.data[i].team.teamMembers.length;
+          if (maxTeamLength < numTeamMembers) {
+            maxTeamLength = numTeamMembers;
+          }
+        }
         $scope.allRegistrations = data.data;
         console.log(data.data);
       });
