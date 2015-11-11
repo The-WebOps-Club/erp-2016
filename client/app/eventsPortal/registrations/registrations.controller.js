@@ -30,7 +30,7 @@ angular.module('erp2015App')
         tbody += '</tbody>';
         element.replaceWith(tbody);
       }
-    }
+    };
   })
   .controller('RegistrationsCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog, Auth, $stateParams, Excel, $timeout) {
     $scope.showButton= false;
