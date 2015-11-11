@@ -60,21 +60,38 @@
 
     <table border="1" style="width:100%" id="table1">
     <thead>
-        <tr ng-repeat="registration in allRegistrations track by $index">
+        <tr>
           <th>Team Name</th>
-          <th ng-repeat-start="member in registration.team.teamMembers track by $index">Member {{ $index+1 }}</th>
-          <th ng-repeat-end>Email {{ $index+1 }}</th>
-          <th ng-repeat-start="member in registration.team.teamMembers">Shaastra ID {{ $index+1 }}</th>
-          <th ng-repeat-end></th>
+          <th>Member 1</th>
+          <th>Email 1</th>
+          <th>Shaastra ID 1</th>
+          <th>Member 2</th>
+          <th>Email 2</th>
+          <th>Shaastra ID 2</th>
+          <th>Member 3</th>
+          <th>Email 3</th>
+          <th>Shaastra ID 3</th>
+          <th>Member 4</th>
+          <th>Email 4</th>
+          <th>Shaastra ID 4</th>
+          <th>Member 5</th>
+          <th>Email 5</th>
+          <th>Shaastra ID 5</th>
+          <th>Member 6</th>
+          <th>Email 6</th>
+          <th>Shaastra ID 6</th>
+          <th>Member 7</th>
+          <th>Email 7</th>
+          <th>Shaastra ID 7</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="registration in allRegistrations track by $index">
           <td>{{ registration.team.teamName }}</td>
           <td ng-repeat-start="member in registration.team.teamMembers">{{ member.name }}</td>
-          <td ng-repeat-end>{{ member.email }}</td>
-          <td ng-repeat-start="member in registration.team.teamMembers">{{ member.festID }}</td>
-          <td ng-repeat-end></td>
+          <td ng-repeat-start="member in registration.team.teamMembers">{{ member.email }}</td>
+          <td ng-repeat-end>{{ member.festID }}</td>
+          <td ng-repeat-end ng-hide="true"></td>
         </tr>
       </tbody>
     </table>
