@@ -60,7 +60,7 @@
 
     <table border="1" style="width:100%" id="table1">
     <thead>
-        <tr>
+        <tr ng-repeat="registration in allRegistrations track by $index">
           <th>Team Name</th>
           <th ng-repeat-start="member in registration.team.teamMembers track by $index">Member {{ $index+1 }}</th>
           <th ng-repeat-end>Email {{ $index+1 }}</th>
