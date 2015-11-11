@@ -15,23 +15,6 @@ angular.module('erp2015App')
             }
         };
     })
-  .directive('my-table-body', function () {
-    return {
-      restrict: 'E',
-      link: function (scope, element, attrs) {
-        var tbody = '<tbody>';
-        angular.forEach(scope[attrs.allRegisrations], function (registration, index) {
-          tbody += '<tr><td>' + registration.team.teamName + '</td>';
-          angular.forEach(registration.team.teamMembers, function (member, index) {
-            tbody += '<td>' + member.email + '</td><td>' + member.festID + '</td>'; 
-          });
-          tbody += '</tr>';
-        });
-        tbody += '</tbody>';
-        element.replaceWith(tbody);
-      }
-    };
-  })
   .controller('RegistrationsCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog, Auth, $stateParams, Excel, $timeout) {
     $scope.showButton= false;
 
