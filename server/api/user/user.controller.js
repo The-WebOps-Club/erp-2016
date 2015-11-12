@@ -117,10 +117,10 @@ exports.create = function (req, res, next) {
         var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\"> <tr> <td> <h2>Hello " + user.name + " " + user.secondName + ",</h2> <p>Greetings from Shaastra-2016 team.</p> <p>We are delighted to have you as a registered member.</p> <p>You can create your teams and register to events or workshops in your <a target='_blank' href='http://shaastra.org/#/dashboard'>Dashboard</a>.</p> <p>This year Shaastra will open up exciting new avenues for you and make you see tech in a way that you've never seen before. The host of events, shows and workshops that we have lined up will certainly leave you awe-inspired and wanting more. All that we ask in return is a crazy amount of enthusiasm!! Stay tuned to our pages for regular updates,</p> <p> <a target='_blank' href='https://www.facebook.com/Shaastra/'>Facebook</a>, <a target='_blank' href='https://twitter.com/ShaastraIITM'>Twitter</a>, <a target='_blank' href='https://www.youtube.com/user/iitmshaastra'>YouTube</a> </p> Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
         var params = {
           to: user.email,
-          from: 'noreply@shaastra.org',
+          from: 'support@shaastra.org',
           fromname: 'Shaastra WebOps',
           subject: 'Welcome to Shaastra 2016',
-          replyto: 'webops@shaastra.org',
+          replyto: 'chinni@shaastra.org',
           text: text_body,
           html: html_body
         };
