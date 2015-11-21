@@ -1,64 +1,65 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div class="jumbotron col-sm-offset-3 col-sm-6">
-  <div class="row">
-    <div class="col-sm-offset-2 col-sm-8">
+<br><br>
+<div layout="row" >
+<md-whiteframe class="md-whiteframe-24dp" flex=50 offset=25  style="background-color:#f1f1f1">
+ <div >
+  <br>
+  <div layout="row">
+    <div flex=40 offset=30>
       <h2 class="text-center">Add Sponsor</h2>
+    </div>   
+  </div> 
+  <form  name="form"  >
+    <div layout="column">
+      <md-input-container flex ng-class="{ 'has-success': form.title.$valid && submitted, 'has-error': form.title.$invalid && submitted }">
+        <label>Title</label>
+        <input type="text" name="title"  ng-model="title" required>
+        <div ng-messages="form.title.$error" ng-show="form.title.$touched || submitted">
+          <div ng-message="required" > A title is required.</div>
+        </div>
+      </md-input-container><br>
+      <md-input-container flex ng-class="{ 'has-success': form.sponsor_link.$valid && submitted, 'has-error': form.sponsor_link.$invalid && submitted }">
+        <label>Sponsor Link</label>
+        <input type="text" name="sponsor_link"  ng-model="sponsor_link" required>
+        <div ng-messages="form.sponsor_link.$error" ng-show="form.sponsor_link.$touched || submitted">
+          <div ng-message="required" > A sponsor link is required.</div>
+        </div>
+      </md-input-container><br>
+      <md-input-container flex ng-class="{ 'has-success': form.priority.$valid && submitted, 'has-error': form.priority.$invalid && submitted }">
+        <label>Priority</label>
+        <input type="number" name="priority"  ng-model="priority" required min=1 max=100>
+        <div ng-messages="form.priority.$error" ng-show="form.priority.$touched || submitted ">
+          <div ng-message="required" >Priority Number is required.</div>
+          <div ng-message-exp="['min', 'max','number']" >Number between 1 and 100 is required.</div>
+        </div>
+      </md-input-container><br>
+      <md-input-container flex ng-class="{ 'has-success': form.row_layout.$valid && submitted, 'has-error': form.row_layout.$invalid && submitted }">
+        <label>Row Layout</label>
+        <input type="number" name="row_layout" ng-model="row_layout" required min=1 max=4>
+        <div ng-messages="form.row_layout.$error" ng-show="form.row_layout.$touched || submitted">
+          <div ng-message="required" >Row Layout is required.</div>
+          <div ng-message-exp="['min', 'max','number']" >Number between 1 and 4 is required.</div>
+        </div>
+      </md-input-container><br>
+      <p style="color:#a6a6a6 ; font-weight: bold">Logo</p>
+      <md-input-container flex ng-class="{ 'has-success': form.file.$valid && submitted,  'has-error': form.file.$invalid && submitted }">
+        <input type="file" name="file" ngf-select ngf-pattern = '.png' accept='image/png' ng-model="file" required>
+        <div ng-messages="form.file.$error" ng-show="form.file.$touched || submitted">
+          <div ng-message="required" >Logo is required.</div>
+          <div ng-message="pattern" >A png file is required</div>
+        </div>
+      </md-input-container><br>
+      <md-button ng-click="submit()">
+        Add
+      </md-button>
     </div>
-    <div class="col-sm-offset-2 col-sm-8">
-      <form class="form" name="form" ng-submit="submit()" >
-
-        <div class="form-group" ng-class="{ 'has-success': form.title.$valid && submitted,
-                                            'has-error': form.title.$invalid && submitted }">
-          <label>Title</label>
-
-          <input type="text" name="title" class="form-control" ng-model="title"
-                 required/>
-          <span class="help-block" ng-show="form.title.$error.required && submitted">
-            A title is required
-          </span>
-        </div>
-				<div class="form-group" ng-class="{ 'has-success': form.sponsor_link.$valid && submitted,
-                                            'has-error': form.sponsor_link.$invalid && submitted }">
-          <label>Sponsor Link</label>
-
-          <input type="text" name="sponsor_link" class="form-control" ng-model="sponsor_link"
-                 required/>
-          <span class="help-block" ng-show="form.sponsor_link.$error.required && submitted">
-            A sponsor link is required
-          </span>
-        </div>
-				<div class="form-group" ng-class="{ 'has-success': form.priority.$valid && submitted,
-                                            'has-error': form.priority.$invalid && submitted }">
-          <label>Priority</label>
-
-          <input type="number" name="priority" class="form-control" ng-model="priority"/>
-        </div>
-				<div class="form-group" ng-class="{ 'has-success': form.row_layout.$valid && submitted,
-                                            'has-error': form.row_layout.$invalid && submitted }">
-          <label>Row Layout</label>
-
-          <input type="number" name="row_layout" class="form-control" ng-model="row_layout"/>
-        </div>
-				<div class="form-group" ng-class="{ 'has-success': form.file.$valid && submitted,
-                                            'has-error': form.file.$invalid && submitted }">
-          <label>Sponsor Logo</label>
-
-              <input type="file" name="file" ngf-select ngf-pattern = '.png' accept='*' class="form-control" ng-model="file"
-                 required/>
-          <span class="help-block" ng-show="form.file.$error.required && submitted">
-            A logo is required
-          </span>
-					<span class="help-block" ng-show="form.file.$error.pattern && submitted">
-            The logo must be *.jpg or *.jpeg
-          </span>
-        </div>
-        <div>
-          <button class="btn btn-primary btn-login" type="submit">
-            Add
-          </button>
-        </div>
-
-      </form>
-    </div>
+  </form>
+  <br>
+  <br> 
   </div>
+
+</md-whiteframe>
+
+
 </div>
+

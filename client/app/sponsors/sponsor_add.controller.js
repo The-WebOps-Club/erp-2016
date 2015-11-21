@@ -5,6 +5,7 @@ angular.module('erp2015App')
     $scope.file=null
     $scope.priority=10
     $scope.row_layout=1
+    $scope.submitted=false;
     $scope.submit = function(){
       $scope.submitted = true;
       if($scope.file && $scope.form.file.$valid && !$scope.file.$error){

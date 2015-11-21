@@ -18,6 +18,7 @@
       <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
       <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
       <link rel="stylesheet" href="bower_components/ngImgCrop/compile/minified/ng-img-crop.css" />
+      <link rel="stylesheet" href="bower_components/mdPickers/dist/mdPickers.min.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -57,7 +58,21 @@
       <!-- bower:js -->
       <script src="bower_components/jquery/dist/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
+<<<<<<< HEAD
       <script src="bower_components/angularjs/angular.js"></script>
+=======
+      <script src="bower_components/angular-resource/angular-resource.js"></script>
+      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+      <script src="bower_components/angular-socket-io/socket.js"></script>
+      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+      <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+      <script src="bower_components/angular-permission/dist/angular-permission.js"></script>
+      <script src="bower_components/ng-facebook/ngFacebook.js"></script>
+>>>>>>> d10de7e69e81bf58c5c708f70992653490adb1bd
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -78,10 +93,16 @@
       <script src="bower_components/moment/moment.js"></script>
       <script src="bower_components/mdPickers/dist/mdPickers.min.js"></script>
       <script src="bower_components/ng-facebook/ngFacebook.js"></script>
-      <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
+      <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
       <script src="bower_components/ngDialog/js/ngDialog.js"></script>
       <script src="bower_components/ngImgCrop/compile/minified/ng-img-crop.js"></script>
+<<<<<<< HEAD
       <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+=======
+      <script src="bower_components/angular-img-fallback/angular.dcb-img-fallback.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/mdPickers/dist/mdPickers.min.js"></script>
+>>>>>>> d10de7e69e81bf58c5c708f70992653490adb1bd
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -96,6 +117,8 @@
           <script src="app/account/password/resetPassword.controller.js"></script>
           <script src="app/account/settings/settings.controller.js"></script>
           <script src="app/account/signup/signup.controller.js"></script>
+          <script src="app/addRoom/addRoom/addRoom.controller.js"></script>
+          <script src="app/addRoom/addRoom/addRoom.js"></script>
           <script src="app/addTeam/addTeam.controller.js"></script>
           <script src="app/addTeam/addTeam.js"></script>
           <script src="app/admin/admin.controller.js"></script>

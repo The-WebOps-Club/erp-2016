@@ -15,7 +15,10 @@ angular.module('erp2015App', [
   'ngMessages',
   'infinite-scroll',
   'ngMdIcons',
+  'mdPickers',
+  'ngAnimate',
   'ngImgCrop',
+  'ngDialog',
   'dcbImgFallback'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

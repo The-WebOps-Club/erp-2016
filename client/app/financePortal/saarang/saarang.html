@@ -1,3 +1,80 @@
-<div class="col-md-12">
-This is the saarang view.
+<div layout="row" >
+<md-whiteframe class="md-whiteframe-z5" flex="60" offset="20">
+<div style="background-color:#F5F5F0 ;">
+<md-toolbar class="md-primary" >
+    <h1 class="md-toolbar-tools" layout-align="center">
+      Finance Saarang 2016
+    </h1>
+</md-toolbar>
+
+<md-content style="background-color:#F5F5F0 ; margin : 4px ; padding:4 px;" >
+	<form name="saarangFinance">
+	<p style="font-size:1000; color : grey">Submit all your Finance requests/bills related to Saarang 2016 here</p>
+	<md-input-container>
+		 <md-select ng-model="fin.type"  required >
+	    	<md-select-label>{{selectedFilter1}}</md-select-label> 
+	   		<md-option ng-value="type" ng-click="fun(type)" ng-repeat="type in types" >{{type}}</md-option>
+        </md-select>
+    <p style="color:red" ng-hide=typeRed>Please select the type</p>
+	</md-input-container>
+	<md-input-container >		
+		 <md-select ng-model="fin.department" label="name" required>
+	    	<md-select-label>{{selectedFilter2}}</md-select-label> 
+	   		<md-option ng-value="dept" ng-click="func(dept)" ng-repeat="dept in depts" >{{dept}}</md-option>
+	   	</md-select>	
+    <p style="color:red" ng-hide=departmentRed>Please select the department</p>
+	</md-input-container >
+	<md-input-container flex>
+          <label>Designation</label>
+          <input ng-model="fin.designation" required>
+    </md-input-container>
+	<p style=" color : grey">Ex: Lec Dems coord, Webops core</p>
+    {{fin.designation.$error}}
+	<p style="color:red" >Please fill in Designation</p>
+       
+    <div>{{ currentDate | date:'fullDate' }}</div>
+    <md-button class="md-raised md-primary" ng-click="showPicker($event)" flex='5'>Date</md-button><p style=" color : grey">Date on Bill if Settling or Reimbursement / Date when amount is required for Advance</p>
+
+    <p style="color:red" ng-hide=dateRed>Please select date</p>
+    <md-input-container flex >
+          <label>Invoice Number</label>
+          <input ng-model="fin.invoice" required>
+    </md-input-container>
+    <p style=" color : grey">If invoice number is not mentioned then the acceptace of bill(s) depends on the decision taken by finance cores</p>
+    <p style="color:red" ng-hide=invoiceRed>Please fill in Invoice number</p>
+	<md-input-container >		 
+		 <md-select ng-model="fin.category" label="name"  required>
+	    	<md-select-label>{{selectedFilter3}}</md-select-label> 
+	   		<md-option ng-value="category" ng-click="funct(category)" ng-repeat="category in categories" >{{category}}</md-option>
+	   	</md-select>	
+    <p style="color:red" ng-hide=categoryRed>Please select the category</p>
+	
+    </md-input-container>
+	<md-input-container flex ng-hide=bool  >
+        <label >Category if other is selected</label>
+        <input ng-model="fin.categoryOther"  >
+    </md-input-container>
+    <p style="color:red" ng-hide=cotherRed>Please fill in this field</p>
+    <md-input-container flex  >
+        <label >Amount</label>
+        <input ng-model="fin.amount" required>
+    </md-input-container>
+    <p style="color:red" ng-hide=amountRed>Please fill in the amount</p>
+    <md-input-container flex  >
+        <label >Purpose</label>
+        <input ng-model="fin.purpose" required>
+    </md-input-container>
+    <p style=" color : grey"> e.g. Event name, Hopi desk </p>
+    <p style="color:red" ng-hide=purposeRed>Please fill in the purpose</p>
+	 <md-input-container flex  >
+        <label >Comments (Any Extra Information)</label>
+        <textarea ng-model="fin.comment"></textarea> 
+    </md-input-container>
+	<p style=" color : grey"></p>
+    <md-button class="md-raised md-primary" ng-click="sub()">Submit</md-button>
+</form>
+</md-content>
+</div>
+</md-whiteframe>
+
 </div>

@@ -1,0 +1,74 @@
+
+<md-toolbar md-scroll-shrink ng-if="true" >
+	<div class="md-toolbar-tools">
+	 <md-button ng-click="click('teamRegistration')">
+	 	Team Registrations
+	 </md-button>
+	 <md-button ng-click="click('accStatus')">
+	 	Accomodation Statistics
+	 </md-button>
+	 <md-button ng-click="click('addRoom')">
+	 	Add a Room/Hostel
+	 </md-button>
+	 <md-button ng-click="click('roomMap')">
+	 	Room Map
+	 </md-button>
+	 <md-button ng-click="click('OHM')">
+	 	OHM
+	 </md-button>
+	</div>
+</md-toolbar>
+<br>
+<div class="table-responsive-vertical ">
+	<table id="table" class="table table-hover table-striped table-bordered table-mc-pink">
+		<thead>
+	        <tr layout="row">
+	          <th flex=20>Status</th>
+	          <th flex=20>Teams</th>
+	          <th flex=20>Participants</th>
+	          <th flex=20>Male</th>
+	          <th flex=20>Female</th>
+	        </tr>
+      </thead>
+      <tbody>
+      	<tr   layout="row">
+          <td data-title="Status" flex=20 style="color:green">Confirmed</td>
+          <td data-title="Teams" flex=20>{{cteams}}</td>
+          <td data-title="Participants" flex=20>{{cparticipants}}</td>
+          <td data-title="Male" flex=20>{{cmale}}</td>
+          <td data-title="Female" flex=20>{{cfemale}}</td>
+          
+        </tr>
+        <tr   layout="row">
+          <td data-title="Status" flex=20 style="color:blue">Pending</td>
+          <td data-title="Teams" flex=20>{{pteams}}</td>
+          <td data-title="Participants" flex=20>{{pparticipants}}</td>
+          <td data-title="Male" flex=20>{{pmale}}</td>
+          <td data-title="Female" flex=20>{{pfemale}}</td>
+          
+        </tr><tr   layout="row">
+          <td data-title="Status" flex=20 style="color:red">Rejected</td>
+          <td data-title="Teams" flex=20>{{rteams}}</td>
+          <td data-title="Participants" flex=20>{{rparticipants}}</td>
+          <td data-title="Male" flex=20>{{rmale}}</td>
+          <td data-title="Female" flex=20>{{rfemale}}</td>
+          
+        </tr><tr   layout="row">
+          <td data-title="Status" flex=20 style="color:orange">Wait Listed</td>
+          <td data-title="Teams" flex=20>{{wteams}}</td>
+          <td data-title="Participants" flex=20>{{wparticipants}}</td>
+          <td data-title="Male" flex=20>{{wmale}}</td>
+          <td data-title="Female" flex=20>{{wfemale}}</td>
+          
+        </tr><tr   layout="row">
+          <td data-title="Status" flex=20 style="color:grey">Total</td>
+          <td data-title="Teams" flex=20>{{tteams}}</td>
+          <td data-title="Participants" flex=20>{{tparticipants}}</td>
+          <td data-title="Male" flex=20>{{tmale}}</td>
+          <td data-title="Female" flex=20>{{tfemale}}</td>
+          
+        </tr>
+      </tbody>
+	</table>
+</div>
+
