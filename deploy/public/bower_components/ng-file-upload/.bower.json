@@ -1,0 +1,14 @@
+{
+  "name": "ng-file-upload",
+  "homepage": "https://github.com/danialfarid/angular-file-upload-bower",
+  "version": "8.0.4",
+  "_release": "8.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "8.0.4",
+    "commit": "866e75598f7ce2bb7c7a2125859fb3c625bffea7"
+  },
+  "_source": "git://github.com/danialfarid/angular-file-upload-bower.git",
+  "_target": "8.0.4",
+  "_originalSource": "ng-file-upload"
+}
