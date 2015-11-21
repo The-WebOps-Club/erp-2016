@@ -12,27 +12,30 @@ var gfs = new Grid(mongoose.connection.db);
 exports.create = function (req, res) {
   var part = req.files.file;
     console.log(req.files);
-    // var writeStream = gfs.createWriteStream({
-    //   filename: part.name,
-    //   mode: 'w',
-    //   content_type:'image/jpeg'
-    // });
-    //
-    //
-    // writeStream.on('close', function(file) {
-    //   console.log(file._id);
-    //   return res.status(200).send({
-    //     fileId: file._id,
-    //     message: 'Success'
-    //   });
-    // });
-    //
-    // writeStream.write(part.data);
-    //
-    // writeStream.end();
-  // }
-  var partname=part.name+Math.random().toString(36).slice(2);
-  var filename=path.join('/home/saarango/public_html/2016_sponsors/',partname);
+    var writeStream = gfs.createWriteStream({
+      filename: part.name,
+      mode: 'w',
+      content_type:'image/jpeg'
+    });
+    
+    
+    writeStream.on('close', function(file) {
+      console.log(file._id);
+      return res.status(200).send({
+        fileId: file._id,
+        message: 'Success'
+      });
+    });
+    
+    writeStream.write(part.data);
+    
+    writeStream.end();
+}
+
+exports.sponsUpload = function(req, res) {
+  var part = req.files.file;
+  var partname=Math.random().toString(36).slice(2)+'.'+part.name.split('.')[1];
+  var filename=path.join('/home/saarango/git/erp-2016-test/deploy/public/assets/images/spons_images/',partname);
 
   console.log(filename);
   fs.writeFile(filename,part.data,function(err,written,buffer){

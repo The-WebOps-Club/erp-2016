@@ -6,7 +6,7 @@ var nodemailer = require('nodemailer');
 var directTransport = require('nodemailer-direct-transport');
 
 'use strict';
-module.exports = function sendEmail(sub, text, emailTo, messageId, initial) {
+exports.sendEmail = function(sub, text, emailTo, messageId, initial) {
 var transporter = nodemailer.createTransport(directTransport());
       if(!(initial)){
       	var mailOptions = {
