@@ -11,7 +11,7 @@ var smtpapi    = require('smtpapi');
 var Team = require('../team/team.model');
 var College = require('../college/college.model');
 var api_key = '';
-var sendgrid = require('sendgrid')(api_key);
+var sendgrid = require('sendgrid')('SG._IAG365zTxCzun8CbCBkIg.tjjeTa87Ih67l_G6uAPB7Giubq7US916qPnzH7M6vUU');
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
@@ -381,31 +381,38 @@ exports.forgotPassword = function(req, res, next) {
       })
     },
     function (token, user, done) {
-      var transporter = nodemailer.createTransport();
-      // var smtpTransport = nodemailer.createTransport({
-      //   service: 'Gmail',
-      //   auth: {
-      //     user: EMAIL,
-      //     pass: PASSWORD
-      //   }
-      // });
 
-      var mailOptions = {
+      var text_body = "Hello " + user.name + " " + user.secondName + ",\nGreetings from Shaastra-2016 team.\n\n" +
+        "You have received this email since you have requested for password change for your Shaastra account.\n\n" +
+        "Please click on the following link, or paste this into your browser to complete the process:\n" +
+        "http://shaastra.org/reset-password/" + token + "\n" +
+        "If you did not request this, please ignore this email and your password will remain unchanged." +
+        "Best,\nShaastra 2016 team";
+      var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\">" +
+        "<tr> <td>" +  
+        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +  
+        "<p>Greetings from Shaastra-2016 team.</p>" +  
+        "<p>You have received this email since you have requested for password change for your Shaastra account.</p>" +  
+        "<p>Please click on the following link, or paste this into your browser to complete the process:" +  
+        "<p>http://shaastra.org/reset-password/" + token + "</p>"
+        "<p>If you did not request this, please ignore this email and your password will remain unchanged.</p>" + 
+        "Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
+      var params = {
         to: user.email,
-        from: EMAIL,
-        subject: '[Shaastra-erp2016] Account Password Reset',
-        text: 'You are receiving this because you have requested the reset of the password for your account.\n\n' +
-          'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + req.headers.host + '/resetPassword/' + token + '\n\n' +
-          'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        from: 'support@shaastra.org',
+        fromname: 'Shaastra WebOps',
+        subject: 'Account Password Reset - Shaastra',
+        replyto: 'chinni@shaastra.org',
+        text: text_body,
+        html: html_body
       };
-      transporter.sendMail(mailOptions, function (err, info) {
+      var email = new sendgrid.Email(params);
+      sendgrid.send(email, function (err, json) {
+        console.log('Error sending mail - ', err);
+        console.log('Success sending mail - ', json);
         if(err) {
-          console.log('Error Occurred');
-          console.log(err);
           return res.sendStatus(500);
         } else {
-          console.log(info);
           res.sendStatus(200);
         }
       });
@@ -430,35 +437,40 @@ exports.resetPassword = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!user) { return res.sendStatus(404); }
     user.password = req.body.newPassword;
-    user.token = '';
+    user.resetPasswordToken = '';
     user.updatedOn = Date.now();
     user.save(function (err, user) {
       if(err) { return handleError(res, err); }
 
-      var smtpTransport = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-          user: EMAIL,
-          pass: PASSWORD
-        }
-      });
-      var mailOptions = {
+      var text_body = "Hello " + user.name + " " + user.secondName + ",\nGreetings from Shaastra-2016 team.\n\n" +
+        "This is a confirmation that the password for your account " + user.email + " - " + user.festID + " has just been changed\n\n" +
+        "Best,\nShaastra 2016 team";
+      var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\">" +
+        "<tr> <td>" +  
+        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +  
+        "<p>Greetings from Shaastra-2016 team.</p>" +  
+        "<p>This is a confirmation that the password for your account <b>" + user.email + " - " + user.festID + "</b> has just been changed</p>" +  
+        "Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
+      var params = {
         to: user.email,
-        from: EMAIL,
-        subject: '[Shaastra-erp2016] Your password has been changed',
-        text: 'Hello,\n\n' +
-          'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
+        from: 'support@shaastra.org',
+        fromname: 'Shaastra WebOps',
+        subject: 'Your Shaastra account password has been changed',
+        replyto: 'chinni@shaastra.org',
+        text: text_body,
+        html: html_body
       };
-      smtpTransport.sendMail(mailOptions, function (err, info) {
+      var email = new sendgrid.Email(params);
+      sendgrid.send(email, function (err, json) {
+        console.log('Error sending mail - ', err);
+        console.log('Success sending mail - ', json);
         if(err) {
-          console.log('Error Occurred');
-          console.log(err);
           return res.sendStatus(500);
         } else {
-          console.log(info);
           res.sendStatus(200);
         }
       });
+
     });
   });
 };
