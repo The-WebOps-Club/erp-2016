@@ -11,7 +11,7 @@ var smtpapi    = require('smtpapi');
 var Team = require('../team/team.model');
 var College = require('../college/college.model');
 var api_key = '';
-var sendgrid = require('sendgrid')('SG._IAG365zTxCzun8CbCBkIg.tjjeTa87Ih67l_G6uAPB7Giubq7US916qPnzH7M6vUU');
+var sendgrid = require('sendgrid')(api_key);
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
