@@ -385,7 +385,7 @@ exports.forgotPassword = function(req, res, next) {
       var text_body = "Hello " + user.name + " " + user.secondName + ",\nGreetings from Shaastra-2016 team.\n\n" +
         "You have received this email since you have requested for password change for your Shaastra account.\n\n" +
         "Please click on the following link, or paste this into your browser to complete the process:\n" +
-        "http://shaastra.org/reset-password/" + token + "\n" +
+        "http://shaastra.org/#/reset-password/" + token + "\n" +
         "If you did not request this, please ignore this email and your password will remain unchanged." +
         "Best,\nShaastra 2016 team";
       var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\">" +
@@ -394,7 +394,7 @@ exports.forgotPassword = function(req, res, next) {
         "<p>Greetings from Shaastra-2016 team.</p>" +  
         "<p>You have received this email since you have requested for password change for your Shaastra account.</p>" +  
         "<p>Please click on the following link, or paste this into your browser to complete the process:" +  
-        "<p>http://shaastra.org/reset-password/" + token + "</p>"
+        "<p>http://shaastra.org/#/reset-password/" + token + "</p>"
         "<p>If you did not request this, please ignore this email and your password will remain unchanged.</p>" + 
         "Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
       var params = {
