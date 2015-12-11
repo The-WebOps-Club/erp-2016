@@ -250,6 +250,7 @@ exports.updateProfile = function (req, res, next) {
     user.secondName = userUpdate.secondName;
     user.email = userUpdate.email;
     user.phoneNumber = userUpdate.phoneNumber;
+    user.wantAccomodation = userUpdate.wantAccomodation;
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
