@@ -23,7 +23,7 @@ var EventSchema = new Schema({
   endReg: Date,
   requireTDP: { type: Boolean, default: false },
   shaastraFellowship: { type: Boolean, default: false },
-  freeEvent: { type: Boolean, default: false },
+  freeEvent: { type: Boolean, default: true },
   maxTeamMembers: { type: Number, default: 1 },
   minTeamMembers: { type: Number, default: 1 },
   registrations: [{ type: Schema.Types.ObjectId, ref: 'Registration' }],
