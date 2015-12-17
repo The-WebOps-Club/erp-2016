@@ -379,7 +379,9 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
         minTeamMembers: $scope.event.minTeamMembers,
         isEvent: $scope.isEvent,
         isWorkshop: $scope.isWorkshop,
-        requireTDP: $scope.event.requireTDP
+        requireTDP: $scope.event.requireTDP,
+        shaastraFellowship: $scope.event.shaastraFellowship,
+        freeEvent: $scope.event.freeEvent
       }, event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
       });
