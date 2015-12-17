@@ -381,7 +381,7 @@ function DialogController($scope, $mdDialog, event, EventsPortalService, selecte
         isWorkshop: $scope.isWorkshop,
         requireTDP: $scope.event.requireTDP,
         shaastraFellowship: $scope.event.shaastraFellowship,
-        freeEvent: $scope.event.freeEvent
+        paidEvent: $scope.event.paidEvent
       }, event._id).then(function () {
         $mdToast.show($mdToast.simple().content('Updated event successfully!').hideDelay(5000));
       });
