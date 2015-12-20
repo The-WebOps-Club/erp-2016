@@ -29,16 +29,26 @@ exports.showforevent = function(req, res) {
       var teammembers = {
         path: 'team.teamMembers',
         model: 'User',
-        select: 'name festID email'
+        select: 'name festID email college'
+      };
+      var college = {
+        path: 'team.teamMembers.college',
+        model: 'College',
+        select: 'collegeName'
       };
       User.populate(user, teammembers, function (err, newRegistrations) {
         // console.log(teams.teams);
-          // console.log('err', err);
-          // console.log(teams.teams);
-          console.log('zzzzz');
-          console.log(user); 
-          
-          return res.json(newRegistrations);
+        // console.log('err', err);
+        // console.log(teams.teams);
+        console.log('zzzzz');
+        // console.log(user);
+
+        College.populate(newRegistrations, college, function (err, xsxs) {
+          console.log(xsxs[0].team.teamMembers);
+          return res.json(xsxs);
+        });
+        
+        // return res.json(newRegistrations);
         // return res.json(teams.teams);
       });
     }
