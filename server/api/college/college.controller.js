@@ -5,7 +5,7 @@ var College = require('./college.model');
 
 // Get list of colleges
 exports.index = function(req, res) {
-  College.find(function (err, colleges) {
+  College.find({}).sort('collegeName').exec(function (err, colleges) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(colleges);
   });
