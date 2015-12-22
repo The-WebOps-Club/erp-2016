@@ -22,7 +22,7 @@ exports.index = function(req, res) {
       var events = {
         path: 'teams.eventsRegistered',
         model: 'Event',
-        select: 'name'
+        select: 'name startReg endReg'
       };
       User.populate(user, name, function (err, teams) {
         // console.log(teams.teams);
