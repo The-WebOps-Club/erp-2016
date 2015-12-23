@@ -28,7 +28,7 @@ var allHostels = ['alakananda',
 var UserSchema = new Schema({
   name: { type: String, default: '' },
   secondName: { type: String, default: '' },
-  // 1 for Male, 0 for female 
+  // 1 for Male, 0 for female
   gender: { type: Boolean, default: true },
   age: Number,
   branch: { type: String, default: '' },
