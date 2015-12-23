@@ -23,5 +23,6 @@ router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);
 router.post('/festid', controller.getByFestID);
 router.post('/barcode', controller.updateUserBarcode);
+router.post('/getAll', controller.getAllUsers);
 
 module.exports = router;

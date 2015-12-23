@@ -190,7 +190,7 @@ exports.create = function (req, res, next) {
 exports.getByFestID = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
     if(err) return next(err)
-    if(!user) return res.sendStatus(401);
+    if(!user) return res.sendStatus(404);
     res.status(200).json(user)
   })
 }
@@ -198,12 +198,20 @@ exports.getByFestID = function (req, res, next){
 exports.updateUserBarcode = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
     if(err) return next(err)
-    if(!user) return res.sendStatus(401);
+    if(!user) return res.sendStatus(404);
     user.barcodeID = req.body.barcodeID
     user.save(function(err, user){
       if(err) return next(err)
       res.status(200).json(user)
     });
+  })
+}
+
+exports.getAllUsers = function (req, res){
+  console.log("RIght here")
+  User.find({}, function(err, users){
+    if(err) return res.json(500, err)
+    res.status(200).json(users)
   })
 }
 
