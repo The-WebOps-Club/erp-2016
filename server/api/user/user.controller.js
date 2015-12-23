@@ -215,6 +215,19 @@ exports.getAllUsers = function (req, res){
   })
 }
 
+exports.getAllUsersSince = function (req, res){
+  console.log("RIght here")
+  User.find({updatedOn:{$gt:req.body.last_fetched_date}}, function(err, users){
+    if(err) return res.json(500, err)
+    res.status(200).json(users)
+  })
+}
+
+
+exports.getCurrentTime = function (req, res){
+  res.status(200).json({date: Date.now()})
+}
+
 /**
  * Get a single user
  */

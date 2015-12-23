@@ -24,5 +24,6 @@ router.post('/', controller.create);
 router.post('/festid', controller.getByFestID);
 router.post('/barcode', controller.updateUserBarcode);
 router.post('/getAll', controller.getAllUsers);
-
+router.post('/getAllSince', controller.getAllUsersSince);
+router.post('/servertime', controller.getCurrentTime);
 module.exports = router;
