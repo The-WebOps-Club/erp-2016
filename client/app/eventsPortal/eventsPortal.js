@@ -59,7 +59,7 @@ angular.module('erp2015App')
           allow: ['coord', 'superCoord', 'core', 'admin']
         }                
       })
-      .state('shaastra-fellowship', {
+      .state('shaastraFellowship', {
         url: '/eventsPortal/shaastra-fellowship',
         templateUrl: 'app/eventsPortal/sis-registrations/sis-registrations.html',
         controller: 'SisRegistrationsCtrl',
