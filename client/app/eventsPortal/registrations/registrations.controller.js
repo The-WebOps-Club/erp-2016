@@ -17,6 +17,7 @@ angular.module('erp2015App')
   })
   .controller('RegistrationsCtrl', function ($scope, EventsPortalService, $state, $http, $mdDialog, Auth, $stateParams, Excel, $timeout, $mdToast) {
     $scope.showButton= false;
+    $scope.numberOfRegistrations = 0;
 
     $scope.tdpStatus = function (registrationId) {
       $http.post('/api/registrations/toggleTDP/' + registrationId)
@@ -46,6 +47,7 @@ angular.module('erp2015App')
           }
         }
         $scope.allRegistrations = data.data;
+        $scope.numberOfRegistrations = data.data.length;
         console.log(data.data);
       });
     $scope.eventsShow = false;
