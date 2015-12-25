@@ -20,6 +20,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 // router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
+router.post('/sisFellowship', auth,isAuthenticated(), controller.sisFellowship);
 router.post('/', controller.create);
 
 module.exports = router;

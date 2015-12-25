@@ -36,6 +36,7 @@ var UserSchema = new Schema({
   //1 for school student, 0 for false
   schoolStudent: { type: Boolean, default: false },
   wantAccomodation: { type: Boolean, default: false },
+  interestedInShaastraFellowship: { type: Boolean, default: false },
   emailVerified: { type: Boolean, default: false },
   activationKey: String,
   keyExpires: Date,

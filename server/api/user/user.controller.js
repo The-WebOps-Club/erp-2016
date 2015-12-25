@@ -187,6 +187,17 @@ exports.create = function (req, res, next) {
   // });
 };
 
+// Toggle sis-fellowship
+exports.sisFellowship = function(req, res) {
+  User.findById(req.user._id, function (err, user) {
+    user.interestedInShaastraFellowship = true;
+    user.save(function (err) {
+      if (err) return validationError(res, err);
+      res.sendStatus(200);
+    });    
+  });
+};
+
 /**
  * Get a single user
  */
@@ -205,7 +216,7 @@ exports.show = function (req, res, next) {
  * restriction: 'admin'
  */
 exports.destroy = function (req, res) {
-  User.findByIdAndRemove(req.params.id, function(err, user) {
+  User.findByIdAndRemove(req.params.id, function (err, user) {
     if(err) return res.status(500).json(err);
     return res.sendStatus(204);
   });
