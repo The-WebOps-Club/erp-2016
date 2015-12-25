@@ -8,6 +8,7 @@ var RegistrationSchema = new Schema({
 	team: { type: Schema.Types.ObjectId, ref: 'Team' },
 	registrationTime: Date,
 	isSelected: { type: Boolean, default: false },
+	submittedTDP: { type: Boolean, default: false },
 	fileID: String,
 	fileName: String
 });

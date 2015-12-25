@@ -22,6 +22,7 @@ exports.showforevent = function(req, res) {
     if(err) { return handleError(res, err); }
   })
   .populate('team', 'teamMembers teamName teamLeader')
+  .sort({submittedTDP: 1})
   .exec(function (err, user) {
     if(err) { return handleError(res, err); }
     if(!user) { return res.sendStatus(404); }
@@ -247,6 +248,19 @@ exports.update = function(req, res) {
       return res.json(200, registration);
     });
   });
+};
+
+// Toggles TDP status
+exports.toggleTDP = function(req, res) {
+  Registration.findById(req.params.id, function (err, registration) {
+    if (err) { return handleError(res, err); }
+    if(!registration) { return res.send(404); }
+    registration.submittedTDP = !registration.submittedTDP;
+    registration.save(function (err) {
+      if (err) { return handleError(res, err); }
+      return res.json(200, registration);
+    });
+  });  
 };
 
 // Deletes a registration from the DB.

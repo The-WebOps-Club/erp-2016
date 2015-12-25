@@ -4,7 +4,7 @@
   <div class="eventsPortal">
     <md-toolbar class="md-theme-light">
       <h2 class="md-toolbar-tools">
-        <span>Registrations for {{eventDetails.name}} </span>
+        <span>Registrations for {{eventDetails.name}}</span>
       </h2>
     </md-toolbar>
     
@@ -15,6 +15,7 @@
     <table border="1" style="width:100%" id="table1">
       <thead>
         <tr>
+          <th ng-if="eventDetails.requireTDP">TDP Status</th>
           <th>Team Name</th>
           <th>Member 1</th>
           <th>Email 1</th>
@@ -48,6 +49,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="registration in allRegistrations track by $index">
+          <td ng-if="eventDetails.requireTDP"><input type="checkbox" ng-model="registration.submittedTDP" ng-change="tdpStatus(registration._id)">{{ registration.submittedTDP ? 'Submitted':'Not submitted' }}</td>
           <td>{{ registration.team.teamName }}</td>
           <td ng-repeat-start="member in registration.team.teamMembers">{{ member.name }}</td>
           <td>{{ member.email }}</td>
