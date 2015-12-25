@@ -1,0 +1,61 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+  <div class="eventsPortal">
+    <md-toolbar class="md-theme-light">
+      <h2 class="md-toolbar-tools">
+        <span>Registrations for Shaastra Fellowship</span>
+      </h2>
+      <p class="md-toolbar-tools">Number of registrations so far - {{numberOfRegistrations}}</p>
+    </md-toolbar>
+    
+    <button class="btn btn-link" ng-click="exportToExcel('#table1')">
+      <span class="glyphicon glyphicon-share"></span> Export to Excel
+    </button>
+
+    <table border="1" style="width:100%" id="table1">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Second Name</th>
+          <th>Shaastra ID</th>
+          <th>Email</th>
+          <th>College</th>
+          <th>Event 1</th>
+          <th>Fellowship 1</th>
+          <th>Event 2</th>
+          <th>Fellowship 2</th>
+          <th>Event 3</th>
+          <th>Fellowship 3</th>
+          <th>Event 4</th>
+          <th>Fellowship 4</th>
+          <th>Event 5</th>
+          <th>Fellowship 5</th>
+          <th>Event 6</th>
+          <th>Fellowship 6</th>
+          <th>Event 7</th>
+          <th>Fellowship 7</th>
+          <th>Event 8</th>
+          <th>Fellowship 8</th>
+          <th>Event 9</th>
+          <th>Fellowship 9</th>
+          <th>Event 10</th>
+          <th>Fellowship 10</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="user in users track by $index">
+          <td>{{ user.name }}</td>          
+          <td>{{ user.secondName }}</td>          
+          <td>{{ user.festID }}</td>          
+          <td>{{ user.email }}</td>          
+          <td>{{ user.college.collegeName }}</td>  
+          <td ng-repeat-start="event in eventsRegisteredByUser[$index]">{{ event.name }}</td>
+          <td ng-repeat-end>{{ event.shaastraFellowship }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

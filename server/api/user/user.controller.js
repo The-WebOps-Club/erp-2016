@@ -16,6 +16,8 @@ var sendgrid = require('sendgrid')(api_key);
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
 
+var Event = require('../event/event.model');
+
 var validationError = function (res, err) {
   return res.status(422).json(err);
 };
@@ -74,6 +76,28 @@ exports.getAllEmails = function (req, res) {
 //     console.log(json);
 //   });
 // };
+
+exports.getSisFellows = function(req, res) {
+  User.find({'interestedInShaastraFellowship': true}, function (err, users) {
+    if(err) { return handleError(res, err); }
+  })
+  .populate('college', 'collegeName')
+  .populate('teams', 'eventsRegistered')
+  .exec(function (err, users) {
+    if(err) { return handleError(res, err); }
+    if(!users) { return res.sendStatus(404); }
+    else {
+      var eventDetails = {
+        path: 'teams.eventsRegistered',
+        model: 'Event',
+        select: 'name _id shaastraFellowship'
+      };
+      Event.populate(users, eventDetails, function (err, updatedUsers) {
+        return res.json(updatedUsers);
+      });
+    }    
+  });
+};
 
 exports.index = function (req, res) {
   User.find({}, '-salt -hashedPassword -lastSeen', function (err, users) {

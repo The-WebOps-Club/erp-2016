@@ -58,5 +58,13 @@ angular.module('erp2015App')
         access: {
           allow: ['coord', 'superCoord', 'core', 'admin']
         }                
-      });     
+      })
+      .state('shaastra-fellowship', {
+        url: '/eventsPortal/shaastra-fellowship',
+        templateUrl: 'app/eventsPortal/sis-registrations/sis-registrations.html',
+        controller: 'SisRegistrationsCtrl',
+        access: {
+          allow: ['superCoord', 'core', 'admin']
+        }                
+      });           
   });

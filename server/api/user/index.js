@@ -11,6 +11,7 @@ router.get('/', auth.isAuthenticated(), controller.index);
 // router.get('/sendMail/test', controller.sendMail);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/getCoords', controller.getCoords);
+router.get('/sisFellows', auth.hasRole('superCoord'), controller.getSisFellows);
 router.get('/me', auth.isAuthenticated(), controller.me);
 // router.get('/getAllEmailsHAHAHAPeopleRandom', controller.getAllEmails);
 // router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
@@ -20,7 +21,7 @@ router.get('/:id', auth.isAuthenticated(), controller.show);
 // router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
-router.post('/sisFellowship', auth,isAuthenticated(), controller.sisFellowship);
+router.post('/sisFellowship', auth.isAuthenticated(), controller.sisFellowship);
 router.post('/', controller.create);
 
 module.exports = router;
