@@ -21,6 +21,14 @@ angular.module('erp2015App')
     $scope.events = [];
     $http.get('/api/events/forStats').
       then(function (response) {
+
+        response.data.sort(function (a, b) {
+          if(a.eventCategory[0].title>b.eventCategory[0].title) {
+            return true;
+          }
+          return false;
+        });
+
         $scope.events = response.data;
 
         var numEvents = $scope.events.length;
