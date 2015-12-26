@@ -53,6 +53,17 @@ exports.getMultiple = function(req, res) {
   });
 };
 
+exports.forStats = function(req, res) {
+  Event.find({}, function (err, events) {
+    if(err) { return handleError(res, err); }
+    if(!events) { return res.sendStatus(404); }
+    // console.log(events);
+    return res.json(events);
+  })
+  .populate('registrations')
+  .populate('eventCategory');
+};
+
 // Get events assigned
 exports.myEvents = function(req, res) {
   Event.find({ assignees: { "$in" : [req.user._id] } })

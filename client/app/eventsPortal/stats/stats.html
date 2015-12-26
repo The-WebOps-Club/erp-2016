@@ -1,0 +1,39 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div layout="row" layout-margin>
+  <div class="eventsPortal">
+    <md-toolbar class="md-theme-light">
+      <h2 class="md-toolbar-tools">
+        <span>Registrations for Shaastra Fellowship</span>
+      </h2>
+      <p class="md-toolbar-tools">Number of registrations so far - {{numberOfRegistrations}}</p>
+    </md-toolbar>
+    
+    <button class="btn btn-link" ng-click="exportToExcel('#table1')">
+      <span class="glyphicon glyphicon-share"></span> Export to Excel
+    </button>
+
+    <table border="1" style="width:100%" id="table1">
+      <thead>
+        <tr>
+          <th>Event Category</th>
+          <th>Event Name</th>
+          <th>No. of Registrations</th>
+          <th>TDP Required?</th>
+          <th>No. of TDP Submissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="event in events track by $index">
+          <td>{{ event.eventCategory[0].title }}</td>          
+          <td>{{ event.name }}</td>          
+          <td>{{ event.registrations.length }}</td>          
+          <td>{{ event.requireTDP }}</td>          
+          <td>{{ TDPlength[$index] }}</td>          
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

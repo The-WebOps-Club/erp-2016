@@ -66,5 +66,13 @@ angular.module('erp2015App')
         access: {
           allow: ['superCoord', 'core', 'admin']
         }                
+      })
+      .state('shaastraStats', {
+        url: '/eventsPortal/shaastra-stats',
+        templateUrl: 'app/eventsPortal/stats/stats.html',
+        controller: 'StatsCtrl',
+        access: {
+          allow: ['superCoord', 'core', 'admin']
+        }                
       });           
   });
