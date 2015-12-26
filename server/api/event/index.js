@@ -9,6 +9,7 @@ var router = express.Router();
 router.get('/', controller.index);
 router.get('/myEvents', auth.hasRole('coord'), controller.myEvents);
 router.get('/forStats', auth.hasRole('coord'), controller.forStats);
+router.get('/forSearch', controller.forSearch);
 router.get('/showWeb/:id', controller.showWeb);
 router.get('/:id', controller.show);
 router.get('/getMultiple/:id', controller.getMultiple);
