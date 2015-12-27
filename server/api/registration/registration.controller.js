@@ -30,7 +30,7 @@ exports.showforevent = function(req, res) {
       var teammembers = {
         path: 'team.teamMembers',
         model: 'User',
-        select: 'name festID email college'
+        select: 'name festID email college phoneNumber'
       };
       var college = {
         path: 'team.teamMembers.college',
