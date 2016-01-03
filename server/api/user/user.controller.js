@@ -200,6 +200,7 @@ exports.updateUserBarcode = function (req, res, next){
     if(err) return next(err)
     if(!user) return res.sendStatus(404);
     user.barcodeID = req.body.barcodeID
+    user.updatedOn = Date.now()
     user.save(function(err, user){
       if(err) return next(err)
       res.status(200).json(user)
