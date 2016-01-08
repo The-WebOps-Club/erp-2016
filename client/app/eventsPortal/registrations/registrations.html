@@ -23,36 +23,43 @@
           <th>Phone 1</th>
           <th>Shaastra ID 1</th>
           <th>College 1</th>
+          <th>Need Accommodation 1</th>
           <th>Member 2</th>
           <th>Email 2</th>
           <th>Phone 2</th>
           <th>Shaastra ID 2</th>
           <th>College 2</th>
+          <th>Need Accommodation 2</th>
           <th>Member 3</th>
           <th>Email 3</th>
           <th>Phone 3</th>
           <th>Shaastra ID 3</th>
           <th>College 3</th>
+          <th>Need Accommodation 3</th>
           <th>Member 4</th>
           <th>Email 4</th>
           <th>Phone 4</th>
           <th>Shaastra ID 4</th>
           <th>College 4</th>
+          <th>Need Accommodation 4</th>
           <th>Member 5</th>
           <th>Email 5</th>
           <th>Phone 5</th>
           <th>Shaastra ID 5</th>
           <th>College 5</th>
+          <th>Need Accommodation 5</th>
           <th>Member 6</th>
           <th>Email 6</th>
           <th>Phone 6</th>
           <th>Shaastra ID 6</th>
           <th>College 6</th>
+          <th>Need Accommodation 6</th>
           <th>Member 7</th>
           <th>Email 7</th>
           <th>Phone 7</th>
           <th>Shaastra ID 7</th>
           <th>College 7</th>
+          <th>Need Accommodation 7</th>
         </tr>
       </thead>
       <tbody>
@@ -63,7 +70,8 @@
           <td>{{ member.email }}</td>
           <td>{{ member.phoneNumber }}</td>
           <td>{{ member.festID }}</td>
-          <td ng-repeat-end>{{ member.college.collegeName }}</td>
+          <td>{{ member.college.collegeName }}</td>
+          <td ng-repeat-end>{{ member.wantAccomodation }}</td>
         </tr>
       </tbody>
     </table>
