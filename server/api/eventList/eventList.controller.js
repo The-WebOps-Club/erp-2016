@@ -5,7 +5,7 @@ var EventList = require('./eventList.model');
 
 // Get list of eventLists
 exports.index = function(req, res) {
-  EventList.find(function (err, eventLists) {
+  EventList.find({}, null, {sort: {'title':1}}, function (err, eventLists) {
     if(err) { return handleError(res, err); }
     return res.json(200, eventLists);
   });
@@ -13,7 +13,7 @@ exports.index = function(req, res) {
 
 // Get list of eventLists
 exports.indexEvents = function(req, res) {
-  EventList.find(function (err, eventLists) {
+  EventList.find({}, null, {sort: {'title':1}}, function (err, eventLists) {
     if(err) { return handleError(res, err); }
     return res.json(200, eventLists);
   });
@@ -21,7 +21,7 @@ exports.indexEvents = function(req, res) {
 
 // Get list of eventLists
 exports.indexWorkshops = function(req, res) {
-  EventList.find(function (err, eventLists) {
+  EventList.find({}, null, {sort: {'title':1}}, function (err, eventLists) {
     if(err) { return handleError(res, err); }
     return res.json(200, eventLists);
   });
@@ -30,6 +30,7 @@ exports.indexWorkshops = function(req, res) {
 // Get a single eventList
 exports.show = function(req, res) {
   EventList.findById(req.params.id)
+  .sort('title':1)
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
@@ -44,6 +45,7 @@ exports.showEvents = function(req, res) {
     path: 'events',
     match: { isEvent: true }
   })
+  .sort('title':1)
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
@@ -58,6 +60,7 @@ exports.showWorkshops = function(req, res) {
     path: 'events',
     match: { isWorkshop: true }
   })
+  .sort('title':1)
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }

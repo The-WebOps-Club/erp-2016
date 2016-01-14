@@ -8,6 +8,7 @@ var Event = require('./event.model');
 exports.index = function(req, res) {
   var currDate = Date.now();
   Event.find({'startReg': {$lte: currDate}, 'endReg': {$gte: currDate}})
+  .sort({'name':1})
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(events);
@@ -44,6 +45,7 @@ exports.showWeb = function(req, res) {
   .populate('eventTabs')
   .populate('assignees', 'name phoneNumber')
   .populate('marqueeNotifs')
+  .sort({'name':1})
   .exec(function (err, event) {
     if(err) { return handleError(res, err); }
     if(!event) { return res.sendStatus(404); }
@@ -53,7 +55,7 @@ exports.showWeb = function(req, res) {
 
 // Get multiple events
 exports.getMultiple = function(req, res) {
-  Event.find({ 'eventCategory': req.params.id }, function (err, events) {
+  Event.find({ 'eventCategory': req.params.id }, null, {sort: {'name':1}}, function (err, events) {
     if(err) { return handleError(res, err); }
     if(!events) { return res.sendStatus(404); }
     // console.log(events);
@@ -62,7 +64,7 @@ exports.getMultiple = function(req, res) {
 };
 
 exports.forStats = function(req, res) {
-  Event.find({}, function (err, events) {
+  Event.find({}, null, {sort: {'name':1}}, function (err, events) {
     if(err) { return handleError(res, err); }
     if(!events) { return res.sendStatus(404); }
     // console.log(events);
@@ -79,6 +81,7 @@ exports.myEvents = function(req, res) {
   .populate('createdBy', '-salt -hashedPassword -lastSeen -provider')
   .populate('lastUpdatedBy', '-salt -hashedPassword -lastSeen -provider')
   .populate('marqueeNotifs')
+  .sort({'name':1})
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
     if(!events) { return res.sendStatus(404); }
