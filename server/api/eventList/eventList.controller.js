@@ -30,7 +30,7 @@ exports.indexWorkshops = function(req, res) {
 // Get a single eventList
 exports.show = function(req, res) {
   EventList.findById(req.params.id)
-  .sort('title':1)
+  .sort({'title':1})
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
@@ -45,7 +45,7 @@ exports.showEvents = function(req, res) {
     path: 'events',
     match: { isEvent: true }
   })
-  .sort('title':1)
+  .sort({'title':1})
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
@@ -60,7 +60,7 @@ exports.showWorkshops = function(req, res) {
     path: 'events',
     match: { isWorkshop: true }
   })
-  .sort('title':1)
+  .sort({'title':1})
   .exec(function (err, eventList) {
     if(err) { return handleError(res, err); }
     if(!eventList) { return res.sendStatus(404); }
