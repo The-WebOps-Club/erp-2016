@@ -189,45 +189,44 @@ exports.create = function (req, res, next) {
 
 exports.getByFestID = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
-    if(err) return next(err)
+    if(err) return next(err);
     if(!user) return res.sendStatus(404);
-    res.status(200).json(user)
-  })
-}
+    res.status(200).json(user);
+  });
+};
 
 exports.updateUserBarcode = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
-    if(err) return next(err)
+    if(err) return next(err);
     if(!user) return res.sendStatus(404);
-    user.barcodeID = req.body.barcodeID
-    user.updatedOn = Date.now()
+    user.barcodeID = req.body.barcodeID;
+    user.updatedOn = Date.now();
     user.save(function(err, user){
-      if(err) return next(err)
-      res.status(200).json(user)
+      if(err) return next(err);
+      res.status(200).json(user);
     });
-  })
-}
+  });
+};
 
 exports.getAllUsers = function (req, res){
   console.log("RIght here")
-  User.find({}, function(err, users){
-    if(err) return res.json(500, err)
-    res.status(200).json(users)
-  })
-}
+  User.find({}, '-salt -hashedPassword -lastSeen', function(err, users){
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  });
+};
 
 exports.getAllUsersSince = function (req, res){
   console.log("RIght here")
-  User.find({updatedOn:{$gt:req.body.last_fetched_date}}, function(err, users){
-    if(err) return res.json(500, err)
-    res.status(200).json(users)
-  })
-}
-
+  User.find({updatedOn:{$gt:req.body.last_fetched_date}}, '-salt -hashedPassword -lastSeen', function(err, users){
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  });
+};
 
 exports.getCurrentTime = function (req, res){
-  res.status(200).json({date: Date.now()})
-}
+  res.status(200).json({date: Date.now()});
+};
 
 /**
  * Get a single user
