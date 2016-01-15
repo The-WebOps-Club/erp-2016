@@ -122,7 +122,7 @@ exports.create = function (req, res, next) {
   newUser.save(function (err, user) {
     if (err) { console.log(err); return validationError(res, err); }
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-    
+
     var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
     newTeam.save(function (err, team) {
       if(err) { return handleError(res, err); }
@@ -169,7 +169,7 @@ exports.create = function (req, res, next) {
       // newUser.save(function (err, user) {
       //   if (err) { console.log(err); return validationError(res, err); }
       //   var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-        
+      
       //   var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
       //   newTeam.save(function (err, team) {
       //     if(err) { return handleError(res, err); }
@@ -206,7 +206,7 @@ exports.create = function (req, res, next) {
       //   res.json({ token: token });
 
       // });
-      
+
   //   }
   // });
 };
@@ -220,6 +220,47 @@ exports.sisFellowship = function(req, res) {
       res.sendStatus(200);
     });    
   });
+};
+
+exports.getByFestID = function (req, res, next){
+  User.findOne({festID:req.body.festID}, function(err, user){
+    if(err) return next(err);
+    if(!user) return res.sendStatus(404);
+    res.status(200).json(user);
+  });
+};
+
+exports.updateUserBarcode = function (req, res, next){
+  User.findOne({festID:req.body.festID}, function(err, user){
+    if(err) return next(err);
+    if(!user) return res.sendStatus(404);
+    user.barcodeID = req.body.barcodeID;
+    user.updatedOn = Date.now();
+    user.save(function(err, user){
+      if(err) return next(err);
+      res.status(200).json(user);
+    });
+  });
+};
+
+exports.getAllUsers = function (req, res){
+  console.log("RIght here")
+  User.find({}, '-salt -hashedPassword -lastSeen', function(err, users){
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  });
+};
+
+exports.getAllUsersSince = function (req, res){
+  console.log("RIght here")
+  User.find({updatedOn:{$gt:req.body.last_fetched_date}}, '-salt -hashedPassword -lastSeen', function(err, users){
+    if(err) return res.json(500, err);
+    res.status(200).json(users);
+  });
+};
+
+exports.getCurrentTime = function (req, res){
+  res.status(200).json({date: Date.now()});
 };
 
 /**
@@ -421,13 +462,13 @@ exports.forgotPassword = function(req, res, next) {
         "If you did not request this, please ignore this email and your password will remain unchanged." +
         "Best,\nShaastra 2016 team";
       var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\">" +
-        "<tr> <td>" +  
-        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +  
-        "<p>Greetings from Shaastra-2016 team.</p>" +  
-        "<p>You have received this email since you have requested for password change for your Shaastra account.</p>" +  
-        "<p>Please click on the following link, or paste this into your browser to complete the process:" +  
+        "<tr> <td>" +
+        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +
+        "<p>Greetings from Shaastra-2016 team.</p>" +
+        "<p>You have received this email since you have requested for password change for your Shaastra account.</p>" +
+        "<p>Please click on the following link, or paste this into your browser to complete the process:" +
         "<p>http://shaastra.org/#/reset-password/" + token + "</p>"
-        "<p>If you did not request this, please ignore this email and your password will remain unchanged.</p>" + 
+        "<p>If you did not request this, please ignore this email and your password will remain unchanged.</p>" +
         "Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
       var params = {
         to: user.email,
@@ -478,10 +519,10 @@ exports.resetPassword = function(req, res) {
         "This is a confirmation that the password for your account " + user.email + " - " + user.festID + " has just been changed\n\n" +
         "Best,\nShaastra 2016 team";
       var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\">" +
-        "<tr> <td>" +  
-        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +  
-        "<p>Greetings from Shaastra-2016 team.</p>" +  
-        "<p>This is a confirmation that the password for your account <b>" + user.email + " - " + user.festID + "</b> has just been changed</p>" +  
+        "<tr> <td>" +
+        "<h2>Hello " + user.name + " " + user.secondName + ",</h2>" +
+        "<p>Greetings from Shaastra-2016 team.</p>" +
+        "<p>This is a confirmation that the password for your account <b>" + user.email + " - " + user.festID + "</b> has just been changed</p>" +
         "Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
       var params = {
         to: user.email,
