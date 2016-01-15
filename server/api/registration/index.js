@@ -10,6 +10,7 @@ router.get('/', auth.hasRole('admin'), controller.index);
 router.get('/:id', auth.hasRole('user'), controller.show);
 router.get('/event/:eventId', auth.hasRole('coord'), controller.showforevent);
 router.post('/', auth.hasRole('user'), controller.create);
+router.post('/on', controller.onspotreg);
 router.put('/:id', auth.hasRole('user'), controller.update);
 router.patch('/:id', auth.hasRole('user'), controller.update);
 router.delete('/:teamId/:eventId', auth.hasRole('user'), controller.destroy);

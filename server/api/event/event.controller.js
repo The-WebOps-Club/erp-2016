@@ -14,6 +14,15 @@ exports.index = function(req, res) {
   });
 };
 
+//Get all events
+exports.listall = function(req, res) {
+  Event.find()
+  .exec(function (err, events) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(events);
+  });
+};
+
 // Get a single event
 exports.show = function(req, res) {
   Event.findById(req.params.id)

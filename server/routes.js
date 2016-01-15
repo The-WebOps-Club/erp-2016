@@ -29,6 +29,7 @@ module.exports = function(app) {
   app.use('/api/departments', require('./api/department'));
   app.use('/api/tasks', require('./api/task'));
   app.use('/api/users', require('./api/user'));
+  app.use('/api/test/', require('./api/test'));
   // app.use('/api/website-users', require('./api/websiteUser'));
 
   // app.use('/authWebsite', require('./authWebsite'));

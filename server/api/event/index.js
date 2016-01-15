@@ -7,6 +7,7 @@ var auth = require('../../auth/auth.service');
 var router = express.Router();
 
 router.get('/', controller.index);
+router.get('/onspotreg', controller.listall);
 router.get('/myEvents', auth.hasRole('coord'), controller.myEvents);
 router.get('/showWeb/:id', controller.showWeb);
 router.get('/:id', controller.show);

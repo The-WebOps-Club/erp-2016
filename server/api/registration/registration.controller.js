@@ -64,6 +64,82 @@ exports.show = function(req, res) {
   });
 };
 
+exports.onspotreg = function(req, res){
+  var flag = true;
+  // Check if team is already registered
+  // Push in event.registrations
+  Event.findById(req.body.eventRegistered)
+  .populate('registrations', 'team')
+  .exec(function (err, event) {
+    console.log("1 ");
+    if (err) { return handleError(res, err); }
+    if(!event) { return res.sendStatus(404); }
+    console.log(event.registrations);
+    Team.findById(req.body.team, function (err, team) {
+      console.log("2 ");
+      if (err) { return handleError(res, err); }
+      else {
+        if(!team) { flag = false; return res.sendStatus(404); }
+        else {
+          if(team.teamMembers>event.maxTeamMembers || team.teamMembers<event.minTeamMembers) {
+            flag = false;
+            // res.send(422);
+          }
+          if(Date.now()<event.startReg || Date.now()>event.endReg) {
+            flag = false;
+            // res.send(422);
+          }
+
+          if(flag===false) {
+            res.sendStatus(422); 
+          } else {
+            // Push in team.eventsRegistered
+            Team.findById(req.body.team, function (err, team) {
+              console.log("2 ");
+              if (err) { return handleError(res, err); }
+              if(!team) { flag = false; return res.sendStatus(404); }
+              var updated = _.assign(team, { eventsRegistered: team.eventsRegistered.concat(req.body.eventRegistered) });
+              updated.save(function (err) {
+                console.log("3 ");
+                if (err) { return handleError(res, err); }
+                else
+                {
+                  if(flag) {
+                    // Push in registration
+                    req.body.registrationTime = Date.now();
+                    Registration.create(req.body, function (err, registration) {
+                      console.log("4 ");
+                      if(err) { return handleError(res, err); }
+                      Event.findById(req.body.eventRegistered, function (err, event) {
+                        var updated = _.assign(event, { registrations: event.registrations.concat(registration._id) });
+                        updated.save(function (err) {
+                          console.log("5 ");
+                          console.log(registration._id);
+                          if (err) { return handleError(res, err); }
+                          else
+                          {
+                            console.log(registration._id);
+                            var updated = _.assign(team, { registrations: team.registrations.concat(registration._id) });
+                            updated.save(function (err) {
+                              console.log("7 ");
+                              if (err) { return handleError(res, err); }
+                              res.status(204).json(updated);
+                            });
+                          }
+                        });
+                      });
+                    });
+                  }
+                }
+              });
+            });
+          }
+        }
+      }
+    });   
+  });
+};
+
 // Creates a new registration in the DB.
 exports.create = function(req, res) {
   // Check if user is in team
