@@ -327,6 +327,10 @@ exports.updateProfile = function (req, res, next) {
     user.email = userUpdate.email;
     user.phoneNumber = userUpdate.phoneNumber;
     user.wantAccomodation = userUpdate.wantAccomodation;
+    user.city = userUpdate.city;
+    user.state = userUpdate.state;
+    user.stream = userUpdate.stream;
+    user.degree = userUpdate.degree;
     user.updatedOn = Date.now();
     user.save(function (err) {
       if(err) return validationError(res, err);
