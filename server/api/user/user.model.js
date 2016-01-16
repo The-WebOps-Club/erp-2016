@@ -50,13 +50,16 @@ var UserSchema = new Schema({
   rollNumber: { type: String, default: '' },
   hostel: {},
   roomNumber: { type: String, default: '' },
+  stream: { type: String, default: '' },
+  state: { type: String, default: '' },
+  degree: { type: String, default: '' },
+  city: { type: String, default: '' },
   email: { type: String, lowercase: true, default: '' },
   role: {
     type: String,
     default: 'user'
   },
   isActive: {},
-  city: { type: String, default: '' },
   summerLocation: { type: String, default: '' },
   cgpa: { type: Number, default: '' },
   lastSeen: { type: Date },
