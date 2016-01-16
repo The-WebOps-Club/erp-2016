@@ -12,6 +12,7 @@ var Team = require('../team/team.model');
 var College = require('../college/college.model');
 var api_key = '';
 var sendgrid = require('sendgrid')(api_key);
+var mongoose = require('mongoose');
 
 var EMAIL = ''; // Put your fest mail id here
 var PASSWORD = ''; // Put your fest password here
@@ -138,6 +139,15 @@ exports.create = function (req, res, next) {
       });
       return;
     });
+    //remove the following code
+    // College.findById(req.body.collegeID, function(err, college){
+    //   newUser.college=college
+    //   newUser.save(function(err, user){
+    //     if(user) {
+    //       console.log(user);
+    //     }
+    //   })
+    // })
 
     var text_body = "Hello " + user.name + " " + user.secondName + ",\nGreetings from Shaastra-2016 team.\n\nWe are delighted to have you as a registered member.\n\nYou can create your teams and register to events or workshops in your Dashboard(http://shaastra.org/#/dashboard).\n\nThis year Shaastra will open up exciting new avenues for you and make you see tech in a way that you've never seen before. The host of events, shows and workshops that we have lined up will certainly leave you awe-inspired and wanting more. All that we ask in return is a crazy amount of enthusiasm!! Stay tuned to our pages for regular updates,\nFacebook: https://www.facebook.com/Shaastra/\nTwitter: https://twitter.com/ShaastraIITM\nYouTube: https://www.youtube.com/user/iitmshaastra\n\nBest,\nShaastra 2016 team";
     var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\"> <tr> <td> <h2>Hello " + user.name + " " + user.secondName + ",</h2> <p>Greetings from Shaastra-2016 team.</p> <p>We are delighted to have you as a registered member.</p> <p>You can create your teams and register to events or workshops in your <a target='_blank' href='http://shaastra.org/#/dashboard'>Dashboard</a>.</p> <p>This year Shaastra will open up exciting new avenues for you and make you see tech in a way that you've never seen before. The host of events, shows and workshops that we have lined up will certainly leave you awe-inspired and wanting more. All that we ask in return is a crazy amount of enthusiasm!! Stay tuned to our pages for regular updates,</p> <p> <a target='_blank' href='https://www.facebook.com/Shaastra/'>Facebook</a>, <a target='_blank' href='https://twitter.com/ShaastraIITM'>Twitter</a>, <a target='_blank' href='https://www.youtube.com/user/iitmshaastra'>YouTube</a> </p> Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
@@ -222,19 +232,38 @@ exports.sisFellowship = function(req, res) {
   });
 };
 
+exports.createCollege = function (req, res, next){
+  var c = new College(req.body)
+  c.save(function(err, college){
+    if(err) return next(err);
+    console.log(college)
+    res.status(200).json(college)
+  })
+}
+
+exports.getColleges = function (req, res, next){
+  College.find({}, function(err, colleges){
+    if(err) return next(err);
+    if(!colleges) return res.sendStatus(404);
+    res.status(200).json(colleges)
+  });
+}
+
 exports.getByFestID = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
     if(err) return next(err);
     if(!user) return res.sendStatus(404);
     res.status(200).json(user);
-  });
+  })
+  .populate('college');
 };
 
-exports.updateUserBarcode = function (req, res, next){
+exports.updateUserBarcodeAndCollege = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
     if(err) return next(err);
     if(!user) return res.sendStatus(404);
     user.barcodeID = req.body.barcodeID;
+    user.college = req.body.collegeID
     user.updatedOn = Date.now();
     user.save(function(err, user){
       if(err) return next(err);
@@ -248,7 +277,8 @@ exports.getAllUsers = function (req, res){
   User.find({}, '-salt -hashedPassword -lastSeen', function(err, users){
     if(err) return res.json(500, err);
     res.status(200).json(users);
-  });
+  })
+  .populate('college');
 };
 
 exports.getAllUsersSince = function (req, res){
@@ -256,7 +286,8 @@ exports.getAllUsersSince = function (req, res){
   User.find({updatedOn:{$gt:req.body.last_fetched_date}}, '-salt -hashedPassword -lastSeen', function(err, users){
     if(err) return res.json(500, err);
     res.status(200).json(users);
-  });
+  })
+  .populate('college');
 };
 
 exports.getCurrentTime = function (req, res){
