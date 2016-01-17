@@ -70,7 +70,7 @@ var UserSchema = new Schema({
   provider: String,
   salt: String,
   festID: String,
-  barcodeID: String,
+  barcodeID: { type: String, default: '' },
   updatedOn: { type: Date },
   createdOn: { type: Date },
   resetPasswordToken: String,
