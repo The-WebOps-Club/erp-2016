@@ -223,7 +223,7 @@ exports.create = function (req, res, next) {
 
 exports.QmsRegistrations = function(req, res) {
   if(req.query.id) {
-    User.findOne({'festID':req.query.id}, '-salt -hashedPassword -lastSeen', function (err, user) {
+    User.findOne({'festID':req.query.id}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
@@ -231,7 +231,7 @@ exports.QmsRegistrations = function(req, res) {
     .populate('college');
   } 
   if(req.query.email) {
-    User.findOne({'email':req.query.email}, '-salt -hashedPassword -lastSeen', function (err, user) {
+    User.findOne({'email':req.query.email}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
