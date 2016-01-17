@@ -27,7 +27,8 @@ exports.forOnSpotConfirmations = function (req, res) {
   Event.find({'acceptedByAdmin': true}, 'name _id eventCategory maxTeamMembers minTeamMembers')
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
-    return res.status(200).json(events);
+    var finalRes = { 'data': events };
+    return res.status(200).json(finalRes);
   });  
 };
 
