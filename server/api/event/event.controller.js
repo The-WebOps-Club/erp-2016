@@ -23,6 +23,14 @@ exports.forSearch = function(req, res) {
   });
 };
 
+exports.forOnSpotConfirmations = function (req, res) {
+  Event.find({'acceptedByAdmin': true}, 'name _id eventCategory maxTeamMembers minTeamMembers')
+  .exec(function (err, events) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(events);
+  });  
+};
+
 // Get a single event
 exports.show = function(req, res) {
   Event.findById(req.params.id)
