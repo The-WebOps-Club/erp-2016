@@ -12,6 +12,7 @@ router.get('/', auth.isAuthenticated(), controller.index);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/getCoords', controller.getCoords);
 router.get('/sisFellows', auth.hasRole('superCoord'), controller.getSisFellows);
+router.get('/QmsRegistrations', controller.QmsRegistrations);
 router.get('/me', auth.isAuthenticated(), controller.me);
 // router.get('/getAllEmailsHAHAHAPeopleRandom', controller.getAllEmails);
 // router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);

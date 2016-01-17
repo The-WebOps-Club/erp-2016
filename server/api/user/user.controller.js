@@ -221,6 +221,21 @@ exports.create = function (req, res, next) {
   // });
 };
 
+exports.QmsRegistrations = function(req, res) {
+  if(req.query.id) {
+    User.findOne({'festID':req.query.id}, '-salt -hashedPassword -lastSeen', function (err, user) {
+      if(err) return res.json(500, err);
+      res.status(200).json(user);
+    });
+  } 
+  if(req.query.email) {
+    User.findOne({'email':req.query.email}, '-salt -hashedPassword -lastSeen', function (err, user) {
+      if(err) return res.json(500, err);
+      res.status(200).json(user);
+    });    
+  }
+};
+
 // Toggle sis-fellowship
 exports.sisFellowship = function(req, res) {
   User.findById(req.user._id, function (err, user) {
