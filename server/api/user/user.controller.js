@@ -225,13 +225,15 @@ exports.QmsRegistrations = function(req, res) {
   if(req.query.id) {
     User.findOne({'festID':req.query.id}, '-salt -hashedPassword -lastSeen', function (err, user) {
       if(err) return res.json(500, err);
-      res.status(200).json(user);
+      var finalRes = { 'data': user };
+      res.status(200).json(finalRes);
     });
   } 
   if(req.query.email) {
     User.findOne({'email':req.query.email}, '-salt -hashedPassword -lastSeen', function (err, user) {
       if(err) return res.json(500, err);
-      res.status(200).json(user);
+      var finalRes = { 'data': user };
+      res.status(200).json(finalRes);
     });    
   }
 };
