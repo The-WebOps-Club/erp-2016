@@ -240,6 +240,10 @@ exports.QmsRegistrations = function(req, res) {
   }
 };
 
+exports.QmsUpdateUser = function (req, res) {
+  
+};
+
 // Toggle sis-fellowship
 exports.sisFellowship = function(req, res) {
   User.findById(req.user._id, function (err, user) {
@@ -255,8 +259,8 @@ exports.createCollege = function (req, res, next){
   var c = new College(req.body)
   c.save(function(err, college){
     if(err) return next(err);
-    console.log(college)
-    res.status(200).json(college)
+    console.log(college);
+    res.status(200).json(college);
   })
 }
 
@@ -264,7 +268,7 @@ exports.getColleges = function (req, res, next){
   College.find({}, function(err, colleges){
     if(err) return next(err);
     if(!colleges) return res.sendStatus(404);
-    res.status(200).json(colleges)
+    res.status(200).json(colleges);
   });
 }
 
