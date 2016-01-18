@@ -23,6 +23,7 @@ router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/sisFellowship', auth.isAuthenticated(), controller.sisFellowship);
 router.post('/', controller.create);
+router.post('/onspot', controller.createOnspot);
 router.post('/festid', controller.getByFestID);
 router.post('/getAll', controller.getAllUsers);
 router.post('/getAllSince', controller.getAllUsersSince);
