@@ -239,9 +239,85 @@ exports.QmsRegistrations = function(req, res) {
     .populate('college');
   }
 };
-
 exports.QmsUpdateUser = function (req, res) {
-  
+  var userUpdate = new User(req.body.data);
+  // console.log(userUpdate)
+  User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
+    if(err) return validationError(res, err);
+    if(!user) return res.sendStatus(404);
+    user.name = userUpdate.name;
+    user.age = userUpdate.age;
+    user.secondName = userUpdate.secondName;
+    user.email = userUpdate.email;
+    user.phoneNumber = userUpdate.phoneNumber;
+    user.wantAccomodation = userUpdate.wantAccomodation;
+    user.schoolStudent = userUpdate.schoolStudent;
+    user.college = userUpdate.college;
+    user.city = userUpdate.city;
+    user.barcodeID = userUpdate.barcodeID;
+    user.state = userUpdate.state;
+    user.stream = userUpdate.stream;
+    user.degree = userUpdate.degree;
+    user.updatedOn = Date.now();
+    user.save(function (err, doc) {
+      if(err) return validationError(res, err);
+      User.findById(doc._id, '-salt -hashedPassword', function(err, result){
+        if(err) return next(err);
+        if(!result) return res.sendStatus(404);
+        res.status(200).json(result);
+      })
+      .populate('college');
+    });
+  });
+};
+exports.QmsCreateUser = function (req, res) {
+  var newUser = new User(req.body.data);
+  newUser.role = 'user';
+  newUser.provider = 'local';
+  newUser.createdOn = Date.now();
+  newUser.updatedOn = Date.now();
+  User.count({}, function (err, count) {
+    newUser.festID = festID(count+1);
+  });
+  newUser.save(function (err, user) {
+    if (err) { console.log(err); return validationError(res, err); }
+    var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
+
+    var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
+    newTeam.save(function (err, team) {
+      if(err) { return handleError(res, err); }
+      User.findById(user._id, function (err, user) {
+        if(err) return validationError(res, err);
+        if(!user) return res.sendStatus(404);
+        user.teams = [team._id];
+        user.selfTeam = team._id;
+        user.save(function (err) {
+          if(err) return validationError(res, err);
+          return;
+        });
+      });
+      return;
+    });
+
+    var text_body = "Hello " + user.name + " " + user.secondName + ",\nGreetings from Shaastra-2016 team.\n\nWe are delighted to have you as a registered member.\n\nYou can create your teams and register to events or workshops in your Dashboard(http://shaastra.org/#/dashboard).\n\nThis year Shaastra will open up exciting new avenues for you and make you see tech in a way that you've never seen before. The host of events, shows and workshops that we have lined up will certainly leave you awe-inspired and wanting more. All that we ask in return is a crazy amount of enthusiasm!! Stay tuned to our pages for regular updates,\nFacebook: https://www.facebook.com/Shaastra/\nTwitter: https://twitter.com/ShaastraIITM\nYouTube: https://www.youtube.com/user/iitmshaastra\n\nBest,\nShaastra 2016 team";
+    var html_body = "<table style=\"background-color: #f3f3f3; font-family: verdana, tahoma, sans-serif; color: black; padding: 30px;\"> <tr> <td> <h2>Hello " + user.name + " " + user.secondName + ",</h2> <p>Greetings from Shaastra-2016 team.</p> <p>We are delighted to have you as a registered member.</p> <p>You can create your teams and register to events or workshops in your <a target='_blank' href='http://shaastra.org/#/dashboard'>Dashboard</a>.</p> <p>This year Shaastra will open up exciting new avenues for you and make you see tech in a way that you've never seen before. The host of events, shows and workshops that we have lined up will certainly leave you awe-inspired and wanting more. All that we ask in return is a crazy amount of enthusiasm!! Stay tuned to our pages for regular updates,</p> <p> <a target='_blank' href='https://www.facebook.com/Shaastra/'>Facebook</a>, <a target='_blank' href='https://twitter.com/ShaastraIITM'>Twitter</a>, <a target='_blank' href='https://www.youtube.com/user/iitmshaastra'>YouTube</a> </p> Best,<br/> Shaastra 2016 team</p> </td> </tr> </table>";
+    var params = {
+      to: user.email,
+      from: 'support@shaastra.org',
+      fromname: 'Shaastra WebOps',
+      subject: 'Welcome to Shaastra 2016',
+      replyto: 'chinni@shaastra.org',
+      text: text_body,
+      html: html_body
+    };
+    var email = new sendgrid.Email(params);
+    sendgrid.send(email, function (err, json) {
+      console.log('Error sending mail - ', err);
+      console.log('Success sending mail - ', json);
+    });
+
+    res.json({ token: token });
+  });
 };
 
 // Toggle sis-fellowship
@@ -270,7 +346,7 @@ exports.getColleges = function (req, res, next){
     if(!colleges) return res.sendStatus(404);
     res.status(200).json(colleges);
   });
-}
+};
 
 exports.getByFestID = function (req, res, next){
   User.findOne({festID:req.body.festID}, function(err, user){
@@ -408,7 +484,7 @@ exports.updateEverything = function(req, res, next){
       })
       .populate('college');
     });
-  })
+  });
 
   // res.sendStatus(200)
 };
