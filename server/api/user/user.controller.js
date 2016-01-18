@@ -340,7 +340,7 @@ exports.updateProfile = function (req, res, next) {
 };
 
 exports.updateEverything = function(req, res, next){
-  var userUpdate = new User(req.body.userUpdate)
+  var userUpdate = new User(req.body.userUpdate);
   // console.log(userUpdate)
   User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
     if(err) return validationError(res, err);
