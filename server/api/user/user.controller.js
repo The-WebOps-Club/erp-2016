@@ -96,7 +96,7 @@ exports.getSisFellows = function(req, res) {
       Event.populate(users, eventDetails, function (err, updatedUsers) {
         return res.json(updatedUsers);
       });
-    }    
+    }
   });
 };
 
@@ -179,7 +179,7 @@ exports.create = function (req, res, next) {
       // newUser.save(function (err, user) {
       //   if (err) { console.log(err); return validationError(res, err); }
       //   var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
-      
+
       //   var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
       //   newTeam.save(function (err, team) {
       //     if(err) { return handleError(res, err); }
@@ -251,7 +251,7 @@ exports.sisFellowship = function(req, res) {
     user.save(function (err) {
       if (err) return validationError(res, err);
       res.sendStatus(200);
-    });    
+    });
   });
 };
 
@@ -279,20 +279,6 @@ exports.getByFestID = function (req, res, next){
     res.status(200).json(user);
   })
   .populate('college');
-};
-
-exports.updateUserBarcodeAndCollege = function (req, res, next){
-  User.findOne({festID:req.body.festID}, function(err, user){
-    if(err) return next(err);
-    if(!user) return res.sendStatus(404);
-    user.barcodeID = req.body.barcodeID;
-    user.college = req.body.collegeID
-    user.updatedOn = Date.now();
-    user.save(function(err, user){
-      if(err) return next(err);
-      res.status(200).json(user);
-    });
-  });
 };
 
 exports.getAllUsers = function (req, res){
@@ -391,6 +377,39 @@ exports.updateProfile = function (req, res, next) {
       res.sendStatus(200);
     });
   });
+};
+
+exports.updateEverything = function(req, res, next){
+  var userUpdate = new User(req.body.userUpdate);
+  // console.log(userUpdate)
+  User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
+    if(err) return validationError(res, err);
+    if(!user) return res.sendStatus(404);
+    user.name = userUpdate.name;
+    user.secondName = userUpdate.secondName;
+    user.email = userUpdate.email;
+    user.phoneNumber = userUpdate.phoneNumber;
+    user.wantAccomodation = userUpdate.wantAccomodation;
+    user.schoolStudent = userUpdate.schoolStudent;
+    user.college = userUpdate.college;
+    user.city = userUpdate.city;
+    user.barcodeID = userUpdate.barcodeID;
+    user.state = userUpdate.state;
+    user.stream = userUpdate.stream;
+    user.degree = userUpdate.degree;
+    user.updatedOn = Date.now();
+    user.save(function (err, doc) {
+      if(err) return validationError(res, err);
+      User.findById(doc._id, '-salt -hashedPassword', function(err, result){
+        if(err) return next(err);
+        if(!result) return res.sendStatus(404);
+        res.status(200).json(result);
+      })
+      .populate('college');
+    });
+  })
+
+  // res.sendStatus(200)
 };
 
 /**
