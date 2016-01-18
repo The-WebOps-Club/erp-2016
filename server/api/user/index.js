@@ -13,8 +13,6 @@ router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/getCoords', controller.getCoords);
 router.get('/sisFellows', auth.hasRole('superCoord'), controller.getSisFellows);
 router.get('/QmsRegistrations', controller.QmsRegistrations);
-router.get('/QmsCreateUser', controller.QmsCreateUser);
-router.get('/QmsUpdateUser', controller.QmsUpdateUser);
 router.get('/me', auth.isAuthenticated(), controller.me);
 // router.get('/getAllEmailsHAHAHAPeopleRandom', controller.getAllEmails);
 // router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
@@ -22,6 +20,8 @@ router.put('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfil
 router.get('/:id', auth.isAuthenticated(), controller.show);
 // router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
 // router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
+router.post('/QmsCreateUser', controller.QmsCreateUser);
+router.post('/QmsUpdateUser', controller.QmsUpdateUser);
 router.post('/forgotPassword', controller.forgotPassword);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/sisFellowship', auth.isAuthenticated(), controller.sisFellowship);
