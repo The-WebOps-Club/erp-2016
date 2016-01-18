@@ -386,6 +386,7 @@ exports.updateEverything = function(req, res, next){
     if(err) return validationError(res, err);
     if(!user) return res.sendStatus(404);
     user.name = userUpdate.name;
+    user.age = userUpdate.age;
     user.secondName = userUpdate.secondName;
     user.email = userUpdate.email;
     user.phoneNumber = userUpdate.phoneNumber;
