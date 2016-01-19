@@ -235,8 +235,7 @@ exports.QmsRegistrations = function(req, res) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
-    })
-    .populate('college');
+    });
   } 
   if(req.query.email) {
     var emailID = req.query.email.toLowerCase();
@@ -244,8 +243,7 @@ exports.QmsRegistrations = function(req, res) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
-    })
-    .populate('college');
+    });
   }
 };
 exports.QmsUpdateUser = function (req, res) {
