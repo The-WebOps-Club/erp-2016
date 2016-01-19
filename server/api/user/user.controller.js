@@ -111,8 +111,9 @@ exports.index = function (req, res) {
 /**
  * Creates a new user
  */
-exports.create = function (req, res, next) {
-  var newUser = new User(req.body);
+
+var createUser = function (req, res, next, callback){
+    var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
@@ -166,10 +167,16 @@ exports.create = function (req, res, next) {
       console.log('Success sending mail - ', json);
     });
 
-    res.json({ token: token });
+    callback(res, {token:token, festID:user.festID});
 
   });
+}
 
+exports.create = function (req, res, next) {
+
+  createUser(req, res, next, function(res, data){
+    res.json({ token: data.token });
+  })
 
   // College.findById(req.body.college, function (err, college) {
   //   if (err) { return handleError(res, err); }
@@ -321,6 +328,12 @@ exports.QmsCreateUser = function (req, res) {
     });
 
     res.sendStatus(200);
+  });
+};
+
+exports.createOnspot = function (req, res, next) {
+  createUser(req, res, next, function(res, data){
+    res.status(200).json(data.festID)
   });
 };
 
