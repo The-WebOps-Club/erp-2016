@@ -316,7 +316,7 @@ exports.QmsCreateUser = function (req, res) {
       console.log('Success sending mail - ', json);
     });
 
-    res.json({ token: token });
+    res.sendStatus(200);
   });
 };
 
