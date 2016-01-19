@@ -274,6 +274,7 @@ exports.QmsUpdateUser = function (req, res) {
   });
 };
 exports.QmsCreateUser = function (req, res) {
+  console.log(req.body);
   var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
