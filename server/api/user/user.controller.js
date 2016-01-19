@@ -240,7 +240,7 @@ exports.QmsRegistrations = function(req, res) {
   }
 };
 exports.QmsUpdateUser = function (req, res) {
-  var userUpdate = new User(req.body.data);
+  var userUpdate = new User(req.body);
   // console.log(userUpdate)
   User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
     if(err) return validationError(res, err);
@@ -271,7 +271,7 @@ exports.QmsUpdateUser = function (req, res) {
   });
 };
 exports.QmsCreateUser = function (req, res) {
-  var newUser = new User(req.body.data);
+  var newUser = new User(req.body);
   newUser.role = 'user';
   newUser.provider = 'local';
   newUser.createdOn = Date.now();
@@ -285,14 +285,14 @@ exports.QmsCreateUser = function (req, res) {
 
     var newTeam = new Team({teamName: req.body.name, teamLeader: user._id, teamMembers: [user._id], eventsRegistered: [], selfTeam: true});
     newTeam.save(function (err, team) {
-      if(err) { return handleError(res, err); }
+      if(err) { console.log(err); return handleError(res, err); }
       User.findById(user._id, function (err, user) {
-        if(err) return validationError(res, err);
+        if(err) { console.log(err); return validationError(res, err); }
         if(!user) return res.sendStatus(404);
         user.teams = [team._id];
         user.selfTeam = team._id;
         user.save(function (err) {
-          if(err) return validationError(res, err);
+          if(err) { console.log(err); return validationError(res, err); }
           return;
         });
       });
