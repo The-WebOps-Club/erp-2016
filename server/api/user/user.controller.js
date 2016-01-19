@@ -223,7 +223,8 @@ exports.create = function (req, res, next) {
 
 exports.QmsRegistrations = function(req, res) {
   if(req.query.id) {
-    User.findOne({'festID':req.query.id}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
+    var shaastraID = req.query.id.toUpperCase();
+    User.findOne({'festID':shaastraID}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
@@ -231,7 +232,8 @@ exports.QmsRegistrations = function(req, res) {
     .populate('college');
   } 
   if(req.query.email) {
-    User.findOne({'email':req.query.email}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
+    var emailID = req.query.email.toLowerCase();
+    User.findOne({'email':emailID}, '-salt -hashedPassword -lastSeen -rollNumber -emailVerified -interestedInShaastraFellowship -branch -sendEmails -cgpa -summerLocation -role -provider -teams -selfTeam', function (err, user) {
       if(err) return res.json(500, err);
       var finalRes = { 'data': user };
       res.status(200).json(finalRes);
@@ -240,6 +242,7 @@ exports.QmsRegistrations = function(req, res) {
   }
 };
 exports.QmsUpdateUser = function (req, res) {
+  console.log(req.body);
   var userUpdate = new User(req.body);
   // console.log(userUpdate)
   User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
