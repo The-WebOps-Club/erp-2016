@@ -421,6 +421,7 @@ exports.controlRoom = function (req, res, next) {
       sendData.push("Other");
     } else {
       var x = user.college.collegeName || "Other";
+      sendData.push(x);
     }
     sendData.push(user.phoneNumber);
     res.json(sendData);
