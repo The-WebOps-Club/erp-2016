@@ -17,6 +17,7 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 // router.get('/getAllEmailsHAHAHAPeopleRandom', controller.getAllEmails);
 // router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.put('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfile);
+router.get('/controlRoom/:id', controller.controlRoom);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 // router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
 // router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);

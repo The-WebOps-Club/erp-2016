@@ -407,6 +407,26 @@ exports.show = function (req, res, next) {
   });
 };
 
+exports.controlRoom = function (req, res, next) {
+  var shaastraId = req.params.id;
+
+  User.findOne({'festID':shaastraId})
+  .populate('college', 'collegeName')
+  .exec(function (err, user) {
+    if (err) { console.log(err); return next(err); }
+    if (!user) return res.sendStatus(401);
+    var sendData = [];
+    sendData.push(user.name);
+    if(!user.college) {
+      sendData.push("Other");
+    } else {
+      var x = user.college.collegeName || "Other";
+    }
+    sendData.push(user.phoneNumber);
+    res.json(sendData);
+  });
+};
+
 /**
  * Deletes a user
  * restriction: 'admin'
