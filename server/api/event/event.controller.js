@@ -24,7 +24,7 @@ exports.forSearch = function(req, res) {
 };
 
 exports.forOnSpotConfirmations = function (req, res) {
-  Event.find({'acceptedByAdmin': true}, 'name _id eventCategory maxTeamMembers minTeamMembers')
+  Event.find({'acceptedByAdmin': true}, 'name _id eventCategory maxTeamMembers minTeamMembers eventCategory')
   .exec(function (err, events) {
     if(err) { return handleError(res, err); }
     var finalRes = { 'data': events };
