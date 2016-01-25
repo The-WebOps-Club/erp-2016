@@ -254,8 +254,17 @@ exports.getByFestID = function (req, res, next){
   .populate('college');
 };
 
+exports.getByBarcodeID = function (req, res, next){
+  console.log(req.body.barcodeID)
+  User.findOne({barcodeID:req.body.barcodeID}, function(err, user){
+    if(err) return next(err);
+    if(!user) return res.sendStatus(404);
+    res.status(200).json(user);
+  })
+  .populate('college');
+};
+
 exports.getAllUsers = function (req, res){
-  console.log("RIght here")
   User.find({}, '-salt -hashedPassword -lastSeen', function(err, users){
     if(err) return res.json(500, err);
     res.status(200).json(users);
@@ -354,7 +363,7 @@ exports.updateProfile = function (req, res, next) {
 
 exports.updateEverything = function(req, res, next){
   var userUpdate = new User(req.body.userUpdate);
-  // console.log(userUpdate)
+  console.log(userUpdate)
   User.findById(userUpdate._id, '-salt -hashedPassword', function(err, user){
     if(err) return validationError(res, err);
     if(!user) return res.sendStatus(404);

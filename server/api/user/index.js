@@ -25,6 +25,7 @@ router.post('/sisFellowship', auth.isAuthenticated(), controller.sisFellowship);
 router.post('/', controller.create);
 router.post('/onspot', controller.createOnspot);
 router.post('/festid', controller.getByFestID);
+router.post('/barcodeid', controller.getByBarcodeID);
 router.post('/getAll', controller.getAllUsers);
 router.post('/getAllSince', controller.getAllUsersSince);
 router.post('/servertime', controller.getCurrentTime);
