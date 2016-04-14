@@ -4,7 +4,7 @@ var FormViewCtrl = angular.module('erp2015App').controller('FormViewCtrl', funct
     
     $scope.getCurrentUser = Auth.getCurrentUser;
     if (!$scope.getCurrentUser())
-      $state.go('LoginCtrl');
+      $state.go('Login');
    
     $scope.form = {};
     $scope.getForm = {};

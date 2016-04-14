@@ -6,12 +6,15 @@
 
         <div class="col-sm-12">
              <form name="myForm" id="myForm" novalidate>
-                <div class="row" ng-repeat="field in form.fields">
+                <!-- <div class="row" ng-repeat="field in form.fields">
                     <div class="container">
                         <field-directive field="field">
 
                         </field-directive>
                     </div>
+                </div> -->
+                <div class="row text-center">
+                    <h4>View {{ form.form.name }} Questionnaire <a ng-href="{{form.filePath}}" target="_blank">here</a></h4>
                 </div>
                  <fieldset ng-show="form.allowUploads" class="col-sm-12">
                     <p>App File: </p>

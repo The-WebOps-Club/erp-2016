@@ -6,9 +6,9 @@ angular.module('erp2015App')
 
     $scope.getCurrentUser = Auth.getCurrentUser;
     if ($scope.getCurrentUser().role === 'user')
-      $state.go('coordPortalDashboardCtrl');
+      $state.go('coordPortalDashboard');
     if (!$scope.getCurrentUser())
-      $state.go('LoginCtrl');
+      $state.go('Login');
 
     $scope.responseDetails = 0;
     $scope.user = Auth.getCurrentUser();
@@ -26,7 +26,7 @@ angular.module('erp2015App')
         CoordPortalService.formByDepartment($scope.user.department[0]).then(function (forms) {
           if(forms.length !== 0) {
             $scope.forms = forms;
-            // console.log(forms);
+            console.log(forms);
             // socket.syncUpdates('form', $scope.allForms);
           } else {
             $scope.forms = '';

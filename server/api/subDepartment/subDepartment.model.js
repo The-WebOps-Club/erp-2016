@@ -29,12 +29,12 @@ var SubDepartmentSchema = new Schema({
  */
 
 // Validate empty sub-department name
-SubDepartmentSchema
-  .path('name')
-  .validate(function(name) {
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return name.length;
-  }, 'Sub-Department name cannot be blank');
+// SubDepartmentSchema
+//   .path('name')
+//   .validate(function(name) {
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return name.length;
+//   }, 'Sub-Department name cannot be blank');
 
 // Validate same name is not taken
 SubDepartmentSchema

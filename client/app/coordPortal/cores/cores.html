@@ -17,8 +17,8 @@
 						<th>Form</th>
 						<th>Position</th>
 						<th>Submissions</th>
-						<!-- <th>Edit Questions</th> -->
 						<!-- <th>Sub-Department</th> -->
+						<!-- <th>Edit Questions</th> -->
 						<!-- <th>Response</th> -->
 					</tr>
 				</thead>
@@ -27,15 +27,15 @@
 						<td>{{form.name}}</td>
 						<td>{{form.position.name}}</td>
 						<td><a ng-href="coordPortal/admin/submissions/{{form._id}}">View</a></td>
+						<!-- <td>{{response.form.subDepartment}}</td> -->
 						<!-- <td><a href="/forms/edit/{{form._id}}">Edit</a></td> -->
 						<!-- <td>{{response.form.department}}</td> -->
-						<!-- <td>{{response.form.subDepartment}}</td> -->
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-	<div class="container-fluid">
+	<!-- <div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-offset-3 col-md-6">
 				<p>Departments under {{department.name}}:</p>
@@ -48,5 +48,5 @@
 				<button class="btn btn-primary" ng-click="addSubDepartment()">Add Subdepartment</button>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </div>

@@ -50,7 +50,7 @@
 	        			<label for="department-select">Select</label>
 			            <select class="form-control" ng-model="preference" id="department-select">
 			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form._id}}">
-			            		{{form.department.name}} | {{form.name}}
+			            		{{form.department.name}} | {{form.name}} | {{form.position.name}}
 			            	</option>
 			        	</select>
 	        		</div>
@@ -67,19 +67,20 @@
 	        	<h4 class="text-center"><b>Instructions and Regulations</b></h4>
 	        	<h5><b>General</b></h5>
 	        	<ul>
+	        		<!-- CHANGE THIS -->
 	        		<li><a href="https://docs.google.com/spreadsheets/d/1gqGkgST8mce3FgcYVYAeKNeTRQcLWrb2Wwnme5L1rWU/">Contact Details</a> of previous year's Coordinators.</li>
 	        		<br>
 
 	        		<li>Keep a photo-copy of your <b>Grade Card</b> for your interview.</li>
 	        		<br>
-	        		
+	        		<!-- 
 	        		<li>Deadline is <b>Deadline Here</b>.</li>
-	        		<br>
+	        		<br> -->
 	        			        		
-	        		<li><b>You can find the ACM presentations <a href="#">here</a></b>.</li>
+	        		<li><b>You can find the ACM presentations <a href="https://drive.google.com/folderview?id=0B5AkRrc7x2XsYks5Snotek1yRlE&usp=sharing_eid&ts=570dc18a">here</a></b>.</li>
 	        		<br>
 	        		
-	        		<li>Contact the <a href="mailto:deepak@saarang.org?Subject=Saarang%20Coord%20Portal">WebOps Core</a> in case of any problems with the portal.</li>
+	        		<li>Contact the <a href="mailto:harishreddy@saarang.org?Subject=Saarang%20Coord%20Portal">WebOps Core</a> in case of any problems with the portal.</li>
 	        	</ul>
 	        </div>
 		</div>

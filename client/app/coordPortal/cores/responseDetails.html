@@ -6,27 +6,18 @@
 				<h4><b> Application for {{response.form.name}} submitted by {{ response.user.name }}</b></h4>
 				<br>
 				<div ng-show="response.fileId" class="col-sm-12">
-                    <a ng-href="api/uploads/{{response.fileId}}" target="_blank" ng-if="response.fileId">Download the App file</a>
+                    <a ng-href="api/uploads/{{response.fileId}}" target="_blank" download="{{response.form.name}}_{{ response.user.name}}" ng-if="response.fileId">Download the App file</a>
                 </div>
                 <br>
-				<table ng-show="1" st-table="responses" class="table table-striped">
-					<thead>
-						<tr>
-							<th>Question</th>
-							<th>Answer</th>
-							<th>Comment</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="set in response.fields">
-							<td>{{set.field_title}}</td>
-							<td>{{set.field_value}}</td>
-							<td><input class="form-control" ng-model="set.field_comment"></td>
-						</tr>
-					</tbody>
-				</table>
+				<br>
+				<div class="row">
+					<b>Comment:</b>
+				</div>
+				<div class="row">
+					<div ng-bind="response.comments"></div>
+				</div>
 				<div>
-					<h5>Comments:</h5>
+					<h5>Comment:</h5>
 					<textarea class="form-control"ng-model="response.comments"></textarea>
 					<br>
 				</div>
@@ -36,7 +27,9 @@
 			        <label class="btn btn-danger" ng-model="response.status" btn-radio="'Rejected'" uncheckable>Reject</label>
 			    </div>
 			    <br><br>
-			    <button class="btn btn-primary" ng-click="saveFeedback(response)">Save</button>
+			    <div ng-bind="response.status">
+			    </div>
+			    <button class="btn btn-primary" ng-click="saveFeedback()">Save</button>
 			    <br><br>
 			    <div class="alert alert-success" ng-show="showSaved">Saved</div>
 			</div>

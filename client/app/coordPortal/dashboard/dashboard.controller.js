@@ -6,9 +6,9 @@ angular.module('erp2015App')
 
     $scope.getCurrentUser = Auth.getCurrentUser;
     if ($scope.getCurrentUser().role === 'core')
-      $state.go('coordPortalCoresCtrl');
+      $state.go('coordPortalCores');
     if (!$scope.getCurrentUser())
-      $state.go('LoginCtrl');
+      $state.go('Login');
 
     $scope.allForms = '';
     $scope.preference = '';
