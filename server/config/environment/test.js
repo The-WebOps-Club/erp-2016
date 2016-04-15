@@ -5,6 +5,6 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/erp2015-test'
+    uri: 'mongodb://localhost/erp2017-test'
   }
 };
