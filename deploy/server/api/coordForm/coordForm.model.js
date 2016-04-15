@@ -21,9 +21,12 @@ var CoordFormSchema = new Schema({
 	position: {},
 	allowUploads: { 
 		type:Boolean,
-		default: false
+		default: true
 	},
-	fields: []
+	fields: [],
+	filePath: {
+		type: String
+	}
 });
 
 module.exports = mongoose.model('CoordForm', CoordFormSchema);

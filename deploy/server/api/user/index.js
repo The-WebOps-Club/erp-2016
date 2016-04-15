@@ -13,8 +13,8 @@ router.get('/me', auth.isAuthenticated(), controller.me);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.put('/:id/updateProfile', auth.isAuthenticated(), controller.updateProfile);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/addDepartment', controller.addDepartment);
-router.post('/addSubDepartment', controller.addSubDepartment);
+router.post('/addDepartment', auth.hasRole('core'), controller.addDepartment);
+router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartment);
 router.post('/', controller.create);
 
 module.exports = router;
