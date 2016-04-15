@@ -5,6 +5,16 @@ angular.module('erp2015App')
   .controller('CoordPortalCoresCtrl', function ($scope, $state, $location, $http, CoordPortalService, Auth) {
 
     $scope.getCurrentUser = Auth.getCurrentUser;
+
+    $scope.department = $scope.getCurrentUser().department;
+    $scope.files = '';
+
+    CoordPortalService.getFilesFromDepartment($scope.department).then(function(files) {
+      $scope.files = files;
+      console.log($scope.files);
+    });
+    $scope.fileDownloadLink = "http://localhost:9000/api/uploads/" + $scope.department;
+
     if ($scope.getCurrentUser().role === 'user')
       $state.go('coordPortalDashboardCtrl');
     if (!$scope.getCurrentUser())

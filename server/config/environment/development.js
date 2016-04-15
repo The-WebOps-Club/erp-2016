@@ -5,7 +5,7 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/erp2015-dev'
+    uri: 'mongodb://localhost/coordPortal-17'
   },
 
   seedDB: false

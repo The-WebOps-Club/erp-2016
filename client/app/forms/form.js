@@ -15,7 +15,7 @@ angular.module('erp2015App')
         // }                
       })
       .state('formsView', {
-        url: '/forms/formView/:id',
+        url: '/forms/formView/:fullName',
         templateUrl: 'app/forms/formView/formView.html',
         controller: 'FormViewCtrl',
         // data: {

@@ -10,18 +10,18 @@ angular.module('erp2015App')
     if (!$scope.getCurrentUser())
       $state.go('LoginCtrl');
 
-    $scope.allForms = '';
+    $scope.allForms = ['WebOps | Frontend | Coord', 'WebOps | Backend | SuperCoord', 'Design | Creatives | Coord'];
     $scope.preference = '';
     $scope.form = {};
     $scope.message = {};
 
-    CoordPortalService.options().then(function (responses) {
-      if(responses.length !== 0) {
-        $scope.allForms = responses;
-      } else {
-        $scope.allForms = '';
-      }
-    });
+    // CoordPortalService.options().then(function (responses) {
+    //   if(responses.length !== 0) {
+    //     $scope.allForms = responses;
+    //   } else {
+    //     $scope.allForms = '';
+    //   }
+    // });
 
     // loading all the forms applied by user
     CoordPortalService.formsApplied().then(function (responses) {

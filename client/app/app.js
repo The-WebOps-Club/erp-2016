@@ -11,6 +11,7 @@ angular.module('erp2015App', [
   'smart-table',
   'permission',
   'ngFacebook',
+  'ngFileUpload'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

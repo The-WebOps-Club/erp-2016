@@ -44,7 +44,7 @@ var UserSchema = new Schema({
   lastSeen: { type: Date },
   phoneNumber: { type: String, default: '' },
   formApplied: [],
-  department: [{ type: Schema.Types.ObjectId, ref: 'Department' }],
+  department: String,
   subDepartment: [{ type: Schema.Types.ObjectId, ref: 'SubDepartment' }],
   hashedPassword: String,
   provider: String,

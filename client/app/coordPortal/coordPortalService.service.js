@@ -131,6 +131,19 @@ angular.module('erp2015App')
           return response.data;
         });            
       },
+
+      getFilesFromDepartment: function(department){
+        return $http.get('/api/uploads/' + department).then(function (response){
+          return response.data;
+        });
+      },
+
+      downloadFile: function(department, file){
+        return $http.get('/api/uploads/' + department + '/' + file).then(function (response){
+          return response.data;
+        });
+      },
+
       userAppliedFor: function (id) {
         return $http.get('/api/coordForms/allForms/' + id).then(function (response) {
           // console.log(response.data);    
