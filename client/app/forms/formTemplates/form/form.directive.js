@@ -18,7 +18,7 @@ angular.module('erp2015App')
               var file = $scope.file;
               console.log('file is ' );
               console.dir(file);
-              var uploadUrl = "http://localhost:9000/api/imgs/" + $scope.department;
+              var uploadUrl = "http://coordportal.shaastra.org:9000/api/imgs/" + $scope.department;
               fileUpload.uploadFileToUrl(file, uploadUrl);
 
                 // if ($scope.form.file.$valid && $scope.file) {
@@ -28,7 +28,7 @@ angular.module('erp2015App')
     
             $scope.upload = function (file) {
               Upload.upload({
-                url: 'http://localhost:9000/api/uploads', //webAPI exposed to upload the file
+                url: 'http://coordportal.shaastra.org:9000/api/uploads', //webAPI exposed to upload the file
                 data:{file:file, 'username': 'Minu'} //pass file as data, should be user ng-model
               }).then(function (resp) { //upload function returns a promise
                 if(resp.data.error_code === 0){ //validate success
