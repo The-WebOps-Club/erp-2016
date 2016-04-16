@@ -133,13 +133,13 @@ angular.module('erp2015App')
       },
 
       getFilesFromDepartment: function(department){
-        return $http.get('/api/uploads/' + department).then(function (response){
+        return $http.get('http://localhost:9000/api/imgs/' + department).then(function (response){
           return response.data;
         });
       },
 
       downloadFile: function(department, file){
-        return $http.get('/api/uploads/' + department + '/' + file).then(function (response){
+        return $http.get('http://localhost:9000/api/imgs/' + department + '/' + file).then(function (response){
           return response.data;
         });
       },

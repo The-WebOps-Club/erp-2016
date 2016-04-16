@@ -1,40 +1,42 @@
 'use strict';
 
 var _ = require('lodash'),
-  mongoose = require('mongoose'),
-  Grid = require('gridfs-stream'),
-  mime = require('mime');
+  mongoose = require('mongoose');
+  //Grid = require('gridfs-stream'),
+  //mime = require('mime');
 
-Grid.mongo = mongoose.mongo;
-var gfs = new Grid(mongoose.connection.db);
-var fs = require('fs');
-var path=require('path');
-var multer = require('multer');
+//Grid.mongo = mongoose.mongo;
+//var gfs = new Grid(mongoose.connection.db);
+//var fs = require('fs');
+//var path=require('path');
+// var multer = require('multer');
 
 
-var storage = multer.diskStorage({ //multers disk storage settings
-  destination: function (req, file, cb) {
-    cb(null, __dirname + '/uploads');
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
-});
+// var storage = multer.diskStorage({ //multers disk storage settings
+//   destination: function (req, file, cb) {
+//     cb(null, __dirname + '/uploads');
+//   },
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname);
+//   }
+// });
 
-var upload = multer({ //multer settings
-  storage: storage
-}).single('file');
+// var upload = multer({ //multer settings
+//   storage: storage
+// }).single('file');
 
 exports.uploadFunction = function (req, res) {
-  console.log(__dirname + '/uploads');
-  console.log(req.files);
-  upload(req,res,function(err){
-    if(err){
-      res.json({error_code:1,err_desc:err});
-      return;
-    }
-    res.json({error_code:0,err_desc:null});
-  });
+  console.log(req.file);
+  return res.json(201, {message: "Boom!"});
+  // console.log(__dirname + '/uploads');
+  // console.log(req.file);
+  // upload(req,res,function(err){
+  //   if(err){
+  //     res.json({error_code:1,err_desc:err});
+  //     return;
+  //   }
+  //   res.json({error_code:0,err_desc:null});
+  // });
 
   //console.log("Haaaaaaa");
   //console.log(req);

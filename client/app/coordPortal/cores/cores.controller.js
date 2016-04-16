@@ -13,7 +13,7 @@ angular.module('erp2015App')
       $scope.files = files;
       console.log($scope.files);
     });
-    $scope.fileDownloadLink = "http://localhost:9000/api/uploads/" + $scope.department;
+    $scope.fileDownloadLink = "http://localhost:9000/api/imgs/" + $scope.department;
 
     if ($scope.getCurrentUser().role === 'user')
       $state.go('coordPortalDashboardCtrl');

@@ -4,6 +4,9 @@ var express = require('express');
 var controller = require('./user.controller');
 var config = require('../../config/environment');
 var auth = require('../../auth/auth.service');
+var multer  = require('multer')
+var storage = require('../../components/imageStorage').storage;
+var upload = multer({ storage: storage, limits: {fileSize: 1000000}});
 
 var router = express.Router();
 
@@ -18,5 +21,6 @@ router.post('/addSubDepartment', auth.hasRole('core'), controller.addSubDepartme
 router.post('/forgotPassword', controller.sendResetMail);
 router.post('/resetPassword/:token', controller.resetPassword);
 router.post('/', controller.create);
+
 
 module.exports = router;

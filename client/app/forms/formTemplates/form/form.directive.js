@@ -3,12 +3,27 @@
 angular.module('erp2015App')
   .directive('formDirective', function ($http, $state, CoordPortalService) {
     return {
-        controller: function ($scope, $stateParams, $window, Upload) {
+        controller: function ($scope, $stateParams, $window, Upload, fileUpload) {
+
+            // console.log($stateParams.fullName);
+            $scope.fullPath = "/api/uploads/" + $stateParams.fullName;
+            $scope.separate = $stateParams.fullName.split(" | ");
+            $scope.department = $scope.separate[0];
+            $scope.subDepartment = $scope.separate[1];
+            $scope.type = $scope.separate[2];
+            // console.log($scope.department);
 
             $scope.submit = function(){ //function to call on form submit
-                if ($scope.form.file.$valid && $scope.file) {
-                  $scope.upload($scope.file);
-                }
+
+              var file = $scope.file;
+              console.log('file is ' );
+              console.dir(file);
+              var uploadUrl = "http://localhost:9000/api/imgs/" + $scope.department;
+              fileUpload.uploadFileToUrl(file, uploadUrl);
+
+                // if ($scope.form.file.$valid && $scope.file) {
+                //   $scope.upload($scope.file);
+                // }
             }
     
             $scope.upload = function (file) {
@@ -32,13 +47,7 @@ angular.module('erp2015App')
               });
             };
             
-            // console.log($stateParams.fullName);
-            $scope.fullPath = "/api/uploads/" + $stateParams.fullName;
-            $scope.separate = $stateParams.fullName.split(" | ");
-            $scope.department = $scope.separate[0];
-            $scope.subDepartment = $scope.separate[1];
-            $scope.type = $scope.separate[2];
-            // console.log($scope.department);
+
             $scope.save = function() {
                 console.log(vm);
             };
