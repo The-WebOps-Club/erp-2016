@@ -9,8 +9,8 @@ angular.module('erp2015App')
     $scope.department = $scope.getCurrentUser().department;
     $scope.files = '';
 
-    CoordPortalService.getFilesFromDepartment($scope.department).then(function(files) {
-      console.log($scope.department);
+    CoordPortalService.getFilesFromDepartment($scope.getCurrentUser().department).then(function(files) {
+      console.log($scope.getCurrentUser().department);
       $scope.files = files;
       console.log($scope.files);
     });
