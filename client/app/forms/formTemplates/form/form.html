@@ -1,7 +1,7 @@
 <div class="jumbotron col-sm-offset-3 col-sm-6">
     <div class="row">
         <div class="col-sm-12">
-            <h2 class="text-center">Application for {{ form.form.name }}</h2>
+            <h2 class="text-center">Application for {{department}}</h2>
         </div>
 
         <div class="col-sm-12">
@@ -28,7 +28,7 @@
 
 
 
-             <!-- <form name="myForm" id="myForm" novalidate>
+             <form name="myForm" id="myForm" novalidate>
                 <div class="row" ng-repeat="field in form.fields">
                     <div class="container">
                         <field-directive field="field">
@@ -38,28 +38,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <a ng-href = "{{form.formFileId}}" target="_blank"><h4 class="text-center"> Download the app questionnaire </h4></a>
-                        <fieldset class="col-sm-12">
-                            <p>App File: </p>
-                            <div class="alert alert-warning">Only one zip file per application allowed. Warning: Submitting a second file will replace your original submission.</div>
-                            <a ng-href="api/uploads/{{form.fileId}}/{{form.form.name}}.zip" target="_blank" ng-if="form.fileId">Download your previous submission</a>
-                            <input class="btn" type="file" ngf-select name="file" id="image" required="">
-                            <p class="text-center">
-                                <button class="btn btn-primary" ng-click="save()" type="submit">Save</button>
-                            </p>
-                            <div>
-                            <div class="alert alert-info">
-                                Note that if you upload a file, you have automatically applied for that position. 
-                            </div>
-                                <br>
-                                <progressbar class="progress-striped active" max="100" value="progressPercentage">
-                                    <i>{{progressPercentage}}%</i>
-                                </progressbar>
-                            </div>
-                        </fieldset>
+                        <a ng-href = "{{questionLink}}" target="_blank"><h4 class="text-center"> Download the app questionnaire </h4></a>
                     </div>
                 </div>
-            </form> -->
+            </form>
             <!-- <br> -->
             <div>
                 

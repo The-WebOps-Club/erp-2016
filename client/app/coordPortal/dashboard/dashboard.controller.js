@@ -10,7 +10,7 @@ angular.module('erp2015App')
     if (!$scope.getCurrentUser())
       $state.go('LoginCtrl');
 
-    $scope.allForms = ['WebOps | Frontend | Coord', 'WebOps | Backend | SuperCoord', 'Design | Creatives | Coord'];
+    $scope.allForms = ['Design', 'Envisage', 'Events', 'Evolve', 'Facilities', 'Finance', 'MediaAndStudentRelations', 'QMS', 'ShowsAndExhibitions', 'Sponsorship', 'TechOps'];
     $scope.preference = '';
     $scope.form = {};
     $scope.message = {};

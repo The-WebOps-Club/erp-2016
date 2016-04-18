@@ -12,6 +12,41 @@ angular.module('erp2015App')
             $scope.subDepartment = $scope.separate[1];
             $scope.type = $scope.separate[2];
             // console.log($scope.department);
+            $scope.questionLink = '';
+            
+            if($scope.department == 'TechOps'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yENlhOczBCLUQ0S1E&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Design'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEVUtXNG9HeUNob2M&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Evolve'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEcldGVks0Sk5XMXc&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Envisage'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yENXlFLUlLUlRiTGc&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'MediaAndStudentRelations'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yENGZXa0piWl9CWUk&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Events'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEU0FjWEN0Q2JyZjg&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'QMS'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEVXJsRThTWF9oLW8&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'ShowsAndExhibitions'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEVDJ5blc5ejJlMTg&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Facilities'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEZUhWbDh0aHpJS28&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Finance'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEeUpkdEZyQ0xtWXM&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
+            else if ($scope.department == 'Sponsorship'){
+              $scope.questionLink = 'https://drive.google.com/folderview?id=0B6SOgNBnd4yEVDJvYnlEd3YyMXc&usp=sharing&tid=0B6SOgNBnd4yEM2ppQWxLclowZHc';
+            }
 
             $scope.submit = function(){ //function to call on form submit
 
