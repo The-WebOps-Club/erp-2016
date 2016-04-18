@@ -133,7 +133,7 @@ angular.module('erp2015App')
       },
 
       getFilesFromDepartment: function(department){
-        return $http.get('http://cfi.iitm.ac.in:3000/api/imgs/' + department).then(function (response){
+        return $http.get('http://cfi.iitm.ac.in:9000/api/imgs/' + department).then(function (response){
           return response.data;
         });
       },
