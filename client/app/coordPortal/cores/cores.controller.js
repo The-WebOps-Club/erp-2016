@@ -10,6 +10,7 @@ angular.module('erp2015App')
     $scope.files = '';
 
     CoordPortalService.getFilesFromDepartment($scope.department).then(function(files) {
+      console.log($scope.department);
       $scope.files = files;
       console.log($scope.files);
     });
