@@ -9,11 +9,17 @@ angular.module('erp2015App')
     $scope.department = $scope.getCurrentUser().department;
     $scope.files = '';
 
-    CoordPortalService.getFilesFromDepartment($scope.getCurrentUser().department).then(function(files) {
-      console.log($scope.getCurrentUser().department);
-      $scope.files = files;
-      console.log($scope.files);
+    Auth.getCurrentUser(function(user){
+      CoordPortalService.getFilesFromDepartment(user.department).then(function(files) {
+        console.log(user.department);
+        CoordPortalService.getFilesFromDepartment(user.department).then(function(files) {
+          console.log(user.department);
+          $scope.files = files;
+          console.log($scope.files);
+        });
+      });  
     });
+    
     $scope.fileDownloadLink = "http://cfi.iitm.ac.in:3000/api/imgs/" + $scope.department;
 
     if ($scope.getCurrentUser().role === 'user')
