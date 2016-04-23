@@ -17,10 +17,10 @@ angular.module('erp2015App')
     {name: 'Evolve', value: 'Evolve'},
     {name: 'Facilities', value: 'Facilities'},
     {name: 'Finance', value: 'Finance'},
-    {name: 'Media And Student Relations', value: 'MediaAndStudentRelations'},
+    {name: 'Media and Student Relations', value: 'MediaAndStudentRelations'},
     {name: 'QMS', value: 'QMS'},
-    {name: 'Shows And Exhibitions', value: 'ShowsAndExhibitions'},
-    {name: 'Sponsorship And PR', value: 'Sponsorship'},
+    {name: 'Shows and Exhibitions', value: 'ShowsAndExhibitions'},
+    {name: 'Sponsorship and PR', value: 'Sponsorship'},
     {name: 'TechOps', value: 'TechOps'}
     ];
     $scope.preference = '';
