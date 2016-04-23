@@ -9,6 +9,7 @@ angular.module('erp2015App')
             $scope.fullPath = "/api/uploads/" + $stateParams.fullName;
             $scope.separate = $stateParams.fullName.split(" | ");
             $scope.department = $scope.separate[0];
+            $scope.departmentWithSpace = $scope.department.split(/(?=[A-Z])/).join(" ");
             $scope.subDepartment = $scope.separate[1];
             $scope.type = $scope.separate[2];
             // console.log($scope.department);

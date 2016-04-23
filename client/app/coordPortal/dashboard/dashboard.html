@@ -30,8 +30,8 @@
 	        		<div class="form-group">
 	        			<label for="department-select">Select</label>
 			            <select class="form-control" ng-model="preference" id="department-select">
-			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form}}">
-			            		{{form}}
+			            	<option ng-repeat="form in allForms | orderBy:'department.name'" value="/forms/formView/{{form.value}}">
+			            		{{form.name}}
 			            	</option>
 			        	</select>
 	        		</div>
@@ -72,7 +72,7 @@
 <footer class="footer">
   	<div class="container">
     	<p>
-	      	<a href="http://www.shaastra.org">Shaastra 2015</a> |
+	      	<a href="http://www.shaastra.org">Shaastra 2016</a> |
 	        <a href="https://twitter.com/shaastraiitm">Twitter</a> |
 	        <a href="https://www.facebook.com/Shaastra">Facebook</a>
 	    </p>

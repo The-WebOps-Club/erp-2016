@@ -1,14 +1,13 @@
 <div class="jumbotron col-sm-offset-3 col-sm-6">
     <div class="row">
         <div class="col-sm-12">
-            <h2 class="text-center">Application for {{department}}</h2>
+            <h2 class="text-center">Application for {{departmentWithSpace}}</h2>
         </div>
 
         <div class="col-sm-12">
 
-
+            <br>
             <form name="form">
-                Single Image with validations
                 <input 
                     type="file" 
                     ngf-select 
@@ -16,13 +15,14 @@
                     name="file" 
                     ngf-max-size="20MB" 
                 />
+                <br>
                 <!-- <i ng-show="up.upload_form.file.$error.required">*required</i><br>
                 <i ng-show="up.upload_form.file.$error.maxSize">File too large 
                 {{up.file.size / 1000000|number:1}}MB: max 20M</i> -->
                <!--  Multiple files
                 <div class="button" ngf-select ng-model="up.files" ngf-multiple="true">Select</div>
                 Drop files: <div ngf-drop ng-model="up.files" class="drop-box">Drop</div> -->
-                <button type="submit" ng-click="submit()">submit</button>
+                <button type="submit" ng-click="submit()">Submit</button>
                 <!-- <p>{{up.progress}}</p> -->
             </form>
 
