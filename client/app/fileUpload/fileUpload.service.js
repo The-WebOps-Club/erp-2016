@@ -12,11 +12,11 @@ angular.module('erp2015App')
         })
         .success(function(){
             $window.alert('Successfully uploaded');
-            $location.path('http://shaastra.org:8000/coordPortal/dashboard');
+            $location.path('http://shaastra.org:3000/coordPortal/dashboard');
         })
         .error(function(){
             $window.alert('Upload failed');
-            $location.path('http://shaastra.org:8000/coordPortal/dashboard');
+            $location.path('http://shaastra.org:3000/coordPortal/dashboard');
         });
     }
 }]);

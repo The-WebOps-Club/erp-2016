@@ -6,7 +6,7 @@
 // You will need to set these on the server you deploy to.
 
 module.exports = {
-  DOMAIN:           'http://localhost:8000',
+  DOMAIN:           'http://localhost:3000',
   SESSION_SECRET:   'erp2015-secret',
 
   FACEBOOK_ID:      'app-id',
